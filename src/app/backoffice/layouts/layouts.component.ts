@@ -16,6 +16,9 @@ export class LayoutsComponent implements OnInit, OnDestroy {
       '../../../assets/backoffice/plugins/chart.js/chart.min.js',
       '../../../assets/backoffice/js/index-charts.js',
       '../../../assets/backoffice/js/app.js',
+      "../../../assets/backoffice/plugins/popper.min.js",
+      "../../../assets/backoffice/plugins/bootstrap/js/bootstrap.min.js",
+      "../../../assets/backoffice/js/app.js"
 
     ]);
 
@@ -28,6 +31,9 @@ export class LayoutsComponent implements OnInit, OnDestroy {
       '../../../assets/backoffice/plugins/chart.js/chart.min.js',
       '../../../assets/backoffice/js/index-charts.js',
       '../../../assets/backoffice/js/app.js',
+      "../../../assets/backoffice/plugins/popper.min.js",
+      "../../../assets/backoffice/plugins/bootstrap/js/bootstrap.min.js",
+      "../../../assets/backoffice/js/app.js"
     ]);
   }
 
