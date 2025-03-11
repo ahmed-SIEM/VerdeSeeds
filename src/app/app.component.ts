@@ -10,10 +10,4 @@ export class AppComponent {
   title = 'portal';
 
 
-
- constructor(private commonService: CommonService) {
-     this.commonService.getUsers().subscribe((data) => {
-    console.log(data);
-     });
-  }
 }
