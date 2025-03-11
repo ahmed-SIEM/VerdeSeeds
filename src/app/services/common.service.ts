@@ -6,7 +6,7 @@ import { Observable, catchError, throwError } from 'rxjs';
   providedIn: 'root'
 })
 export class CommonService {
-  private url: string = 'http://localhost:8081'  // Définir l'URL depuis `environment.ts`
+  private url: string = 'http://localhost:8081'
 
   constructor(private myHttp: HttpClient) {}
 
