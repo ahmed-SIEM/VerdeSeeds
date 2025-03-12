@@ -22,7 +22,8 @@
             "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
-              "src/assets/backoffice"
+              "src/assets/backoffice",
+              "src/assets/frontoffice"
             ],
             "styles": [
               "src/styles.css"
@@ -30,7 +31,23 @@
             "scripts": [
               "src/assets/backoffice/plugins/popper.min.js",
               "src/assets/backoffice/plugins/bootstrap/js/bootstrap.min.js",
-              "src/assets/backoffice/js/app.js"
+              "src/assets/backoffice/js/app.js",
+
+              "src/assets/frontoffice/js/jquery.min.js",
+              "src/assets/frontoffice/js/popper.min.js",
+              "src/assets/frontoffice/js/bootstrap.min.js",
+
+              "src/assets/frontoffice/js/owl.carousel.min.js",
+              "src/assets/frontoffice/js/classynav.js",
+              "src/assets/frontoffice/js/wow.min.js",
+        
+              "src/assets/frontoffice/js/jquery.sticky.js",
+              "src/assets/frontoffice/js/jquery.magnific-popup.min.js",
+              "src/assets/frontoffice/js/jquery.scrollup.min.js",
+        
+              "src/assets/frontoffice/js/jarallax.min.js",
+              "src/assets/frontoffice/js/jarallax-video.min.js",
+              "src/assets/frontoffice/js/active.js"
             ]
           },
           "configurations": {
