@@ -17,7 +17,7 @@ import { SettingsComponent } from './pages/settings/settings.component';
 import { NotificationComponent } from './pages/notification/notification.component';
 import { ResetpasswordComponent } from './pages/resetpassword/resetpassword.component';
 import { SignUpComponent } from './pages/sign-up/sign-up.component';
-
+import { FormationManagementModule } from './pages/formation-management/formation-management.module';
 
 @NgModule({
   declarations: [
@@ -39,7 +39,8 @@ import { SignUpComponent } from './pages/sign-up/sign-up.component';
   ],
   imports: [
     CommonModule,
-    BackofficeRoutingModule
+    BackofficeRoutingModule,
+    FormationManagementModule,
   ]
 })
 export class BackofficeModule { }

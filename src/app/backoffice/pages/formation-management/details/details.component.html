@@ -1,0 +1,63 @@
+<div class="container mt-4">
+    <div class="card shadow-sm">
+      <div class="card-header bg-white d-flex justify-content-between align-items-center">
+        <h4 class="mb-0">Détails de la Formation</h4>
+        <a [routerLink]="['edit']" class="btn btn-sm btn-warning">
+          <i class="fas fa-edit me-2"></i>Modifier
+        </a>
+      </div>
+      <div class="card-body">
+        <div *ngIf="formation" class="row">
+          <div class="col-md-6">
+            <div class="mb-3">
+              <h5 class="text-muted">Nom</h5>
+              <p class="fs-5">{{ formation.nom }}</p>
+            </div>
+  
+            <div class="mb-3">
+              <h5 class="text-muted">Type</h5>
+              <span class="badge" [ngClass]="{
+                'bg-primary': formation.typeFormation === 'THEORIQUE',
+                'bg-success': formation.typeFormation === 'PRATIQUE',
+                'bg-warning': formation.typeFormation === 'MIXTE'
+              }">
+                {{ formation.typeFormation }}
+              </span>
+            </div>
+  
+            <div class="mb-3">
+              <h5 class="text-muted">Certification</h5>
+              <p>
+                <i class="fas" [ngClass]="{
+                  'fa-check-circle text-success': formation.certification,
+                  'fa-times-circle text-danger': !formation.certification
+                }"></i>
+                {{ formation.certification ? 'Oui' : 'Non' }}
+              </p>
+            </div>
+          </div>
+  
+          <div class="col-md-6">
+            <div class="mb-3">
+              <h5 class="text-muted">Dates</h5>
+              <p>
+                Du <strong>{{ formation.dateDebut | date:'dd/MM/yyyy' }}</strong>
+                au <strong>{{ formation.dateFin | date:'dd/MM/yyyy' }}</strong>
+              </p>
+            </div>
+  
+            <div class="mb-3">
+              <h5 class="text-muted">Lieu</h5>
+              <p>{{ formation.lieu }}</p>
+            </div>
+          </div>
+        </div>
+  
+        <div class="d-flex justify-content-end mt-4">
+          <a routerLink="/backoffice/formations" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Retour à la liste
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>

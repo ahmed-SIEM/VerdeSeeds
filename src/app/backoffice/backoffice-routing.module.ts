@@ -1,6 +1,6 @@
 import { Component, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LayoutsComponent } from './layouts/layouts.component';
+// import { LayoutsComponent } from './layouts/layouts.component';
 import { HomeComponent } from './pages/home/home.component';
 import { OrdersComponent } from './pages/orders/orders.component';
 import { ErrorComponent } from '../error/error.component';
@@ -14,6 +14,7 @@ import { SettingsComponent } from './pages/settings/settings.component';
 import { NotificationComponent } from './pages/notification/notification.component';
 import { ResetpasswordComponent } from './pages/resetpassword/resetpassword.component';
 import { SignUpComponent } from './pages/sign-up/sign-up.component';
+import { LayoutsComponent } from './layouts/layouts.component'; 
 
 const routes: Routes = [
   {
@@ -34,8 +35,20 @@ const routes: Routes = [
     {path : 'notification', component : NotificationComponent},
     {path : 'resetpassword', component : ResetpasswordComponent},    
     {path : 'signup', component : SignUpComponent},
+    { 
+      path: '', 
+      component: LayoutsComponent ,
+      children: [
+        { path: 'home', component: HomeComponent },
+        { 
+          path: 'formations',
+          loadChildren: () => import('./pages/formation-management/formation-management.module')
+            .then(m => m.FormationManagementModule)
+        }
   ]
-  }
+  },
+],
+}
 ];
 
 @NgModule({

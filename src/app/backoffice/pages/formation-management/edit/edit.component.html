@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body class="app">
+    <div class="app-wrapper">
+      <div class="app-content pt-3 p-md-3 p-lg-4">
+        <div class="container-xl">
+          <div class="row g-3 mb-4 align-items-center justify-content-between">
+            <div class="col-auto">
+              <h1 class="app-page-title mb-0">{{ isEditMode ? 'Modifier' : 'Créer' }} une Formation</h1>
+            </div>
+            <div class="col-auto">
+              <div class="d-flex justify-content-end gap-2">
+                <button type="button" routerLink="../" class="btn app-btn-secondary">
+                  <i class="fas fa-times me-2"></i>Annuler
+                </button>
+                <button type="submit" class="btn app-btn-primary" [disabled]="!formationForm.form.valid">
+                  <i class="fas fa-save me-2"></i>{{ isEditMode ? 'Mettre à jour' : 'Créer' }}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <form (ngSubmit)="onSubmit()" #formationForm="ngForm">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="nom" class="form-label">Nom</label>
+                <input type="text" class="form-control" id="nom" [(ngModel)]="formation.nom" name="nom" required>
+              </div>
+
+              <div class="col-md-6">
+                <label for="type" class="form-label">Type</label>
+                <select class="form-select" id="type" [(ngModel)]="formation.typeFormation" name="typeFormation" required>
+                  <option value="THEORIQUE">Théorique</option>
+                  <option value="PRATIQUE">Pratique</option>
+                  <option value="MIXTE">Mixte</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="dateDebut" class="form-label">Date Début</label>
+                <input type="date" class="form-control" id="dateDebut" [(ngModel)]="formation.dateDebut" name="dateDebut" required>
+              </div>
+
+              <div class="col-md-6">
+                <label for="dateFin" class="form-label">Date Fin</label>
+                <input type="date" class="form-control" id="dateFin" [(ngModel)]="formation.dateFin" name="dateFin" required>
+              </div>
+            </div>
+
+            <div class="row g-3">
+              <div class="col-md-12">
+                <label for="lieu" class="form-label">Lieu</label>
+                <input type="text" class="form-control" id="lieu" [(ngModel)]="formation.lieu" name="lieu" required>
+              </div>
+            </div>
+
+            <div class="row g-3">
+              <div class="col-md-12 form-check">
+                <input type="checkbox" class="form-check-input" id="certification" [(ngModel)]="formation.certification" name="certification">
+                <label class="form-check-label" for="certification">Certification</label>
+              </div>
+            </div>
+          </form>
+
+        </div><!--//container-xl-->
+      </div><!--//app-content-->
+    </div><!--//app-wrapper-->
+  </body>
+</html>
