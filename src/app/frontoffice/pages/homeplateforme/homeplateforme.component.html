@@ -1,12 +1,49 @@
-<app-centeredhero></app-centeredhero>
+<app-centeredhero 
+  [title]="'Welcome to Our Platform'" 
+  [subtitle]="'Discover amazing features'" 
+  [backgroundColor]="'#f0f8ff'">
+</app-centeredhero>
 
+<hr class="featurette-divider">
+
+<app-columnswithicons 
+  [columns]="[
+    { icon: 'icon1.png', text: 'Feature 1' },
+    { icon: 'icon2.png', text: 'Feature 2' },
+    { icon: 'icon3.png', text: 'Feature 3' }
+  ]">
+</app-columnswithicons>
 
 <hr class="featurette-divider">
-<app-columnswithicons></app-columnswithicons>
+
+<app-verticallycenteredhero 
+  [imageUrl]="'hero-image.png'" 
+  [text]="'Centered Hero Text'" 
+  [textColor]="'#333'">
+</app-verticallycenteredhero>
+
 <hr class="featurette-divider">
-<app-verticallycenteredhero></app-verticallycenteredhero>
+
+<app-headingleftwithimage 
+  [heading]="'Left Heading'" 
+  [imageUrl]="'left-image.png'" 
+  [description]="'Description for left heading'" 
+  [backgroundColor]="'#e6ffe6'">
+</app-headingleftwithimage>
+
 <hr class="featurette-divider">
-<app-headingleftwithimage></app-headingleftwithimage>
-<hr class="featurette-divider">
-<app-headingrightwithimage></app-headingrightwithimage>
-<app-customcards></app-customcards>
+
+<app-headingrightwithimage 
+  [heading]="'Right Heading'" 
+  [imageUrl]="'right-image.png'" 
+  [description]="'Description for right heading'" 
+  [backgroundColor]="'#ffe6e6'">
+</app-headingrightwithimage>
+
+<app-customcards 
+  [cards]="[
+    { title: 'Card 1', description: 'Description 1', imageUrl: 'card1.png' },
+    { title: 'Card 2', description: 'Description 2', imageUrl: 'card2.png' },
+    { title: 'Card 3', description: 'Description 3', imageUrl: 'card3.png' }
+  ]">
+</app-customcards>

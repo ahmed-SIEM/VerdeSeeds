@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-headingrightwithimage',
@@ -6,5 +6,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./headingrightwithimage.component.css']
 })
 export class HeadingrightwithimageComponent {
-
+  @Input() heading!: string;
+  @Input() imageUrl!: string;
+  @Input() description!: string;
+  @Input() backgroundColor!: string;
 }

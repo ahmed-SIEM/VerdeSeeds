@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-verticallycenteredhero',
@@ -6,5 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./verticallycenteredhero.component.css']
 })
 export class VerticallycenteredheroComponent {
-
+  @Input() imageUrl!: string;
+  @Input() text!: string;
+  @Input() textColor!: string;
 }
