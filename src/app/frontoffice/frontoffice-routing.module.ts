@@ -10,6 +10,7 @@ import { OurproductComponent } from './pages/ourproduct/ourproduct.component';
 import { ShopComponent } from './pages/shop/shop.component';
 import { ErrorComponent } from '../error/error.component';
 import { LayoutsComponent } from './layouts/layouts.component';
+import { HomeplateformeComponent } from './pages/homeplateforme/homeplateforme.component';
 
 const routes: Routes = [
   {
@@ -17,7 +18,7 @@ const routes: Routes = [
     component : LayoutsComponent,
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
-      {path : 'home', component : HomeComponent},
+      {path : 'home', component : HomeplateformeComponent},
       {path : 'about', component : AboutComponent},
       {path : 'contact', component : ContactComponent},
       {path : 'farmingpractice', component : FarmingPracticeComponent},

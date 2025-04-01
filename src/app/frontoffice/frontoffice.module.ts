@@ -14,6 +14,18 @@ import { NewsdetailsComponent } from './pages/newsdetails/newsdetails.component'
 import { NewsComponent } from './pages/news/news.component';
 import { OurproductComponent } from './pages/ourproduct/ourproduct.component';
 import { ShopComponent } from './pages/shop/shop.component';
+import { CenteredheroComponent } from './components/plateformeComps/heros/centeredhero/centeredhero.component';
+import { CenteredscreenshotComponent } from './components/plateformeComps/heros/centeredscreenshot/centeredscreenshot.component';
+import { VerticallycenteredheroComponent } from './components/plateformeComps/heros/verticallycenteredhero/verticallycenteredhero.component';
+import { HerowithimageComponent } from './components/plateformeComps/heros/herowithimage/herowithimage.component';
+import { ColumnswithiconsComponent } from './components/plateformeComps/features/columnswithicons/columnswithicons.component';
+import { HungingiconsComponent } from './components/plateformeComps/features/hungingicons/hungingicons.component';
+import { CustomcardsComponent } from './components/plateformeComps/features/customcards/customcards.component';
+import { CarouselComponent } from './components/plateformeComps/others/carousel/carousel.component';
+import { HeadingsComponent } from './components/plateformeComps/others/headings/headings.component';
+import { HeadingleftwithimageComponent } from './components/plateformeComps/others/headingleftwithimage/headingleftwithimage.component';
+import { HeadingrightwithimageComponent } from './components/plateformeComps/others/headingrightwithimage/headingrightwithimage.component';
+import { HomeplateformeComponent } from './pages/homeplateforme/homeplateforme.component';
 
 
 @NgModule({
@@ -30,6 +42,18 @@ import { ShopComponent } from './pages/shop/shop.component';
     NewsComponent,
     OurproductComponent,
     ShopComponent,
+    CenteredheroComponent,
+    CenteredscreenshotComponent,
+    VerticallycenteredheroComponent,
+    HerowithimageComponent,
+    ColumnswithiconsComponent,
+    HungingiconsComponent,
+    CustomcardsComponent,
+    CarouselComponent,
+    HeadingsComponent,
+    HeadingleftwithimageComponent,
+    HeadingrightwithimageComponent,
+    HomeplateformeComponent,
 
   ],
   imports: [
