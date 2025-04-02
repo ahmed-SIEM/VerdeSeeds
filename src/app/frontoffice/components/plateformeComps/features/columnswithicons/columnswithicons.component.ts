@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-columnswithicons',
@@ -6,5 +6,5 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./columnswithicons.component.css']
 })
 export class ColumnswithiconsComponent {
-  @Input() columns!: { icon: string; text: string }[];
+
 }

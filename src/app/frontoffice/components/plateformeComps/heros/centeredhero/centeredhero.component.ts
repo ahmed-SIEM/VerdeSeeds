@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-centeredhero',
@@ -6,7 +6,5 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./centeredhero.component.css']
 })
 export class CenteredheroComponent {
-  @Input() title!: string;
-  @Input() subtitle!: string;
-  @Input() backgroundColor!: string;
+
 }
