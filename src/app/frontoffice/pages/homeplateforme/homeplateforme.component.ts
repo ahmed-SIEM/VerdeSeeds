@@ -8,6 +8,10 @@ import { Component } from '@angular/core';
 export class HomeplateformeComponent {
   color = "#48A6A7";
   settings = {
+    headerwithicons: {
+      title: 'Custom Header with Icons Title',
+      subtitle: 'Custom Header with Icons Subtitle',
+    },
     centeredhero : {
       title: 'Heading Left with Image Title',
       subtitle: 'Heading Left with Image Subtitle',
@@ -80,47 +84,17 @@ export class HomeplateformeComponent {
       
     },
 
-    album: {
-      title: 'Custom Album Title',
-      description: 'Custom Album Description',
-      color: '#FF5733',
-    },
+  
     benefits: {
       title: 'Custom Benefits Title',
       description: 'Custom Benefits Description',
-      color: '#33FF57',
     },
     newsletter: {
       title: 'Custom Newsletter Title',
       subtitle: 'Custom Newsletter Subtitle',
-      color: '#3357FF',
     },
-    carrousel: {
-      title: 'Custom Carrousel Title',
-      images: [
-        'https://picsum.photos/800/300?random=1',
-        'https://picsum.photos/800/300?random=2',
-        'https://picsum.photos/800/300?random=3',
-      ],
-      color: '#FF5733',
-    },
-    democards: {
-      title: 'Custom Demo Cards Title',
-      cards: [
-        { title: 'Card 1', description: 'Description 1', imageUrl: 'https://picsum.photos/400/300?random=1' },
-        { title: 'Card 2', description: 'Description 2', imageUrl: 'https://picsum.photos/400/300?random=2' },
-        { title: 'Card 3', description: 'Description 3', imageUrl: 'https://picsum.photos/400/300?random=3' },
-      ],
-      color: '#33FF57',
-    }
-
+   
   }
-
-
-
-
-
-
 
 
 
