@@ -19,7 +19,6 @@ import { CenteredscreenshotComponent } from './components/plateformeComps/heros/
 import { VerticallycenteredheroComponent } from './components/plateformeComps/heros/verticallycenteredhero/verticallycenteredhero.component';
 import { HerowithimageComponent } from './components/plateformeComps/heros/herowithimage/herowithimage.component';
 import { ColumnswithiconsComponent } from './components/plateformeComps/features/columnswithicons/columnswithicons.component';
-import { HungingiconsComponent } from './components/plateformeComps/features/hungingicons/hungingicons.component';
 import { CustomcardsComponent } from './components/plateformeComps/features/customcards/customcards.component';
 import { CarouselComponent } from './components/plateformeComps/others/carousel/carousel.component';
 import { HeadingsComponent } from './components/plateformeComps/others/headings/headings.component';
@@ -47,7 +46,6 @@ import { HomeplateformeComponent } from './pages/homeplateforme/homeplateforme.c
     VerticallycenteredheroComponent,
     HerowithimageComponent,
     ColumnswithiconsComponent,
-    HungingiconsComponent,
     CustomcardsComponent,
     CarouselComponent,
     HeadingsComponent,
