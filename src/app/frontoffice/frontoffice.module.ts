@@ -24,6 +24,7 @@ import { HeadingleftwithimageComponent } from './components/plateformeComps/othe
 import { HeadingrightwithimageComponent } from './components/plateformeComps/others/headingrightwithimage/headingrightwithimage.component';
 import { HomeplateformeComponent } from './pages/homeplateforme/homeplateforme.component';
 import {MatIconModule} from '@angular/material/icon';
+import { AlbumComponent } from './components/plateformeComps/others/album/album.component';
 
 
 @NgModule({
@@ -49,6 +50,7 @@ import {MatIconModule} from '@angular/material/icon';
     HeadingleftwithimageComponent,
     HeadingrightwithimageComponent,
     HomeplateformeComponent,
+    AlbumComponent,
 
   ],
   imports: [

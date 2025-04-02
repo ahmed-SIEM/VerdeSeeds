@@ -6,27 +6,26 @@ import { Component } from '@angular/core';
   styleUrls: ['./homeplateforme.component.css']
 })
 export class HomeplateformeComponent {
- 
-
+  color = "#48A6A7";
   settings = {
     centeredhero : {
       title: 'Heading Left with Image Title',
       subtitle: 'Heading Left with Image Subtitle',
       imageUrl: 'https://picsum.photos/200/',
-      color : "#cd0000"
+      
     },
     herowithimage : {
       title: 'Heading Right with Image Title',
       subtitle: 'Heading Right with Image Subtitle',
       imageUrl: 'https://picsum.photos/200/',
-      color : "#cd0000"
+      
     },
 
     verticallycenteredhero : {
       title: 'Centered Hero Title',
       subtitle: 'Centered Hero Subtitle',
       imageUrl: 'https://picsum.photos/400/300',
-      color : "#cd0000"
+      
     },
 
     columnswithicons : {
@@ -40,7 +39,7 @@ export class HomeplateformeComponent {
       Ttitle: 'Lorem ipstrudx ea commodo consequat.',
       Tdescription: 'Lorem ipstrudx ea commodo consequat.',
       Timage: 'bi bi-0-circle',
-      color : "#cd0000"
+      
     },
   
     customcards : {
@@ -51,7 +50,7 @@ export class HomeplateformeComponent {
       Simage: 'https://picsum.photos/400/300',
       Ttitle: 'Lorem ipstrudx ea commodo consequat.',
       Timage: 'https://picsum.photos/400/300',
-      color : "#cd0000"
+      
     },
   
     headings : {
@@ -64,21 +63,21 @@ export class HomeplateformeComponent {
       Ttitle: 'Lorem ipstrudx ea commodo consequat.',
       Tdescription: 'Lorem ipstrudx ea commodo consequat.',
       Timage: 'https://picsum.photos/400/300',
-      color : "#cd0000"
+      
     },
 
     headingleftwithimage : {
       title: 'Centered Hero Title',
       subtitle: 'Centered Hero Subtitle',
       imageUrl: 'https://picsum.photos/400/300',
-      color : "#cd0000"
+      
     },
 
     headingrightwithimage : {
       title: 'Centered Hero Title',
       subtitle: 'Centered Hero Subtitle',
       imageUrl: 'https://picsum.photos/400/300',
-      color : "#cd0000"
+      
     }
 
 
