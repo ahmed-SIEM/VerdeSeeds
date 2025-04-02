@@ -1,13 +1,12 @@
-import { Component } from '@angular/core';
-import { Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
+
 @Component({
   selector: 'app-verticallycenteredhero',
   templateUrl: './verticallycenteredhero.component.html',
   styleUrls: ['./verticallycenteredhero.component.css']
 })
 export class VerticallycenteredheroComponent {
-@Input() title: string = 'Centered Hero Title';
-@Input() subtitle: string = 'Centered Hero Subtitle';
-@Input() color: string = "#cd0000";
-
+  @Input() title: string = 'Default Title';
+  @Input() subtitle: string = 'Default Subtitle';
+  @Input() color: string = '#000000';
 }

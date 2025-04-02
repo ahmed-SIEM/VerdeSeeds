@@ -78,8 +78,41 @@ export class HomeplateformeComponent {
       subtitle: 'Centered Hero Subtitle',
       imageUrl: 'https://picsum.photos/400/300',
       
-    }
+    },
 
+    album: {
+      title: 'Custom Album Title',
+      description: 'Custom Album Description',
+      color: '#FF5733',
+    },
+    benefits: {
+      title: 'Custom Benefits Title',
+      description: 'Custom Benefits Description',
+      color: '#33FF57',
+    },
+    newsletter: {
+      title: 'Custom Newsletter Title',
+      subtitle: 'Custom Newsletter Subtitle',
+      color: '#3357FF',
+    },
+    carrousel: {
+      title: 'Custom Carrousel Title',
+      images: [
+        'https://picsum.photos/800/300?random=1',
+        'https://picsum.photos/800/300?random=2',
+        'https://picsum.photos/800/300?random=3',
+      ],
+      color: '#FF5733',
+    },
+    democards: {
+      title: 'Custom Demo Cards Title',
+      cards: [
+        { title: 'Card 1', description: 'Description 1', imageUrl: 'https://picsum.photos/400/300?random=1' },
+        { title: 'Card 2', description: 'Description 2', imageUrl: 'https://picsum.photos/400/300?random=2' },
+        { title: 'Card 3', description: 'Description 3', imageUrl: 'https://picsum.photos/400/300?random=3' },
+      ],
+      color: '#33FF57',
+    }
 
   }
 

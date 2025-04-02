@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-carrousel',
@@ -6,5 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./carrousel.component.css']
 })
 export class CarrouselComponent {
-
+  @Input() title: string = 'Default Carrousel Title';
+  @Input() images: string[] = [];
+  @Input() color: string = '#000000';
 }

@@ -49,8 +49,17 @@
   [color]="color"
 ></app-customcards>
 
+<app-carrousel
+  [title]="settings.carrousel.title"
+  [images]="settings.carrousel.images"
+  [color]="settings.carrousel.color"
+></app-carrousel>
 
-
+<app-democards
+  [title]="settings.democards.title"
+  [cards]="settings.democards.cards"
+  [color]="settings.democards.color"
+></app-democards>
 
 <div  class="container marketing">
 
@@ -84,6 +93,24 @@
   [imageUrl]="settings.headingrightwithimage.imageUrl"
   [color]="color"
   ></app-headingrightwithimage>
+
+  <app-album
+    [title]="settings.album.title"
+    [description]="settings.album.description"
+    [color]="settings.album.color"
+  ></app-album>
+
+  <app-benefits
+    [title]="settings.benefits.title"
+    [description]="settings.benefits.description"
+    [color]="settings.benefits.color"
+  ></app-benefits>
+
+  <app-newsletter
+    [title]="settings.newsletter.title"
+    [subtitle]="settings.newsletter.subtitle"
+    [color]="settings.newsletter.color"
+  ></app-newsletter>
 
 </div>
 

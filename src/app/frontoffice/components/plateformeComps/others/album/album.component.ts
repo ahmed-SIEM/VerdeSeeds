@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-album',
@@ -6,5 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./album.component.css']
 })
 export class AlbumComponent {
-
+  @Input() title: string = 'Default Album Title';
+  @Input() description: string = 'Default Album Description';
+  @Input() color: string = '#000000';
 }

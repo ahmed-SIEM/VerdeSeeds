@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-benefits',
@@ -6,5 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./benefits.component.css']
 })
 export class BenefitsComponent {
-
+  @Input() title: string = 'Default Benefits Title';
+  @Input() description: string = 'Default Benefits Description';
+  @Input() color: string = '#000000';
 }
