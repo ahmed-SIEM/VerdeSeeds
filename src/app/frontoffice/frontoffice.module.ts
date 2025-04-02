@@ -25,6 +25,11 @@ import { HeadingrightwithimageComponent } from './components/plateformeComps/oth
 import { HomeplateformeComponent } from './pages/homeplateforme/homeplateforme.component';
 import {MatIconModule} from '@angular/material/icon';
 import { AlbumComponent } from './components/plateformeComps/others/album/album.component';
+import { HeaderwithiconsComponent } from './components/plateformeComps/heros/headerwithicons/headerwithicons.component';
+import { DemocardsComponent } from './components/plateformeComps/others/democards/democards.component';
+import { CarrouselComponent } from './components/plateformeComps/heros/carrousel/carrousel.component';
+import { BenefitsComponent } from './components/plateformeComps/others/benefits/benefits.component';
+import { NewsletterComponent } from './components/plateformeComps/others/newsletter/newsletter.component';
 
 
 @NgModule({
@@ -51,6 +56,11 @@ import { AlbumComponent } from './components/plateformeComps/others/album/album.
     HeadingrightwithimageComponent,
     HomeplateformeComponent,
     AlbumComponent,
+    HeaderwithiconsComponent,
+    DemocardsComponent,
+    CarrouselComponent,
+    BenefitsComponent,
+    NewsletterComponent,
 
   ],
   imports: [

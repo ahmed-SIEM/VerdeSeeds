@@ -18,8 +18,8 @@ const routes: Routes = [
     component : LayoutsComponent,
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
-       {path : 'home', component : HomeplateformeComponent},
-     // {path : 'home', component : HomeComponent},
+       {path : 'hometest', component : HomeplateformeComponent},
+      {path : 'home', component : HomeComponent},
       {path : 'about', component : AboutComponent},
       {path : 'contact', component : ContactComponent},
       {path : 'farmingpractice', component : FarmingPracticeComponent},
