@@ -1,12 +1,89 @@
-<app-centeredhero></app-centeredhero>
+<app-centeredhero
+ 
+  [title]="settings.centeredhero.title"
+  [subtitle]="settings.centeredhero.subtitle"
+  [imageUrl]="settings.centeredhero.imageUrl"
+  [color]="settings.centeredhero.color"
+  ></app-centeredhero>
+<app-herowithimage
+[title]="settings.herowithimage.title"
+[subtitle]="settings.herowithimage.subtitle"
+[imageUrl]="settings.herowithimage.imageUrl"
+[color]="settings.herowithimage.color"
 
 
-<hr class="featurette-divider">
-<app-columnswithicons></app-columnswithicons>
-<hr class="featurette-divider">
-<app-verticallycenteredhero></app-verticallycenteredhero>
-<hr class="featurette-divider">
-<app-headingleftwithimage></app-headingleftwithimage>
-<hr class="featurette-divider">
-<app-headingrightwithimage></app-headingrightwithimage>
-<app-customcards></app-customcards>
+></app-herowithimage>
+<app-verticallycenteredhero
+
+[title]="settings.verticallycenteredhero.title"
+[subtitle]="settings.verticallycenteredhero.subtitle"
+[color]="settings.verticallycenteredhero.color"
+
+></app-verticallycenteredhero>
+
+
+
+<app-columnswithicons
+  [MainTitle]="settings.columnswithicons.MainTitle"
+  [Ftitle]="settings.columnswithicons.Ftitle"
+  [Fdescription]="settings.columnswithicons.Fdescription"
+  [Fimage]="settings.columnswithicons.Fimage"
+  [Stitle]="settings.columnswithicons.Stitle"
+  [Sdescription]="settings.columnswithicons.Sdescription"
+  [Simage]="settings.columnswithicons.Simage"
+  [Ttitle]="settings.columnswithicons.Ttitle"
+  [Tdescription]="settings.columnswithicons.Tdescription"
+  [Timage]="settings.columnswithicons.Timage"
+  [color]="settings.columnswithicons.color"
+></app-columnswithicons>
+
+
+<app-customcards
+  [MainTitle]="settings.customcards.MainTitle"
+  [Ftitle]="settings.customcards.Ftitle"
+  [Fimage]="settings.customcards.Fimage"
+  [Stitle]="settings.customcards.Stitle"
+  [Simage]="settings.customcards.Simage"
+  [Ttitle]="settings.customcards.Ttitle"
+  [Timage]="settings.customcards.Timage"
+  [color]="settings.customcards.color"
+></app-customcards>
+
+
+
+
+<div  class="container marketing">
+
+ 
+  <app-headings
+  
+  [Ftitle]="settings.headings.Ftitle"
+  [Fdescription]="settings.headings.Fdescription"
+  [Fimage]="settings.headings.Fimage"
+  [Stitle]="settings.headings.Stitle"
+  [Sdescription]="settings.headings.Sdescription"
+  [Simage]="settings.headings.Simage"
+  [Ttitle]="settings.headings.Ttitle"
+  [Tdescription]="settings.headings.Tdescription"
+  [Timage]="settings.headings.Timage"
+  [color]="settings.headings.color"
+  
+  
+  ></app-headings>
+ 
+  <app-headingleftwithimage
+  [title]="settings.headingleftwithimage.title"
+  [subtitle]="settings.headingleftwithimage.subtitle"
+  [imageUrl]="settings.headingleftwithimage.imageUrl"
+  [color]="settings.headingleftwithimage.color"
+  ></app-headingleftwithimage>
+  
+  <app-headingrightwithimage
+  [title]="settings.headingrightwithimage.title"
+  [subtitle]="settings.headingrightwithimage.subtitle"
+  [imageUrl]="settings.headingrightwithimage.imageUrl"
+  [color]="settings.headingrightwithimage.color"
+  ></app-headingrightwithimage>
+
+</div>
+
