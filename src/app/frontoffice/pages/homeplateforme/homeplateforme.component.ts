@@ -11,6 +11,10 @@ export class HomeplateformeComponent {
     headerwithicons: {
       title: 'Custom Header with Icons Title',
       subtitle: 'Custom Header with Icons Subtitle',
+      Ftitle: 'Lorem ipsum dolor sit amet,commodo consequat.',
+      Fimage: 'https://picsum.photos/400/300',
+      Stitle: 'Lorem ipsum dolor sit aaduip ex ea commodo consequat.',
+      Simage: 'https://picsum.photos/400/300',
     },
     centeredhero : {
       title: 'Heading Left with Image Title',
