@@ -1,137 +1,103 @@
+<!-- Platform List Page -->
 
 <body class="app">
 
     <div class="app-wrapper">
 
-        <div class="app-content pt-3 p-md-3 p-lg-4">
-            <div class="container-xl">
+<div class="container-fluid p-4">
+    <!-- Header Section -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-primary mb-0">Platform Management</h2>
+        <button class="btn btn-success" (click)="selectedPlateforme = {}">
+            <i class="fas fa-plus me-2"></i>Add New Platform
+        </button>
+    </div>
 
-                <div class="row g-3 mb-4 align-items-center justify-content-between">
-                    <div class="col-auto">
-                        <h1 class="app-page-title mb-0">Platforms</h1>
-                    </div>
-                    <div class="col-auto">
-                        <div class="page-utilities">
-                            <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
-                                <div class="col-auto">
-                                    <form class="table-search-form row gx-1 align-items-center">
-                                        <div class="col-auto">
-                                            <input type="text" id="search-orders" name="searchorders"
-                                                class="form-control search-orders" placeholder="Search">
-                                        </div>
-                                        <div class="col-auto">
-                                            <button type="submit" class="btn app-btn-secondary">Search</button>
-                                        </div>
-                                    </form>
-
-                                </div><!--//col-->
-                                <div class="col-auto">
-
-                                    <select class="form-select w-auto">
-                                        <option selected value="option-1">All</option>
-                                        <option value="option-2">This week</option>
-                                        <option value="option-3">This month</option>
-                                        <option value="option-4">Last 3 months</option>
-
-                                    </select>
-                                </div>
-                          
-                            </div><!--//row-->
-                        </div><!--//table-utilities-->
-                    </div><!--//col-auto-->
-                </div><!--//row-->
-
-
-             
-
-
-                <div class="tab-content" id="orders-table-tab-content">
-                    <div class="tab-pane fade show active" id="orders-all" role="tabpanel"
-                        aria-labelledby="orders-all-tab">
-                        <div class="app-card app-card-orders-table shadow-sm mb-5">
-                            <div class="app-card-body">
-                                <div class="table-responsive">
-                                    <div>
-                                        <h1>Gestion des Plateformes</h1>
-                                        <button (click)="selectedPlateforme = {}">Créer une nouvelle plateforme</button>
-                                        <table>
-                                            <thead>
-                                                <tr>
-                                                    <th>Nom</th>
-                                                    <th>Couleur</th>
-                                                    <th>Date de création</th>
-                                                    <th>Valabilité</th>
-                                                    <th>Agriculteur</th>
-                                                    <th>Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr *ngFor="let plateforme of plateformes">
-                                                    <td>{{ plateforme.nomPlateforme }}</td>
-                                                    <td>{{ plateforme.couleur }}</td>
-                                                    <td>{{ plateforme.dateCreation }}</td>
-                                                    <td>{{ plateforme.valabilite }}</td>
-                                                    <td>{{ plateforme.agriculteur?.name }}</td>
-                                                    <td>
-                                                        <button (click)="editPlateforme(plateforme)">Modifier</button>
-                                                        <button (click)="deletePlateforme(plateforme.idPlateforme)">Supprimer</button>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-
-                                        <div *ngIf="selectedPlateforme">
-                                            <h2>{{ selectedPlateforme.idPlateforme ? 'Modifier' : 'Créer' }} une Plateforme</h2>
-                                            <form (ngSubmit)="createOrUpdatePlateforme()">
-                                                <label>Nom:</label>
-                                                <input [(ngModel)]="selectedPlateforme.nomPlateforme" name="nomPlateforme" required />
-                                                <label>Couleur:</label>
-                                                <input [(ngModel)]="selectedPlateforme.couleur" name="couleur" required />
-                                                <label>Date de création:</label>
-                                                <input [(ngModel)]="selectedPlateforme.dateCreation" name="dateCreation" type="date" required />
-                                                <label>Valabilité:</label>
-                                                <input [(ngModel)]="selectedPlateforme.valabilite" name="valabilite" type="date" required />
-                                                <label>Agriculteur:</label>
-                                                <select [(ngModel)]="selectedPlateforme.agriculteur" name="agriculteur" required>
-                                                    <option *ngFor="let user of users" [ngValue]="user">{{ user.name }}</option>
-                                                </select>
-                                                <button type="submit">Enregistrer</button>
-                                                <button type="button" (click)="selectedPlateforme = null">Annuler</button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-
-                            </div>
-                        </div>
-                        <nav class="app-pagination">
-                            <ul class="pagination justify-content-center">
-                                <li class="page-item disabled">
-                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                                </li>
-                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">Next</a>
-                                </li>
-                            </ul>
-                        </nav>
-
-                    </div>
-
-                  
-
-                    
+    <!-- Search and Filter Section -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <input type="text" class="form-control" placeholder="Search platforms..." [(ngModel)]="searchTerm">
                 </div>
-
-
-
+                <div class="col-md-3">
+                    <select class="form-select" [(ngModel)]="filterType">
+                        <option value="">All Types</option>
+                        <option *ngFor="let type of typePackOptions" [value]="type">{{type}}</option>
+                    </select>
+                </div>
             </div>
         </div>
+    </div>
 
-       
+    <!-- Platforms List -->
+    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+        <div class="col" *ngFor="let platform of filteredPlatforms">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <h5 class="card-title mb-1">{{platform.nomPlateforme}}</h5>
+                          
+                        </div>
+                        <div class="platform-logo" [style.backgroundColor]="platform.couleur">
+                            <img [src]="platform.logo || 'assets/default-logo.png'" alt="Platform Logo">
+                        </div>
+                    </div>
+                    
+                    <p class="card-text text-muted mb-2">{{platform.description | slice:0:100}}{{platform.description?.length > 100 ? '...' : ''}}</p>
+                    
+                    <div class="platform-details mb-3">
+                        <div><strong>Type:</strong> {{platform.typePack}}</div>
+                        <div><strong>Created:</strong> {{platform.dateCreation | date}}</div>
+                        <div><strong>Valid Until:</strong> {{platform.valabilite | date}}</div>
+                    </div>
+
+                    <div class="d-flex gap-2 mt-auto">
+                        <button class="btn btn-outline-primary btn-sm" (click)="editPlateforme(platform)">
+                            <i class="fas fa-eye me-1"></i> View
+                        </button>
+                        <button class="btn btn-outline-secondary btn-sm" (click)="editPlateforme(platform)">
+                            <i class="fas fa-edit me-1"></i> Edit
+                        </button>
+                        <button class="btn btn-outline-danger btn-sm" (click)="deletePlateforme(platform.idPlateforme)">
+                            <i class="fas fa-trash me-1"></i> Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="plateformes.length === 0" class="text-center py-5">
+        <i class="fas fa-database fa-3x text-muted mb-3"></i>
+        <h4>No Platforms Found</h4>
+        <p class="text-muted">Start by adding a new platform using the button above.</p>
+    </div>
+
+    <!-- Create or Edit Platform -->
+    <div *ngIf="selectedPlateforme">
+        <h2>{{ selectedPlateforme.idPlateforme ? 'Modifier' : 'Créer' }} une Plateforme</h2>
+        <form (ngSubmit)="createOrUpdatePlateforme()">
+            <label>Nom:</label>
+            <input [(ngModel)]="selectedPlateforme.nomPlateforme" name="nomPlateforme" required />
+            <label>Couleur:</label>
+            <input [(ngModel)]="selectedPlateforme.couleur" name="couleur" required />
+            <label>Date de création:</label>
+            <input [(ngModel)]="selectedPlateforme.dateCreation" name="dateCreation" type="date" required />
+            <label>Valabilité:</label>
+            <input [(ngModel)]="selectedPlateforme.valabilite" name="valabilite" type="date" required />
+            <label>Agriculteur:</label>
+            <select [(ngModel)]="selectedPlateforme.agriculteur" name="agriculteur" required>
+                <option *ngFor="let user of users" [ngValue]="user">{{ user.name }}</option>
+            </select>
+            <button type="submit">Enregistrer</button>
+            <button type="button" (click)="selectedPlateforme = null">Annuler</button>
+        </form>
+    </div>
+</div>
+
+
     </div>
 </body>
-

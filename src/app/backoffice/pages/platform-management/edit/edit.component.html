@@ -1,1 +1,171 @@
-<p>edit works!</p>
+<div class="container-fluid p-4">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+      <div class="card shadow">
+        <div class="card-body">
+          <!-- Header -->
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="card-title mb-0">{{ isEditMode ? 'Edit' : 'Create' }} Platform</h2>
+            <button class="btn btn-outline-secondary" (click)="onCancel()">
+              <i class="fas fa-times me-2"></i>Cancel
+            </button>
+          </div>
+
+          <!-- Loading State -->
+          <div *ngIf="isLoading" class="text-center py-4">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+
+          <!-- Platform Form -->
+          <form [formGroup]="platformForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
+            <div class="row g-3">
+              <!-- Basic Information -->
+              <div class="col-12">
+                <h5 class="text-muted mb-3">Basic Information</h5>
+              </div>
+
+              <!-- Platform Name -->
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="nomPlateforme" formControlName="nomPlateforme"
+                    [class.is-invalid]="platformForm.get('nomPlateforme')?.invalid && platformForm.get('nomPlateforme')?.touched">
+                  <label for="nomPlateforme">Platform Name</label>
+                  <div class="invalid-feedback" *ngIf="platformForm.get('nomPlateforme')?.errors?.['required']">
+                    Platform name is required
+                  </div>
+                  <div class="invalid-feedback" *ngIf="platformForm.get('nomPlateforme')?.errors?.['minlength']">
+                    Platform name must be at least 3 characters
+                  </div>
+                </div>
+              </div>
+
+              <!-- Platform Type -->
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <select class="form-select" id="typePack" formControlName="typePack"
+                    [class.is-invalid]="platformForm.get('typePack')?.invalid && platformForm.get('typePack')?.touched">
+                    <option value="">Select a type</option>
+                    <option *ngFor="let type of typePackOptions" [value]="type">{{type}}</option>
+                  </select>
+                  <label for="typePack">Platform Type</label>
+                  <div class="invalid-feedback">
+                    Please select a platform type
+                  </div>
+                </div>
+              </div>
+
+              <!-- Color Picker -->
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <input type="color" class="form-control form-control-color w-100" id="couleur" formControlName="couleur"
+                    [class.is-invalid]="platformForm.get('couleur')?.invalid && platformForm.get('couleur')?.touched">
+                  <label for="couleur">Theme Color</label>
+                  <div class="invalid-feedback">
+                    Please select a color
+                  </div>
+                </div>
+              </div>
+
+              <!-- Agriculteur Selection -->
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <select class="form-select" id="agriculteur" formControlName="agriculteur"
+                    [class.is-invalid]="platformForm.get('agriculteur')?.invalid && platformForm.get('agriculteur')?.touched">
+                    <option value="">Select a user</option>
+                    <option *ngFor="let user of users" [ngValue]="user">{{user.name}}</option>
+                  </select>
+                  <label for="agriculteur">Platform Owner</label>
+                  <div class="invalid-feedback">
+                    Please select a platform owner
+                  </div>
+                </div>
+              </div>
+
+              <!-- Dates Section -->
+              <div class="col-12">
+                <h5 class="text-muted mb-3 mt-2">Platform Dates</h5>
+              </div>
+
+              <!-- Creation Date -->
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <input type="date" class="form-control" id="dateCreation" formControlName="dateCreation"
+                    [class.is-invalid]="platformForm.get('dateCreation')?.invalid && platformForm.get('dateCreation')?.touched">
+                  <label for="dateCreation">Creation Date</label>
+                  <div class="invalid-feedback">
+                    Creation date is required
+                  </div>
+                </div>
+              </div>
+
+              <!-- Validity Date -->
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <input type="date" class="form-control" id="valabilite" formControlName="valabilite"
+                    [class.is-invalid]="platformForm.get('valabilite')?.invalid && platformForm.get('valabilite')?.touched">
+                  <label for="valabilite">Valid Until</label>
+                  <div class="invalid-feedback">
+                    Validity date is required
+                  </div>
+                </div>
+              </div>
+
+              <!-- Description -->
+              <div class="col-12">
+                <div class="form-floating">
+                  <textarea class="form-control" id="description" formControlName="description" style="height: 100px"
+                    [class.is-invalid]="platformForm.get('description')?.invalid && platformForm.get('description')?.touched"></textarea>
+                  <label for="description">Description</label>
+                  <div class="invalid-feedback" *ngIf="platformForm.get('description')?.errors?.['required']">
+                    Description is required
+                  </div>
+                  <div class="invalid-feedback" *ngIf="platformForm.get('description')?.errors?.['minlength']">
+                    Description must be at least 10 characters
+                  </div>
+                </div>
+              </div>
+
+              <!-- Additional Fields -->
+              <div class="col-12">
+                <h5 class="text-muted mb-3 mt-2">Additional Information</h5>
+              </div>
+
+              <!-- Logo URL -->
+              <div class="col-md-12">
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="logo" formControlName="logo">
+                  <label for="logo">Logo URL</label>
+                </div>
+              </div>
+
+              <!-- Theme Update -->
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="updateTheme" formControlName="updateTheme">
+                  <label for="updateTheme">Theme Update</label>
+                </div>
+              </div>
+
+              <!-- Content -->
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="content" formControlName="content">
+                  <label for="content">Content</label>
+                </div>
+              </div>
+
+              <!-- Submit Button -->
+              <div class="col-12 mt-4">
+                <button type="submit" class="btn btn-primary w-100" [disabled]="platformForm.invalid">
+                  <i class="fas fa-save me-2"></i>{{ isEditMode ? 'Update' : 'Create' }} Platform
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

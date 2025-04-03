@@ -1,31 +1,58 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PlateformeService } from 'src/app/services/plateforme/plateforme.service';
+  
+
 @Component({
   selector: 'app-Plateformelist',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })
-export class ListPlateformeComponent {
+export class ListPlateformeComponent implements OnInit {
+
+
+  TypePack = {
+    BASIC : 'BASIC',
+    PREMIUM : 'PREMIUM',
+    ENTERPRISE : 'ENTERPRISE'
+  }
   plateformes: any[] = [];
   users: any[] = [];
+  searchTerm: string = '';
+  filterType: string = '';
+  typePackOptions = Object.values(this.TypePack);
   selectedPlateforme: any = null;
 
-  constructor(private ps: PlateformeService, private router: Router) {}
+  constructor(
+    private ps: PlateformeService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.loadPlateformes();
     this.loadUsers();
   }
 
+  get filteredPlatforms() {
+    return this.plateformes.filter(platform => {
+      const matchesSearch = !this.searchTerm || 
+        platform.nomPlateforme.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        platform.description?.toLowerCase().includes(this.searchTerm.toLowerCase());
+      
+      const matchesType = !this.filterType || platform.typePack === this.filterType;
+      
+      return matchesSearch && matchesType;
+    });
+  }
+
   loadPlateformes() {
     this.ps.getPlateforms().subscribe({
       next: (data) => {
         this.plateformes = data;
-        console.log('plateformes récupérés :', this.plateformes);
+        console.log('Platforms loaded:', this.plateformes);
       },
       error: (error) => {
-        console.error('Erreur lors de la récupération des plateformes', error);
+        console.error('Error loading platforms:', error);
       }
     });
   }
@@ -36,7 +63,7 @@ export class ListPlateformeComponent {
         this.users = data;
       },
       error: (error) => {
-        console.error('Erreur lors de la récupération des utilisateurs', error);
+        console.error('Error loading users:', error);
       }
     });
   }
@@ -56,15 +83,23 @@ export class ListPlateformeComponent {
     this.selectedPlateforme = null;
   }
 
-  editPlateforme(plateforme: any): void {
-    this.selectedPlateforme = { ...plateforme };
+  editPlateforme(platform: any) {
+    this.router.navigate(['/backoffice/platform', platform.idPlateforme, 'edit']);
   }
 
-  deletePlateforme(id: number): void {
-    if (confirm('Voulez-vous vraiment supprimer cette plateforme ?')) {
+  viewPlateforme(platform: any) {
+    this.router.navigate(['/backoffice/platform', platform.idPlateforme]);
+  }
+
+  deletePlateforme(id: number) {
+    if (confirm('Are you sure you want to delete this platform?')) {
       this.ps.deletePlateforme(id).subscribe({
-        next: () => this.loadPlateformes(),
-        error: (err) => console.error('Erreur lors de la suppression de la plateforme', err)
+        next: () => {
+          this.loadPlateformes();
+        },
+        error: (error) => {
+          console.error('Error deleting platform:', error);
+        }
       });
     }
   }
@@ -77,4 +112,3 @@ export class ListPlateformeComponent {
     this.router.navigate(['/backoffice/platform/new']);
   }
 }
-
