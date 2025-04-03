@@ -1,13 +1,7 @@
 <style>
-  body {
-    margin-top: 20px;
-  }
-
   .masthead {
     padding: 3rem 0 7rem;
     position: relative;
-    background-color: #dd3d31;
-    background-image: url(https://startbootstrap.com/assets/img/overlay.svg), linear-gradient(45deg, #dd3d31 0%, #d22f23 100%);
     background-size: cover;
     z-index: 0
   }
@@ -139,24 +133,47 @@
 
 
 
-<header class="masthead">
+<header
+ 
+  [ngStyle]="{  'background-color': color  }"
+
+class="masthead">
   <div class="container">
     <div class="row align-items-center">
       <div class="col-lg-7 py-5">
-        <h1 class="mb-4">Bootstrap themes, templates, and more to help you start your next project!</h1>
-        <h2 class="m-0">Start Bootstrap creates free, open source, MIT license, Bootstrap <a href="#">themes</a>, <a
-            href="#">templates</a>, and <a href="#">code snippets</a> for you to use on any project, <a
-            href="#">guides</a> to help you learn more about designing and developing with the Bootstrap framework, and
-          premium Bootstrap products.</h2>
+        <h1 class="mb-4">{{title}}</h1>
+        <h2 class="m-0">{{subtitle}}</h2>
       </div>
       <div class="col-lg-5">
         <div class="py-5 px-4 masthead-cards">
           <div class="d-flex">
             <a href="#" class="w-50 pr-3 pb-4">
+              <div class="card border-0 border-bottom-green shadow-lg shadow-hover">
+                <div class="card-body text-center">
+                  <div class="text-center">
+                    <i class="fa-4x my-2"  [class]="Fimage"></i>
+                  </div>
+                  Themes
+                </div>
+              </div>
+            </a>
+            <a href="#" class="w-50 pl-3 pb-4">
               <div class="card border-0 border-bottom-red shadow-lg shadow-hover">
                 <div class="card-body text-center">
                   <div class="text-center">
-                    <i class=" fa-4x my-2" [class]="Fimage"></i>
+                    <i class="fa-4x my-2" [class]="Timage"></i>
+                  </div>
+                  Themes
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="d-flex">
+            <a href="#" class="w-50 pr-3 pb-4">
+              <div class="card border-0 border-bottom-yellow shadow-lg shadow-hover">
+                <div class="card-body text-center">
+                  <div class="text-center">
+                    <i class="fa-4x my-2" [class]="Timage"></i>
                   </div>
                   Themes
                 </div>
@@ -166,14 +183,13 @@
               <div class="card border-0 border-bottom-blue shadow-lg shadow-hover">
                 <div class="card-body text-center">
                   <div class="text-center">
-                    <i class="fa-4x my-2" [ngClass]="{ 'fa-paint-brush': Fimage, 'fa-file': !Fimage }"></i>
+                    <i class="fa-4x my-2"  [class]="Pimage"></i>
                   </div>
                   Templates
                 </div>
               </div>
             </a>
           </div>
-
           <div class="shape"></div>
         </div>
       </div>

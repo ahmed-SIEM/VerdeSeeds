@@ -7,6 +7,10 @@
   [Fimage]="settings.headerwithicons.Fimage"
   [Stitle]="settings.headerwithicons.Stitle"
   [Simage]="settings.headerwithicons.Simage"
+  [Ttitle]="settings.headerwithicons.Ttitle"
+  [Timage]="settings.headerwithicons.Timage"
+  [Ptitle]="settings.headerwithicons.Ptitle"
+  [Pimage]="settings.headerwithicons.Pimage"
 ></app-headerwithicons>
 
 
@@ -72,6 +76,8 @@
     [Timage]="settings.headings.Timage"
     [color]="color"
   ></app-headings>
+</div>
+  <div class="container marketing">
 
   <app-headingleftwithimage
     [title]="settings.headingleftwithimage.title"
@@ -79,6 +85,8 @@
     [imageUrl]="settings.headingleftwithimage.imageUrl"
     [color]="color"
   ></app-headingleftwithimage>
+</div>
+  <div class="container marketing">
 
   <app-headingrightwithimage
     [title]="settings.headingrightwithimage.title"
@@ -87,16 +95,34 @@
     [color]="color"
   ></app-headingrightwithimage>
 
-  <app-benefits
-    [title]="settings.benefits.title"
-    [description]="settings.benefits.description"
-    [color]="color"
-  ></app-benefits>
 
-  <app-newsletter
-    [title]="settings.newsletter.title"
-    [subtitle]="settings.newsletter.subtitle"
-    [color]="color"
-  ></app-newsletter>
+ 
 </div>
+<app-newsletter
+[titleA]="settings.newsletter.titleA"
+[titleB]="settings.newsletter.TextB"
+[titleC]="settings.newsletter.TextC"
+[Image]="settings.newsletter.Image"
+[color]="color"
+></app-newsletter>
+
+<app-plateformeabout
+
+  [title1]="settings.about.title1"
+  [title2]="settings.about.title2"
+  [description]="settings.about.description"
+  [imageUrl]="settings.about.imageUrl"
+  [color]="color"
+
+
+></app-plateformeabout>
+
+
+
+
+
+
+<app-sponsors></app-sponsors>
+
+
 

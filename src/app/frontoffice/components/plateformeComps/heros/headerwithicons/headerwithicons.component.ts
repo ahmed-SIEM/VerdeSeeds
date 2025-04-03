@@ -6,11 +6,23 @@ import { Input } from '@angular/core';
   styleUrls: ['./headerwithicons.component.css']
 }) 
 export class HeaderwithiconsComponent {
+
+
+
+ 
+
+
+
+
   @Input() title: string = 'Default Title';
   @Input() subtitle: string = 'Default Subtitle';
-  @Input() color: string = '#000000';
+  @Input() color: string = 'gray';
   @Input() Ftitle: string = 'Default Ftitle';
-  @Input() Fimage: string = 'fa fa-pencil ';
+  @Input() Fimage: string = 'fa fa-th';
   @Input() Stitle: string = 'Default Stitle';
   @Input() Simage: string = 'fa fa-th';
+  @Input() Ttitle: string = 'Default Stitle';
+  @Input() Timage: string = 'fa fa-th';
+  @Input() Ptitle: string = 'Default Faction';
+  @Input() Pimage: string = 'bi-balloon';
 }

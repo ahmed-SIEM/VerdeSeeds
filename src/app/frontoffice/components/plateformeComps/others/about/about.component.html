@@ -8,21 +8,19 @@
             <!-- Section Heading -->
             <div class="section-heading">
               <p>About us</p>
-              <h2><span>Let Us</span> Tell You Our Story</h2>
-              <img src="../../../assets/frontoffice/img/core-img/decor.png" alt="">
+              <h2><span
+                [style]="{ color: color }"
+                >{{title1}} </span>{{title2}}</h2>
             </div>
-            <p>Lorem ipsum dolor sit amet, consectetu adipiscing elit. Etiam nunc elit, pretium atlanta urna veloci, fermentum malesuda mina. Donec auctor nislec neque sagittis, sit amet dapibus pellentesque donal feugiat. Nulla mollis magna non
-              sanaliquet, volutpat do zutum, ultrices consectetur, ultrices at purus.</p>
-            <a href="#" class="btn famie-btn mt-30">Read More</a>
+            <p>{{description}}</p>
           </div>
         </div>
 
         <!-- Famie Video Play -->
         <div class="col-12 col-md-4">
           <div class="famie-video-play mb-100">
-            <img src="../../../assets/frontoffice/img/bg-img/6.jpg" alt="">
+            <img [src]="imageUrl" alt="">
             <!-- Play Icon -->
-            <a href="http://www.youtube.com/watch?v=7HKoqNJtMTQ" class="play-icon"><i class="fa fa-play"></i></a>
           </div>
         </div>
 

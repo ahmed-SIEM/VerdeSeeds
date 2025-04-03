@@ -25,8 +25,9 @@ import { HeadingrightwithimageComponent } from './components/plateformeComps/oth
 import { HomeplateformeComponent } from './pages/homeplateforme/homeplateforme.component';
 import {MatIconModule} from '@angular/material/icon';
 import { HeaderwithiconsComponent } from './components/plateformeComps/heros/headerwithicons/headerwithicons.component';
-import { BenefitsComponent } from './components/plateformeComps/others/benefits/benefits.component';
 import { NewsletterComponent } from './components/plateformeComps/others/newsletter/newsletter.component';
+import { SponsorsComponent } from './components/plateformeComps/others/sponsors/sponsors.component';
+import { plateformeaboutComponent } from './components/plateformeComps/others/about/about.component';
 
 @NgModule({
   declarations: [
@@ -52,8 +53,9 @@ import { NewsletterComponent } from './components/plateformeComps/others/newslet
     HeadingrightwithimageComponent,
     HomeplateformeComponent,
     HeaderwithiconsComponent,
-    BenefitsComponent,
     NewsletterComponent,
+    SponsorsComponent,
+    plateformeaboutComponent
   ],
   imports: [
     MatIconModule,

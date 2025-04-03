@@ -6,7 +6,10 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./newsletter.component.css']
 })
 export class NewsletterComponent {
-  @Input() title: string = 'Default Newsletter Title';
-  @Input() subtitle: string = 'Default Newsletter Subtitle';
+  @Input() titleA: string = 'Default Newsletter Title';
+  @Input() titleB: string = 'Default Newsletter Subtitle';
+  @Input() titleC: string = 'Default Newsletter Subtitle';
+  @Input() Image: string = 'Default Newsletter Subtitle';
+
   @Input() color: string = '#000000';
 }
