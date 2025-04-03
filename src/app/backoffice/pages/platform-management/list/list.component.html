@@ -1,0 +1,137 @@
+
+<body class="app">
+
+    <div class="app-wrapper">
+
+        <div class="app-content pt-3 p-md-3 p-lg-4">
+            <div class="container-xl">
+
+                <div class="row g-3 mb-4 align-items-center justify-content-between">
+                    <div class="col-auto">
+                        <h1 class="app-page-title mb-0">Platforms</h1>
+                    </div>
+                    <div class="col-auto">
+                        <div class="page-utilities">
+                            <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
+                                <div class="col-auto">
+                                    <form class="table-search-form row gx-1 align-items-center">
+                                        <div class="col-auto">
+                                            <input type="text" id="search-orders" name="searchorders"
+                                                class="form-control search-orders" placeholder="Search">
+                                        </div>
+                                        <div class="col-auto">
+                                            <button type="submit" class="btn app-btn-secondary">Search</button>
+                                        </div>
+                                    </form>
+
+                                </div><!--//col-->
+                                <div class="col-auto">
+
+                                    <select class="form-select w-auto">
+                                        <option selected value="option-1">All</option>
+                                        <option value="option-2">This week</option>
+                                        <option value="option-3">This month</option>
+                                        <option value="option-4">Last 3 months</option>
+
+                                    </select>
+                                </div>
+                          
+                            </div><!--//row-->
+                        </div><!--//table-utilities-->
+                    </div><!--//col-auto-->
+                </div><!--//row-->
+
+
+             
+
+
+                <div class="tab-content" id="orders-table-tab-content">
+                    <div class="tab-pane fade show active" id="orders-all" role="tabpanel"
+                        aria-labelledby="orders-all-tab">
+                        <div class="app-card app-card-orders-table shadow-sm mb-5">
+                            <div class="app-card-body">
+                                <div class="table-responsive">
+                                    <div>
+                                        <h1>Gestion des Plateformes</h1>
+                                        <button (click)="selectedPlateforme = {}">Créer une nouvelle plateforme</button>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Nom</th>
+                                                    <th>Couleur</th>
+                                                    <th>Date de création</th>
+                                                    <th>Valabilité</th>
+                                                    <th>Agriculteur</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let plateforme of plateformes">
+                                                    <td>{{ plateforme.nomPlateforme }}</td>
+                                                    <td>{{ plateforme.couleur }}</td>
+                                                    <td>{{ plateforme.dateCreation }}</td>
+                                                    <td>{{ plateforme.valabilite }}</td>
+                                                    <td>{{ plateforme.agriculteur?.name }}</td>
+                                                    <td>
+                                                        <button (click)="editPlateforme(plateforme)">Modifier</button>
+                                                        <button (click)="deletePlateforme(plateforme.idPlateforme)">Supprimer</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <div *ngIf="selectedPlateforme">
+                                            <h2>{{ selectedPlateforme.idPlateforme ? 'Modifier' : 'Créer' }} une Plateforme</h2>
+                                            <form (ngSubmit)="createOrUpdatePlateforme()">
+                                                <label>Nom:</label>
+                                                <input [(ngModel)]="selectedPlateforme.nomPlateforme" name="nomPlateforme" required />
+                                                <label>Couleur:</label>
+                                                <input [(ngModel)]="selectedPlateforme.couleur" name="couleur" required />
+                                                <label>Date de création:</label>
+                                                <input [(ngModel)]="selectedPlateforme.dateCreation" name="dateCreation" type="date" required />
+                                                <label>Valabilité:</label>
+                                                <input [(ngModel)]="selectedPlateforme.valabilite" name="valabilite" type="date" required />
+                                                <label>Agriculteur:</label>
+                                                <select [(ngModel)]="selectedPlateforme.agriculteur" name="agriculteur" required>
+                                                    <option *ngFor="let user of users" [ngValue]="user">{{ user.name }}</option>
+                                                </select>
+                                                <button type="submit">Enregistrer</button>
+                                                <button type="button" (click)="selectedPlateforme = null">Annuler</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+
+                            </div>
+                        </div>
+                        <nav class="app-pagination">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                                </li>
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+
+                    </div>
+
+                  
+
+                    
+                </div>
+
+
+
+            </div>
+        </div>
+
+       
+    </div>
+</body>
+

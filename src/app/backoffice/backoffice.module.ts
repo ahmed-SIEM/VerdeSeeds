@@ -9,7 +9,6 @@ import { ErrorBackComponent } from './components/error/error.component';
 import { NavComponent } from './components/nav/nav.component';
 import { ProductManagementComponent } from './pages/product-management/product-management.component';
 import { UserManagementComponent } from './pages/user-management/user-management.component';
-import { PlatformManagementComponent } from './pages/platform-management/platform-management.component';
 import { CoursesManagementComponent } from './pages/courses-management/courses-management.component';
 import { MarketplaceManagementComponent } from './pages/marketplace-management/marketplace-management.component';
 import { AccountComponent } from './pages/account/account.component';
@@ -19,7 +18,10 @@ import { ResetpasswordComponent } from './pages/resetpassword/resetpassword.comp
 import { SignUpComponent } from './pages/sign-up/sign-up.component';
 import { FormationManagementModule } from './pages/formation-management/formation-management.module';
 import { FormsModule } from '@angular/forms';
-import { PlatformManagementRoutingModule } from './pages/platform-management/platform-management-routing.module';
+import { PlatformeModule } from './pages/platform-management/platforme.module';
+import { DetailsPlatformComponent } from './pages/platform-management/details/details.component';
+import { EditPlateformeComponent } from './pages/platform-management/edit/EditPlateforme.component';
+import { ListPlateformeComponent } from './pages/platform-management/list/ListPlateforme.component';
 @NgModule({
   declarations: [
     LayoutsComponent,
@@ -29,7 +31,6 @@ import { PlatformManagementRoutingModule } from './pages/platform-management/pla
     NavComponent,
     ProductManagementComponent,
     UserManagementComponent,
-    PlatformManagementComponent,
     CoursesManagementComponent,
     MarketplaceManagementComponent,
     AccountComponent,
@@ -43,7 +44,8 @@ import { PlatformManagementRoutingModule } from './pages/platform-management/pla
     BackofficeRoutingModule,
     FormationManagementModule,
     FormsModule,
-    PlatformManagementModule
+    PlatformeModule
+   
   ]
 })
 export class BackofficeModule { }

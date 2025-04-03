@@ -7,7 +7,6 @@ import { ErrorComponent } from '../error/error.component';
 import { ProductManagementComponent } from './pages/product-management/product-management.component';
 import { UserManagementComponent } from './pages/user-management/user-management.component';
 import { CoursesManagementComponent } from './pages/courses-management/courses-management.component';
-import { PlatformManagementComponent } from './pages/platform-management/platform-management.component';
 import { MarketplaceManagementComponent } from './pages/marketplace-management/marketplace-management.component';
 import { AccountComponent } from './pages/account/account.component';
 import { SettingsComponent } from './pages/settings/settings.component';
@@ -28,7 +27,6 @@ const routes: Routes = [
     {path : 'user', component : UserManagementComponent},
     {path : 'product', component : ProductManagementComponent},
     {path : 'courses', component : CoursesManagementComponent},
-    {path : 'platform', component : PlatformManagementComponent},
     {path : 'marketplace', component : MarketplaceManagementComponent},
     {path : 'account', component : AccountComponent},
     {path : 'settings', component : SettingsComponent},
@@ -44,6 +42,11 @@ const routes: Routes = [
           path: 'formations',
           loadChildren: () => import('./pages/formation-management/formation-management.module')
             .then(m => m.FormationManagementModule)
+        },
+        { 
+          path: 'platform',
+          loadChildren: () => import('./pages/platform-management/platforme.module')
+            .then(m => m.PlatformeModule)
         }
   ]
   },
