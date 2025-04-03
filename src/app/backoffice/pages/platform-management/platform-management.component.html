@@ -66,6 +66,7 @@
                         <div class="app-card app-card-orders-table shadow-sm mb-5">
                             <div class="app-card-body">
                                 <div class="table-responsive">
+                                    <button (click)="navigateToCreate()">Créer une nouvelle plateforme</button>
                                     <table class="table app-table-hover mb-0 text-left">
                                         <thead>
                                             <tr>
@@ -90,7 +91,10 @@
                                                 <td class="cell">{{plteform.valabilite}}</td>
                                                 <td class="cell">{{plteform.description}}</td>
                                                 <td class="cell">{{plteform.updateTheme}}</td>
-                                               
+                                                <td>
+                                                    <button (click)="navigateToEdit(plteform.id)">Modifier</button>
+                                                    <button (click)="deletePlateforme(plteform.id)">Supprimer</button>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>

@@ -18,7 +18,8 @@ import { NotificationComponent } from './pages/notification/notification.compone
 import { ResetpasswordComponent } from './pages/resetpassword/resetpassword.component';
 import { SignUpComponent } from './pages/sign-up/sign-up.component';
 import { FormationManagementModule } from './pages/formation-management/formation-management.module';
-
+import { FormsModule } from '@angular/forms';
+import { PlatformManagementRoutingModule } from './pages/platform-management/platform-management-routing.module';
 @NgModule({
   declarations: [
     LayoutsComponent,
@@ -41,6 +42,8 @@ import { FormationManagementModule } from './pages/formation-management/formatio
     CommonModule,
     BackofficeRoutingModule,
     FormationManagementModule,
+    FormsModule,
+    PlatformManagementModule
   ]
 })
 export class BackofficeModule { }

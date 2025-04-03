@@ -1,5 +1,6 @@
-import { Component,OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { PlateformeService } from 'src/app/services/plateforme/plateforme.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-platform-management',
@@ -9,7 +10,7 @@ import { PlateformeService } from 'src/app/services/plateforme/plateforme.servic
 export class PlatformManagementComponent implements OnInit {
   plateformes: any[] = [];
 
-  constructor(private ps: PlateformeService) {}
+  constructor(private ps: PlateformeService, private router: Router) {}
 
   ngOnInit() {
     this.ps.getPlateforms().subscribe({
@@ -21,5 +22,22 @@ export class PlatformManagementComponent implements OnInit {
         console.error('Erreur lors de la récupération des plteformes', error);
       }
     });
+  }
+
+  deletePlateforme(id: number): void {
+    if (confirm('Voulez-vous vraiment supprimer cette plateforme ?')) {
+      this.ps.deletePlateforme(id).subscribe({
+        next: () => this.ngOnInit(),
+        error: (err) => console.error('Erreur lors de la suppression de la plateforme', err)
+      });
+    }
+  }
+
+  navigateToEdit(id: number): void {
+    this.router.navigate([`/backoffice/platform-management/${id}/edit`]);
+  }
+
+  navigateToCreate(): void {
+    this.router.navigate(['/backoffice/platform-management/new']);
   }
 }

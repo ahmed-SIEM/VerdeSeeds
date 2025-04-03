@@ -1,0 +1,45 @@
+<form (ngSubmit)="onSubmit()">
+  <div>
+    <label for="nom">Nom</label>
+    <input id="nom" [(ngModel)]="plateforme.nomPlateforme" name="nomPlateforme" required />
+  </div>
+  <div>
+    <label for="typePack">Type Pack</label>
+    <input id="typePack" [(ngModel)]="plateforme.typePack" name="typePack" required />
+  </div>
+  <div>
+    <label for="couleur">Couleur</label>
+    <input id="couleur" [(ngModel)]="plateforme.couleur" name="couleur" />
+  </div>
+  <div>
+    <label for="dateCreation">Date de Création</label>
+    <input id="dateCreation" type="date" [(ngModel)]="plateforme.dateCreation" name="dateCreation" />
+  </div>
+  <div>
+    <label for="valabilite">Validité</label>
+    <input id="valabilite" type="date" [(ngModel)]="plateforme.valabilite" name="valabilite" />
+  </div>
+  <div>
+    <label for="description">Description</label>
+    <textarea id="description" [(ngModel)]="plateforme.description" name="description"></textarea>
+  </div>
+  <div>
+    <label for="updateTheme">Thème</label>
+    <input id="updateTheme" [(ngModel)]="plateforme.updateTheme" name="updateTheme" />
+  </div>
+  <div>
+    <label for="logo">Logo</label>
+    <input id="logo" [(ngModel)]="plateforme.logo" name="logo" />
+  </div>
+  <div>
+    <label for="content">Contenu</label>
+    <textarea id="content" [(ngModel)]="plateforme.content" name="content"></textarea>
+  </div>
+  <div>
+    <label for="user">Utilisateur</label>
+    <select id="user" [(ngModel)]="plateforme.agriculteur" name="agriculteur">
+      <option *ngFor="let user of users" [value]="user.id">{{ user.name }}</option>
+    </select>
+  </div>
+  <button type="submit">{{ isEditMode ? 'Mettre à jour' : 'Créer' }}</button>
+</form>
