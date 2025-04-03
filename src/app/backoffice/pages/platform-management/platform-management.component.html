@@ -69,28 +69,28 @@
                                     <table class="table app-table-hover mb-0 text-left">
                                         <thead>
                                             <tr>
-                                                <th class="cell">idUser</th>
-                                                <th class="cell">nom</th>
-                                                <th class="cell">prenom</th>
-                                                <th class="cell">email</th>
-                                                <th class="cell">telephone</th>
+                                                <th class="cell">content</th>
+                                                <th class="cell">typePack</th>
+                                                <th class="cell">couleur</th>
+                                                <th class="cell">nomPlateforme</th>
+                                                <th class="cell">dateCreation</th>
                                                 <!-- <th class="cell">password</th> -->
-                                                <th class="cell">adresse</th>
-                                                <th class="cell">dateInscription</th>
-                                                <th class="cell">role</th>
+                                                <th class="cell">valabilite</th>
+                                                <th class="cell">description</th>
+                                                <th class="cell">updateTheme</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr *ngFor="let plteform of plateformes">
-                                                <td class="cell">{{plteform.idUser}}</td>
-                                                <td class="cell">{{plteform.nom}}</td>
-                                                <td class="cell">{{plteform.prenom}}</td>
-                                                <td class="cell">{{plteform.email}}</td>
-                                                <td class="cell">{{plteform.telephone}}</td>
+                                                <td class="cell">{{plteform.content}}</td>
+                                                <td class="cell">{{plteform.typePack}}</td>
+                                                <td class="cell">{{plteform.couleur}}</td>
+                                                <td class="cell">{{plteform.nomPlateforme}}</td>
+                                                <td class="cell">{{plteform.dateCreation}}</td>
                                                 <!-- <td class="cell">{{user.password}}</td> -->
-                                                <td class="cell">{{plteform.adresse}}</td>
-                                                <td class="cell">{{plteform.dateInscription}}</td>
-                                                <td class="cell">{{plteform.role}}</td>
+                                                <td class="cell">{{plteform.valabilite}}</td>
+                                                <td class="cell">{{plteform.description}}</td>
+                                                <td class="cell">{{plteform.updateTheme}}</td>
                                                
                                             </tr>
                                         </tbody>
