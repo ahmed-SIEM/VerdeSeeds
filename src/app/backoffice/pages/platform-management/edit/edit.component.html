@@ -27,13 +27,11 @@
           <!-- Platform Form -->
           <form [formGroup]="platformForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
             <div class="row g-3" *ngIf="currentStep === 1">
-              <!-- Step 1: All fields except Content -->
-              <!-- Basic Information -->
+     
               <div class="col-12">
                 <h5 class="text-muted mb-3">Basic Information</h5>
               </div>
 
-              <!-- Platform Name -->
               <div class="col-md-6">
                 <div class="form-floating">
                   <input type="text" class="form-control" id="nomPlateforme" formControlName="nomPlateforme" required
@@ -269,7 +267,7 @@
                   <div class="card-body">
                     <div class="sort-buttons">
                       <div *ngFor="let item of getSelectedItems(); let i = index"  class=" border p-3 rounded sort-item">
-                        <span class="sort-item-label">{{ item.label }}</span>
+                        <span class="sort-item-label">{{ item.label }} : {{ item.value }}</span>
                         <div class="sort-controls">
                           <button 
                             class="sort-button" 
