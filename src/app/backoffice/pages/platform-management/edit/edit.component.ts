@@ -3,11 +3,24 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService } from 'src/app/services/common.service';
 import { PlateformeService } from 'src/app/services/plateforme/plateforme.service';
+import { CdkDragDrop, moveItemInArray, CdkDragHandle } from '@angular/cdk/drag-drop';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgFor } from '@angular/common';
 
 @Component({
-  selector: 'app-edit-plateforme',
+  selector: 'app-edit',
   templateUrl: './edit.component.html',
-  styleUrls: ['./edit.component.css']
+  styleUrls: ['./edit.component.css'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    DragDropModule,
+    NgFor
+  ]
 })
 export class EditPlateformeComponent implements OnInit {
 
@@ -233,5 +246,31 @@ export class EditPlateformeComponent implements OnInit {
     });
     this.contentJson = {};
     this.platformForm.get('content')?.setValue('{}');
+  }
+
+  getSelectedItems(): {key: string, label: string, value: any}[] {
+    return Object.entries(this.contentJson).map(([key, value]) => ({
+      key,
+      label: key.charAt(0).toUpperCase() + key.slice(1),
+      value
+    }));
+  }
+
+drop(event: CdkDragDrop<Array<{ key: string; label: string; value: any }>>) {
+    if (event.previousIndex === event.currentIndex) return;
+
+    const items = this.getSelectedItems();
+    moveItemInArray(items, event.previousIndex, event.currentIndex);
+
+    // Update the contentJson while maintaining order
+    const newContentJson: any = {};
+    items.forEach(item => {
+      if (item && item.key && item.value !== undefined) {
+        newContentJson[item.key] = item.value;
+      }
+    });
+
+    this.contentJson = newContentJson;
+    this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson));
   }
 }

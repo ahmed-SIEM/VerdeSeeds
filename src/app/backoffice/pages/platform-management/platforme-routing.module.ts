@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ListPlateformeComponent } from './list/ListPlateforme.component';
-import { EditPlateformeComponent } from './edit/EditPlateforme.component';
+import { EditPlateformeComponent } from './edit/edit.component';
 import { DetailsPlatformComponent } from './details/details.component';
 
 const routes: Routes = [

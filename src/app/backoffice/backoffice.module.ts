@@ -20,7 +20,6 @@ import { FormationManagementModule } from './pages/formation-management/formatio
 import { FormsModule } from '@angular/forms';
 import { PlatformeModule } from './pages/platform-management/platforme.module';
 import { DetailsPlatformComponent } from './pages/platform-management/details/details.component';
-import { EditPlateformeComponent } from './pages/platform-management/edit/EditPlateforme.component';
 import { ListPlateformeComponent } from './pages/platform-management/list/ListPlateforme.component';
 @NgModule({
   declarations: [
