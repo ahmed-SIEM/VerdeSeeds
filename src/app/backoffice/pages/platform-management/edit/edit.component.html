@@ -1,5 +1,6 @@
 <!-- Platform List Page -->
 
+
 <body class="app">
 
   <div class="app-wrapper">
@@ -256,7 +257,7 @@
                 </div>
               </div>
 
-              <!-- New Right Panel for Drag & Drop Sorting -->
+              <!-- New Right Panel for Button-Based Sorting -->
               <div class="col-md-4">
                 <div class="card">
                   <div class="card-header bg-light">
@@ -266,25 +267,24 @@
                     </h5>
                   </div>
                   <div class="card-body">
-                    <div class="list-group" 
-                         cdkDropList 
-                         [cdkDropListData]="getSelectedItems()"
-                         (cdkDropListDropped)="drop($event)">
-                      <div class="list-group-item" 
-                           *ngFor="let item of getSelectedItems()" 
-                           cdkDrag
-                           [cdkDragDisabled]="false">
-                        <div class="drag-handle" cdkDragHandle>
-                          <i class="fas fa-grip-vertical"></i>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center w-100">
-                          <div class="d-flex align-items-center">
-                            <i class="fas fa-grip-vertical me-3" cdkDragHandle></i>
-                            <div>
-                              <strong>{{item.label}}</strong>
-                              <div class="text-muted small">{{item.value}}</div>
-                            </div>
-                          </div>
+                    <div class="sort-buttons">
+                      <div *ngFor="let item of getSelectedItems(); let i = index"  class=" border p-3 rounded sort-item">
+                        <span class="sort-item-label">{{ item.label }}</span>
+                        <div class="sort-controls">
+                          <button 
+                            class="sort-button" 
+                            (click)="moveItemUp(i)" 
+                            [disabled]="i === 0"
+                            [attr.data-tooltip]="'Move ' + item.label + ' up'">
+                            <i class="bi bi-arrow-up-short"></i>
+                          </button>
+                          <button 
+                            class="sort-button" 
+                            (click)="moveItemDown(i)" 
+                            [disabled]="i === getSelectedItems().length - 1"
+                            [attr.data-tooltip]="'Move ' + item.label + ' down'">
+                            <i class="bi bi-arrow-down-short"></i>
+                          </button>
                         </div>
                       </div>
                     </div>

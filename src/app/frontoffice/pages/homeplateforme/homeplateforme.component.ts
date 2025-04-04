@@ -128,7 +128,7 @@ export class HomeplateformeComponent implements OnInit {
     'plateformeabout',
   ];
 
-  color = "#48A6A7";
+  color = "#1B56FD";
 
   constructor(private dynamicLoader: DynamicLoaderService) {}
 

@@ -213,7 +213,79 @@ input[type="radio"]:checked + label.choice-label .check-icon {
   cursor: grab;
 }
 
+.sort-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 10px 0;
+}
 
+.sort-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+}
+
+.sort-item-label {
+  flex: 1;
+  font-weight: 500;
+}
+
+.sort-controls {
+  display: flex;
+  flex-direction: column;
+  width: 40px;
+  height: 60px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.sort-button {
+  border: none;
+  background: transparent;
+  height: 30px;
+  width: 100%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+  position: relative;
+}
+
+.sort-button:first-child {
+  border-bottom: 1px solid #ccc;
+}
+
+.sort-button:hover {
+  background-color: #e9ecef;
+}
+
+.sort-button:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  right: calc(100% + 8px);
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+}
+
+.sort-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.sort-button:disabled:hover::after {
+  display: none;
+}
 
 @media (max-width: 768px) {
   .card-body {

@@ -3,8 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService } from 'src/app/services/common.service';
 import { PlateformeService } from 'src/app/services/plateforme/plateforme.service';
-import { CdkDragDrop, moveItemInArray, CdkDragHandle } from '@angular/cdk/drag-drop';
-import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgFor } from '@angular/common';
@@ -18,7 +16,6 @@ import { NgFor } from '@angular/common';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    DragDropModule,
     NgFor
   ]
 })
@@ -256,21 +253,29 @@ export class EditPlateformeComponent implements OnInit {
     }));
   }
 
-drop(event: CdkDragDrop<Array<{ key: string; label: string; value: any }>>) {
-    if (event.previousIndex === event.currentIndex) return;
+  moveItemUp(index: number): void {
+    if (index > 0) {
+      const items = this.getSelectedItems();
+      [items[index - 1], items[index]] = [items[index], items[index - 1]];
+      this.updateContentJson(items);
+    }
+  }
 
+  moveItemDown(index: number): void {
     const items = this.getSelectedItems();
-    moveItemInArray(items, event.previousIndex, event.currentIndex);
+    if (index < items.length - 1) {
+      [items[index], items[index + 1]] = [items[index + 1], items[index]];
+      this.updateContentJson(items);
+    }
+  }
 
-    // Update the contentJson while maintaining order
+  updateContentJson(items: { key: string; label: string; value: any }[]): void {
     const newContentJson: any = {};
     items.forEach(item => {
       if (item && item.key && item.value !== undefined) {
         newContentJson[item.key] = item.value;
       }
     });
-
     this.contentJson = newContentJson;
-    this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson));
   }
 }

@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { PlateformeRoutingModule } from './platforme-routing.module';
 import { ListPlateformeComponent } from './list/ListPlateforme.component';
-
 import { DetailsPlatformComponent } from './details/details.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [
@@ -15,7 +15,8 @@ import { DetailsPlatformComponent } from './details/details.component';
     CommonModule,
     PlateformeRoutingModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    DragDropModule
   ],
   exports: [
     DetailsPlatformComponent,
