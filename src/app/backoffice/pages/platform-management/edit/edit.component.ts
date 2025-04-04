@@ -286,16 +286,27 @@ export class EditPlateformeComponent implements OnInit {
     }));
   }
 
+  // Add this new method to get only sortable items (excluding header)
+  getSortableItems(): {key: string, label: string, value: any}[] {
+    return Object.entries(this.contentJson)
+      .filter(([key]) => key !== 'header')
+      .map(([key, value]) => ({
+        key,
+        label: key.charAt(0).toUpperCase() + key.slice(1),
+        value
+      }));
+  }
+
   moveItemUp(index: number): void {
     if (index > 0) {
-      const items = this.getSelectedItems();
+      const items = this.getSortableItems();
       [items[index - 1], items[index]] = [items[index], items[index - 1]];
       this.updateContentJson(items);
     }
   }
 
   moveItemDown(index: number): void {
-    const items = this.getSelectedItems();
+    const items = this.getSortableItems();
     if (index < items.length - 1) {
       [items[index], items[index + 1]] = [items[index + 1], items[index]];
       this.updateContentJson(items);
@@ -303,7 +314,9 @@ export class EditPlateformeComponent implements OnInit {
   }
 
   updateContentJson(items: { key: string; label: string; value: any }[]): void {
-    const newContentJson: any = {};
+    const newContentJson: any = {
+      header: this.contentJson.header // Preserve the header
+    };
     items.forEach(item => {
       if (item && item.key && item.value !== undefined) {
         newContentJson[item.key] = item.value;

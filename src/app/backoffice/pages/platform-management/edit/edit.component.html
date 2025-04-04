@@ -369,9 +369,11 @@
                             <span class="sort-item-label">Navbar</span>
                           </div>
                           <div class="border p-3 rounded">
-                            <span class="sort-item-label">Header</span>
+                            <span class="sort-item-label">
+                              Header: {{ platformForm.get('field1')?.value || 'Not selected' }}
+                            </span>
                           </div>
-                          <div *ngFor="let item of getSelectedItems(); let i = index"
+                          <div *ngFor="let item of getSortableItems(); let i = index"
                             class="border p-3 rounded sort-item">
                             <span class="sort-item-label">
                               Component {{ i + 1 }} : {{ item.value }}
@@ -382,7 +384,7 @@
                                 <i class="bi bi-arrow-up-short"></i>
                               </button>
                               <button class="sort-button" (click)="moveItemDown(i)"
-                                [disabled]="i === getSelectedItems().length - 1"
+                                [disabled]="i === getSortableItems().length - 1"
                                 [attr.data-tooltip]="'Move ' + item.label + ' down'">
                                 <i class="bi bi-arrow-down-short"></i>
                               </button>
