@@ -16,7 +16,7 @@ export class EditPlateformeComponent implements OnInit {
   TypePack = {
     BASIC : 'BASIC',
     PREMIUM : 'PREMIUM',
-    ENTERPRISE : 'ENTERPRISE'
+    ADVANCED : 'ADVANCED'
   }
   platformForm: FormGroup;
   isEditMode = false;
@@ -164,7 +164,7 @@ export class EditPlateformeComponent implements OnInit {
   
           operation.subscribe({
             next: () => {
-         //     this.router.navigate(['/backoffice/platform']);
+              this.router.navigate(['/backoffice/platform']);
             },
             error: (error) => {
               console.error('Error saving platform:', error);

@@ -14,7 +14,7 @@ export class ListPlateformeComponent implements OnInit {
   TypePack = {
     BASIC : 'BASIC',
     PREMIUM : 'PREMIUM',
-    ENTERPRISE : 'ENTERPRISE'
+    ADVANCED : 'ADVANCED'
   }
   plateformes: any[] = [];
   users: any[] = [];
