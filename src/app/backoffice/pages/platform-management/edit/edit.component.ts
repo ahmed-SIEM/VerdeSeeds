@@ -21,14 +21,88 @@ import { NgFor } from '@angular/common';
 })
 export class EditPlateformeComponent implements OnInit {
 
+
+
+
+  elementsfields = {
+    headerwithicons: [
+      "title", "subtitle", "Ftitle", "Fimage",
+      "Stitle", "Simage", "Ttitle", "Timage",
+      "Ptitle", "Pimage"
+    ],
+    centeredhero: [
+      "title", "subtitle", "imageUrl"
+    ],
+    herowithimage: [
+      "title", "subtitle", "imageUrl"
+    ],
+    verticallycenteredhero: [
+      "title", "subtitle"
+    ],
+    columnswithicons: [
+      "MainTitle", "Ftitle", "Fdescription", "Fimage",
+      "Stitle", "Sdescription", "Simage",
+      "Ttitle", "Tdescription", "Timage"
+    ],
+    customcards: [
+      "MainTitle", "Ftitle", "Fimage",
+      "Stitle", "Simage", "Ttitle", "Timage"
+    ],
+    headings: [
+      "Ftitle", "Fdescription", "Fimage",
+      "Stitle", "Sdescription", "Simage",
+      "Ttitle", "Tdescription", "Timage"
+    ],
+    headingleftwithimage: [
+      "title", "subtitle", "imageUrl"
+    ],
+    headingrightwithimage: [
+      "title", "subtitle", "imageUrl"
+    ],
+    newsletter: [
+      "titleA", "TextB", "TextC", "Image"
+    ],
+    plateformeabout: [
+      "title1", "title2", "description", "imageUrl"
+    ]
+  };
+
+
+
+ headerelements = [
+  "headerwithicons",
+  "centeredhero",
+  "herowithimage",
+  "verticallycenteredhero",
+ ]
+
+ featuredelements = [
+  "columnswithicons",
+  "customcards"]
+
+  headingelements = [
+    "headings",
+    "headingleftwithimage",
+    "headingrightwithimage"]
+
+    otherselements = [
+      "newsletter",
+      "plateformeabout"
+    ]
+
+
+    components = [ this.featuredelements,this.headingelements, this.headerelements, this.otherselements ]
+
+
+
   currentStep: number = 1; // Track the current step
   currentModal: string | null = null;
   readonly MAX_SELECTIONS = 3;
 
   TypePack = {
-    BASIC : 'BASIC',
-    PREMIUM : 'PREMIUM',
-    ADVANCED : 'ADVANCED'
+    BASIC: 'BASIC',
+    PREMIUM: 'PREMIUM',
+    ADVANCED: 'ADVANCED'
   }
   platformForm: FormGroup;
   isEditMode = false;
@@ -59,11 +133,11 @@ export class EditPlateformeComponent implements OnInit {
       updateTheme: ['', Validators.required],
       content: ['', Validators.required],
       agriculteur: [null],
-      field1: [''], 
+      field1: [''],
       field2: [''],
-      field3: [''], 
-      field4: [''], 
-      field5: [''], 
+      field3: [''],
+      field4: [''],
+      field5: [''],
       field6: [''],
       field1Title: ['', Validators.required],
       field2Title: ['', Validators.required],
@@ -76,12 +150,12 @@ export class EditPlateformeComponent implements OnInit {
     // Update contentJson to include titles
     this.platformForm.valueChanges.subscribe(() => {
       const { field1, field2, field3, field4, field5, field6,
-              field1Title, field2Title, field3Title, field4Title, field5Title, field6Title } = this.platformForm.value;
+        field1Title, field2Title, field3Title, field4Title, field5Title, field6Title } = this.platformForm.value;
       this.contentJson = {};
-      
+
       // Set header first (always order 0)
       if (field1) this.contentJson.header = { "type": field1, "title": field1Title };
-      
+
       // Add other components with their order and title
       if (field2) this.contentJson.numerical = { "type": field2, "title": field2Title, "order": 0 };
       if (field3) this.contentJson.animal = { "type": field3, "title": field3Title, "order": 1 };
@@ -96,7 +170,7 @@ export class EditPlateformeComponent implements OnInit {
   ngOnInit() {
 
     this.loadUsers();
-    
+
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.isEditMode = true;
@@ -175,27 +249,27 @@ export class EditPlateformeComponent implements OnInit {
 
   onSubmit() {
     // Add validation for required header
-    if (this.platformForm.get('field1')?.value && 
-        this.platformForm.valid && 
-        this.getSelectionCount() <= this.MAX_SELECTIONS) {
+    if (this.platformForm.get('field1')?.value &&
+      this.platformForm.valid &&
+      this.getSelectionCount() <= this.MAX_SELECTIONS) {
       const platformData = { ...this.platformForm.value };
       console.log('Form data before submission:', platformData);
-  
+
       this.us.getUserByEmail(platformData.agriculteur).subscribe({
         next: (user) => {
           platformData.agriculteur = user;
-  
+
           // Ajoute l'idPlateforme seulement si c’est un update
           if (this.isEditMode) {
             platformData.idPlateforme = this.platformId;
           }
-  
+
           console.log('Form data before sending to backend:', platformData);
-  
+
           const operation = this.isEditMode
             ? this.ps.updatePlateforme(platformData)
             : this.ps.createPlateforme(platformData);
-  
+
           operation.subscribe({
             next: () => {
               this.router.navigate(['/backoffice/platform']);
@@ -302,13 +376,13 @@ export class EditPlateformeComponent implements OnInit {
       field1: headerValue, // Preserve header value
       field1Title: headerTitle // Preserve header title
     });
-    
+
     // Update contentJson but keep header if selected
     this.contentJson = headerValue ? { header: { "type": headerValue, "title": headerTitle, "order": 0 } } : {};
     this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson));
   }
 
-  getSelectedItems(): {key: string, label: string, value: any}[] {
+  getSelectedItems(): { key: string, label: string, value: any }[] {
     return Object.entries(this.contentJson).map(([key, value]) => ({
       key,
       label: key.charAt(0).toUpperCase() + key.slice(1),
@@ -316,7 +390,7 @@ export class EditPlateformeComponent implements OnInit {
     }));
   }
 
-  getSortableItems(): {key: string, label: string, value: any}[] {
+  getSortableItems(): { key: string, label: string, value: any }[] {
     return Object.entries(this.contentJson)
       .filter(([key]) => key !== 'header')
       .sort((a, b) => ((a[1] as { order: number }).order ?? 0) - ((b[1] as { order: number }).order ?? 0)) // Sort by order, default to 0 if not set
@@ -352,8 +426,7 @@ export class EditPlateformeComponent implements OnInit {
     const newContentJson: any = {
       header: this.contentJson.header // Preserve the header
     };
-    
-    // Update the remaining items with new orders based on their position
+
     items.forEach((item, index) => {
       if (item && item.key && item.value !== undefined) {
         newContentJson[item.key] = {
@@ -363,7 +436,7 @@ export class EditPlateformeComponent implements OnInit {
         };
       }
     });
-    
+
     this.contentJson = newContentJson;
     // Ensure content form field is updated with the new JSON
     this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson), { emitEvent: false });
