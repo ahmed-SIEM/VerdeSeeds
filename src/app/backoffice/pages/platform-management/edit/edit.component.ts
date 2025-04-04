@@ -22,6 +22,8 @@ import { NgFor } from '@angular/common';
 export class EditPlateformeComponent implements OnInit {
 
   currentStep: number = 1; // Track the current step
+  currentModal: string | null = null;
+  readonly MAX_SELECTIONS = 3;
 
   TypePack = {
     BASIC : 'BASIC',
@@ -155,7 +157,10 @@ export class EditPlateformeComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.platformForm.valid && this.getSelectionCount() >= this.MINIMUM_SELECTIONS) {
+    // Add validation for required header
+    if (this.platformForm.get('field1')?.value && 
+        this.platformForm.valid && 
+        this.getSelectionCount() <= this.MAX_SELECTIONS) {
       const platformData = { ...this.platformForm.value };
       console.log('Form data before submission:', platformData);
   
@@ -229,20 +234,43 @@ export class EditPlateformeComponent implements OnInit {
   }
 
   getSelectionCount(): number {
-    return Object.values(this.contentJson).length;
+    let count = 0;
+    // Don't count header (field1) in the selection count
+    if (this.platformForm.get('field2')?.value) count++;
+    if (this.platformForm.get('field3')?.value) count++;
+    if (this.platformForm.get('field4')?.value) count++;
+    if (this.platformForm.get('field5')?.value) count++;
+    if (this.platformForm.get('field6')?.value) count++;
+    return count;
+  }
+
+  isSelectionLimitReached(): boolean {
+    return this.getSelectionCount() >= this.MAX_SELECTIONS;
+  }
+
+  openModal(type: string): void {
+    this.currentModal = type;
+  }
+
+  closeModal(): void {
+    this.currentModal = null;
   }
 
   clearSelections() {
+    // Preserve header selection (field1)
+    const headerValue = this.platformForm.get('field1')?.value;
     this.platformForm.patchValue({
-      field1: '',
       field2: '',
       field3: '',
       field4: '',
       field5: '',
-      field6: ''
+      field6: '',
+      field1: headerValue // Preserve header value
     });
-    this.contentJson = {};
-    this.platformForm.get('content')?.setValue('{}');
+    
+    // Update contentJson but keep header if selected
+    this.contentJson = headerValue ? { header: { "type": headerValue } } : {};
+    this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson));
   }
 
   getSelectedItems(): {key: string, label: string, value: any}[] {

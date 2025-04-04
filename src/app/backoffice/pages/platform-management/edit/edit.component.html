@@ -168,43 +168,86 @@
                     <div class="col-12">
                       <h5 class="text-muted mb-3">Content</h5>
                       <div class="alert alert-info">
-                        Please select at least {{MINIMUM_SELECTIONS}} options.
-                        Currently selected: {{getSelectionCount()}}
+                        Please select a header (required) and up to {{MAX_SELECTIONS}} additional components.
+                        Currently selected: {{getSelectionCount()}}/{{MAX_SELECTIONS}}
                       </div>
                     </div>
 
                     <!-- Clear Selections Button -->
                     <div class="col-12 mb-4">
                       <button type="button" class="btn btn-outline-secondary" (click)="clearSelections()">
-                        <i class="fas fa-eraser me-2"></i>Clear All Selections
+                        <i class="fas fa-eraser me-2"></i>Clear Component Selections
                       </button>
                     </div>
 
-                    <!-- First Field: A, B, C -->
-                    <div class="col-12">
-                      <label  class="form-label">Select a Header Component</label>
+                    <!-- Header selection with required indicator -->
+                    <div class="col-12 mb-4">
+                      <label class="form-label">Select a Header Component <span class="text-danger">*</span></label>
                       <div class="d-flex gap-3">
-
-                      
                         <div *ngFor="let option of ['app-herowithimage', 'app-verticallycenteredhero', 'app-centeredhero' , 'app-headerwithicons']" class="position-relative">
                           <input type="radio" [value]="option" formControlName="field1" id="field1-{{option}}"
-                            class="d-none">
+                            class="d-none" required>
                           <label for="field1-{{option}}" class="choice-label">
                             <img src="https://picsum.photos/300?random={{option}}" alt="{{option}}"
                               class="choice-image">
                           </label>
                         </div>
                       </div>
+                      <div class="invalid-feedback" *ngIf="platformForm.get('field1')?.invalid && platformForm.get('field1')?.touched">
+                        Header component is required
+                      </div>
                     </div>
 
-                    <!-- Second Field: 1, 2, 3 -->
-                     <h2>Components</h2>
+                    <!-- Selection Buttons -->
                     <div class="col-12">
-                      <label class="form-label">Select a number (1, 2, 3):</label>
+                      <button type="button" class="selection-button" (click)="openModal('number')"
+                        [class.selected]="platformForm.get('field2')?.value"
+                        [disabled]="isSelectionLimitReached() && !platformForm.get('field2')?.value">
+                        <span>Number Component: {{platformForm.get('field2')?.value || 'Not selected'}}</span>
+                        <i class="fas fa-chevron-right"></i>
+                      </button>
+
+                      <button type="button" class="selection-button" (click)="openModal('animal')"
+                        [class.selected]="platformForm.get('field3')?.value"
+                        [disabled]="isSelectionLimitReached() && !platformForm.get('field3')?.value">
+                        <span>Animal Component: {{platformForm.get('field3')?.value || 'Not selected'}}</span>
+                        <i class="fas fa-chevron-right"></i>
+                      </button>
+
+                      <button type="button" class="selection-button" (click)="openModal('letter')"
+                        [class.selected]="platformForm.get('field4')?.value"
+                        [disabled]="isSelectionLimitReached() && !platformForm.get('field4')?.value">
+                        <span>Letter Component: {{platformForm.get('field4')?.value || 'Not selected'}}</span>
+                        <i class="fas fa-chevron-right"></i>
+                      </button>
+
+                      <button type="button" class="selection-button" (click)="openModal('color')"
+                        [class.selected]="platformForm.get('field5')?.value"
+                        [disabled]="isSelectionLimitReached() && !platformForm.get('field5')?.value">
+                        <span>Color Component: {{platformForm.get('field5')?.value || 'Not selected'}}</span>
+                        <i class="fas fa-chevron-right"></i>
+                      </button>
+
+                      <button type="button" class="selection-button" (click)="openModal('fruit')"
+                        [class.selected]="platformForm.get('field6')?.value"
+                        [disabled]="isSelectionLimitReached() && !platformForm.get('field6')?.value">
+                        <span>Fruit Component: {{platformForm.get('field6')?.value || 'Not selected'}}</span>
+                        <i class="fas fa-chevron-right"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Modals -->
+                  <div class="modal" [class.show]="currentModal === 'number'">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Select a Number</h5>
+                        <button type="button" class="modal-close" (click)="closeModal()">&times;</button>
+                      </div>
                       <div class="d-flex gap-3">
                         <div *ngFor="let option of ['1', '2', '3']" class="position-relative">
                           <input type="radio" [value]="option" formControlName="field2" id="field2-{{option}}"
-                            class="d-none">
+                            class="d-none" (change)="closeModal()">
                           <label for="field2-{{option}}" class="choice-label">
                             <img src="https://picsum.photos/100?random={{option}}" alt="{{option}}"
                               class="choice-image">
@@ -212,14 +255,18 @@
                         </div>
                       </div>
                     </div>
+                  </div>
 
-                    <!-- Third Field: cat, dog, cow -->
-                    <div class="col-12">
-                      <label class="form-label">Select an animal (cat, dog, cow):</label>
+                  <div class="modal" [class.show]="currentModal === 'animal'">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Select an Animal</h5>
+                        <button type="button" class="modal-close" (click)="closeModal()">&times;</button>
+                      </div>
                       <div class="d-flex gap-3">
                         <div *ngFor="let option of ['cat', 'dog', 'cow']" class="position-relative">
                           <input type="radio" [value]="option" formControlName="field3" id="field3-{{option}}"
-                            class="d-none">
+                            class="d-none" (change)="closeModal()">
                           <label for="field3-{{option}}" class="choice-label">
                             <img src="https://picsum.photos/100?random={{option}}" alt="{{option}}"
                               class="choice-image">
@@ -227,14 +274,18 @@
                         </div>
                       </div>
                     </div>
+                  </div>
 
-                    <!-- Fourth Field: X, Y, Z -->
-                    <div class="col-12">
-                      <label class="form-label">Select a letter (X, Y, Z):</label>
+                  <div class="modal" [class.show]="currentModal === 'letter'">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Select a Letter</h5>
+                        <button type="button" class="modal-close" (click)="closeModal()">&times;</button>
+                      </div>
                       <div class="d-flex gap-3">
                         <div *ngFor="let option of ['X', 'Y', 'Z']" class="position-relative">
                           <input type="radio" [value]="option" formControlName="field4" id="field4-{{option}}"
-                            class="d-none">
+                            class="d-none" (change)="closeModal()">
                           <label for="field4-{{option}}" class="choice-label">
                             <img src="https://picsum.photos/100?random={{option}}" alt="{{option}}"
                               class="choice-image">
@@ -242,14 +293,18 @@
                         </div>
                       </div>
                     </div>
+                  </div>
 
-                    <!-- Fifth Field: Red, Green, Blue -->
-                    <div class="col-12">
-                      <label class="form-label">Select a color (Red, Green, Blue):</label>
+                  <div class="modal" [class.show]="currentModal === 'color'">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Select a Color</h5>
+                        <button type="button" class="modal-close" (click)="closeModal()">&times;</button>
+                      </div>
                       <div class="d-flex gap-3">
                         <div *ngFor="let option of ['Red', 'Green', 'Blue']" class="position-relative">
                           <input type="radio" [value]="option" formControlName="field5" id="field5-{{option}}"
-                            class="d-none">
+                            class="d-none" (change)="closeModal()">
                           <label for="field5-{{option}}" class="choice-label">
                             <img src="https://picsum.photos/100?random={{option}}" alt="{{option}}"
                               class="choice-image">
@@ -257,14 +312,18 @@
                         </div>
                       </div>
                     </div>
+                  </div>
 
-                    <!-- Sixth Field: Apple, Banana, Cherry -->
-                    <div class="col-12">
-                      <label class="form-label">Select a fruit (Apple, Banana, Cherry):</label>
+                  <div class="modal" [class.show]="currentModal === 'fruit'">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Select a Fruit</h5>
+                        <button type="button" class="modal-close" (click)="closeModal()">&times;</button>
+                      </div>
                       <div class="d-flex gap-3">
                         <div *ngFor="let option of ['Apple', 'Banana', 'Cherry']" class="position-relative">
                           <input type="radio" [value]="option" formControlName="field6" id="field6-{{option}}"
-                            class="d-none">
+                            class="d-none" (change)="closeModal()">
                           <label for="field6-{{option}}" class="choice-label">
                             <img src="https://picsum.photos/100?random={{option}}" alt="{{option}}"
                               class="choice-image">
