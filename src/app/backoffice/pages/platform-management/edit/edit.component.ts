@@ -39,6 +39,7 @@ export class EditPlateformeComponent implements OnInit {
   selectedPlateforme: any = null;
   contentJson: any = {}; // Track the current content JSON dynamically
   readonly MINIMUM_SELECTIONS = 3;
+  activeAccordion: string | null = null;  // Track active accordion
 
   constructor(
     private fb: FormBuilder,
@@ -63,23 +64,30 @@ export class EditPlateformeComponent implements OnInit {
       field3: [''], 
       field4: [''], 
       field5: [''], 
-      field6: [''] 
+      field6: [''],
+      field1Title: ['', Validators.required],
+      field2Title: ['', Validators.required],
+      field3Title: ['', Validators.required],
+      field4Title: ['', Validators.required],
+      field5Title: ['', Validators.required],
+      field6Title: ['', Validators.required]
     });
 
-    // Update contentJson to only include non-null values
+    // Update contentJson to include titles
     this.platformForm.valueChanges.subscribe(() => {
-      const { field1, field2, field3, field4, field5, field6 } = this.platformForm.value;
+      const { field1, field2, field3, field4, field5, field6,
+              field1Title, field2Title, field3Title, field4Title, field5Title, field6Title } = this.platformForm.value;
       this.contentJson = {};
       
       // Set header first (always order 0)
-      if (field1) this.contentJson.header = { "type": field1};
+      if (field1) this.contentJson.header = { "type": field1, "title": field1Title };
       
-      // Add other components with their order
-      if (field2) this.contentJson.numerical = { "type": field2, "order": 0 };
-      if (field3) this.contentJson.animal = { "type": field3, "order": 1 };
-      if (field4) this.contentJson.letter = { "type": field4, "order": 2 };
-      if (field5) this.contentJson.color = { "type": field5, "order": 3 };
-      if (field6) this.contentJson.fruit = { "type": field6, "order": 4 };
+      // Add other components with their order and title
+      if (field2) this.contentJson.numerical = { "type": field2, "title": field2Title, "order": 0 };
+      if (field3) this.contentJson.animal = { "type": field3, "title": field3Title, "order": 1 };
+      if (field4) this.contentJson.letter = { "type": field4, "title": field4Title, "order": 2 };
+      if (field5) this.contentJson.color = { "type": field5, "title": field5Title, "order": 3 };
+      if (field6) this.contentJson.fruit = { "type": field6, "title": field6Title, "order": 4 };
 
       this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson), { emitEvent: false });
     });
@@ -143,7 +151,13 @@ export class EditPlateformeComponent implements OnInit {
               field3: parsedContent.animal?.type || '',
               field4: parsedContent.letter?.type || '',
               field5: parsedContent.color?.type || '',
-              field6: parsedContent.fruit?.type || ''
+              field6: parsedContent.fruit?.type || '',
+              field1Title: parsedContent.header?.title || '',
+              field2Title: parsedContent.numerical?.title || '',
+              field3Title: parsedContent.animal?.title || '',
+              field4Title: parsedContent.letter?.title || '',
+              field5Title: parsedContent.color?.title || '',
+              field6Title: parsedContent.fruit?.title || ''
             });
           } catch (error) {
             console.error('Error parsing content JSON:', error);
@@ -238,6 +252,12 @@ export class EditPlateformeComponent implements OnInit {
       if (this.platformForm.get('field1')?.valid && this.getSelectionCount() >= this.MINIMUM_SELECTIONS) {
         this.currentStep = step;
       }
+    } else if (step === 4) {
+      // Only allow proceeding to step 4 if step 3 is valid
+      const sortedItems = this.getSortableItems();
+      if (sortedItems.length > 0) {
+        this.currentStep = step;
+      }
     }
   }
 
@@ -267,17 +287,24 @@ export class EditPlateformeComponent implements OnInit {
   clearSelections() {
     // Preserve header selection (field1)
     const headerValue = this.platformForm.get('field1')?.value;
+    const headerTitle = this.platformForm.get('field1Title')?.value;
     this.platformForm.patchValue({
       field2: '',
       field3: '',
       field4: '',
       field5: '',
       field6: '',
-      field1: headerValue // Preserve header value
+      field2Title: '',
+      field3Title: '',
+      field4Title: '',
+      field5Title: '',
+      field6Title: '',
+      field1: headerValue, // Preserve header value
+      field1Title: headerTitle // Preserve header title
     });
     
     // Update contentJson but keep header if selected
-    this.contentJson = headerValue ? { header: { "type": headerValue, "order": 0 } } : {};
+    this.contentJson = headerValue ? { header: { "type": headerValue, "title": headerTitle, "order": 0 } } : {};
     this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson));
   }
 
@@ -331,6 +358,7 @@ export class EditPlateformeComponent implements OnInit {
       if (item && item.key && item.value !== undefined) {
         newContentJson[item.key] = {
           type: this.contentJson[item.key].type,
+          title: this.contentJson[item.key].title,
           order: index // Order based on current position in the sorted list
         };
       }
@@ -339,5 +367,9 @@ export class EditPlateformeComponent implements OnInit {
     this.contentJson = newContentJson;
     // Ensure content form field is updated with the new JSON
     this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson), { emitEvent: false });
+  }
+
+  toggleAccordion(key: string) {
+    this.activeAccordion = this.activeAccordion === key ? null : key;
   }
 }
