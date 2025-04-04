@@ -230,6 +230,11 @@ export class EditPlateformeComponent implements OnInit {
       if (isStep1Valid) {
         this.currentStep = step;
       }
+    } else if (step === 3) {
+      // Validate that we have a header and minimum selections
+      if (this.platformForm.get('field1')?.valid && this.getSelectionCount() >= this.MINIMUM_SELECTIONS) {
+        this.currentStep = step;
+      }
     }
   }
 
