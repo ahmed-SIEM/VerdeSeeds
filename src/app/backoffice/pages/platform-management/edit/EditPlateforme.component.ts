@@ -110,8 +110,28 @@ export class EditPlateformeComponent implements OnInit {
           dateCreation: platform.dateCreation.split('T')[0],
           valabilite: platform.valabilite.split('T')[0]
         });
-        this.isLoading = false;
 
+        // Parse and set the stored content JSON
+        if (platform.content) {
+          try {
+            const parsedContent = JSON.parse(platform.content);
+            this.contentJson = parsedContent;
+
+            // Set the values for the radio fields
+            this.platformForm.patchValue({
+              field1: parsedContent.choice || '',
+              field2: parsedContent.numerical || '',
+              field3: parsedContent.animal || '',
+              field4: parsedContent.letter || '',
+              field5: parsedContent.color || '',
+              field6: parsedContent.fruit || ''
+            });
+          } catch (error) {
+            console.error('Error parsing content JSON:', error);
+          }
+        }
+
+        this.isLoading = false;
       },
       error: (error) => {
         console.error('Error loading platform:', error);
