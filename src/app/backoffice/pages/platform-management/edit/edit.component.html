@@ -25,7 +25,8 @@
 
           <!-- Platform Form -->
           <form [formGroup]="platformForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
-            <div class="row g-3">
+            <div class="row g-3" *ngIf="currentStep === 1">
+              <!-- Step 1: All fields except Content -->
               <!-- Basic Information -->
               <div class="col-12">
                 <h5 class="text-muted mb-3">Basic Information</h5>
@@ -73,8 +74,7 @@
                 </div>
               </div>
 
-          
-              <div class="col-md-6"  *ngIf="!isEditMode">
+              <div class="col-md-6" *ngIf="!isEditMode">
                 <div class="form-floating">
                   <select class="form-select" id="agriculteur" formControlName="agriculteur" required
                     [ngClass]="{'is-invalid': platformForm.get('agriculteur')?.invalid && platformForm.get('agriculteur')?.touched}">
@@ -155,17 +155,29 @@
                 </div>
               </div>
 
-              <!-- Content -->
-              <div class="col-md-6">
+              <div class="col-12 mt-4">
+                <button type="button" class="btn btn-primary w-100" (click)="goToStep(2)">
+                  Next
+                </button>
+              </div>
+            </div>
+
+            <div class="row g-3" *ngIf="currentStep === 2">
+              <!-- Step 2: Content Field -->
+              <div class="col-12">
+                <h5 class="text-muted mb-3">Content</h5>
+              </div>
+              <div class="col-md-12">
                 <div class="form-floating">
                   <input type="text" class="form-control" id="content" formControlName="content" required
                     [ngClass]="{'is-invalid': platformForm.get('content')?.invalid && platformForm.get('content')?.touched}">
                   <label for="content">Content</label>
                 </div>
               </div>
-
-              <!-- Submit Button -->
               <div class="col-12 mt-4">
+                <button type="button" class="btn btn-outline-secondary w-100 mb-2" (click)="goToStep(1)">
+                  Back
+                </button>
                 <button type="submit" class="btn btn-primary w-100" [disabled]="platformForm.invalid">
                   <i class="fas fa-save me-2"></i>{{ isEditMode ? 'Update' : 'Create' }} Platform
                 </button>

@@ -10,6 +10,8 @@ import { PlateformeService } from 'src/app/services/plateforme/plateforme.servic
 })
 export class EditPlateformeComponent implements OnInit {
 
+  currentStep: number = 1; // Track the current step
+
   TypePack = {
     BASIC : 'BASIC',
     PREMIUM : 'PREMIUM',
@@ -39,7 +41,7 @@ export class EditPlateformeComponent implements OnInit {
       logo: ['', Validators.required],
       updateTheme: ['', Validators.required],
       content: ['', Validators.required],
-      //agriculteur: [null, Validators.required]
+      agriculteur: [null] 
     });
   }
 
@@ -59,7 +61,10 @@ export class EditPlateformeComponent implements OnInit {
         dateCreation: today.toISOString().split('T')[0],
         valabilite: new Date(today.setMonth(today.getMonth() + 12)).toISOString().split('T')[0]
       });
+      // Add required validator for 'agriculteur' in create mode
+      this.platformForm.get('agriculteur')?.setValidators(Validators.required);
     }
+    this.platformForm.get('agriculteur')?.updateValueAndValidity();
   }
 
   loadUsers() {
@@ -130,5 +135,31 @@ export class EditPlateformeComponent implements OnInit {
 
   onCancel() {
     this.router.navigate(['/backoffice/platform']);
+  }
+
+  goToStep(step: number): void {
+    if (step === 1) {
+      this.currentStep = step;
+    } else if (step === 2) {
+      // Validate only step 1 fields
+      const step1Fields = ['nomPlateforme', 'typePack', 'couleur', 'description', 'dateCreation', 'valabilite', 'logo', 'updateTheme', 'agriculteur'];
+      let isStep1Valid = true;
+
+      step1Fields.forEach(field => {
+        const control = this.platformForm.get(field);
+        if (control) {
+          control.markAsTouched();
+          if (control.invalid) {
+            isStep1Valid = false;
+          }
+        }
+      });
+
+      if (isStep1Valid) {
+        this.currentStep = step;
+      } else {
+        console.log('Step 1 is invalid, fields marked as touched');
+      }
+    }
   }
 }
