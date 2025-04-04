@@ -36,6 +36,7 @@ export class EditPlateformeComponent implements OnInit {
   isLoading = false;
   selectedPlateforme: any = null;
   contentJson: any = {}; // Track the current content JSON dynamically
+  readonly MINIMUM_SELECTIONS = 3;
 
   constructor(
     private fb: FormBuilder,
@@ -68,7 +69,7 @@ export class EditPlateformeComponent implements OnInit {
       const { field1, field2, field3, field4, field5, field6 } = this.platformForm.value;
       this.contentJson = {};
       
-      if (field1) this.contentJson.choice = field1;
+      if (field1) this.contentJson.header = { "type" : field1}
       if (field2) this.contentJson.numerical = field2;
       if (field3) this.contentJson.animal = field3;
       if (field4) this.contentJson.letter = field4;
@@ -154,7 +155,7 @@ export class EditPlateformeComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.platformForm.valid) {
+    if (this.platformForm.valid && this.getSelectionCount() >= this.MINIMUM_SELECTIONS) {
       const platformData = { ...this.platformForm.value };
       console.log('Form data before submission:', platformData);
   
@@ -190,8 +191,6 @@ export class EditPlateformeComponent implements OnInit {
       this.markFormGroupTouched(this.platformForm);
     }
   }
-  
-  
 
   private markFormGroupTouched(formGroup: FormGroup) {
     Object.values(formGroup.controls).forEach(control => {
@@ -210,7 +209,6 @@ export class EditPlateformeComponent implements OnInit {
     if (step === 1) {
       this.currentStep = step;
     } else if (step === 2) {
-      // Validate only step 1 fields
       const step1Fields = ['nomPlateforme', 'typePack', 'couleur', 'description', 'dateCreation', 'valabilite', 'logo', 'updateTheme', 'agriculteur'];
       let isStep1Valid = true;
 
@@ -226,10 +224,12 @@ export class EditPlateformeComponent implements OnInit {
 
       if (isStep1Valid) {
         this.currentStep = step;
-      } else {
-        console.log('Step 1 is invalid, fields marked as touched');
       }
     }
+  }
+
+  getSelectionCount(): number {
+    return Object.values(this.contentJson).length;
   }
 
   clearSelections() {

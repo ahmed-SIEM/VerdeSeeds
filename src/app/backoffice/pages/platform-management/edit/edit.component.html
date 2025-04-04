@@ -1,322 +1,367 @@
 <!-- Platform List Page -->
 
-
 <body class="app">
-
   <div class="app-wrapper">
-<div class="container-fluid p-4">
-  <div class="row justify-content-center">
-    <div>
-      <div class="card ">
-        <div class="card-body">
-          <!-- Header -->
-          <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="card-title mb-0">{{ isEditMode ? 'Edit' : 'Create' }} Platform</h2>
-            <button class="btn btn-outline-secondary" (click)="onCancel()">
-              <i class="fas fa-times me-2"></i>Cancel
-            </button>
-          </div>
-
-          <!-- Loading State -->
-          <div *ngIf="isLoading" class="text-center py-4">
-            <div class="spinner-border text-primary" role="status">
-              <span class="visually-hidden">Loading...</span>
-            </div>
-          </div>
-
-          <!-- Platform Form -->
-          <form [formGroup]="platformForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
-            <div class="row g-3" *ngIf="currentStep === 1">
-     
-              <div class="col-12">
-                <h5 class="text-muted mb-3">Basic Information</h5>
-              </div>
-
-              <div class="col-md-6">
-                <div class="form-floating">
-                  <input type="text" class="form-control" id="nomPlateforme" formControlName="nomPlateforme" required
-                    [ngClass]="{'is-invalid': platformForm.get('nomPlateforme')?.invalid && platformForm.get('nomPlateforme')?.touched}">
-                  <label for="nomPlateforme">Platform Name</label>
-                  <div class="invalid-feedback" *ngIf="platformForm.get('nomPlateforme')?.errors?.['required']">
-                    Platform name is required
-                  </div>
-                  <div class="invalid-feedback" *ngIf="platformForm.get('nomPlateforme')?.errors?.['minlength']">
-                    Platform name must be at least 3 characters
-                  </div>
-                </div>
-              </div>
-
-              <!-- Platform Type -->
-              <div class="col-md-6">
-                <div class="form-floating">
-                  <select class="form-select" id="typePack" formControlName="typePack" required
-                    [ngClass]="{'is-invalid': platformForm.get('typePack')?.invalid && platformForm.get('typePack')?.touched}">
-                    <option value="">Select a type</option>
-                    <option *ngFor="let type of typePackOptions" [value]="type">{{type}}</option>
-                  </select>
-                  <label for="typePack">Platform Type</label>
-                  <div class="invalid-feedback">
-                    Please select a platform type
-                  </div>
-                </div>
-              </div>
-
-              <!-- Color Picker -->
-              <div class="col-md-6">
-                <div class="form-floating">
-                  <input type="color" class="form-control form-control-color w-100" id="couleur" formControlName="couleur" required
-                    [ngClass]="{'is-invalid': platformForm.get('couleur')?.invalid && platformForm.get('couleur')?.touched}">
-                  <label for="couleur">Theme Color</label>
-                  <div class="invalid-feedback">
-                    Please select a color
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-6" *ngIf="!isEditMode">
-                <div class="form-floating">
-                  <select class="form-select" id="agriculteur" formControlName="agriculteur" required
-                    [ngClass]="{'is-invalid': platformForm.get('agriculteur')?.invalid && platformForm.get('agriculteur')?.touched}">
-                    <option value="">Select a user</option>
-                    <option *ngFor="let user of users" [value]="user.email">{{ user.nom }}</option>
-                  </select>
-                  <label for="agriculteur">Platform Owner</label>
-                  <div class="invalid-feedback">
-                    Please select a platform owner
-                  </div>
-                </div>
-              </div>
-
-              <!-- Dates Section -->
-              <div class="col-12">
-                <h5 class="text-muted mb-3 mt-2">Platform Dates</h5>
-              </div>
-
-              <!-- Creation Date -->
-              <div class="col-md-6">
-                <div class="form-floating">
-                  <input type="date" class="form-control" id="dateCreation" formControlName="dateCreation" required
-                    [ngClass]="{'is-invalid': platformForm.get('dateCreation')?.invalid && platformForm.get('dateCreation')?.touched}">
-                  <label for="dateCreation">Creation Date</label>
-                  <div class="invalid-feedback">
-                    Creation date is required
-                  </div>
-                </div>
-              </div>
-
-              <!-- Validity Date -->
-              <div class="col-md-6">
-                <div class="form-floating">
-                  <input type="date" class="form-control" id="valabilite" formControlName="valabilite" required
-                    [ngClass]="{'is-invalid': platformForm.get('valabilite')?.invalid && platformForm.get('valabilite')?.touched}">
-                  <label for="valabilite">Valid Until</label>
-                  <div class="invalid-feedback">
-                    Validity date is required
-                  </div>
-                </div>
-              </div>
-
-              <!-- Description -->
-              <div class="col-12">
-                <div class="form-floating">
-                  <textarea class="form-control" id="description" formControlName="description" style="height: 100px" required
-                    [ngClass]="{'is-invalid': platformForm.get('description')?.invalid && platformForm.get('description')?.touched}"></textarea>
-                  <label for="description">Description</label>
-                  <div class="invalid-feedback" *ngIf="platformForm.get('description')?.errors?.['required']">
-                    Description is required
-                  </div>
-                  <div class="invalid-feedback" *ngIf="platformForm.get('description')?.errors?.['minlength']">
-                    Description must be at least 10 characters
-                  </div>
-                </div>
-              </div>
-
-              <!-- Additional Fields -->
-              <div class="col-12">
-                <h5 class="text-muted mb-3 mt-2">Additional Information</h5>
-              </div>
-
-              <!-- Logo URL -->
-              <div class="col-md-12">
-                <div class="form-floating">
-                  <input type="text" class="form-control" id="logo" formControlName="logo" required
-                    [ngClass]="{'is-invalid': platformForm.get('logo')?.invalid && platformForm.get('logo')?.touched}">
-                  <label for="logo">Logo URL</label>
-                </div>
-              </div>
-
-              <!-- Theme Update -->
-              <div class="col-md-6">
-                <div class="form-floating">
-                  <input type="text" class="form-control" id="updateTheme" formControlName="updateTheme" required
-                    [ngClass]="{'is-invalid': platformForm.get('updateTheme')?.invalid && platformForm.get('updateTheme')?.touched}">
-                  <label for="updateTheme">Theme Update</label>
-                </div>
-              </div>
-
-              <div class="col-12 mt-4">
-                <button type="button" class="btn btn-primary w-100" (click)="goToStep(2)">
-                  Next
+    <div class="container-fluid p-4">
+      <div class="row justify-content-center">
+        <!-- First Column - Platform Creation Form -->
+        <div class="col-lg-8">
+          <div class="card">
+            <div class="card-body">
+              <!-- Header -->
+              <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="card-title mb-0">{{ isEditMode ? 'Edit' : 'Create' }} Platform</h2>
+                <button class="btn btn-outline-secondary" (click)="onCancel()">
+                  <i class="fas fa-times me-2"></i>Cancel
                 </button>
               </div>
-            </div>
 
-            <div class="row g-3" *ngIf="currentStep === 2">
-              <!-- Step 2: Content Field -->
-              <div class="col-md-8">
-                <!-- Existing content selection -->
-                <div class="col-12">
-                  <h5 class="text-muted mb-3">Content</h5>
-                </div>
-
-                <!-- Clear Selections Button -->
-                <div class="col-12 mb-4">
-                  <button type="button" class="btn btn-outline-secondary" (click)="clearSelections()">
-                    <i class="fas fa-eraser me-2"></i>Clear All Selections
-                  </button>
-                </div>
-
-                <!-- First Field: A, B, C -->
-                <div class="col-12">
-                  <label class="form-label">Select an option (A, B, C):</label>
-                  <div class="d-flex gap-3">
-                    <div *ngFor="let option of ['A', 'B', 'C']" class="position-relative">
-                      <input type="radio" [value]="option" formControlName="field1" id="field1-{{option}}" class="d-none">
-                      <label for="field1-{{option}}" class="choice-label">
-                        <img src="https://picsum.photos/100?random={{option}}" alt="{{option}}" class="choice-image">
-                      </label>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Second Field: 1, 2, 3 -->
-                <div class="col-12">
-                  <label class="form-label">Select a number (1, 2, 3):</label>
-                  <div class="d-flex gap-3">
-                    <div *ngFor="let option of ['1', '2', '3']" class="position-relative">
-                      <input type="radio" [value]="option" formControlName="field2" id="field2-{{option}}" class="d-none">
-                      <label for="field2-{{option}}" class="choice-label">
-                        <img src="https://picsum.photos/100?random={{option}}" alt="{{option}}" class="choice-image">
-                      </label>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Third Field: cat, dog, cow -->
-                <div class="col-12">
-                  <label class="form-label">Select an animal (cat, dog, cow):</label>
-                  <div class="d-flex gap-3">
-                    <div *ngFor="let option of ['cat', 'dog', 'cow']" class="position-relative">
-                      <input type="radio" [value]="option" formControlName="field3" id="field3-{{option}}" class="d-none">
-                      <label for="field3-{{option}}" class="choice-label">
-                        <img src="https://picsum.photos/100?random={{option}}" alt="{{option}}" class="choice-image">
-                      </label>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Fourth Field: X, Y, Z -->
-                <div class="col-12">
-                  <label class="form-label">Select a letter (X, Y, Z):</label>
-                  <div class="d-flex gap-3">
-                    <div *ngFor="let option of ['X', 'Y', 'Z']" class="position-relative">
-                      <input type="radio" [value]="option" formControlName="field4" id="field4-{{option}}" class="d-none">
-                      <label for="field4-{{option}}" class="choice-label">
-                        <img src="https://picsum.photos/100?random={{option}}" alt="{{option}}" class="choice-image">
-                      </label>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Fifth Field: Red, Green, Blue -->
-                <div class="col-12">
-                  <label class="form-label">Select a color (Red, Green, Blue):</label>
-                  <div class="d-flex gap-3">
-                    <div *ngFor="let option of ['Red', 'Green', 'Blue']" class="position-relative">
-                      <input type="radio" [value]="option" formControlName="field5" id="field5-{{option}}" class="d-none">
-                      <label for="field5-{{option}}" class="choice-label">
-                        <img src="https://picsum.photos/100?random={{option}}" alt="{{option}}" class="choice-image">
-                      </label>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Sixth Field: Apple, Banana, Cherry -->
-                <div class="col-12">
-                  <label class="form-label">Select a fruit (Apple, Banana, Cherry):</label>
-                  <div class="d-flex gap-3">
-                    <div *ngFor="let option of ['Apple', 'Banana', 'Cherry']" class="position-relative">
-                      <input type="radio" [value]="option" formControlName="field6" id="field6-{{option}}" class="d-none">
-                      <label for="field6-{{option}}" class="choice-label">
-                        <img src="https://picsum.photos/100?random={{option}}" alt="{{option}}" class="choice-image">
-                      </label>
-                    </div>
-                  </div>
+              <!-- Loading State -->
+              <div *ngIf="isLoading" class="text-center py-4">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden">Loading...</span>
                 </div>
               </div>
 
-              <!-- New Right Panel for Button-Based Sorting -->
-              <div class="col-md-4">
-                <div class="card">
-                  <div class="card-header bg-light">
-                    <h5 class="mb-0 d-flex align-items-center">
-                      <i class="fas fa-sort me-2"></i>
-                      Sort Your Selections
-                    </h5>
+              <!-- Platform Form -->
+              <form [formGroup]="platformForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
+                <div class="row g-3" *ngIf="currentStep === 1">
+                  <div class="col-12">
+                    <h5 class="text-muted mb-3">Basic Information</h5>
                   </div>
-                  <div class="card-body">
-                    <div class="sort-buttons">
-                      <div *ngFor="let item of getSelectedItems(); let i = index"  class=" border p-3 rounded sort-item">
-                        <span class="sort-item-label">{{ item.label }} : {{ item.value }}</span>
-                        <div class="sort-controls">
-                          <button 
-                            class="sort-button" 
-                            (click)="moveItemUp(i)" 
-                            [disabled]="i === 0"
-                            [attr.data-tooltip]="'Move ' + item.label + ' up'">
-                            <i class="bi bi-arrow-up-short"></i>
-                          </button>
-                          <button 
-                            class="sort-button" 
-                            (click)="moveItemDown(i)" 
-                            [disabled]="i === getSelectedItems().length - 1"
-                            [attr.data-tooltip]="'Move ' + item.label + ' down'">
-                            <i class="bi bi-arrow-down-short"></i>
-                          </button>
+
+                  <div class="col-md-6">
+                    <div class="form-floating">
+                      <input type="text" class="form-control" id="nomPlateforme" formControlName="nomPlateforme"
+                        required
+                        [ngClass]="{'is-invalid': platformForm.get('nomPlateforme')?.invalid && platformForm.get('nomPlateforme')?.touched}">
+                      <label for="nomPlateforme">Platform Name</label>
+                      <div class="invalid-feedback" *ngIf="platformForm.get('nomPlateforme')?.errors?.['required']">
+                        Platform name is required
+                      </div>
+                      <div class="invalid-feedback" *ngIf="platformForm.get('nomPlateforme')?.errors?.['minlength']">
+                        Platform name must be at least 3 characters
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Platform Type -->
+                  <div class="col-md-6">
+                    <div class="form-floating">
+                      <select class="form-select" id="typePack" formControlName="typePack" required
+                        [ngClass]="{'is-invalid': platformForm.get('typePack')?.invalid && platformForm.get('typePack')?.touched}">
+                        <option value="">Select a type</option>
+                        <option *ngFor="let type of typePackOptions" [value]="type">{{type}}</option>
+                      </select>
+                      <label for="typePack">Platform Type</label>
+                      <div class="invalid-feedback">
+                        Please select a platform type
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Color Picker -->
+                  <div class="col-md-6">
+                    <div class="form-floating">
+                      <input type="color" class="form-control form-control-color w-100" id="couleur"
+                        formControlName="couleur" required
+                        [ngClass]="{'is-invalid': platformForm.get('couleur')?.invalid && platformForm.get('couleur')?.touched}">
+                      <label for="couleur">Theme Color</label>
+                      <div class="invalid-feedback">
+                        Please select a color
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6" *ngIf="!isEditMode">
+                    <div class="form-floating">
+                      <select class="form-select" id="agriculteur" formControlName="agriculteur" required
+                        [ngClass]="{'is-invalid': platformForm.get('agriculteur')?.invalid && platformForm.get('agriculteur')?.touched}">
+                        <option value="">Select a user</option>
+                        <option *ngFor="let user of users" [value]="user.email">{{ user.nom }}</option>
+                      </select>
+                      <label for="agriculteur">Platform Owner</label>
+                      <div class="invalid-feedback">
+                        Please select a platform owner
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Dates Section -->
+                  <div class="col-12">
+                    <h5 class="text-muted mb-3 mt-2">Platform Dates</h5>
+                  </div>
+
+                  <!-- Creation Date -->
+                  <div class="col-md-6">
+                    <div class="form-floating">
+                      <input type="date" class="form-control" id="dateCreation" formControlName="dateCreation" required
+                        [ngClass]="{'is-invalid': platformForm.get('dateCreation')?.invalid && platformForm.get('dateCreation')?.touched}">
+                      <label for="dateCreation">Creation Date</label>
+                      <div class="invalid-feedback">
+                        Creation date is required
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Validity Date -->
+                  <div class="col-md-6">
+                    <div class="form-floating">
+                      <input type="date" class="form-control" id="valabilite" formControlName="valabilite" required
+                        [ngClass]="{'is-invalid': platformForm.get('valabilite')?.invalid && platformForm.get('valabilite')?.touched}">
+                      <label for="valabilite">Valid Until</label>
+                      <div class="invalid-feedback">
+                        Validity date is required
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Description -->
+                  <div class="col-12">
+                    <div class="form-floating">
+                      <textarea class="form-control" id="description" formControlName="description"
+                        style="height: 100px" required
+                        [ngClass]="{'is-invalid': platformForm.get('description')?.invalid && platformForm.get('description')?.touched}"></textarea>
+                      <label for="description">Description</label>
+                      <div class="invalid-feedback" *ngIf="platformForm.get('description')?.errors?.['required']">
+                        Description is required
+                      </div>
+                      <div class="invalid-feedback" *ngIf="platformForm.get('description')?.errors?.['minlength']">
+                        Description must be at least 10 characters
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Additional Fields -->
+                  <div class="col-12">
+                    <h5 class="text-muted mb-3 mt-2">Additional Information</h5>
+                  </div>
+
+                  <!-- Logo URL -->
+                  <div class="col-md-12">
+                    <div class="form-floating">
+                      <input type="text" class="form-control" id="logo" formControlName="logo" required
+                        [ngClass]="{'is-invalid': platformForm.get('logo')?.invalid && platformForm.get('logo')?.touched}">
+                      <label for="logo">Logo URL</label>
+                    </div>
+                  </div>
+
+                  <!-- Theme Update -->
+                  <div class="col-md-6">
+                    <div class="form-floating">
+                      <input type="text" class="form-control" id="updateTheme" formControlName="updateTheme" required
+                        [ngClass]="{'is-invalid': platformForm.get('updateTheme')?.invalid && platformForm.get('updateTheme')?.touched}">
+                      <label for="updateTheme">Theme Update</label>
+                    </div>
+                  </div>
+
+                  <div class="col-12 mt-4">
+                    <button type="button" class="btn btn-primary w-100" (click)="goToStep(2)">
+                      Next
+                    </button>
+                  </div>
+                </div>
+
+                <div class="row g-3" *ngIf="currentStep === 2">
+                  <!-- Step 2: Content Field -->
+                  <div class="col-12">
+                    <div class="col-12">
+                      <h5 class="text-muted mb-3">Content</h5>
+                      <div class="alert alert-info">
+                        Please select at least {{MINIMUM_SELECTIONS}} options.
+                        Currently selected: {{getSelectionCount()}}
+                      </div>
+                    </div>
+
+                    <!-- Clear Selections Button -->
+                    <div class="col-12 mb-4">
+                      <button type="button" class="btn btn-outline-secondary" (click)="clearSelections()">
+                        <i class="fas fa-eraser me-2"></i>Clear All Selections
+                      </button>
+                    </div>
+
+                    <!-- First Field: A, B, C -->
+                    <div class="col-12">
+                      <label  class="form-label">Select a Header Component</label>
+                      <div class="d-flex gap-3">
+
+                      
+                        <div *ngFor="let option of ['app-herowithimage', 'app-verticallycenteredhero', 'app-centeredhero' , 'app-headerwithicons']" class="position-relative">
+                          <input type="radio" [value]="option" formControlName="field1" id="field1-{{option}}"
+                            class="d-none">
+                          <label for="field1-{{option}}" class="choice-label">
+                            <img src="https://picsum.photos/300?random={{option}}" alt="{{option}}"
+                              class="choice-image">
+                          </label>
                         </div>
                       </div>
                     </div>
-                    <div *ngIf="getSelectedItems().length === 0" class="text-center text-muted p-4">
-                      <i class="fas fa-list fa-2x mb-2"></i>
-                      <p class="mb-0">No items selected yet</p>
-                      <small>Select items from the left panel to sort them here</small>
+
+                    <!-- Second Field: 1, 2, 3 -->
+                     <h2>Components</h2>
+                    <div class="col-12">
+                      <label class="form-label">Select a number (1, 2, 3):</label>
+                      <div class="d-flex gap-3">
+                        <div *ngFor="let option of ['1', '2', '3']" class="position-relative">
+                          <input type="radio" [value]="option" formControlName="field2" id="field2-{{option}}"
+                            class="d-none">
+                          <label for="field2-{{option}}" class="choice-label">
+                            <img src="https://picsum.photos/100?random={{option}}" alt="{{option}}"
+                              class="choice-image">
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Third Field: cat, dog, cow -->
+                    <div class="col-12">
+                      <label class="form-label">Select an animal (cat, dog, cow):</label>
+                      <div class="d-flex gap-3">
+                        <div *ngFor="let option of ['cat', 'dog', 'cow']" class="position-relative">
+                          <input type="radio" [value]="option" formControlName="field3" id="field3-{{option}}"
+                            class="d-none">
+                          <label for="field3-{{option}}" class="choice-label">
+                            <img src="https://picsum.photos/100?random={{option}}" alt="{{option}}"
+                              class="choice-image">
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Fourth Field: X, Y, Z -->
+                    <div class="col-12">
+                      <label class="form-label">Select a letter (X, Y, Z):</label>
+                      <div class="d-flex gap-3">
+                        <div *ngFor="let option of ['X', 'Y', 'Z']" class="position-relative">
+                          <input type="radio" [value]="option" formControlName="field4" id="field4-{{option}}"
+                            class="d-none">
+                          <label for="field4-{{option}}" class="choice-label">
+                            <img src="https://picsum.photos/100?random={{option}}" alt="{{option}}"
+                              class="choice-image">
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Fifth Field: Red, Green, Blue -->
+                    <div class="col-12">
+                      <label class="form-label">Select a color (Red, Green, Blue):</label>
+                      <div class="d-flex gap-3">
+                        <div *ngFor="let option of ['Red', 'Green', 'Blue']" class="position-relative">
+                          <input type="radio" [value]="option" formControlName="field5" id="field5-{{option}}"
+                            class="d-none">
+                          <label for="field5-{{option}}" class="choice-label">
+                            <img src="https://picsum.photos/100?random={{option}}" alt="{{option}}"
+                              class="choice-image">
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Sixth Field: Apple, Banana, Cherry -->
+                    <div class="col-12">
+                      <label class="form-label">Select a fruit (Apple, Banana, Cherry):</label>
+                      <div class="d-flex gap-3">
+                        <div *ngFor="let option of ['Apple', 'Banana', 'Cherry']" class="position-relative">
+                          <input type="radio" [value]="option" formControlName="field6" id="field6-{{option}}"
+                            class="d-none">
+                          <label for="field6-{{option}}" class="choice-label">
+                            <img src="https://picsum.photos/100?random={{option}}" alt="{{option}}"
+                              class="choice-image">
+                          </label>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <!-- Tracking JSON Content -->
-                <div class="mt-4">
-                  <h5 class="text-muted">Current Content JSON</h5>
-                  <pre class="bg-light p-3 rounded">{{ contentJson | json }}</pre>
+                  <!-- Back and Submit Buttons -->
+                  <div class="col-12 mt-4">
+                    <button type="button" class="btn btn-outline-secondary w-100 mb-2" (click)="goToStep(1)">
+                      Back
+                    </button>
+                    <button type="submit" class="btn btn-primary w-100" 
+                      [disabled]="platformForm.invalid || getSelectionCount() < MINIMUM_SELECTIONS">
+                      <i class="fas fa-save me-2"></i>{{ isEditMode ? 'Update' : 'Create' }} Platform
+                      <span *ngIf="getSelectionCount() < MINIMUM_SELECTIONS">
+                        (Need {{MINIMUM_SELECTIONS - getSelectionCount()}} more selections)
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- Second Column - Sorting and JSON Content -->
+        <div class="col-lg-4" *ngIf="currentStep === 2">
+          <!-- Sort Your Selections Card -->
+          <div class="card mb-4">
+            <div class="card-header bg-light">
+              <h5 class="mb-0 d-flex align-items-center">
+                <i class="fas fa-sort me-2"></i>
+                Sort Your Selections
+              </h5>
+            </div>
+            <div class="card-body">
+              <div class="sort-buttons">
+                <div class=" border p-3 rounded ">
+                  <span class="sort-item-label">
+                    Navbar
+                  </span>
+                </div>
+                <div class=" border p-3 rounded ">
+                  <span class="sort-item-label">
+                    Header
+                  </span>
+                </div>
+                <div *ngFor="let item of getSelectedItems(); let i = index"
+                  class=" border p-3 rounded sort-item">
+                  <span class="sort-item-label">
+                    Component {{ i + 1 }} : {{ item.value }}
+                  </span>
+                  <div class="sort-controls">
+                    <button class="sort-button" (click)="moveItemUp(i)" [disabled]="i === 0"
+                      [attr.data-tooltip]="'Move ' + item.label + ' up'">
+                      <i class="bi bi-arrow-up-short"></i>
+                    </button>
+                    <button class="sort-button" (click)="moveItemDown(i)"
+                      [disabled]="i === getSelectedItems().length - 1"
+                      [attr.data-tooltip]="'Move ' + item.label + ' down'">
+                      <i class="bi bi-arrow-down-short"></i>
+                    </button>
+                  </div>
                 </div>
               </div>
-
-              <!-- Back and Submit Buttons -->
-              <div class="col-12 mt-4">
-                <button type="button" class="btn btn-outline-secondary w-100 mb-2" (click)="goToStep(1)">
-                  Back
-                </button>
-                <button type="submit" class="btn btn-primary w-100" [disabled]="platformForm.invalid">
-                  <i class="fas fa-save me-2"></i>{{ isEditMode ? 'Update' : 'Create' }} Platform
-                </button>
+              <div class=" border p-3 rounded ">
+                <span class="sort-item-label">
+                  Sponsors Component
+                </span>
+              </div>
+              <div class="mt-2 border p-3 rounded sort-item">
+                <span class="sort-item-label">
+                  Footer
+                </span>
+              </div>
+              <div *ngIf="getSelectedItems().length === 0" class="text-center text-muted p-4">
+                <i class="fas fa-list fa-2x mb-2"></i>
+                <p class="mb-0">No items selected yet</p>
+                <small>Select items from the left panel to sort them here</small>
               </div>
             </div>
-          </form>
+          </div>
+
+          <!-- JSON Content Card -->
+          <div class="card">
+            <div class="card-header bg-light">
+              <h5 class="mb-0">Current Content JSON</h5>
+            </div>
+            <div class="card-body">
+              <pre class="bg-light p-3 rounded mb-0">{{ contentJson | json }}</pre>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
-
-</div>
 </body>
