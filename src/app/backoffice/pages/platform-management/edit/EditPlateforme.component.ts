@@ -45,25 +45,26 @@ export class EditPlateformeComponent implements OnInit {
       updateTheme: ['', Validators.required],
       content: ['', Validators.required],
       agriculteur: [null],
-      field1: ['', Validators.required], 
-      field2: ['', Validators.required],
-      field3: ['', Validators.required], 
-      field4: ['', Validators.required], 
-      field5: ['', Validators.required], 
-      field6: ['', Validators.required] 
+      field1: [''], 
+      field2: [''],
+      field3: [''], 
+      field4: [''], 
+      field5: [''], 
+      field6: [''] 
     });
 
-    // Update contentJson dynamically based on other fields
+    // Update contentJson to only include non-null values
     this.platformForm.valueChanges.subscribe(() => {
       const { field1, field2, field3, field4, field5, field6 } = this.platformForm.value;
-      this.contentJson = {
-        choice: field1 || null,
-        numerical: field2 || null,
-        animal: field3 || null,
-        letter: field4 || null,
-        color: field5 || null,
-        fruit: field6 || null
-      };
+      this.contentJson = {};
+      
+      if (field1) this.contentJson.choice = field1;
+      if (field2) this.contentJson.numerical = field2;
+      if (field3) this.contentJson.animal = field3;
+      if (field4) this.contentJson.letter = field4;
+      if (field5) this.contentJson.color = field5;
+      if (field6) this.contentJson.fruit = field6;
+
       this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson), { emitEvent: false });
     });
   }
@@ -219,5 +220,18 @@ export class EditPlateformeComponent implements OnInit {
         console.log('Step 1 is invalid, fields marked as touched');
       }
     }
+  }
+
+  clearSelections() {
+    this.platformForm.patchValue({
+      field1: '',
+      field2: '',
+      field3: '',
+      field4: '',
+      field5: '',
+      field6: ''
+    });
+    this.contentJson = {};
+    this.platformForm.get('content')?.setValue('{}');
   }
 }

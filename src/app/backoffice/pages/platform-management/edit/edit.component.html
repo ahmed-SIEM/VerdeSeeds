@@ -168,6 +168,13 @@
                 <h5 class="text-muted mb-3">Content</h5>
               </div>
 
+              <!-- Clear Selections Button -->
+              <div class="col-12 mb-4">
+                <button type="button" class="btn btn-outline-secondary" (click)="clearSelections()">
+                  <i class="fas fa-eraser me-2"></i>Clear All Selections
+                </button>
+              </div>
+
               <!-- First Field: A, B, C -->
               <div class="col-12">
                 <label class="form-label">Select an option (A, B, C):</label>
@@ -176,7 +183,6 @@
                     <input type="radio" [value]="option" formControlName="field1" id="field1-{{option}}" class="d-none">
                     <label for="field1-{{option}}" class="choice-label">
                       <img src="https://picsum.photos/100?random={{option}}" alt="{{option}}" class="choice-image">
-                     
                     </label>
                   </div>
                 </div>
@@ -190,7 +196,6 @@
                     <input type="radio" [value]="option" formControlName="field2" id="field2-{{option}}" class="d-none">
                     <label for="field2-{{option}}" class="choice-label">
                       <img src="https://picsum.photos/100?random={{option}}" alt="{{option}}" class="choice-image">
-                     
                     </label>
                   </div>
                 </div>
@@ -204,7 +209,6 @@
                     <input type="radio" [value]="option" formControlName="field3" id="field3-{{option}}" class="d-none">
                     <label for="field3-{{option}}" class="choice-label">
                       <img src="https://picsum.photos/100?random={{option}}" alt="{{option}}" class="choice-image">
-                     
                     </label>
                   </div>
                 </div>
@@ -218,7 +222,6 @@
                     <input type="radio" [value]="option" formControlName="field4" id="field4-{{option}}" class="d-none">
                     <label for="field4-{{option}}" class="choice-label">
                       <img src="https://picsum.photos/100?random={{option}}" alt="{{option}}" class="choice-image">
-                     
                     </label>
                   </div>
                 </div>
@@ -232,7 +235,6 @@
                     <input type="radio" [value]="option" formControlName="field5" id="field5-{{option}}" class="d-none">
                     <label for="field5-{{option}}" class="choice-label">
                       <img src="https://picsum.photos/100?random={{option}}" alt="{{option}}" class="choice-image">
-                     
                     </label>
                   </div>
                 </div>
@@ -246,7 +248,6 @@
                     <input type="radio" [value]="option" formControlName="field6" id="field6-{{option}}" class="d-none">
                     <label for="field6-{{option}}" class="choice-label">
                       <img src="https://picsum.photos/100?random={{option}}" alt="{{option}}" class="choice-image">
-                  
                     </label>
                   </div>
                 </div>
