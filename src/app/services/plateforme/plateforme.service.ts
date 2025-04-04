@@ -16,23 +16,21 @@ export class PlateformeService {
   }
 
   getPlateforme(id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${id}`);
+    return this.http.get<any>(`${this.apiUrl}/retrieve-Plateforme/${id}`);
   }
 
-  getPlateformeById(id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${id}`);
-  }
+
 
   createPlateforme(plateforme: any): Observable<any> {
-    return this.http.post<any>(this.apiUrl, plateforme);
+    return this.http.post<any>(`${this.apiUrl}/add-Plateforme`, plateforme);
   }
 
-  updatePlateforme(id: number, plateforme: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/${id}`, plateforme);
+  updatePlateforme( plateforme: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/update-Plateforme`, plateforme);
   }
 
   deletePlateforme(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}/remove-Plateforme/${id}`);
   }
 
   getUsers(): Observable<any[]> {

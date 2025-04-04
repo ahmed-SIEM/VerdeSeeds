@@ -5,8 +5,8 @@ import { PlateformeService } from 'src/app/services/plateforme/plateforme.servic
 
 @Component({
   selector: 'app-Plateformelist',
-  templateUrl: './list.component.html',
-  styleUrls: ['./list.component.css']
+  templateUrl: './Platformelist.component.html',
+  styleUrls: ['./Platformelist.component.css']
 })
 export class ListPlateformeComponent implements OnInit {
 
@@ -70,7 +70,7 @@ export class ListPlateformeComponent implements OnInit {
 
   createOrUpdatePlateforme(): void {
     if (this.selectedPlateforme.idPlateforme) {
-      this.ps.updatePlateforme(this.selectedPlateforme.idPlateforme, this.selectedPlateforme).subscribe({
+      this.ps.updatePlateforme( this.selectedPlateforme).subscribe({
         next: () => this.loadPlateformes(),
         error: (err) => console.error('Erreur lors de la mise à jour de la plateforme', err)
       });
@@ -83,12 +83,22 @@ export class ListPlateformeComponent implements OnInit {
     this.selectedPlateforme = null;
   }
 
+  addplateforme(){
+    this.router.navigate(['/backoffice/platform', 'new']);
+
+  }
+
   editPlateforme(platform: any) {
     this.router.navigate(['/backoffice/platform', platform.idPlateforme, 'edit']);
   }
 
   viewPlateforme(platform: any) {
     this.router.navigate(['/backoffice/platform', platform.idPlateforme]);
+  }
+
+  previewPlateforme(platform: any) {
+    console.log('Previewing platform:', platform);
+     //preview logic here
   }
 
   deletePlateforme(id: number) {
@@ -102,6 +112,13 @@ export class ListPlateformeComponent implements OnInit {
         }
       });
     }
+  }
+
+
+  isExpired(date: string): boolean {
+    const currentDate = new Date();
+    const expirationDate = new Date(date);
+    return expirationDate < currentDate;
   }
 
   navigateToEdit(id: number): void {

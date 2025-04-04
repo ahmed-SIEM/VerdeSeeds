@@ -1,7 +1,12 @@
+<!-- Platform List Page -->
+
+<body class="app">
+
+  <div class="app-wrapper">
 <div class="container-fluid p-4">
   <div class="row justify-content-center">
-    <div class="col-12 col-md-8 col-lg-6">
-      <div class="card shadow">
+    <div>
+      <div class="card ">
         <div class="card-body">
           <!-- Header -->
           <div class="d-flex justify-content-between align-items-center mb-4">
@@ -29,8 +34,8 @@
               <!-- Platform Name -->
               <div class="col-md-6">
                 <div class="form-floating">
-                  <input type="text" class="form-control" id="nomPlateforme" formControlName="nomPlateforme"
-                    [class.is-invalid]="platformForm.get('nomPlateforme')?.invalid && platformForm.get('nomPlateforme')?.touched">
+                  <input type="text" class="form-control" id="nomPlateforme" formControlName="nomPlateforme" required
+                    [ngClass]="{'is-invalid': platformForm.get('nomPlateforme')?.invalid && platformForm.get('nomPlateforme')?.touched}">
                   <label for="nomPlateforme">Platform Name</label>
                   <div class="invalid-feedback" *ngIf="platformForm.get('nomPlateforme')?.errors?.['required']">
                     Platform name is required
@@ -44,8 +49,8 @@
               <!-- Platform Type -->
               <div class="col-md-6">
                 <div class="form-floating">
-                  <select class="form-select" id="typePack" formControlName="typePack"
-                    [class.is-invalid]="platformForm.get('typePack')?.invalid && platformForm.get('typePack')?.touched">
+                  <select class="form-select" id="typePack" formControlName="typePack" required
+                    [ngClass]="{'is-invalid': platformForm.get('typePack')?.invalid && platformForm.get('typePack')?.touched}">
                     <option value="">Select a type</option>
                     <option *ngFor="let type of typePackOptions" [value]="type">{{type}}</option>
                   </select>
@@ -59,8 +64,8 @@
               <!-- Color Picker -->
               <div class="col-md-6">
                 <div class="form-floating">
-                  <input type="color" class="form-control form-control-color w-100" id="couleur" formControlName="couleur"
-                    [class.is-invalid]="platformForm.get('couleur')?.invalid && platformForm.get('couleur')?.touched">
+                  <input type="color" class="form-control form-control-color w-100" id="couleur" formControlName="couleur" required
+                    [ngClass]="{'is-invalid': platformForm.get('couleur')?.invalid && platformForm.get('couleur')?.touched}">
                   <label for="couleur">Theme Color</label>
                   <div class="invalid-feedback">
                     Please select a color
@@ -68,13 +73,13 @@
                 </div>
               </div>
 
-              <!-- Agriculteur Selection -->
-              <div class="col-md-6">
+          
+              <div class="col-md-6"  *ngIf="!isEditMode">
                 <div class="form-floating">
-                  <select class="form-select" id="agriculteur" formControlName="agriculteur"
-                    [class.is-invalid]="platformForm.get('agriculteur')?.invalid && platformForm.get('agriculteur')?.touched">
+                  <select class="form-select" id="agriculteur" formControlName="agriculteur" required
+                    [ngClass]="{'is-invalid': platformForm.get('agriculteur')?.invalid && platformForm.get('agriculteur')?.touched}">
                     <option value="">Select a user</option>
-                    <option *ngFor="let user of users" [ngValue]="user">{{user.name}}</option>
+                    <option *ngFor="let user of users" [ngValue]="user">{{user.nom}}</option>
                   </select>
                   <label for="agriculteur">Platform Owner</label>
                   <div class="invalid-feedback">
@@ -91,8 +96,8 @@
               <!-- Creation Date -->
               <div class="col-md-6">
                 <div class="form-floating">
-                  <input type="date" class="form-control" id="dateCreation" formControlName="dateCreation"
-                    [class.is-invalid]="platformForm.get('dateCreation')?.invalid && platformForm.get('dateCreation')?.touched">
+                  <input type="date" class="form-control" id="dateCreation" formControlName="dateCreation" required
+                    [ngClass]="{'is-invalid': platformForm.get('dateCreation')?.invalid && platformForm.get('dateCreation')?.touched}">
                   <label for="dateCreation">Creation Date</label>
                   <div class="invalid-feedback">
                     Creation date is required
@@ -103,8 +108,8 @@
               <!-- Validity Date -->
               <div class="col-md-6">
                 <div class="form-floating">
-                  <input type="date" class="form-control" id="valabilite" formControlName="valabilite"
-                    [class.is-invalid]="platformForm.get('valabilite')?.invalid && platformForm.get('valabilite')?.touched">
+                  <input type="date" class="form-control" id="valabilite" formControlName="valabilite" required
+                    [ngClass]="{'is-invalid': platformForm.get('valabilite')?.invalid && platformForm.get('valabilite')?.touched}">
                   <label for="valabilite">Valid Until</label>
                   <div class="invalid-feedback">
                     Validity date is required
@@ -115,8 +120,8 @@
               <!-- Description -->
               <div class="col-12">
                 <div class="form-floating">
-                  <textarea class="form-control" id="description" formControlName="description" style="height: 100px"
-                    [class.is-invalid]="platformForm.get('description')?.invalid && platformForm.get('description')?.touched"></textarea>
+                  <textarea class="form-control" id="description" formControlName="description" style="height: 100px" required
+                    [ngClass]="{'is-invalid': platformForm.get('description')?.invalid && platformForm.get('description')?.touched}"></textarea>
                   <label for="description">Description</label>
                   <div class="invalid-feedback" *ngIf="platformForm.get('description')?.errors?.['required']">
                     Description is required
@@ -135,7 +140,8 @@
               <!-- Logo URL -->
               <div class="col-md-12">
                 <div class="form-floating">
-                  <input type="text" class="form-control" id="logo" formControlName="logo">
+                  <input type="text" class="form-control" id="logo" formControlName="logo" required
+                    [ngClass]="{'is-invalid': platformForm.get('logo')?.invalid && platformForm.get('logo')?.touched}">
                   <label for="logo">Logo URL</label>
                 </div>
               </div>
@@ -143,7 +149,8 @@
               <!-- Theme Update -->
               <div class="col-md-6">
                 <div class="form-floating">
-                  <input type="text" class="form-control" id="updateTheme" formControlName="updateTheme">
+                  <input type="text" class="form-control" id="updateTheme" formControlName="updateTheme" required
+                    [ngClass]="{'is-invalid': platformForm.get('updateTheme')?.invalid && platformForm.get('updateTheme')?.touched}">
                   <label for="updateTheme">Theme Update</label>
                 </div>
               </div>
@@ -151,7 +158,8 @@
               <!-- Content -->
               <div class="col-md-6">
                 <div class="form-floating">
-                  <input type="text" class="form-control" id="content" formControlName="content">
+                  <input type="text" class="form-control" id="content" formControlName="content" required
+                    [ngClass]="{'is-invalid': platformForm.get('content')?.invalid && platformForm.get('content')?.touched}">
                   <label for="content">Content</label>
                 </div>
               </div>
@@ -169,3 +177,6 @@
     </div>
   </div>
 </div>
+
+</div>
+</body>

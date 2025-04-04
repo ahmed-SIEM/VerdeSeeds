@@ -21,6 +21,7 @@ export class EditPlateformeComponent implements OnInit {
   typePackOptions = Object.values(this.TypePack);
   users: any[] = [];
   isLoading = false;
+  selectedPlateforme: any = null;
 
   constructor(
     private fb: FormBuilder,
@@ -35,14 +36,15 @@ export class EditPlateformeComponent implements OnInit {
       description: ['', [Validators.required, Validators.minLength(10)]],
       dateCreation: ['', Validators.required],
       valabilite: ['', Validators.required],
-      logo: [''],
-      updateTheme: [''],
-      content: [''],
-      agriculteur: [null, Validators.required]
+      logo: ['', Validators.required],
+      updateTheme: ['', Validators.required],
+      content: ['', Validators.required],
+      //agriculteur: [null, Validators.required]
     });
   }
 
   ngOnInit() {
+
     this.loadUsers();
     
     const id = this.route.snapshot.paramMap.get('id');
@@ -50,8 +52,8 @@ export class EditPlateformeComponent implements OnInit {
       this.isEditMode = true;
       this.platformId = +id;
       this.loadPlatform(this.platformId);
+
     } else {
-      // Set default date values for new platform
       const today = new Date();
       this.platformForm.patchValue({
         dateCreation: today.toISOString().split('T')[0],
@@ -64,6 +66,7 @@ export class EditPlateformeComponent implements OnInit {
     this.ps.getUsers().subscribe({
       next: (data) => {
         this.users = data;
+        console.log('Users loaded:', this.users);
       },
       error: (error) => {
         console.error('Error loading users:', error);
@@ -75,12 +78,14 @@ export class EditPlateformeComponent implements OnInit {
     this.isLoading = true;
     this.ps.getPlateforme(id).subscribe({
       next: (platform) => {
+        this.selectedPlateforme = platform;
         this.platformForm.patchValue({
           ...platform,
           dateCreation: platform.dateCreation.split('T')[0],
           valabilite: platform.valabilite.split('T')[0]
         });
         this.isLoading = false;
+
       },
       error: (error) => {
         console.error('Error loading platform:', error);
@@ -90,16 +95,20 @@ export class EditPlateformeComponent implements OnInit {
   }
 
   onSubmit() {
+
     if (this.platformForm.valid) {
       const platformData = this.platformForm.value;
+      platformData.idPlateforme = this.platformId;
+      console.log('Form submitted:', platformData);
+      console.log("current mode is edit ? :",this.isEditMode);
       
       const operation = this.isEditMode
-        ? this.ps.updatePlateforme(this.platformId!, platformData)
+        ? this.ps.updatePlateforme(platformData)
         : this.ps.createPlateforme(platformData);
 
       operation.subscribe({
         next: () => {
-          this.router.navigate(['/platform-management']);
+           this.router.navigate(['/backoffice/platform']);
         },
         error: (error) => {
           console.error('Error saving platform:', error);
