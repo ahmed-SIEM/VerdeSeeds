@@ -60,6 +60,37 @@ textarea.form-control {
   margin-top: 0.25rem;
 }
 
+.choice-label {
+  display: inline-block;
+  cursor: pointer;
+  border: 5px solid transparent;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+}
+
+.choice-label:hover {
+  border-color: #007bff;
+}
+
+input[type="radio"]:checked + label.choice-label {
+  border-color: #007bff; /* Keep the blue border when selected */
+}
+
+.choice-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+}
+
+.check-icon {
+  display: none;
+}
+
+input[type="radio"]:checked + label.choice-label .check-icon {
+  display: block;
+}
+
 @media (max-width: 768px) {
   .card-body {
     padding: 1.5rem;

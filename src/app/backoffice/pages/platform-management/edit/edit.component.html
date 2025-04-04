@@ -167,13 +167,92 @@
               <div class="col-12">
                 <h5 class="text-muted mb-3">Content</h5>
               </div>
-              <div class="col-md-12">
-                <div class="form-floating">
-                  <input type="text" class="form-control" id="content" formControlName="content" required
-                    [ngClass]="{'is-invalid': platformForm.get('content')?.invalid && platformForm.get('content')?.touched}">
-                  <label for="content">Content</label>
+
+              <!-- First Field: A, B, C -->
+              <div class="col-12">
+                <label class="form-label">Select an option (A, B, C):</label>
+                <div class="d-flex gap-3">
+                  <div *ngFor="let option of ['A', 'B', 'C']" class="position-relative">
+                    <input type="radio" [value]="option" formControlName="field1" id="field1-{{option}}" class="d-none">
+                    <label for="field1-{{option}}" class="choice-label">
+                      <img src="https://picsum.photos/100?random={{option}}" alt="{{option}}" class="choice-image">
+                     
+                    </label>
+                  </div>
                 </div>
               </div>
+
+              <!-- Second Field: 1, 2, 3 -->
+              <div class="col-12">
+                <label class="form-label">Select a number (1, 2, 3):</label>
+                <div class="d-flex gap-3">
+                  <div *ngFor="let option of ['1', '2', '3']" class="position-relative">
+                    <input type="radio" [value]="option" formControlName="field2" id="field2-{{option}}" class="d-none">
+                    <label for="field2-{{option}}" class="choice-label">
+                      <img src="https://picsum.photos/100?random={{option}}" alt="{{option}}" class="choice-image">
+                     
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Third Field: cat, dog, cow -->
+              <div class="col-12">
+                <label class="form-label">Select an animal (cat, dog, cow):</label>
+                <div class="d-flex gap-3">
+                  <div *ngFor="let option of ['cat', 'dog', 'cow']" class="position-relative">
+                    <input type="radio" [value]="option" formControlName="field3" id="field3-{{option}}" class="d-none">
+                    <label for="field3-{{option}}" class="choice-label">
+                      <img src="https://picsum.photos/100?random={{option}}" alt="{{option}}" class="choice-image">
+                     
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Fourth Field: X, Y, Z -->
+              <div class="col-12">
+                <label class="form-label">Select a letter (X, Y, Z):</label>
+                <div class="d-flex gap-3">
+                  <div *ngFor="let option of ['X', 'Y', 'Z']" class="position-relative">
+                    <input type="radio" [value]="option" formControlName="field4" id="field4-{{option}}" class="d-none">
+                    <label for="field4-{{option}}" class="choice-label">
+                      <img src="https://picsum.photos/100?random={{option}}" alt="{{option}}" class="choice-image">
+                     
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Fifth Field: Red, Green, Blue -->
+              <div class="col-12">
+                <label class="form-label">Select a color (Red, Green, Blue):</label>
+                <div class="d-flex gap-3">
+                  <div *ngFor="let option of ['Red', 'Green', 'Blue']" class="position-relative">
+                    <input type="radio" [value]="option" formControlName="field5" id="field5-{{option}}" class="d-none">
+                    <label for="field5-{{option}}" class="choice-label">
+                      <img src="https://picsum.photos/100?random={{option}}" alt="{{option}}" class="choice-image">
+                     
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sixth Field: Apple, Banana, Cherry -->
+              <div class="col-12">
+                <label class="form-label">Select a fruit (Apple, Banana, Cherry):</label>
+                <div class="d-flex gap-3">
+                  <div *ngFor="let option of ['Apple', 'Banana', 'Cherry']" class="position-relative">
+                    <input type="radio" [value]="option" formControlName="field6" id="field6-{{option}}" class="d-none">
+                    <label for="field6-{{option}}" class="choice-label">
+                      <img src="https://picsum.photos/100?random={{option}}" alt="{{option}}" class="choice-image">
+                  
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Back and Submit Buttons -->
               <div class="col-12 mt-4">
                 <button type="button" class="btn btn-outline-secondary w-100 mb-2" (click)="goToStep(1)">
                   Back
@@ -181,6 +260,12 @@
                 <button type="submit" class="btn btn-primary w-100" [disabled]="platformForm.invalid">
                   <i class="fas fa-save me-2"></i>{{ isEditMode ? 'Update' : 'Create' }} Platform
                 </button>
+              </div>
+
+              <!-- Tracking JSON Content -->
+              <div class="col-12 mt-4">
+                <h5 class="text-muted">Current Content JSON</h5>
+                <pre class="bg-light p-3 rounded">{{ contentJson | json }}</pre>
               </div>
             </div>
           </form>

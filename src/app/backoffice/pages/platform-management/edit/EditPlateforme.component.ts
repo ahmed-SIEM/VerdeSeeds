@@ -24,6 +24,7 @@ export class EditPlateformeComponent implements OnInit {
   users: any[] = [];
   isLoading = false;
   selectedPlateforme: any = null;
+  contentJson: any = {}; // Track the current content JSON dynamically
 
   constructor(
     private fb: FormBuilder,
@@ -41,7 +42,27 @@ export class EditPlateformeComponent implements OnInit {
       logo: ['', Validators.required],
       updateTheme: ['', Validators.required],
       content: ['', Validators.required],
-      agriculteur: [null] 
+      agriculteur: [null],
+      field1: ['', Validators.required], // First radio field
+      field2: ['', Validators.required], // Second radio field
+      field3: ['', Validators.required], // Third radio field
+      field4: ['', Validators.required], // Fourth radio field
+      field5: ['', Validators.required], // Fifth radio field
+      field6: ['', Validators.required]  // Sixth radio field
+    });
+
+    // Update contentJson dynamically based on other fields
+    this.platformForm.valueChanges.subscribe(() => {
+      const { field1, field2, field3, field4, field5, field6 } = this.platformForm.value;
+      this.contentJson = {
+        choice: field1 || null,
+        numerical: field2 || null,
+        animal: field3 || null,
+        letter: field4 || null,
+        color: field5 || null,
+        fruit: field6 || null
+      };
+      this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson), { emitEvent: false });
     });
   }
 
