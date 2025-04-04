@@ -71,12 +71,15 @@ export class EditPlateformeComponent implements OnInit {
       const { field1, field2, field3, field4, field5, field6 } = this.platformForm.value;
       this.contentJson = {};
       
-      if (field1) this.contentJson.header = { "type" : field1}
-      if (field2) this.contentJson.numerical = field2;
-      if (field3) this.contentJson.animal = field3;
-      if (field4) this.contentJson.letter = field4;
-      if (field5) this.contentJson.color = field5;
-      if (field6) this.contentJson.fruit = field6;
+      // Set header first (always order 0)
+      if (field1) this.contentJson.header = { "type": field1};
+      
+      // Add other components with their order
+      if (field2) this.contentJson.numerical = { "type": field2, "order": 0 };
+      if (field3) this.contentJson.animal = { "type": field3, "order": 1 };
+      if (field4) this.contentJson.letter = { "type": field4, "order": 2 };
+      if (field5) this.contentJson.color = { "type": field5, "order": 3 };
+      if (field6) this.contentJson.fruit = { "type": field6, "order": 4 };
 
       this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson), { emitEvent: false });
     });
@@ -135,12 +138,12 @@ export class EditPlateformeComponent implements OnInit {
 
             // Set the values for the radio fields
             this.platformForm.patchValue({
-              field1: parsedContent.choice || '',
-              field2: parsedContent.numerical || '',
-              field3: parsedContent.animal || '',
-              field4: parsedContent.letter || '',
-              field5: parsedContent.color || '',
-              field6: parsedContent.fruit || ''
+              field1: parsedContent.header?.type || '',
+              field2: parsedContent.numerical?.type || '',
+              field3: parsedContent.animal?.type || '',
+              field4: parsedContent.letter?.type || '',
+              field5: parsedContent.color?.type || '',
+              field6: parsedContent.fruit?.type || ''
             });
           } catch (error) {
             console.error('Error parsing content JSON:', error);
@@ -274,7 +277,7 @@ export class EditPlateformeComponent implements OnInit {
     });
     
     // Update contentJson but keep header if selected
-    this.contentJson = headerValue ? { header: { "type": headerValue } } : {};
+    this.contentJson = headerValue ? { header: { "type": headerValue, "order": 0 } } : {};
     this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson));
   }
 
@@ -286,15 +289,20 @@ export class EditPlateformeComponent implements OnInit {
     }));
   }
 
-  // Add this new method to get only sortable items (excluding header)
   getSortableItems(): {key: string, label: string, value: any}[] {
     return Object.entries(this.contentJson)
       .filter(([key]) => key !== 'header')
+      .sort((a, b) => ((a[1] as { order: number }).order ?? 0) - ((b[1] as { order: number }).order ?? 0)) // Sort by order, default to 0 if not set
       .map(([key, value]) => ({
         key,
         label: key.charAt(0).toUpperCase() + key.slice(1),
-        value
+        value: (value as { type: string }).type
       }));
+  }
+
+  reorderItems(): void {
+    const items = this.getSortableItems();
+    this.updateContentJson(items);
   }
 
   moveItemUp(index: number): void {
@@ -317,11 +325,19 @@ export class EditPlateformeComponent implements OnInit {
     const newContentJson: any = {
       header: this.contentJson.header // Preserve the header
     };
-    items.forEach(item => {
+    
+    // Update the remaining items with new orders based on their position
+    items.forEach((item, index) => {
       if (item && item.key && item.value !== undefined) {
-        newContentJson[item.key] = item.value;
+        newContentJson[item.key] = {
+          type: this.contentJson[item.key].type,
+          order: index // Order based on current position in the sorted list
+        };
       }
     });
+    
     this.contentJson = newContentJson;
+    // Ensure content form field is updated with the new JSON
+    this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson), { emitEvent: false });
   }
 }
