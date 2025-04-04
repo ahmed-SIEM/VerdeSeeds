@@ -79,7 +79,7 @@
                   <select class="form-select" id="agriculteur" formControlName="agriculteur" required
                     [ngClass]="{'is-invalid': platformForm.get('agriculteur')?.invalid && platformForm.get('agriculteur')?.touched}">
                     <option value="">Select a user</option>
-                    <option *ngFor="let user of users" [ngValue]="user">{{user.nom}}</option>
+                    <option *ngFor="let user of users" [value]="user.email">{{ user.nom }}</option>
                   </select>
                   <label for="agriculteur">Platform Owner</label>
                   <div class="invalid-feedback">

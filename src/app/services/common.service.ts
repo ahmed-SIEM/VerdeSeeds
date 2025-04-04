@@ -18,4 +18,15 @@ export class CommonService {
       })
     );
   }
+
+
+  getUserByEmail(email: string): Observable<any> {
+    return this.myHttp.get(`${this.url}/auth/${email}`).pipe(
+      catchError(error => {
+        console.error('Erreur lors de la récupération de l\'utilisateur', error);
+        return throwError(() => new Error('Erreur réseau. Veuillez réessayer plus tard.'));
+      })
+    );
+}
+
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CommonService } from 'src/app/services/common.service';
 import { PlateformeService } from 'src/app/services/plateforme/plateforme.service';
 
 @Component({
@@ -29,6 +30,7 @@ export class EditPlateformeComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private ps: PlateformeService,
+    private us: CommonService,
     private route: ActivatedRoute,
     private router: Router
   ) {
@@ -43,12 +45,12 @@ export class EditPlateformeComponent implements OnInit {
       updateTheme: ['', Validators.required],
       content: ['', Validators.required],
       agriculteur: [null],
-      field1: ['', Validators.required], // First radio field
-      field2: ['', Validators.required], // Second radio field
-      field3: ['', Validators.required], // Third radio field
-      field4: ['', Validators.required], // Fourth radio field
-      field5: ['', Validators.required], // Fifth radio field
-      field6: ['', Validators.required]  // Sixth radio field
+      field1: ['', Validators.required], 
+      field2: ['', Validators.required],
+      field3: ['', Validators.required], 
+      field4: ['', Validators.required], 
+      field5: ['', Validators.required], 
+      field6: ['', Validators.required] 
     });
 
     // Update contentJson dynamically based on other fields
@@ -141,29 +143,44 @@ export class EditPlateformeComponent implements OnInit {
   }
 
   onSubmit() {
-
     if (this.platformForm.valid) {
-      const platformData = this.platformForm.value;
-      platformData.idPlateforme = this.platformId;
-      console.log('Form submitted:', platformData);
-      console.log("current mode is edit ? :",this.isEditMode);
-      
-      const operation = this.isEditMode
-        ? this.ps.updatePlateforme(platformData)
-        : this.ps.createPlateforme(platformData);
-
-      operation.subscribe({
-        next: () => {
-           this.router.navigate(['/backoffice/platform']);
+      const platformData = { ...this.platformForm.value };
+      console.log('Form data before submission:', platformData);
+  
+      this.us.getUserByEmail(platformData.agriculteur).subscribe({
+        next: (user) => {
+          platformData.agriculteur = user;
+  
+          // Ajoute l'idPlateforme seulement si c’est un update
+          if (this.isEditMode) {
+            platformData.idPlateforme = this.platformId;
+          }
+  
+          console.log('Form data before sending to backend:', platformData);
+  
+          const operation = this.isEditMode
+            ? this.ps.updatePlateforme(platformData)
+            : this.ps.createPlateforme(platformData);
+  
+          operation.subscribe({
+            next: () => {
+         //     this.router.navigate(['/backoffice/platform']);
+            },
+            error: (error) => {
+              console.error('Error saving platform:', error);
+            }
+          });
         },
         error: (error) => {
-          console.error('Error saving platform:', error);
+          console.error('Error fetching user by email:', error);
         }
       });
     } else {
       this.markFormGroupTouched(this.platformForm);
     }
   }
+  
+  
 
   private markFormGroupTouched(formGroup: FormGroup) {
     Object.values(formGroup.controls).forEach(control => {
