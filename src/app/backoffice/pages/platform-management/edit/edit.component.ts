@@ -6,7 +6,9 @@ import { PlateformeService } from 'src/app/services/plateforme/plateforme.servic
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgFor } from '@angular/common';
-import { ELEMENTS_FIELDS, COMPONENTS, MAX_SELECTIONS, MINIMUM_SELECTIONS } from './utils/constants/edit-plateforme.constants';
+import { ELEMENTS_FIELDS
+, featuredelements, headingelements, headerelements, otherselements ,
+ MAX_SELECTIONS, MINIMUM_SELECTIONS } from './utils/constants/edit-plateforme.constants';
 import { PlatformContent, TypePack } from './utils/interfaces/edit-plateforme.interface';
 import { EditPlateformeService } from './utils/services/edit-plateforme.service';
 
@@ -23,8 +25,52 @@ import { EditPlateformeService } from './utils/services/edit-plateforme.service'
   ]
 })
 export class EditPlateformeComponent implements OnInit {
+
+  ELEMENTS_FIELDS = {
+    headerwithicons: [
+      "title", "subtitle", "Ftitle", "Fimage",
+      "Stitle", "Simage", "Ttitle", "Timage",
+      "Ptitle", "Pimage"
+    ],
+    centeredhero: [
+      "title", "subtitle", "imageUrl"
+    ],
+    herowithimage: [
+      "title", "subtitle", "imageUrl"
+    ],
+    verticallycenteredhero: [
+      "title", "subtitle"
+    ],
+    columnswithicons: [
+      "MainTitle", "Ftitle", "Fdescription", "Fimage",
+      "Stitle", "Sdescription", "Simage",
+      "Ttitle", "Tdescription", "Timage"
+    ],
+    customcards: [
+      "MainTitle", "Ftitle", "Fimage",
+      "Stitle", "Simage", "Ttitle", "Timage"
+    ],
+    headings: [
+      "Ftitle", "Fdescription", "Fimage",
+      "Stitle", "Sdescription", "Simage",
+      "Ttitle", "Tdescription", "Timage"
+    ],
+    headingleftwithimage: [
+      "title", "subtitle", "imageUrl"
+    ],
+    headingrightwithimage: [
+      "title", "subtitle", "imageUrl"
+    ],
+    newsletter: [
+      "titleA", "TextB", "TextC", "Image"
+    ],
+    plateformeabout: [
+      "title1", "title2", "description", "imageUrl"
+    ]
+  };
+
   elementsfields = ELEMENTS_FIELDS;
-  components = COMPONENTS;
+components = [ featuredelements,headingelements, headerelements, otherselements ]
   currentStep: number = 1;
   currentModal: string | null = null;
   readonly MAX_SELECTIONS = MAX_SELECTIONS; 
@@ -38,7 +84,7 @@ export class EditPlateformeComponent implements OnInit {
   isLoading = false;
   selectedPlateforme: any = null;
   contentJson: PlatformContent = {}; 
-  activeAccordion: string | null = null; 
+  selectedComponent: string | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -173,6 +219,7 @@ export class EditPlateformeComponent implements OnInit {
   goToStep(step: number): void {
     if (step === 1) {
       this.currentStep = step;
+      console.log('JSON content step 1:', this.contentJson);
     } else if (step === 2) {
       const step1Fields = ['nomPlateforme', 'typePack', 'couleur', 'description', 'dateCreation', 'valabilite', 'logo', 'updateTheme', 'agriculteur'];
       let isStep1Valid = true;
@@ -190,6 +237,9 @@ export class EditPlateformeComponent implements OnInit {
       if (isStep1Valid) {
         this.currentStep = step;
       }
+
+      console.log('JSON content step 2:', this.contentJson);
+
     } else if (step === 3) {
       if (this.platformForm.get('field1')?.valid && this.getSelectionCount() >= this.MINIMUM_SELECTIONS) {
         const sortedItems = this.getSortableItems();
@@ -197,8 +247,12 @@ export class EditPlateformeComponent implements OnInit {
           this.currentStep = step;
         }
       }
+      console.log('JSON content step 3:', this.contentJson);
+
     } else if (step === 4) {
       this.currentStep = step;
+      console.log('JSON content step 4:', this.contentJson);
+
     }
   }
 
@@ -277,7 +331,43 @@ export class EditPlateformeComponent implements OnInit {
     }
   }
 
-  toggleAccordion(key: string) {
-    this.activeAccordion = this.activeAccordion === key ? null : key;
+  getComponentFields(componentType: string): string[] {
+    const type = componentType.toLowerCase().replace(/[-\s]/g, '');
+    return this.elementsfields[type] || [];
+  }
+
+  getSelectedComponents(): { type: string, fields: string[] }[] {
+    const components = [];
+    
+    if (this.platformForm.get('field1')?.value) {
+      components.push({
+        type: this.platformForm.get('field1')?.value,
+        fields: this.getComponentFields(this.platformForm.get('field1')?.value)
+      });
+    }
+
+    for (let i = 2; i <= 4; i++) {
+      const fieldValue = this.platformForm.get(`field${i}`)?.value;
+      if (fieldValue) {
+        components.push({
+          type: fieldValue,
+          fields: this.getComponentFields(fieldValue)
+        });
+      }
+    }
+
+    return components;
+  }
+
+  updateField(componentType: string, fieldName: string, value: string) {
+    if (!this.contentJson[componentType]) {
+      this.contentJson[componentType] = { type: componentType };
+    }
+    this.contentJson[componentType][fieldName] = value;
+    this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson), { emitEvent: false });
+  }
+
+  getFieldValue(componentType: string, fieldName: string): string {
+    return this.contentJson[componentType]?.[fieldName] || '';
   }
 }

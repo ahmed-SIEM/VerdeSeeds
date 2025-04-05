@@ -367,57 +367,17 @@ input[type="radio"]:checked + label.choice-label .check-icon {
   background: #f0f9ff;
 }
 
-/* Accordion Styles */
-.accordion-item {
-  border: 1px solid rgba(0,0,0,.125);
-  border-radius: 8px;
-  margin-bottom: 1rem;
-  overflow: hidden;
+/* New Component Form Styles */
+.component-form {
+  margin-bottom: 2rem;
 }
 
-.accordion-header {
-  cursor: pointer;
-}
-
-.accordion-button {
-  width: 100%;
+.card-header {
   padding: 1rem;
-  text-align: left;
-  background: none;
-  border: none;
-  font-weight: 500;
-  position: relative;
-  display: flex;
-  align-items: center;
   background-color: #f8f9fa;
 }
 
-.accordion-button::after {
-  content: '';
-  width: 10px;
-  height: 10px;
-  border-right: 2px solid #666;
-  border-bottom: 2px solid #666;
-  transform: rotate(45deg);
-  margin-left: auto;
-  transition: transform 0.3s ease;
-}
-
-.accordion-button.collapsed::after {
-  transform: rotate(-45deg);
-}
-
-.accordion-collapse {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease-out;
-}
-
-.accordion-collapse.show {
-  max-height: 500px;
-}
-
-.accordion-body {
-  padding: 1rem;
-  background-color: white;
+.card-header h6 {
+  margin: 0;
+  font-weight: 500;
 }
