@@ -145,10 +145,49 @@ body.app {
 /* Modal */
 .modal-content {
   border-radius: 0.75rem;
+  height: 90vh; /* Make modal take 90% of viewport height */
+  margin: 20px;
 }
 
 .modal-title {
   font-weight: 600;
+}
+
+.modal-body {
+  padding: 0;
+  overflow: hidden;
+  height: calc(90vh - 60px); /* Subtract header height */
+}
+
+.component-list {
+  width: 60%;
+  height: 100%;
+  overflow-y: auto;
+  padding: 1.5rem;
+  border-right: 1px solid #e2e8f0;
+}
+
+.preview-section {
+  width: 40%;
+  height: 100%;
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8fafc;
+}
+
+.preview-content {
+  text-align: center;
+  width: 100%;
+}
+
+.preview-image {
+  width: 100%;
+  max-height: 600px;
+  object-fit: contain;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
 .list-group-item {
@@ -164,52 +203,6 @@ body.app {
 }
 
 /* Modal Split Layout */
-.modal-body {
-  padding: 0;
-  overflow: hidden;
-}
-
-.component-list {
-  width: 60%;
-  height: 600px;
-  overflow-y: auto;
-  padding: 1.5rem;
-  border-right: 1px solid #e2e8f0;
-}
-
-.preview-section {
-  width: 40%;
-  height: 600px;
-  padding: 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #f8fafc;
-}
-
-.preview-content {
-  text-align: center;
-}
-
-.preview-image {
-  max-width: 100%;
-  max-height: 400px;
-  object-fit: contain;
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-
-.preview-title {
-  margin-top: 1rem;
-  color: #2d3748;
-  font-weight: 600;
-}
-
-.preview-placeholder {
-  color: #94a3b8;
-  text-align: center;
-}
-
 .component-card {
   background-color: #ffffff;
   border: 1px solid #e2e8f0;
@@ -267,5 +260,16 @@ body.app {
     width: 2px;
     height: 1rem;
     margin: 0.5rem 0;
+  }
+}
+
+@media (max-width: 992px) {
+  .modal-content {
+    height: 100vh;
+    margin: 0;
+  }
+
+  .modal-body {
+    height: calc(100vh - 60px);
   }
 }
