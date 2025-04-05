@@ -329,14 +329,14 @@ components = [ featuredelements,headingelements, otherselements ]
   }
 
   reorderItems(): void {
-    const items = this.getSortableItems();
+    const sortedKeys = this.getSortedComponentKeys();
     const newContent: ContentJson = {
-      header: this.contentJson.header, // Ensure header is preserved
+      header: this.contentJson.header, // Preserve the header
     };
-    
-    items.forEach((item, index) => {
+
+    sortedKeys.forEach((key, index) => {
       const componentKey = `component${index + 1}`;
-      newContent[componentKey] = { ...this.contentJson[item.key] }; // Preserve all field values
+      newContent[componentKey] = { ...this.contentJson[key] }; // Reassign components in sorted order
     });
 
     this.contentJson = newContent;
@@ -344,41 +344,33 @@ components = [ featuredelements,headingelements, otherselements ]
   }
 
   moveItemUp(index: number): void {
+    const sortedKeys = this.getSortedComponentKeys();
     if (index > 0) {
-      const items = this.getSortableItems();
-      [items[index - 1], items[index]] = [items[index], items[index - 1]];
-      
-      const newContent: ContentJson = {
-        header: this.contentJson.header, // Ensure header is preserved
-      };
-      
-      items.forEach((item, i) => {
-        const componentKey = `component${i + 1}`;
-        newContent[componentKey] = { ...this.contentJson[item.key] }; // Preserve all field values
-      });
-
-      this.contentJson = newContent;
-      this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson), { emitEvent: false });
+      [sortedKeys[index - 1], sortedKeys[index]] = [sortedKeys[index], sortedKeys[index - 1]]; // Swap items
+      this.updateContentJsonOrder(sortedKeys);
     }
   }
 
   moveItemDown(index: number): void {
-    const items = this.getSortableItems();
-    if (index < items.length - 1) {
-      [items[index], items[index + 1]] = [items[index + 1], items[index]];
-      
-      const newContent: ContentJson = {
-        header: this.contentJson.header, // Ensure header is preserved
-      };
-      
-      items.forEach((item, i) => {
-        const componentKey = `component${i + 1}`;
-        newContent[componentKey] = { ...this.contentJson[item.key] }; // Preserve all field values
-      });
-
-      this.contentJson = newContent;
-      this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson), { emitEvent: false });
+    const sortedKeys = this.getSortedComponentKeys();
+    if (index < sortedKeys.length - 1) {
+      [sortedKeys[index], sortedKeys[index + 1]] = [sortedKeys[index + 1], sortedKeys[index]]; // Swap items
+      this.updateContentJsonOrder(sortedKeys);
     }
+  }
+
+  updateContentJsonOrder(sortedKeys: string[]): void {
+    const newContent: ContentJson = {
+      header: this.contentJson.header, // Preserve the header
+    };
+
+    sortedKeys.forEach((key, index) => {
+      const componentKey = `component${index + 1}`;
+      newContent[componentKey] = { ...this.contentJson[key] }; // Reassign components in sorted order
+    });
+
+    this.contentJson = newContent;
+    this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson), { emitEvent: false });
   }
 
   getComponentFields(componentType: string): string[] {
@@ -420,5 +412,11 @@ components = [ featuredelements,headingelements, otherselements ]
 
   getFieldValue(componentType: string, fieldName: string): string {
     return this.contentJson[componentType]?.[fieldName] || ''; // Safely access fields
+  }
+
+  getSortedComponentKeys(): string[] {
+    return Object.keys(this.contentJson)
+      .filter(key => key.startsWith('component')) // Only include component keys
+      .sort((a, b) => parseInt(a.replace('component', ''), 10) - parseInt(b.replace('component', ''), 10)); // Sort by component number
   }
 }
