@@ -200,48 +200,34 @@
 
                     <!-- Selection Buttons -->
                     <div class="col-12">
-                      <button type="button" class="selection-button" (click)="openModal('number')"
+                      <button type="button" class="selection-button" (click)="openModal('component1')"
                         [class.selected]="platformForm.get('field2')?.value"
                         [disabled]="isSelectionLimitReached() && !platformForm.get('field2')?.value">
-                        <span>Number Component: {{platformForm.get('field2')?.value || 'Not selected'}}</span>
+                        <span>Component 1: {{platformForm.get('field2')?.value || 'Not selected'}}</span>
                         <i class="fas fa-chevron-right"></i>
                       </button>
 
-                      <button type="button" class="selection-button" (click)="openModal('animal')"
+                      <button type="button" class="selection-button" (click)="openModal('component2')"
                         [class.selected]="platformForm.get('field3')?.value"
                         [disabled]="isSelectionLimitReached() && !platformForm.get('field3')?.value">
-                        <span>Animal Component: {{platformForm.get('field3')?.value || 'Not selected'}}</span>
+                        <span>Component 2: {{platformForm.get('field3')?.value || 'Not selected'}}</span>
                         <i class="fas fa-chevron-right"></i>
                       </button>
 
-                      <button type="button" class="selection-button" (click)="openModal('letter')"
+                      <button type="button" class="selection-button" (click)="openModal('component3')"
                         [class.selected]="platformForm.get('field4')?.value"
                         [disabled]="isSelectionLimitReached() && !platformForm.get('field4')?.value">
-                        <span>Letter Component: {{platformForm.get('field4')?.value || 'Not selected'}}</span>
-                        <i class="fas fa-chevron-right"></i>
-                      </button>
-
-                      <button type="button" class="selection-button" (click)="openModal('color')"
-                        [class.selected]="platformForm.get('field5')?.value"
-                        [disabled]="isSelectionLimitReached() && !platformForm.get('field5')?.value">
-                        <span>Color Component: {{platformForm.get('field5')?.value || 'Not selected'}}</span>
-                        <i class="fas fa-chevron-right"></i>
-                      </button>
-
-                      <button type="button" class="selection-button" (click)="openModal('fruit')"
-                        [class.selected]="platformForm.get('field6')?.value"
-                        [disabled]="isSelectionLimitReached() && !platformForm.get('field6')?.value">
-                        <span>Fruit Component: {{platformForm.get('field6')?.value || 'Not selected'}}</span>
+                        <span>Component 3: {{platformForm.get('field4')?.value || 'Not selected'}}</span>
                         <i class="fas fa-chevron-right"></i>
                       </button>
                     </div>
                   </div>
 
                   <!-- Modals -->
-                  <div class="modal" [class.show]="currentModal === 'number'">
+                  <div class="modal" [class.show]="currentModal === 'component1'">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <h5 class="modal-title">Select a Number</h5>
+                        <h5 class="modal-title">Select Component 1</h5>
                         <button type="button" class="modal-close" (click)="closeModal()">&times;</button>
                       </div>
                       <div class="d-flex gap-3">
@@ -257,14 +243,14 @@
                     </div>
                   </div>
 
-                  <div class="modal" [class.show]="currentModal === 'animal'">
+                  <div class="modal" [class.show]="currentModal === 'component2'">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <h5 class="modal-title">Select an Animal</h5>
+                        <h5 class="modal-title">Select Component 2</h5>
                         <button type="button" class="modal-close" (click)="closeModal()">&times;</button>
                       </div>
                       <div class="d-flex gap-3">
-                        <div *ngFor="let option of ['cat', 'dog', 'cow']" class="position-relative">
+                        <div *ngFor="let option of ['1', '2', '3']" class="position-relative">
                           <input type="radio" [value]="option" formControlName="field3" id="field3-{{option}}"
                             class="d-none" (change)="closeModal()">
                           <label for="field3-{{option}}" class="choice-label">
@@ -276,55 +262,17 @@
                     </div>
                   </div>
 
-                  <div class="modal" [class.show]="currentModal === 'letter'">
+                  <div class="modal" [class.show]="currentModal === 'component3'">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <h5 class="modal-title">Select a Letter</h5>
+                        <h5 class="modal-title">Select Component 3</h5>
                         <button type="button" class="modal-close" (click)="closeModal()">&times;</button>
                       </div>
                       <div class="d-flex gap-3">
-                        <div *ngFor="let option of ['X', 'Y', 'Z']" class="position-relative">
+                        <div *ngFor="let option of ['1', '2', '3']" class="position-relative">
                           <input type="radio" [value]="option" formControlName="field4" id="field4-{{option}}"
                             class="d-none" (change)="closeModal()">
                           <label for="field4-{{option}}" class="choice-label">
-                            <img src="https://picsum.photos/100?random={{option}}" alt="{{option}}"
-                              class="choice-image">
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="modal" [class.show]="currentModal === 'color'">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title">Select a Color</h5>
-                        <button type="button" class="modal-close" (click)="closeModal()">&times;</button>
-                      </div>
-                      <div class="d-flex gap-3">
-                        <div *ngFor="let option of ['Red', 'Green', 'Blue']" class="position-relative">
-                          <input type="radio" [value]="option" formControlName="field5" id="field5-{{option}}"
-                            class="d-none" (change)="closeModal()">
-                          <label for="field5-{{option}}" class="choice-label">
-                            <img src="https://picsum.photos/100?random={{option}}" alt="{{option}}"
-                              class="choice-image">
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="modal" [class.show]="currentModal === 'fruit'">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title">Select a Fruit</h5>
-                        <button type="button" class="modal-close" (click)="closeModal()">&times;</button>
-                      </div>
-                      <div class="d-flex gap-3">
-                        <div *ngFor="let option of ['Apple', 'Banana', 'Cherry']" class="position-relative">
-                          <input type="radio" [value]="option" formControlName="field6" id="field6-{{option}}"
-                            class="d-none" (change)="closeModal()">
-                          <label for="field6-{{option}}" class="choice-label">
                             <img src="https://picsum.photos/100?random={{option}}" alt="{{option}}"
                               class="choice-image">
                           </label>

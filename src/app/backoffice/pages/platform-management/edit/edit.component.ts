@@ -97,7 +97,8 @@ export class EditPlateformeComponent implements OnInit {
 
   currentStep: number = 1; // Track the current step
   currentModal: string | null = null;
-  readonly MAX_SELECTIONS = 3;
+  readonly MAX_SELECTIONS = 3; // Update max selections to 3
+  readonly MINIMUM_SELECTIONS = 3; // Update minimum selections to 3
 
   TypePack = {
     BASIC: 'BASIC',
@@ -112,7 +113,6 @@ export class EditPlateformeComponent implements OnInit {
   isLoading = false;
   selectedPlateforme: any = null;
   contentJson: any = {}; // Track the current content JSON dynamically
-  readonly MINIMUM_SELECTIONS = 3;
   activeAccordion: string | null = null;  // Track active accordion
 
   constructor(
@@ -149,19 +149,17 @@ export class EditPlateformeComponent implements OnInit {
 
     // Update contentJson to include titles
     this.platformForm.valueChanges.subscribe(() => {
-      const { field1, field2, field3, field4, field5, field6,
-        field1Title, field2Title, field3Title, field4Title, field5Title, field6Title } = this.platformForm.value;
+      const { field1, field2, field3, field4,
+        field1Title, field2Title, field3Title, field4Title } = this.platformForm.value;
       this.contentJson = {};
 
       // Set header first (always order 0)
       if (field1) this.contentJson.header = { "type": field1, "title": field1Title };
 
       // Add other components with their order and title
-      if (field2) this.contentJson.numerical = { "type": field2, "title": field2Title, "order": 0 };
-      if (field3) this.contentJson.animal = { "type": field3, "title": field3Title, "order": 1 };
-      if (field4) this.contentJson.letter = { "type": field4, "title": field4Title, "order": 2 };
-      if (field5) this.contentJson.color = { "type": field5, "title": field5Title, "order": 3 };
-      if (field6) this.contentJson.fruit = { "type": field6, "title": field6Title, "order": 4 };
+      if (field2) this.contentJson.component1 = { "type": field2, "title": field2Title, "order": 0 };
+      if (field3) this.contentJson.component2 = { "type": field3, "title": field3Title, "order": 1 };
+      if (field4) this.contentJson.component3 = { "type": field4, "title": field4Title, "order": 2 };
 
       this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson), { emitEvent: false });
     });
@@ -221,17 +219,13 @@ export class EditPlateformeComponent implements OnInit {
             // Set the values for the radio fields
             this.platformForm.patchValue({
               field1: parsedContent.header?.type || '',
-              field2: parsedContent.numerical?.type || '',
-              field3: parsedContent.animal?.type || '',
-              field4: parsedContent.letter?.type || '',
-              field5: parsedContent.color?.type || '',
-              field6: parsedContent.fruit?.type || '',
+              field2: parsedContent.component1?.type || '',
+              field3: parsedContent.component2?.type || '',
+              field4: parsedContent.component3?.type || '',
               field1Title: parsedContent.header?.title || '',
-              field2Title: parsedContent.numerical?.title || '',
-              field3Title: parsedContent.animal?.title || '',
-              field4Title: parsedContent.letter?.title || '',
-              field5Title: parsedContent.color?.title || '',
-              field6Title: parsedContent.fruit?.title || ''
+              field2Title: parsedContent.component1?.title || '',
+              field3Title: parsedContent.component2?.title || '',
+              field4Title: parsedContent.component3?.title || ''
             });
           } catch (error) {
             console.error('Error parsing content JSON:', error);
@@ -341,8 +335,6 @@ export class EditPlateformeComponent implements OnInit {
     if (this.platformForm.get('field2')?.value) count++;
     if (this.platformForm.get('field3')?.value) count++;
     if (this.platformForm.get('field4')?.value) count++;
-    if (this.platformForm.get('field5')?.value) count++;
-    if (this.platformForm.get('field6')?.value) count++;
     return count;
   }
 
