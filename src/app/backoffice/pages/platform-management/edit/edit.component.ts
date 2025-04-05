@@ -6,7 +6,10 @@ import { PlateformeService } from 'src/app/services/plateforme/plateforme.servic
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgFor } from '@angular/common';
-import { headerelements, featuredelements, headingelements, otherselements, TypePack} from './constants/types';
+import { ELEMENTS_FIELDS, COMPONENTS, MAX_SELECTIONS, MINIMUM_SELECTIONS } from './utils/constants/edit-plateforme.constants';
+import { PlatformContent, TypePack } from './utils/interfaces/edit-plateforme.interface';
+import { EditPlateformeService } from './utils/services/edit-plateforme.service';
+
 @Component({
   selector: 'app-edit',
   templateUrl: './edit.component.html',
@@ -20,60 +23,12 @@ import { headerelements, featuredelements, headingelements, otherselements, Type
   ]
 })
 export class EditPlateformeComponent implements OnInit {
-
-
-  elementsfields = {
-    headerwithicons: [
-      "title", "subtitle", "Ftitle", "Fimage",
-      "Stitle", "Simage", "Ttitle", "Timage",
-      "Ptitle", "Pimage"
-    ],
-    centeredhero: [
-      "title", "subtitle", "imageUrl"
-    ],
-    herowithimage: [
-      "title", "subtitle", "imageUrl"
-    ],
-    verticallycenteredhero: [
-      "title", "subtitle"
-    ],
-    columnswithicons: [
-      "MainTitle", "Ftitle", "Fdescription", "Fimage",
-      "Stitle", "Sdescription", "Simage",
-      "Ttitle", "Tdescription", "Timage"
-    ],
-    customcards: [
-      "MainTitle", "Ftitle", "Fimage",
-      "Stitle", "Simage", "Ttitle", "Timage"
-    ],
-    headings: [
-      "Ftitle", "Fdescription", "Fimage",
-      "Stitle", "Sdescription", "Simage",
-      "Ttitle", "Tdescription", "Timage"
-    ],
-    headingleftwithimage: [
-      "title", "subtitle", "imageUrl"
-    ],
-    headingrightwithimage: [
-      "title", "subtitle", "imageUrl"
-    ],
-    newsletter: [
-      "titleA", "TextB", "TextC", "Image"
-    ],
-    plateformeabout: [
-      "title1", "title2", "description", "imageUrl"
-    ]
-  };
-
-
-  components = [ featuredelements,headingelements, headerelements, otherselements ]
-
-
+  elementsfields = ELEMENTS_FIELDS;
+  components = COMPONENTS;
   currentStep: number = 1;
   currentModal: string | null = null;
-  readonly MAX_SELECTIONS = 3; 
-  readonly MINIMUM_SELECTIONS = 3; 
-
+  readonly MAX_SELECTIONS = MAX_SELECTIONS; 
+  readonly MINIMUM_SELECTIONS = MINIMUM_SELECTIONS; 
 
   platformForm: FormGroup;
   isEditMode = false;
@@ -82,7 +37,7 @@ export class EditPlateformeComponent implements OnInit {
   users: any[] = [];
   isLoading = false;
   selectedPlateforme: any = null;
-  contentJson: any = {}; 
+  contentJson: PlatformContent = {}; 
   activeAccordion: string | null = null; 
 
   constructor(
@@ -90,58 +45,25 @@ export class EditPlateformeComponent implements OnInit {
     private ps: PlateformeService,
     private us: CommonService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private editService: EditPlateformeService
   ) {
-    this.platformForm = this.fb.group({
-      nomPlateforme: ['', [Validators.required, Validators.minLength(3)]],
-      typePack: ['', Validators.required],
-      couleur: ['', Validators.required],
-      description: ['', [Validators.required, Validators.minLength(10)]],
-      dateCreation: ['', Validators.required],
-      valabilite: ['', Validators.required],
-      logo: ['', Validators.required],
-      updateTheme: ['', Validators.required],
-      content: ['', Validators.required],
-      agriculteur: [null],
-      field1: [''],
-      field2: [''],
-      field3: [''],
-      field4: [''],
-      field5: [''],
-      field6: [''],
-      field1Title: ['', Validators.required],
-      field2Title: ['', Validators.required],
-      field3Title: ['', Validators.required],
-      field4Title: ['', Validators.required],
-      field5Title: ['', Validators.required],
-      field6Title: ['', Validators.required]
-    });
+    this.platformForm = this.editService.initializeForm(fb);
 
     this.platformForm.valueChanges.subscribe(() => {
-      const { field1, field2, field3, field4,
-        field1Title, field2Title, field3Title, field4Title } = this.platformForm.value;
-      this.contentJson = {};
-
-      if (field1) this.contentJson.header = { "type": field1, "title": field1Title };
-
-      if (field2) this.contentJson.component1 = { "type": field2, "title": field2Title, "order": 0 };
-      if (field3) this.contentJson.component2 = { "type": field3, "title": field3Title, "order": 1 };
-      if (field4) this.contentJson.component3 = { "type": field4, "title": field4Title, "order": 2 };
-
+      this.contentJson = this.editService.updateContentJson(this.platformForm.value);
       this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson), { emitEvent: false });
     });
   }
 
   ngOnInit() {
-
     this.loadUsers();
-
     const id = this.route.snapshot.paramMap.get('id');
+    
     if (id) {
       this.isEditMode = true;
       this.platformId = +id;
       this.loadPlatform(this.platformId);
-
     } else {
       const today = new Date();
       this.platformForm.patchValue({
@@ -240,17 +162,8 @@ export class EditPlateformeComponent implements OnInit {
         }
       });
     } else {
-      this.markFormGroupTouched(this.platformForm);
+      this.editService.markFormGroupTouched(this.platformForm);
     }
-  }
-
-  private markFormGroupTouched(formGroup: FormGroup) {
-    Object.values(formGroup.controls).forEach(control => {
-      control.markAsTouched();
-      if (control instanceof FormGroup) {
-        this.markFormGroupTouched(control);
-      }
-    });
   }
 
   onCancel() {
@@ -290,15 +203,11 @@ export class EditPlateformeComponent implements OnInit {
   }
 
   getSelectionCount(): number {
-    let count = 0;
-    for (let i = 2; i <= 4; i++) {
-      if (this.platformForm.get(`field${i}`)?.value) count++;
-    }
-    return count;
+    return this.editService.getSelectionCount(this.platformForm);
   }
 
   isSelectionLimitReached(): boolean {
-    return this.getSelectionCount() >= this.MAX_SELECTIONS;
+    return this.editService.isSelectionLimitReached(this.platformForm);
   }
 
   openModal(type: string): void {
@@ -311,21 +220,7 @@ export class EditPlateformeComponent implements OnInit {
   }
 
   closeModal(): void {
-    const formValues = this.platformForm.value;
-    this.contentJson = {
-      header: formValues.field1 ? { type: formValues.field1, title: formValues.field1Title || '' } : null
-    };
-
-    for (let i = 2; i <= 4; i++) {
-      if (formValues[`field${i}`]) {
-        this.contentJson[`component${i-1}`] = {
-          type: formValues[`field${i}`],
-          title: formValues[`field${i}Title`] || '',
-          order: i - 2
-        };
-      }
-    }
-
+    this.contentJson = this.editService.updateContentJson(this.platformForm.value);
     this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson));
     this.currentModal = null;
   }
@@ -344,41 +239,32 @@ export class EditPlateformeComponent implements OnInit {
     }
 
     this.contentJson = {
-      header: header.type ? { type: header.type, title: header.title || '' } : null
+      header: header.type ? { type: header.type, title: header.title || '' } : undefined
     };
 
     this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson));
   }
 
   getSelectedItems(): { key: string, label: string, value: any }[] {
-    return Object.entries(this.contentJson).map(([key, value]) => ({
-      key,
-      label: key.charAt(0).toUpperCase() + key.slice(1),
-      value
-    }));
+    return this.editService.getSelectedItems(this.contentJson);
   }
 
   getSortableItems(): { key: string, label: string, value: any }[] {
-    return Object.entries(this.contentJson)
-      .filter(([key]) => key !== 'header')
-      .sort((a, b) => ((a[1] as { order: number }).order ?? 0) - ((b[1] as { order: number }).order ?? 0)) 
-      .map(([key, value]) => ({
-        key,
-        label: key.charAt(0).toUpperCase() + key.slice(1),
-        value: (value as { type: string }).type
-      }));
+    return this.editService.getSortableItems(this.contentJson);
   }
 
   reorderItems(): void {
     const items = this.getSortableItems();
-    this.updateContentJson(items);
+    this.contentJson = this.editService.updateContentOrder(items, this.contentJson);
+    this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson), { emitEvent: false });
   }
 
   moveItemUp(index: number): void {
     if (index > 0) {
       const items = this.getSortableItems();
       [items[index - 1], items[index]] = [items[index], items[index - 1]];
-      this.updateContentJson(items);
+      this.contentJson = this.editService.updateContentOrder(items, this.contentJson);
+      this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson), { emitEvent: false });
     }
   }
 
@@ -386,27 +272,9 @@ export class EditPlateformeComponent implements OnInit {
     const items = this.getSortableItems();
     if (index < items.length - 1) {
       [items[index], items[index + 1]] = [items[index + 1], items[index]];
-      this.updateContentJson(items);
+      this.contentJson = this.editService.updateContentOrder(items, this.contentJson);
+      this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson), { emitEvent: false });
     }
-  }
-
-  updateContentJson(items: { key: string; label: string; value: any }[]): void {
-    const newContentJson: any = {
-      header: this.contentJson.header 
-    };
-
-    items.forEach((item, index) => {
-      if (item && item.key && item.value !== undefined) {
-        newContentJson[item.key] = {
-          type: this.contentJson[item.key].type,
-          title: this.contentJson[item.key].title,
-          order: index 
-        };
-      }
-    });
-
-    this.contentJson = newContentJson;
-    this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson), { emitEvent: false });
   }
 
   toggleAccordion(key: string) {
