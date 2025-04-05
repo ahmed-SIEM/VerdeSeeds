@@ -182,11 +182,12 @@ components = [ featuredelements,headingelements, otherselements ]
   }
 
   onSubmit() {
-    if (this.platformForm.get('field1')?.value &&
-      this.platformForm.valid &&
-      this.getSelectionCount() <= this.MAX_SELECTIONS) {
+    // console.log('Form validity:', this.platformForm.valid);
+    // console.log('Selection count:', this.getSelectionCount());
+    // console.log('Content JSON:', this.contentJson);
+
+    if (this.platformForm.valid && this.getSelectionCount() >= this.MINIMUM_SELECTIONS) {
       const platformData = { ...this.platformForm.value };
-      console.log('Form data before submission:', platformData);
 
       this.us.getUserByEmail(platformData.agriculteur).subscribe({
         next: (user) => {
@@ -196,7 +197,6 @@ components = [ featuredelements,headingelements, otherselements ]
             platformData.idPlateforme = this.platformId;
           }
 
-          console.log('Form data before sending to backend:', platformData);
 
           const operation = this.isEditMode
             ? this.ps.updatePlateforme(platformData)
@@ -204,7 +204,7 @@ components = [ featuredelements,headingelements, otherselements ]
 
           operation.subscribe({
             next: () => {
-              this.router.navigate(['/backoffice/platform']);
+            this.router.navigate(['/backoffice/platform']);
             },
             error: (error) => {
               console.error('Error saving platform:', error);
@@ -216,7 +216,20 @@ components = [ featuredelements,headingelements, otherselements ]
         }
       });
     } else {
+      console.warn('Form validation failed. Checking invalid fields...');
       this.editService.markFormGroupTouched(this.platformForm);
+
+      // Log invalid fields for debugging
+      Object.keys(this.platformForm.controls).forEach((key) => {
+        const control = this.platformForm.get(key);
+        if (control?.invalid) {
+          console.warn(`Field "${key}" is invalid. Errors:`, control.errors);
+        }
+      });
+
+      if (this.getSelectionCount() < this.MINIMUM_SELECTIONS) {
+        console.warn(`Minimum selection requirement not met. Selected: ${this.getSelectionCount()}, Required: ${this.MINIMUM_SELECTIONS}`);
+      }
     }
   }
 
@@ -227,7 +240,6 @@ components = [ featuredelements,headingelements, otherselements ]
   goToStep(step: number): void {
     if (step === 1) {
       this.currentStep = step;
-      console.log('JSON content step 1:', this.contentJson);
     } else if (step === 2) {
       const step1Fields = ['nomPlateforme', 'typePack', 'couleur', 'description', 'dateCreation', 'valabilite', 'logo', 'updateTheme', 'agriculteur'];
       let isStep1Valid = true;
@@ -246,7 +258,6 @@ components = [ featuredelements,headingelements, otherselements ]
         this.currentStep = step;
       }
 
-      console.log('JSON content step 2:', this.contentJson);
 
     } else if (step === 3) {
       if (this.platformForm.get('field1')?.valid && this.getSelectionCount() >= this.MINIMUM_SELECTIONS) {
@@ -274,13 +285,13 @@ components = [ featuredelements,headingelements, otherselements ]
       }
     } else if (step === 4) {
       this.currentStep = step;
-      console.log('JSON content step 4:', this.contentJson);
 
     }
   }
 
   getSelectionCount(): number {
-    return this.editService.getSelectionCount(this.platformForm);
+    const count = this.editService.getSelectionCount(this.platformForm);
+    return count;
   }
 
   isSelectionLimitReached(): boolean {

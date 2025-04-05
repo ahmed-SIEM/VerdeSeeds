@@ -23,14 +23,9 @@ export class EditPlateformeService {
       field2: [''],
       field3: [''],
       field4: [''],
-      field5: [''],
-      field6: [''],
-      field1Title: ['', Validators.required],
-      field2Title: ['', Validators.required],
-      field3Title: ['', Validators.required],
-      field4Title: ['', Validators.required],
-      field5Title: ['', Validators.required],
-      field6Title: ['', Validators.required]
+ 
+ 
+     
     });
   }
 

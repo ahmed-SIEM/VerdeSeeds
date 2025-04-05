@@ -400,16 +400,16 @@
                           </div>
                           <div *ngFor="let key of getSortedComponentKeys(); let i = index" class="border p-3 rounded sort-item">
                             <span class="sort-item-label">
-                              Component {{ i + 1 }}: {{ contentJson[key]?.type || 'Not selected' }}
+                              Component {{ i + 1 }}: {{ contentJson[key].type || 'Not selected' }}
                             </span>
                             <div class="sort-controls">
                               <button class="sort-button" (click)="moveItemUp(i)" [disabled]="i === 0"
-                                [attr.data-tooltip]="'Move ' + contentJson[key]?.type + ' up'">
+                                [attr.data-tooltip]="'Move ' + contentJson[key].type + ' up'">
                                 <i class="bi bi-arrow-up-short"></i>
                               </button>
                               <button class="sort-button" (click)="moveItemDown(i)"
                                 [disabled]="i === getSortedComponentKeys().length - 1"
-                                [attr.data-tooltip]="'Move ' + contentJson[key]?.type + ' down'">
+                                [attr.data-tooltip]="'Move ' + contentJson[key].type + ' down'">
                                 <i class="bi bi-arrow-down-short"></i>
                               </button>
                             </div>
@@ -440,9 +440,13 @@
                     <button type="button" class="btn btn-outline-secondary w-100 mb-2" (click)="goToStep(3)">
                       Back
                     </button>
-                    <button type="submit" class="btn btn-primary w-100">
+                    <button type="submit" class="btn btn-primary w-100" 
+                      [disabled]="!platformForm.valid || getSelectionCount() < MINIMUM_SELECTIONS">
                       <i class="fas fa-save me-2"></i>{{ isEditMode ? 'Update' : 'Create' }} Platform
                     </button>
+                    <div *ngIf="!platformForm.valid || getSelectionCount() < MINIMUM_SELECTIONS" class="text-danger mt-2">
+                      Please ensure all required fields are filled and at least {{ MINIMUM_SELECTIONS }} components are selected.
+                    </div>
                   </div>
                 </div>
               </form>
