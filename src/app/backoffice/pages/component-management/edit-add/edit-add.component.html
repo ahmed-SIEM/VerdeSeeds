@@ -99,42 +99,65 @@
         <h5 class="modal-title">Select Component Type</h5>
         <button type="button" class="btn-close" (click)="closeComponentModal()"></button>
       </div>
-      <div class="modal-body">
-        <div class="component-categories">
-          <!-- Header Components -->
-          <div class="category-section mb-4">
-            <h6 class="category-title mb-3">Header Components</h6>
-            <div class="row g-2">
-              <div class="col-md-6" *ngFor="let comp of categorizedComponents.headers">
-                <div class="component-card" (click)="selectComponent(comp.value)">
-                  {{comp.name}}
+      <div class="modal-body d-flex">
+        <!-- Components Selection (60%) -->
+        <div class="component-list">
+          <div class="component-categories">
+            <!-- Header Components -->
+            <div class="category-section mb-4">
+              <h6 class="category-title mb-3">Header Components</h6>
+              <div class="row g-2">
+                <div class="col-12" *ngFor="let comp of categorizedComponents.headers">
+                  <div class="component-card" 
+                       (click)="selectComponent(comp.value)"
+                       (mouseenter)="onComponentHover(comp)"
+                       (mouseleave)="onComponentHover(null)">
+                    {{comp.name}}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Feature Components -->
+            <div class="category-section mb-4">
+              <h6 class="category-title mb-3">Feature Components</h6>
+              <div class="row g-2">
+                <div class="col-12" *ngFor="let comp of categorizedComponents.features">
+                  <div class="component-card"
+                       (click)="selectComponent(comp.value)"
+                       (mouseenter)="onComponentHover(comp)"
+                       (mouseleave)="onComponentHover(null)">
+                    {{comp.name}}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Other Components -->
+            <div class="category-section">
+              <h6 class="category-title mb-3">Other Components</h6>
+              <div class="row g-2">
+                <div class="col-12" *ngFor="let comp of categorizedComponents.others">
+                  <div class="component-card"
+                       (click)="selectComponent(comp.value)"
+                       (mouseenter)="onComponentHover(comp)"
+                       (mouseleave)="onComponentHover(null)">
+                    {{comp.name}}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+        </div>
 
-          <!-- Feature Components -->
-          <div class="category-section mb-4">
-            <h6 class="category-title mb-3">Feature Components</h6>
-            <div class="row g-2">
-              <div class="col-md-6" *ngFor="let comp of categorizedComponents.features">
-                <div class="component-card" (click)="selectComponent(comp.value)">
-                  {{comp.name}}
-                </div>
-              </div>
-            </div>
+        <!-- Preview Section (40%) -->
+        <div class="preview-section">
+          <div class="preview-content" *ngIf="hoveredComponent">
+            <img [src]="hoveredComponent.preview" [alt]="hoveredComponent.name" class="preview-image">
+            <h6 class="preview-title mt-3">{{hoveredComponent.name}}</h6>
           </div>
-
-          <!-- Other Components -->
-          <div class="category-section">
-            <h6 class="category-title mb-3">Other Components</h6>
-            <div class="row g-2">
-              <div class="col-md-6" *ngFor="let comp of categorizedComponents.others">
-                <div class="component-card" (click)="selectComponent(comp.value)">
-                  {{comp.name}}
-                </div>
-              </div>
-            </div>
+          <div class="preview-placeholder" *ngIf="!hoveredComponent">
+            <p>Hover over a component to see preview</p>
           </div>
         </div>
       </div>

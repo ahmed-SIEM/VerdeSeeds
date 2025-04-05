@@ -31,24 +31,25 @@ export class EditAddComponent implements OnInit {
   showModal = false;
   selectedComponentType: ComponentType | null = null;
   componentFields: string[] = [];
+  hoveredComponent: any = null;
 
   categorizedComponents = {
     headers: [
-      { name: 'Header with Icons', value: 'headerwithicons' },
-      { name: 'Centered Hero', value: 'centeredhero' },
-      { name: 'Hero with Image', value: 'herowithimage' },
-      { name: 'Vertically Centered Hero', value: 'verticallycenteredhero' }
+      { name: 'Header with Icons', value: 'headerwithicons', preview :'https://picsum.photos/200' },
+      { name: 'Centered Hero', value: 'centeredhero', preview :'https://picsum.photos/200' },
+      { name: 'Hero with Image', value: 'herowithimage', preview :'https://picsum.photos/200' },
+      { name: 'Vertically Centered Hero', value: 'verticallycenteredhero', preview :'https://picsum.photos/200' }
     ],
     features: [
-      { name: 'Columns with Icons', value: 'columnswithicons' },
-      { name: 'Custom Cards', value: 'customcards' },
-      { name: 'Headings', value: 'headings' },
-      { name: 'Heading Left with Image', value: 'headingleftwithimage' },
-      { name: 'Heading Right with Image', value: 'headingrightwithimage' }
+      { name: 'Columns with Icons', value: 'columnswithicons', preview :'https://picsum.photos/200' },
+      { name: 'Custom Cards', value: 'customcards', preview :'https://picsum.photos/200' },
+      { name: 'Headings', value: 'headings' , preview :'https://picsum.photos/200'},
+      { name: 'Heading Left with Image', value: 'headingleftwithimage' , preview :'https://picsum.photos/200'},
+      { name: 'Heading Right with Image', value: 'headingrightwithimage' , preview :'https://picsum.photos/200'}
     ],
     others: [
-      { name: 'Newsletter', value: 'newsletter' },
-      { name: 'Plateforme About', value: 'plateformeabout' }
+      { name: 'Newsletter', value: 'newsletter', preview :'https://picsum.photos/200' },
+      { name: 'Plateforme About', value: 'plateformeabout', preview :'https://picsum.photos/200' }
     ]
   };
 
@@ -192,6 +193,10 @@ export class EditAddComponent implements OnInit {
     if (this.currentStep > 1) {
       this.currentStep--;
     }
+  }
+
+  onComponentHover(component: any) {
+    this.hoveredComponent = component;
   }
 
   onSubmit(): void {
