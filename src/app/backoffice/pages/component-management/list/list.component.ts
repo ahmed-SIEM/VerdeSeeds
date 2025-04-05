@@ -1,39 +1,57 @@
 import { Component, OnInit } from '@angular/core';
 import { componentServcie } from 'src/app/services/plateforme/component.service';
 import { Router } from '@angular/router';
+
+type ComponentType = 'headerwithicons' | 'centeredhero' | 'herowithimage' | 'verticallycenteredhero' | 
+                    'columnswithicons' | 'customcards' | 'headings' | 'headingleftwithimage' | 
+                    'headingrightwithimage' | 'newsletter' | 'plateformeabout';
+
+interface ComponentPlatforme {
+  id: number;
+  type: ComponentType;
+  content: string;
+}
+
 @Component({
   selector: 'app-componentlist',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })
-
-
-
-
 export class ListComponent implements OnInit {
-
-  
-  components: any[] = [];
+  components: ComponentPlatforme[] = [];
   searchTerm: string = '';
-  selectedPlateforme: any = null;
+  selectedPreviewImage: string = '';
   constructor(private componentService: componentServcie, private router: Router) {}
+
+  categorizedComponents: Record<ComponentType, { name: string; preview: string }> = {
+    headerwithicons: { name: 'Header with Icons', preview: '../../../../../assets/backoffice/img/preview-images/CustomHeaderWithIcons.png' },
+    centeredhero: { name: 'Centered Hero', preview: '../../../../../assets/backoffice/img/preview-images/HeadingWithImageTitle.png' },
+    herowithimage: { name: 'Hero with Image', preview: '../../../../../assets/backoffice/img/preview-images/HeadingRightWithImageTitle.png' },
+    verticallycenteredhero: { name: 'Vertically Centered Hero', preview: '../../../../../assets/backoffice/img/preview-images/VerticallyCenteredHeroSignUpForm.png' },
+    columnswithicons: { name: 'Columns with Icons', preview: '../../../../../assets/backoffice/img/preview-images/ColumnsWithIcons.png' },
+    customcards: { name: 'Custom Cards', preview: '../../../../../assets/backoffice/img/preview-images/CustomCards.png' },
+    headings: { name: 'Headings', preview: '../../../../../assets/backoffice/img/preview-images/Headings.png' },
+    headingleftwithimage: { name: 'Heading Left with Image', preview: '../../../../../assets/backoffice/img/preview-images/LeftImage.png' },
+    headingrightwithimage: { name: 'Heading Right with Image', preview: '../../../../../assets/backoffice/img/preview-images/RightImage.png' },
+    newsletter: { name: 'Newsletter', preview: '../../../../../assets/backoffice/img/preview-images/Newsletter.png' },
+    plateformeabout: { name: 'Plateforme About', preview: '../../../../../assets/backoffice/img/preview-images/AboutUs.png' }
+  };
+
+  toString(elemnt: any): string {
+    return JSON.stringify(elemnt);
+  }
 
   ngOnInit(): void {
     this.loadComponents();
   }
 
-
   get filteredComponentsList() {
     return this.components.filter(component => {
       const matchesSearch = !this.searchTerm || 
-        component.nomComponent.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        component.description?.toLowerCase().includes(this.searchTerm.toLowerCase());
+        component.type.toLowerCase().includes(this.searchTerm.toLowerCase());
       return matchesSearch;
     });
   }
-
-
-
 
   loadComponents(): void {
     this.componentService.getComponents().subscribe(data => {
@@ -52,23 +70,16 @@ export class ListComponent implements OnInit {
   editComponent(component: any): void {
     this.router.navigate(['/backoffice/component', component.id, 'edit']);
   }
-  previewComponent(component: any): void {
-     console.log('Previewing component:', component);
+
+  previewComponent(component: ComponentPlatforme): void {
+    this.selectedPreviewImage = this.categorizedComponents[component.type].preview;
   }
 
   viewComponent(component: any): void {
     this.router.navigate(['/backoffice/component', component.id]);
   }
 
-
-  addComponent(){
+  addComponent(): void {
     this.router.navigate(['/backoffice/component', 'add']);
-
   }
-
-
-
-
-
-  
 }
