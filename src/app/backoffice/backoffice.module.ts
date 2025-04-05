@@ -19,8 +19,7 @@ import { SignUpComponent } from './pages/sign-up/sign-up.component';
 import { FormationManagementModule } from './pages/formation-management/formation-management.module';
 import { FormsModule } from '@angular/forms';
 import { PlatformeModule } from './pages/platform-management/platforme.module';
-import { DetailsPlatformComponent } from './pages/platform-management/details/details.component';
-import { ListPlateformeComponent } from './pages/platform-management/list/ListPlateforme.component';
+import { ComponentManagementModule } from './pages/component-management/component-management.module';
 @NgModule({
   declarations: [
     LayoutsComponent,
@@ -43,7 +42,8 @@ import { ListPlateformeComponent } from './pages/platform-management/list/ListPl
     BackofficeRoutingModule,
     FormationManagementModule,
     FormsModule,
-    PlatformeModule
+    PlatformeModule,
+    ComponentManagementModule
    
   ]
 })

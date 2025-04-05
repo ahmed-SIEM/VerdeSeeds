@@ -47,6 +47,11 @@ const routes: Routes = [
           path: 'platform',
           loadChildren: () => import('./pages/platform-management/platforme.module')
             .then(m => m.PlatformeModule)
+        },
+        { 
+          path: 'component',
+          loadChildren: () => import('./pages/component-management/component-management.module')
+            .then(m => m.ComponentManagementModule)
         }
   ]
   },

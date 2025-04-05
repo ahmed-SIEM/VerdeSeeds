@@ -12,28 +12,30 @@ export class PlateformeService {
   constructor(private http: HttpClient) {}
 
   getPlateforms(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/retrieve-all-Plateformes`);
+    return this.http.get<any[]>(`${this.apiUrl}`);
   }
 
   getPlateforme(id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/retrieve-Plateforme/${id}`);
+    return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
-
-
 
   createPlateforme(plateforme: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/add-Plateforme`, plateforme);
+    return this.http.post<any>(`${this.apiUrl}`, plateforme);
   }
 
-  updatePlateforme( plateforme: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/update-Plateforme`, plateforme);
+  updatePlateforme(plateforme: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}`, plateforme);
   }
 
   deletePlateforme(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/remove-Plateforme/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
   getUsers(): Observable<any[]> {
     return this.http.get<any[]>(`${environment.apiUrl}/auth/retrieve-all-Users`);
+  }
+
+  getAllPlatforms(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}`);
   }
 }

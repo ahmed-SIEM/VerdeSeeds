@@ -1,0 +1,18 @@
+<div class="container">
+  <h2>{{ isEditMode ? 'Edit Component' : 'Add Component' }}</h2>
+  <form [formGroup]="componentForm" (ngSubmit)="onSubmit()">
+    <div class="form-floating">
+      <input id="type" formControlName="type" class="form-control" placeholder="Type" />
+      <label for="type">Type</label>
+    </div>
+    <div class="form-floating">
+      <textarea id="content" formControlName="content" class="form-control" placeholder="Content"></textarea>
+      <label for="content">Content</label>
+    </div>
+    <div class="form-floating">
+      <input id="plateforme" formControlName="plateforme" class="form-control" placeholder="Plateforme ID" />
+      <label for="plateforme">Plateforme ID</label>
+    </div>
+    <button type="submit" class="btn btn-primary w-100">{{ isEditMode ? 'Update' : 'Create' }}</button>
+  </form>
+</div>
