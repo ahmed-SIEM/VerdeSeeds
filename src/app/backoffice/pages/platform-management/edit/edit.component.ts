@@ -351,28 +351,33 @@ export class EditPlateformeComponent implements OnInit {
   }
 
   clearSelections() {
-    // Preserve header selection (field1)
-    const headerValue = this.platformForm.get('field1')?.value;
-    const headerTitle = this.platformForm.get('field1Title')?.value;
+    // Preserve header selection (field1 and its title)
+    const headerValue = this.platformForm.get('field1')?.value || '';
+    const headerTitle = this.platformForm.get('field1Title')?.value || '';
+  
+    // Reset only the other component selections and titles
     this.platformForm.patchValue({
       field2: '',
       field3: '',
       field4: '',
-      field5: '',
-      field6: '',
       field2Title: '',
       field3Title: '',
-      field4Title: '',
-      field5Title: '',
-      field6Title: '',
-      field1: headerValue, // Preserve header value
-      field1Title: headerTitle // Preserve header title
+      field4Title: ''
     });
-
-    // Update contentJson but keep header if selected
-    this.contentJson = headerValue ? { header: { "type": headerValue, "title": headerTitle, "order": 0 } } : {};
-    this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson));
+  
+    // Rebuild contentJson with only header
+    this.contentJson = {
+      header: {
+        type: headerValue,
+        title: headerTitle
+      }
+    };
+  
+    this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson), { emitEvent: false });
   }
+  
+
+  
 
   getSelectedItems(): { key: string, label: string, value: any }[] {
     return Object.entries(this.contentJson).map(([key, value]) => ({
