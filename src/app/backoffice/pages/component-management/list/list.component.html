@@ -1,37 +1,93 @@
-<div class="container">
+<!-- Platform List Page -->
+
+<body class="app">
+
+  <div class="app-wrapper">
+   
+        
+       
+<div class="container-fluid p-4">
+  <!-- Header Section -->
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="text-primary">Component Management</h2>
-    <a routerLink="/backoffice/component/add" class="btn btn-success">
-      <i class="fas fa-plus me-2"></i>Add New Component
-    </a>
+      <h2 class="text-primary mb-0">Component Management</h2>
+      <button class="btn btn-success" (click)="addComponent()">
+          <i class="fas fa-plus me-2"></i>Add New Component
+      </button>
   </div>
 
-  <table class="table">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Type</th>
-        <th>Content</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let component of components">
-        <td>{{ component.id }}</td>
-        <td>{{ component.type }}</td>
-        <td>{{ component.content }}</td>
-        <td>
-          <a [routerLink]="['/backoffice/component/details', component.id]" class="btn btn-info btn-sm">
-            <i class="fas fa-eye"></i> View
-          </a>
-          <a [routerLink]="['/backoffice/component/edit', component.id]" class="btn btn-warning btn-sm">
-            <i class="fas fa-edit"></i> Edit
-          </a>
-          <button (click)="deleteComponent(component.id)" class="btn btn-danger btn-sm">
-            <i class="fas fa-trash"></i> Delete
+  <!-- Search and Filter Section -->
+  <div class="card mb-4">
+      <div class="card-body">
+          <div class="row g-3">
+              <div class="col-md-4">
+                  <input type="text" class="form-control" placeholder="Search platforms..." [(ngModel)]="searchTerm">
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <!-- Platforms List -->
+  <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+      <div class="col" *ngFor="let component of components">
+          <div  class="card h-100">
+              <div  class="card-body">
+                  <div 
+                
+                  class="d-flex justify-content-between align-items-start mb-3">
+                      <div>
+                          <h5 class="card-title mb-1">{{component.type}}</h5>
+                        
+                      </div>
+                    
+                  </div>
+                                   
+                  <div class="d-flex gap-2 mt-auto">
+                      <button class="btn btn-outline-primary btn-sm"  (click)="viewComponent(component)">
+                          <i class="fas fa-eye me-1"></i> View
+                      </button>
+                      <button class="btn btn-outline-info btn-sm" data-toggle="modal" data-target="#exampleModal" (click)="previewComponent(component)">
+                          <i class="fas fa-eye me-1"></i> Preview
+                      </button>
+                      <button class="btn btn-outline-secondary btn-sm" (click)="editComponent(component)">
+                          <i class="fas fa-edit me-1"></i> Edit
+                      </button>
+                      <button class="btn btn-outline-danger btn-sm" (click)="deleteComponent(component.id)">
+                          <i class="fas fa-trash me-1"></i> Delete
+                      </button>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="components.length === 0" class="text-center py-5">
+      <i class="fas fa-database fa-3x text-muted mb-3"></i>
+      <h4>No Components Found</h4>
+      <p class="text-muted">Start by adding a new components using the button above.</p>
+  </div>
+
+
+  
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
           </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
+  </div>
+</body>

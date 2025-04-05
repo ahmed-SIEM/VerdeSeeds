@@ -9,6 +9,7 @@ const routes: Routes = [
     { path: 'add', component: EditAddComponent },
     { path: ':id/edit', component: EditAddComponent },
     { path: ':id/details', component: DetailsComponent },
+    {path: ':id/preview', component: DetailsComponent }
 
 
 ];

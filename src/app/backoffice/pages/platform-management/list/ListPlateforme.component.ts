@@ -68,20 +68,6 @@ export class ListPlateformeComponent implements OnInit {
     });
   }
 
-  createOrUpdatePlateforme(): void {
-    if (this.selectedPlateforme.idPlateforme) {
-      this.ps.updatePlateforme( this.selectedPlateforme).subscribe({
-        next: () => this.loadPlateformes(),
-        error: (err) => console.error('Erreur lors de la mise à jour de la plateforme', err)
-      });
-    } else {
-      this.ps.createPlateforme(this.selectedPlateforme).subscribe({
-        next: () => this.loadPlateformes(),
-        error: (err) => console.error('Erreur lors de la création de la plateforme', err)
-      });
-    }
-    this.selectedPlateforme = null;
-  }
 
   addplateforme(){
     this.router.navigate(['/backoffice/platform', 'new']);
