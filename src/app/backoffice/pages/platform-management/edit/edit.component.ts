@@ -12,6 +12,16 @@ import { ELEMENTS_FIELDS
 import {  TypePack } from './utils/interfaces/edit-plateforme.interface';
 import { EditPlateformeService } from './utils/services/edit-plateforme.service';
 
+interface ComponentContent {
+  type: string;
+  [key: string]: any; // Allow additional dynamic fields
+}
+
+interface ContentJson {
+  header: ComponentContent;
+  [key: string]: ComponentContent; // Allow dynamic keys for components
+}
+
 @Component({
   selector: 'app-edit',
   templateUrl: './edit.component.html',
@@ -84,7 +94,7 @@ components = [ featuredelements,headingelements, otherselements ]
   users: any[] = [];
   isLoading = false;
   selectedPlateforme: any = null;
-  contentJson: any = {}; 
+  contentJson: ContentJson = { header: { type: '' } }; // Ensure header is always initialized
   selectedComponent: string | null = null;
 
   constructor(
@@ -243,7 +253,7 @@ components = [ featuredelements,headingelements, otherselements ]
         // Initialize content structure for header
         if (!this.contentJson.header) {
           this.contentJson.header = {
-            type: this.platformForm.get('field1')?.value
+            type: this.platformForm.get('field1')?.value || '' // Ensure type is always a string
           };
         }
 
@@ -294,7 +304,7 @@ components = [ featuredelements,headingelements, otherselements ]
 
   clearSelections() {
     const header = {
-      type: this.platformForm.get('field1')?.value,
+      type: this.platformForm.get('field1')?.value || '', // Ensure type is always a string
     };
 
     for (let i = 2; i <= 4; i++) {
@@ -304,7 +314,7 @@ components = [ featuredelements,headingelements, otherselements ]
     }
 
     this.contentJson = {
-      header: header.type ? { type: header.type } : undefined
+      header: header, // Ensure header is always valid
     };
 
     this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson));
@@ -320,7 +330,16 @@ components = [ featuredelements,headingelements, otherselements ]
 
   reorderItems(): void {
     const items = this.getSortableItems();
-    this.contentJson = this.editService.updateContentOrder(items, this.contentJson);
+    const newContent: ContentJson = {
+      header: this.contentJson.header, // Ensure header is preserved
+    };
+    
+    items.forEach((item, index) => {
+      const componentKey = `component${index + 1}`;
+      newContent[componentKey] = { ...this.contentJson[item.key] }; // Preserve all field values
+    });
+
+    this.contentJson = newContent;
     this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson), { emitEvent: false });
   }
 
@@ -328,7 +347,17 @@ components = [ featuredelements,headingelements, otherselements ]
     if (index > 0) {
       const items = this.getSortableItems();
       [items[index - 1], items[index]] = [items[index], items[index - 1]];
-      this.contentJson = this.editService.updateContentOrder(items, this.contentJson);
+      
+      const newContent: ContentJson = {
+        header: this.contentJson.header, // Ensure header is preserved
+      };
+      
+      items.forEach((item, i) => {
+        const componentKey = `component${i + 1}`;
+        newContent[componentKey] = { ...this.contentJson[item.key] }; // Preserve all field values
+      });
+
+      this.contentJson = newContent;
       this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson), { emitEvent: false });
     }
   }
@@ -337,7 +366,17 @@ components = [ featuredelements,headingelements, otherselements ]
     const items = this.getSortableItems();
     if (index < items.length - 1) {
       [items[index], items[index + 1]] = [items[index + 1], items[index]];
-      this.contentJson = this.editService.updateContentOrder(items, this.contentJson);
+      
+      const newContent: ContentJson = {
+        header: this.contentJson.header, // Ensure header is preserved
+      };
+      
+      items.forEach((item, i) => {
+        const componentKey = `component${i + 1}`;
+        newContent[componentKey] = { ...this.contentJson[item.key] }; // Preserve all field values
+      });
+
+      this.contentJson = newContent;
       this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson), { emitEvent: false });
     }
   }
@@ -373,13 +412,13 @@ components = [ featuredelements,headingelements, otherselements ]
 
   updateField(componentType: string, fieldName: string, value: string) {
     if (!this.contentJson[componentType]) {
-      this.contentJson[componentType] = { type: componentType };
+      this.contentJson[componentType] = { type: componentType }; // Ensure the component exists
     }
     this.contentJson[componentType][fieldName] = value;
     this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson), { emitEvent: false });
   }
 
   getFieldValue(componentType: string, fieldName: string): string {
-    return this.contentJson[componentType]?.[fieldName] || '';
+    return this.contentJson[componentType]?.[fieldName] || ''; // Safely access fields
   }
 }
