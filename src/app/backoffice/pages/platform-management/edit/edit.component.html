@@ -232,12 +232,14 @@
                       </div>
                       <div class="modal-body">
                         <div class="d-flex gap-3 flex-wrap">
-                          <div *ngFor="let element of featuredelements" class="position-relative">
-                            <input type="radio" [value]="element" formControlName="field2" 
-                                   [id]="'field2-' + element" class="d-none" (change)="closeModal()">
-                            <label [for]="'field2-' + element" class="choice-label">
-                              {{element}}
-                            </label>
+                          <div *ngFor="let componentGroup of components" class="w-100 mb-3">
+                            <div *ngFor="let element of componentGroup" class="position-relative mb-2">
+                              <input type="radio" [value]="element" formControlName="field2" 
+                                     [id]="'field2-' + element" class="d-none" (change)="closeModal()">
+                              <label [for]="'field2-' + element" class="choice-label w-100">
+                                {{element}}
+                              </label>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -252,12 +254,14 @@
                       </div>
                       <div class="modal-body">
                         <div class="d-flex gap-3 flex-wrap">
-                          <div *ngFor="let element of headingelements" class="position-relative">
-                            <input type="radio" [value]="element" formControlName="field3" 
-                                   [id]="'field3-' + element" class="d-none" (change)="closeModal()">
-                            <label [for]="'field3-' + element" class="choice-label">
-                              {{element}}
-                            </label>
+                          <div *ngFor="let componentGroup of components" class="w-100 mb-3">
+                            <div *ngFor="let element of componentGroup" class="position-relative mb-2">
+                              <input type="radio" [value]="element" formControlName="field3" 
+                                     [id]="'field3-' + element" class="d-none" (change)="closeModal()">
+                              <label [for]="'field3-' + element" class="choice-label w-100">
+                                {{element}}
+                              </label>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -272,12 +276,14 @@
                       </div>
                       <div class="modal-body">
                         <div class="d-flex gap-3 flex-wrap">
-                          <div *ngFor="let element of otherselements" class="position-relative">
-                            <input type="radio" [value]="element" formControlName="field4" 
-                                   [id]="'field4-' + element" class="d-none" (change)="closeModal()">
-                            <label [for]="'field4-' + element" class="choice-label">
-                              {{element}}
-                            </label>
+                          <div *ngFor="let componentGroup of components" class="w-100 mb-3">
+                            <div *ngFor="let element of componentGroup" class="position-relative mb-2">
+                              <input type="radio" [value]="element" formControlName="field4" 
+                                     [id]="'field4-' + element" class="d-none" (change)="closeModal()">
+                              <label [for]="'field4-' + element" class="choice-label w-100">
+                                {{element}}
+                              </label>
+                            </div>
                           </div>
                         </div>
                       </div>
