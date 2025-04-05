@@ -403,11 +403,11 @@
                               Component {{ i + 1 }}: {{ contentJson[key].type || 'Not selected' }}
                             </span>
                             <div class="sort-controls">
-                              <button class="sort-button" (click)="moveItemUp(i)" [disabled]="i === 0"
+                              <button type="button" class="sort-button" (click)="moveItemUp(i)" [disabled]="i === 0"
                                 [attr.data-tooltip]="'Move ' + contentJson[key].type + ' up'">
                                 <i class="bi bi-arrow-up-short"></i>
                               </button>
-                              <button class="sort-button" (click)="moveItemDown(i)"
+                              <button type="button" class="sort-button" (click)="moveItemDown(i)"
                                 [disabled]="i === getSortedComponentKeys().length - 1"
                                 [attr.data-tooltip]="'Move ' + contentJson[key].type + ' down'">
                                 <i class="bi bi-arrow-down-short"></i>
