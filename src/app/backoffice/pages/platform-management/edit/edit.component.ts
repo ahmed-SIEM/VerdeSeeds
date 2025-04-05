@@ -240,39 +240,28 @@ components = [ featuredelements,headingelements, otherselements ]
 
     } else if (step === 3) {
       if (this.platformForm.get('field1')?.valid && this.getSelectionCount() >= this.MINIMUM_SELECTIONS) {
-        const sortedItems = this.getSortableItems();
-        if (sortedItems.length > 0) {
-          this.currentStep = step;
+        // Initialize content structure for header
+        if (!this.contentJson.header) {
+          this.contentJson.header = {
+            type: this.platformForm.get('field1')?.value
+          };
         }
+
+        // Initialize content structure for components
+        for (let i = 2; i <= 4; i++) {
+          const componentValue = this.platformForm.get(`field${i}`)?.value;
+          if (componentValue) {
+            const componentKey = `component${i-1}`;
+            if (!this.contentJson[componentKey]) {
+              this.contentJson[componentKey] = {
+                type: componentValue
+              };
+            }
+          }
+        }
+
+        this.currentStep = step;
       }
-
-      const selectedComponents = this.getSelectedComponents();
-      
-      // Initialize contentJson structure
-      this.contentJson = {
-        header: { type: this.platformForm.get('field1')?.value || '' }
-      };
-
-      selectedComponents.forEach((component, i) => {
-        const name = `component${i + 1}`;
-        // Initialize the component object with its type
-        this.contentJson[name] = {
-          type: component.type
-        };
-
-        const fields = this.getComponentFields(component.type);
-        fields.forEach((field) => {
-          // Get the form control value for this field
-          const fieldValue = this.platformForm.get(field)?.value;
-          // Set the field in the contentJson
-          this.contentJson[name][field] = fieldValue || '';
-        });
-      });
-
-      // Update the form's content field with the new JSON
-      this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson), { emitEvent: false });
-      console.log('JSON content step 3:', this.contentJson);
-
     } else if (step === 4) {
       this.currentStep = step;
       console.log('JSON content step 4:', this.contentJson);
@@ -354,6 +343,7 @@ components = [ featuredelements,headingelements, otherselements ]
   }
 
   getComponentFields(componentType: string): string[] {
+    if (!componentType) return [];
     const type = componentType.toLowerCase().replace(/[-\s]/g, '');
     return this.elementsfields[type] || [];
   }

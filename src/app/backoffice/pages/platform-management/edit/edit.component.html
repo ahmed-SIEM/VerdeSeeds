@@ -311,23 +311,47 @@
                     </div>
                   </div>
 
-                  <div class="col-12" *ngFor="let component of getSelectedComponents()">
+                  <!-- Header Component -->
+                  <div class="col-12" *ngIf="platformForm.get('field1')?.value">
                     <div class="card mb-4">
                       <div class="card-header bg-light">
-                        <h6 class="mb-0">{{ component.type }}</h6>
+                        <h6 class="mb-0">Header: {{ platformForm.get('field1')?.value }}</h6>
                       </div>
                       <div class="card-body">
                         <div class="row g-3">
-                          <div class="col-md-6" *ngFor="let field of component.fields">
+                          <div class="col-md-6" *ngFor="let field of getComponentFields(platformForm.get('field1')?.value)">
                             <div class="form-floating">
                               <input 
                                 type="text" 
                                 class="form-control" 
-                                [id]="component.type + '-' + field"
-                                [(ngModel)]="contentJson[component.type][field]"
-                                (ngModelChange)="updateField(component.type, field, $event)"
-                                [name]="component.type + '-' + field">
-                              <label [for]="component.type + '-' + field">{{ field }}</label>
+                                [id]="'header-' + field"
+                                [(ngModel)]="contentJson.header[field]"
+                                [ngModelOptions]="{standalone: true}">
+                              <label [for]="'header-' + field">{{ field }}</label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Additional Components -->
+                  <div class="col-12" *ngFor="let i of [2, 3, 4]">
+                    <div class="card mb-4" *ngIf="platformForm.get('field' + i)?.value">
+                      <div class="card-header bg-light">
+                        <h6 class="mb-0">Component {{i-1}}: {{ platformForm.get('field' + i)?.value }}</h6>
+                      </div>
+                      <div class="card-body">
+                        <div class="row g-3">
+                          <div class="col-md-6" *ngFor="let field of getComponentFields(platformForm.get('field' + i)?.value)">
+                            <div class="form-floating">
+                              <input 
+                                type="text" 
+                                class="form-control" 
+                                [id]="'component' + (i-1) + '-' + field"
+                                [(ngModel)]="contentJson['component' + (i-1)][field]"
+                                [ngModelOptions]="{standalone: true}">
+                              <label [for]="'component' + (i-1) + '-' + field">{{ field }}</label>
                             </div>
                           </div>
                         </div>
