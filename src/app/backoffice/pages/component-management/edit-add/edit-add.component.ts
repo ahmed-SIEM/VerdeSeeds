@@ -102,10 +102,16 @@ export class EditAddComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router
   ) {
+    // Initialize form without user_id validator by default
     this.componentForm = this.fb.group({
-      user_id: [null, Validators.required],
       name: ['', Validators.required]
     });
+    
+    // Only add user_id control if not in edit mode
+    if (!this.route.snapshot.paramMap.get('id')) {
+      this.componentForm.addControl('user_id', this.fb.control(null, Validators.required));
+    }
+    
     this.contentForm = this.fb.group({});
   }
 
@@ -120,9 +126,17 @@ export class EditAddComponent implements OnInit {
     this.componentService.getComponent(id).subscribe({
       next: (component) => {
         this.selectedComponent = component;
+        this.selectedComponentType = component.type as ComponentType;
+        this.componentFields = this.ELEMENTS_FIELDS[component.type as ComponentType];
         this.componentForm.patchValue({
-          ...component,
+          name: component.name
         });
+        this.initializeContentForm();
+        // Parse and set content form values if they exist
+        if (component.content) {
+          const contentData = JSON.parse(component.content);
+          this.contentForm.patchValue(contentData);
+        }
         this.isLoading = false;
       },
       error: (error) => {
@@ -136,20 +150,10 @@ export class EditAddComponent implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.isEditMode = true;
-      this.componentService.getComponent(+id).subscribe(data => {
-        this.componentForm.patchValue(data);
-      });
-    }
-
-    this.loadusers();
-    if (id) {
-      this.isEditMode = true;
       this.componentId = +id;
       this.loadcomponent(this.componentId);
-    } else {
-      this.componentForm.get('user_id')?.setValidators(Validators.required);
     }
-    this.componentForm.get('user_id')?.updateValueAndValidity();
+    this.loadusers();
   }
 
   openComponentModal() {
@@ -201,14 +205,18 @@ export class EditAddComponent implements OnInit {
 
   onSubmit(): void {
     if (this.componentForm.valid && this.contentForm.valid && this.selectedComponentType) {
-      const payload = {
+      const payload: any = {
         type: this.selectedComponentType,
         content: JSON.stringify(this.contentForm.value),
         name: this.componentForm.get('name')?.value,
-        user: {
-          idUser: this.componentForm.get('user_id')?.value
-        }
       };
+
+      // Only add user object if user_id exists (create mode)
+      if (this.componentForm.get('user_id')) {
+        payload.user = {
+          idUser: this.componentForm.get('user_id')?.value
+        };
+      }
 
       const request = this.isEditMode && this.componentId
         ? this.componentService.updateComponent(payload)
