@@ -6,11 +6,10 @@ import { PlateformeService } from 'src/app/services/plateforme/plateforme.servic
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgFor } from '@angular/common';
-import { ELEMENTS_FIELDS
-, featuredelements, headingelements, headerelements, otherselements ,
- MAX_SELECTIONS, MINIMUM_SELECTIONS } from './utils/constants/edit-plateforme.constants';
+
 import {  TypePack } from './utils/interfaces/edit-plateforme.interface';
 import { EditPlateformeService } from './utils/services/edit-plateforme.service';
+import { componentServcie } from 'src/app/services/plateforme/component.service';
 
 interface ComponentContent {
   type: string;
@@ -36,56 +35,13 @@ interface ContentJson {
 })
 export class EditPlateformeComponent implements OnInit {
 
-  ELEMENTS_FIELDS = {
-    headerwithicons: [
-      "title", "subtitle", "Ftitle", "Fimage",
-      "Stitle", "Simage", "Ttitle", "Timage",
-      "Ptitle", "Pimage"
-    ],
-    centeredhero: [
-      "title", "subtitle", "imageUrl"
-    ],
-    herowithimage: [
-      "title", "subtitle", "imageUrl"
-    ],
-    verticallycenteredhero: [
-      "title", "subtitle"
-    ],
-    columnswithicons: [
-      "MainTitle", "Ftitle", "Fdescription", "Fimage",
-      "Stitle", "Sdescription", "Simage",
-      "Ttitle", "Tdescription", "Timage"
-    ],
-    customcards: [
-      "MainTitle", "Ftitle", "Fimage",
-      "Stitle", "Simage", "Ttitle", "Timage"
-    ],
-    headings: [
-      "Ftitle", "Fdescription", "Fimage",
-      "Stitle", "Sdescription", "Simage",
-      "Ttitle", "Tdescription", "Timage"
-    ],
-    headingleftwithimage: [
-      "title", "subtitle", "imageUrl"
-    ],
-    headingrightwithimage: [
-      "title", "subtitle", "imageUrl"
-    ],
-    newsletter: [
-      "titleA", "TextB", "TextC", "Image"
-    ],
-    plateformeabout: [
-      "title1", "title2", "description", "imageUrl"
-    ]
-  };
 
-  elementsfields = ELEMENTS_FIELDS;
-  headerelements = headerelements;
-components = [ featuredelements,headingelements, otherselements ]
+  headerelements = [];
+components = []
   currentStep: number = 1;
   currentModal: string | null = null;
-  readonly MAX_SELECTIONS = MAX_SELECTIONS; 
-  readonly MINIMUM_SELECTIONS = MINIMUM_SELECTIONS; 
+  readonly MAX_SELECTIONS = 3; 
+  readonly MINIMUM_SELECTIONS = 3; 
 
   platformForm: FormGroup;
   isEditMode = false;
@@ -95,11 +51,12 @@ components = [ featuredelements,headingelements, otherselements ]
   isLoading = false;
   selectedPlateforme: any = null;
   contentJson: ContentJson = { header: { type: '' } }; // Ensure header is always initialized
-  selectedComponent: string | null = null;
+  UserComponents: any[] = [];
 
   constructor(
     private fb: FormBuilder,
     private ps: PlateformeService,
+    private componentservice: componentServcie,
     private us: CommonService,
     private route: ActivatedRoute,
     private router: Router,
@@ -131,6 +88,28 @@ components = [ featuredelements,headingelements, otherselements ]
     }
     this.platformForm.get('agriculteur')?.updateValueAndValidity();
   }
+
+
+  loadComponents(id: number) {
+      console.log('Loading components for user ID:', id);
+      this.componentservice.getAllcomponentsbyuserid(id).subscribe({
+        next: (data) => {
+          this.UserComponents = data;
+          console.log('User Components loaded:', this.UserComponents);
+        },
+        error: (error) => {
+          console.error('Error loading user components:', error);
+        }
+      });
+   
+  }
+   
+
+
+
+
+
+
 
   loadUsers() {
     this.ps.getUsers().subscribe({
@@ -219,7 +198,6 @@ components = [ featuredelements,headingelements, otherselements ]
       console.warn('Form validation failed. Checking invalid fields...');
       this.editService.markFormGroupTouched(this.platformForm);
 
-      // Log invalid fields for debugging
       Object.keys(this.platformForm.controls).forEach((key) => {
         const control = this.platformForm.get(key);
         if (control?.invalid) {
@@ -239,8 +217,16 @@ components = [ featuredelements,headingelements, otherselements ]
 
   goToStep(step: number): void {
     if (step === 1) {
+
       this.currentStep = step;
+
+
+
+
+
     } else if (step === 2) {
+      this.loadComponents(this.platformForm.get('agriculteur')?.value.id || 0); 
+
       const step1Fields = ['nomPlateforme', 'typePack', 'couleur', 'description', 'dateCreation', 'valabilite', 'logo', 'updateTheme', 'agriculteur'];
       let isStep1Valid = true;
 
@@ -254,38 +240,15 @@ components = [ featuredelements,headingelements, otherselements ]
         }
       });
 
+
+
       if (isStep1Valid) {
         this.currentStep = step;
       }
 
 
-    } else if (step === 3) {
-      if (this.platformForm.get('field1')?.valid && this.getSelectionCount() >= this.MINIMUM_SELECTIONS) {
-        // Initialize content structure for header
-        if (!this.contentJson.header) {
-          this.contentJson.header = {
-            type: this.platformForm.get('field1')?.value || '' // Ensure type is always a string
-          };
-        }
-
-        // Initialize content structure for components
-        for (let i = 2; i <= 4; i++) {
-          const componentValue = this.platformForm.get(`field${i}`)?.value;
-          if (componentValue) {
-            const componentKey = `component${i-1}`;
-            if (!this.contentJson[componentKey]) {
-              this.contentJson[componentKey] = {
-                type: componentValue
-              };
-            }
-          }
-        }
-
-        this.currentStep = step;
-      }
-    } else if (step === 4) {
+    }  else if (step === 3) {
       this.currentStep = step;
-
     }
   }
 
@@ -384,42 +347,7 @@ components = [ featuredelements,headingelements, otherselements ]
     this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson), { emitEvent: false });
   }
 
-  getComponentFields(componentType: string): string[] {
-    if (!componentType) return [];
-    const type = componentType.toLowerCase().replace(/[-\s]/g, '');
-    return this.elementsfields[type] || [];
-  }
-
-  getSelectedComponents(): { type: string, fields: string[] }[] {
-    const components = [];
-    
-    if (this.platformForm.get('field1')?.value) {
-      components.push({
-        type: this.platformForm.get('field1')?.value,
-        fields: this.getComponentFields(this.platformForm.get('field1')?.value)
-      });
-    }
-
-    for (let i = 2; i <= 4; i++) {
-      const fieldValue = this.platformForm.get(`field${i}`)?.value;
-      if (fieldValue) {
-        components.push({
-          type: fieldValue,
-          fields: this.getComponentFields(fieldValue)
-        });
-      }
-    }
-
-    return components;
-  }
-
-  updateField(componentType: string, fieldName: string, value: string) {
-    if (!this.contentJson[componentType]) {
-      this.contentJson[componentType] = { type: componentType }; // Ensure the component exists
-    }
-    this.contentJson[componentType][fieldName] = value;
-    this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson), { emitEvent: false });
-  }
+  
 
   getFieldValue(componentType: string, fieldName: string): string {
     return this.contentJson[componentType]?.[fieldName] || ''; // Safely access fields

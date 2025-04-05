@@ -78,7 +78,7 @@
                       <select class="form-select" id="agriculteur" formControlName="agriculteur" required
                         [ngClass]="{'is-invalid': platformForm.get('agriculteur')?.invalid && platformForm.get('agriculteur')?.touched}">
                         <option value="">Select a user</option>
-                        <option *ngFor="let user of users" [value]="user.email">{{ user.nom }}</option>
+                        <option *ngFor="let user of users" [value]="user.id">{{ user.nom }}</option>
                       </select>
                       <label for="agriculteur">Platform Owner</label>
                       <div class="invalid-feedback">
@@ -303,75 +303,10 @@
                 </div>
 
                 <!-- Step 3: Component Configuration -->
-                <div class="row g-3" *ngIf="currentStep === 3">
-                  <div class="col-12">
-                    <h5 class="text-muted mb-3">Component Configuration</h5>
-                    <div class="alert alert-info">
-                      Configure the content for each selected component.
-                    </div>
-                  </div>
-
-                  <!-- Header Component -->
-                  <div class="col-12" *ngIf="platformForm.get('field1')?.value">
-                    <div class="card mb-4">
-                      <div class="card-header bg-light">
-                        <h6 class="mb-0">Header: {{ platformForm.get('field1')?.value }}</h6>
-                      </div>
-                      <div class="card-body">
-                        <div class="row g-3">
-                          <div class="col-md-6" *ngFor="let field of getComponentFields(platformForm.get('field1')?.value)">
-                            <div class="form-floating">
-                              <input 
-                                type="text" 
-                                class="form-control" 
-                                [id]="'header-' + field"
-                                [(ngModel)]="contentJson.header[field]"
-                                [ngModelOptions]="{standalone: true}">
-                              <label [for]="'header-' + field">{{ field }}</label>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Additional Components -->
-                  <div class="col-12" *ngFor="let i of [2, 3, 4]">
-                    <div class="card mb-4" *ngIf="platformForm.get('field' + i)?.value">
-                      <div class="card-header bg-light">
-                        <h6 class="mb-0">Component {{i-1}}: {{ platformForm.get('field' + i)?.value }}</h6>
-                      </div>
-                      <div class="card-body">
-                        <div class="row g-3">
-                          <div class="col-md-6" *ngFor="let field of getComponentFields(platformForm.get('field' + i)?.value)">
-                            <div class="form-floating">
-                              <input 
-                                type="text" 
-                                class="form-control" 
-                                [id]="'component' + (i-1) + '-' + field"
-                                [(ngModel)]="contentJson['component' + (i-1)][field]"
-                                [ngModelOptions]="{standalone: true}">
-                              <label [for]="'component' + (i-1) + '-' + field">{{ field }}</label>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Back and Next buttons -->
-                  <div class="col-12 mt-4">
-                    <button type="button" class="btn btn-outline-secondary w-100 mb-2" (click)="goToStep(2)">
-                      Back
-                    </button>
-                    <button type="button" class="btn btn-primary w-100" (click)="goToStep(4)">
-                      Next
-                    </button>
-                  </div>
-                </div>
+             
 
                 <!-- Step 4: Sort Components -->
-                <div class="row g-3" *ngIf="currentStep === 4">
+                <div class="row g-3" *ngIf="currentStep === 3">
                   <div class="col-12">
                     <h5 class="text-muted mb-3">Sort Components</h5>
                     <div class="alert alert-info">
@@ -437,7 +372,7 @@
 
                   <!-- Back and Submit Buttons -->
                   <div class="col-12 mt-4">
-                    <button type="button" class="btn btn-outline-secondary w-100 mb-2" (click)="goToStep(3)">
+                    <button type="button" class="btn btn-outline-secondary w-100 mb-2" (click)="goToStep(2)">
                       Back
                     </button>
                     <button type="submit" class="btn btn-primary w-100" 

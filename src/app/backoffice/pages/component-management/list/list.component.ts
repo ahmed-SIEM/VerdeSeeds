@@ -80,9 +80,7 @@ export class ListComponent implements OnInit {
     this.selectedPreviewImage = this.categorizedComponents[component.type].preview;
   }
 
-  viewComponent(component: any): void {
-    this.router.navigate(['/backoffice/component', component.id]);
-  }
+ 
 
   addComponent(): void {
     this.router.navigate(['/backoffice/component', 'add']);

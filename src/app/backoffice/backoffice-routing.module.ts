@@ -9,7 +9,6 @@ import { UserManagementComponent } from './pages/user-management/user-management
 import { CoursesManagementComponent } from './pages/courses-management/courses-management.component';
 import { MarketplaceManagementComponent } from './pages/marketplace-management/marketplace-management.component';
 import { AccountComponent } from './pages/account/account.component';
-import { SettingsComponent } from './pages/settings/settings.component';
 import { NotificationComponent } from './pages/notification/notification.component';
 import { ResetpasswordComponent } from './pages/resetpassword/resetpassword.component';
 import { SignUpComponent } from './pages/sign-up/sign-up.component';
@@ -29,7 +28,6 @@ const routes: Routes = [
     {path : 'courses', component : CoursesManagementComponent},
     {path : 'marketplace', component : MarketplaceManagementComponent},
     {path : 'account', component : AccountComponent},
-    {path : 'settings', component : SettingsComponent},
     {path : 'notification', component : NotificationComponent},
     {path : 'resetpassword', component : ResetpasswordComponent},    
     {path : 'signup', component : SignUpComponent},
