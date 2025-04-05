@@ -3,26 +3,36 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { componentServcie } from 'src/app/services/plateforme/component.service';
 import { PlateformeService } from 'src/app/services/plateforme/plateforme.service';
+
+type ComponentType = 'headerwithicons' | 'centeredhero' | 'herowithimage' | 'verticallycenteredhero' | 
+                    'columnswithicons' | 'customcards' | 'headings' | 'headingleftwithimage' | 
+                    'headingrightwithimage' | 'newsletter' | 'plateformeabout';
+
 interface ContentJson {
   [key: string]: any; 
-}@Component({
+}
+
+@Component({
   selector: 'app-componentedit-add',
   templateUrl: './edit-add.component.html',
   styleUrls: ['./edit-add.component.css']
 })
 
-
-
 export class EditAddComponent implements OnInit {
   componentForm: FormGroup;
+  contentForm: FormGroup;
   isEditMode = false;
   isLoading = false;
   selectedComponent: any;
   contentJson: ContentJson = {}; 
   users: any[] = [];
   componentId: number | null = null;
+  currentStep = 1;
+  showModal = false;
+  selectedComponentType: ComponentType | null = null;
+  componentFields: string[] = [];
 
-   Allcomponents = [
+  Allcomponents = [
     { name: 'Header with Icons', value: 'headerwithicons' },
     { name: 'Centered Hero', value: 'centeredhero' },
     { name: 'Hero with Image', value: 'herowithimage' },
@@ -35,7 +45,7 @@ export class EditAddComponent implements OnInit {
     { name: 'Newsletter', value: 'newsletter' },
     { name: 'Plateforme About', value: 'plateformeabout' }
   ];
-  ELEMENTS_FIELDS = {
+  ELEMENTS_FIELDS: Record<ComponentType, string[]> = {
     headerwithicons: [
       "title", "subtitle", "Ftitle", "Fimage",
       "Stitle", "Simage", "Ttitle", "Timage",
@@ -86,11 +96,9 @@ export class EditAddComponent implements OnInit {
     private router: Router
   ) {
     this.componentForm = this.fb.group({
-      type: ['', Validators.required],
-      content: ['', Validators.required],
       user_id: [null, Validators.required]
-
     });
+    this.contentForm = this.fb.group({});
   }
 
   loadusers() {
@@ -134,53 +142,70 @@ export class EditAddComponent implements OnInit {
       this.componentForm.get('user_id')?.setValidators(Validators.required);
     }
     this.componentForm.get('user_id')?.updateValueAndValidity();
+  }
 
+  openComponentModal() {
+    this.showModal = true;
+  }
 
+  closeComponentModal() {
+    this.showModal = false;
+  }
+
+  selectComponent(type: string) {
+    this.selectedComponentType = type as ComponentType; // Ensure proper casting
+    this.showModal = false;
+    this.componentFields = this.ELEMENTS_FIELDS[type as ComponentType];
+    this.initializeContentForm();
+  }
+
+  initializeContentForm() {
+    const group: any = {};
+    this.componentFields.forEach(field => {
+      group[field] = ['', Validators.required];
+    });
+    this.contentForm = this.fb.group(group);
+  }
+
+  getComponentDisplayName(value: ComponentType | null): string {
+    const component = this.Allcomponents.find(comp => comp.value === value);
+    return component ? component.name : '';
+  }
+
+  nextStep() {
+    if (this.currentStep === 1 && this.selectedComponentType && this.componentForm.valid) {
+      this.currentStep = 2;
+    }
+  }
+
+  previousStep() {
+    if (this.currentStep > 1) {
+      this.currentStep--;
+    }
   }
 
   onSubmit(): void {
-    console.log('Form submitted:', this.componentForm.value);
-  
-    if (this.componentForm.valid) {
-      const formValue = this.componentForm.value;
-      
+    if (this.componentForm.valid && this.contentForm.valid && this.selectedComponentType) {
       const payload = {
-        type: formValue.type,
-        content: formValue.content,
+        type: this.selectedComponentType,
+        content: JSON.stringify(this.contentForm.value),
         user: {
-          idUser: formValue.user_id
+          idUser: this.componentForm.get('user_id')?.value
         }
       };
-  
+
       const request = this.isEditMode && this.componentId
         ? this.componentService.updateComponent(payload)
         : this.componentService.createComponent(payload);
-  
+
       request.subscribe({
         next: () => this.router.navigate(['/backoffice/component']),
         error: err => console.error('Error:', err),
       });
     }
   }
-  
 
   onCancel() {
     this.router.navigate(['/backoffice/platform']);
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
