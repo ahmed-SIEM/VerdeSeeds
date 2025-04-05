@@ -230,14 +230,15 @@
                         <h5 class="modal-title">Select Component 1</h5>
                         <button type="button" class="modal-close" (click)="closeModal()">&times;</button>
                       </div>
-                      <div class="d-flex gap-3">
-                        <div *ngFor="let option of ['1', '2', '3']" class="position-relative">
-                          <input type="radio" [value]="option" formControlName="field2" id="field2-{{option}}"
-                            class="d-none" (change)="closeModal()">
-                          <label for="field2-{{option}}" class="choice-label">
-                            <img src="https://picsum.photos/100?random={{option}}" alt="{{option}}"
-                              class="choice-image">
-                          </label>
+                      <div class="modal-body">
+                        <div class="d-flex gap-3 flex-wrap">
+                          <div *ngFor="let element of featuredelements" class="position-relative">
+                            <input type="radio" [value]="element" formControlName="field2" 
+                                   [id]="'field2-' + element" class="d-none" (change)="closeModal()">
+                            <label [for]="'field2-' + element" class="choice-label">
+                              {{element}}
+                            </label>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -249,14 +250,15 @@
                         <h5 class="modal-title">Select Component 2</h5>
                         <button type="button" class="modal-close" (click)="closeModal()">&times;</button>
                       </div>
-                      <div class="d-flex gap-3">
-                        <div *ngFor="let option of ['1', '2', '3']" class="position-relative">
-                          <input type="radio" [value]="option" formControlName="field3" id="field3-{{option}}"
-                            class="d-none" (change)="closeModal()">
-                          <label for="field3-{{option}}" class="choice-label">
-                            <img src="https://picsum.photos/100?random={{option}}" alt="{{option}}"
-                              class="choice-image">
-                          </label>
+                      <div class="modal-body">
+                        <div class="d-flex gap-3 flex-wrap">
+                          <div *ngFor="let element of headingelements" class="position-relative">
+                            <input type="radio" [value]="element" formControlName="field3" 
+                                   [id]="'field3-' + element" class="d-none" (change)="closeModal()">
+                            <label [for]="'field3-' + element" class="choice-label">
+                              {{element}}
+                            </label>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -268,14 +270,15 @@
                         <h5 class="modal-title">Select Component 3</h5>
                         <button type="button" class="modal-close" (click)="closeModal()">&times;</button>
                       </div>
-                      <div class="d-flex gap-3">
-                        <div *ngFor="let option of ['1', '2', '3']" class="position-relative">
-                          <input type="radio" [value]="option" formControlName="field4" id="field4-{{option}}"
-                            class="d-none" (change)="closeModal()">
-                          <label for="field4-{{option}}" class="choice-label">
-                            <img src="https://picsum.photos/100?random={{option}}" alt="{{option}}"
-                              class="choice-image">
-                          </label>
+                      <div class="modal-body">
+                        <div class="d-flex gap-3 flex-wrap">
+                          <div *ngFor="let element of otherselements" class="position-relative">
+                            <input type="radio" [value]="element" formControlName="field4" 
+                                   [id]="'field4-' + element" class="d-none" (change)="closeModal()">
+                            <label [for]="'field4-' + element" class="choice-label">
+                              {{element}}
+                            </label>
+                          </div>
                         </div>
                       </div>
                     </div>

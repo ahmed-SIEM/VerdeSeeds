@@ -331,10 +331,9 @@ export class EditPlateformeComponent implements OnInit {
 
   getSelectionCount(): number {
     let count = 0;
-    // Don't count header (field1) in the selection count
-    if (this.platformForm.get('field2')?.value) count++;
-    if (this.platformForm.get('field3')?.value) count++;
-    if (this.platformForm.get('field4')?.value) count++;
+    for (let i = 2; i <= 4; i++) {
+      if (this.platformForm.get(`field${i}`)?.value) count++;
+    }
     return count;
   }
 
@@ -343,41 +342,62 @@ export class EditPlateformeComponent implements OnInit {
   }
 
   openModal(type: string): void {
-    this.currentModal = type;
+    // Only allow opening modal if we haven't reached the limit
+    // or if we're editing an existing selection
+    const fieldNumber = parseInt(type.replace('component', '')) + 1;
+    const fieldValue = this.platformForm.get(`field${fieldNumber}`)?.value;
+    
+    if (!this.isSelectionLimitReached() || fieldValue) {
+      this.currentModal = type;
+    }
   }
 
   closeModal(): void {
+    // Update contentJson when closing modal
+    const formValues = this.platformForm.value;
+    this.contentJson = {
+      header: formValues.field1 ? { type: formValues.field1, title: formValues.field1Title || '' } : null
+    };
+
+    // Add components to contentJson
+    for (let i = 2; i <= 4; i++) {
+      if (formValues[`field${i}`]) {
+        this.contentJson[`component${i-1}`] = {
+          type: formValues[`field${i}`],
+          title: formValues[`field${i}Title`] || '',
+          order: i - 2
+        };
+      }
+    }
+
+    // Update the content form control
+    this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson));
     this.currentModal = null;
   }
 
   clearSelections() {
-    // Preserve header selection (field1 and its title)
-    const headerValue = this.platformForm.get('field1')?.value || '';
-    const headerTitle = this.platformForm.get('field1Title')?.value || '';
-  
-    // Reset only the other component selections and titles
-    this.platformForm.patchValue({
-      field2: '',
-      field3: '',
-      field4: '',
-      field2Title: '',
-      field3Title: '',
-      field4Title: ''
-    });
-  
-    // Rebuild contentJson with only header
-    this.contentJson = {
-      header: {
-        type: headerValue,
-        title: headerTitle
-      }
+    // Keep header (field1) values
+    const header = {
+      type: this.platformForm.get('field1')?.value,
+      title: this.platformForm.get('field1Title')?.value
     };
-  
-    this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson), { emitEvent: false });
-  }
-  
 
-  
+    // Reset component fields
+    for (let i = 2; i <= 4; i++) {
+      this.platformForm.patchValue({
+        [`field${i}`]: '',
+        [`field${i}Title`]: ''
+      });
+    }
+
+    // Reset contentJson but keep header
+    this.contentJson = {
+      header: header.type ? { type: header.type, title: header.title || '' } : null
+    };
+
+    // Update content form control
+    this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson));
+  }
 
   getSelectedItems(): { key: string, label: string, value: any }[] {
     return Object.entries(this.contentJson).map(([key, value]) => ({
