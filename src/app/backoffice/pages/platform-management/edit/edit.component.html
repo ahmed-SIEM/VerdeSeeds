@@ -184,7 +184,7 @@
                     <div class="col-12 mb-4">
                       <label class="form-label">Select a Header Component <span class="text-danger">*</span></label>
                       <div class="d-flex gap-3">
-                        <div *ngFor="let option of components[2]" class="position-relative">
+                        <div *ngFor="let option of headerelements" class="position-relative">
                           <input type="radio" [value]="option" formControlName="field1" id="field1-{{option}}"
                             class="d-none" required>
                           <label for="field1-{{option}}" class="choice-label">

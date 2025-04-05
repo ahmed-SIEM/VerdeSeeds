@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { PlatformContent } from '../interfaces/edit-plateforme.interface';
 import { MAX_SELECTIONS } from '../constants/edit-plateforme.constants';
 
 @Injectable({ providedIn: 'root' })
@@ -35,8 +34,8 @@ export class EditPlateformeService {
     });
   }
 
-  updateContentJson(formValues: any): PlatformContent {
-    const contentJson: PlatformContent = {};
+  updateContentJson(formValues: any): any {
+    const contentJson: any = {};
 
     if (formValues.field1) {
       contentJson.header = { type: formValues.field1 };
@@ -76,7 +75,7 @@ export class EditPlateformeService {
     });
   }
 
-  getSelectedItems(contentJson: PlatformContent): { key: string, label: string, value: any }[] {
+  getSelectedItems(contentJson: any): { key: string, label: string, value: any }[] {
     return Object.entries(contentJson)
       .map(([key, value]) => ({
         key,
@@ -85,7 +84,7 @@ export class EditPlateformeService {
       }));
   }
 
-  getSortableItems(contentJson: PlatformContent): { key: string, label: string, value: any }[] {
+  getSortableItems(contentJson: any): { key: string, label: string, value: any }[] {
     return Object.entries(contentJson)
       .filter(([key]) => key !== 'header')
       .sort((a, b) => ((a[1] as { order: number }).order ?? 0) - ((b[1] as { order: number }).order ?? 0))
@@ -96,8 +95,8 @@ export class EditPlateformeService {
       }));
   }
 
-  updateContentOrder(items: { key: string; label: string; value: any }[], currentContent: PlatformContent): PlatformContent {
-    const newContentJson: PlatformContent = {
+  updateContentOrder(items: { key: string; label: string; value: any }[], currentContent: any): any {
+    const newContentJson: any = {
       header: currentContent.header 
     };
 

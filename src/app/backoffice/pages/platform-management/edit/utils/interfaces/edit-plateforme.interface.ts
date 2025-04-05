@@ -1,22 +1,4 @@
-export interface PlatformContent {
-    header?: {
-      type: string;
-    };
-    component1?: {
-      type: string;
-      order: number;
-    };
-    component2?: {
-      type: string;
-      order: number;
-    };
-    component3?: {
-      type: string;
-      order: number;
-    };
-    [key: string]: any;
-  }
-  
+
 
   
   export enum TypePack {

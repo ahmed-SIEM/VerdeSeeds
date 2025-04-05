@@ -9,7 +9,7 @@ import { NgFor } from '@angular/common';
 import { ELEMENTS_FIELDS
 , featuredelements, headingelements, headerelements, otherselements ,
  MAX_SELECTIONS, MINIMUM_SELECTIONS } from './utils/constants/edit-plateforme.constants';
-import { PlatformContent, TypePack } from './utils/interfaces/edit-plateforme.interface';
+import {  TypePack } from './utils/interfaces/edit-plateforme.interface';
 import { EditPlateformeService } from './utils/services/edit-plateforme.service';
 
 @Component({
@@ -70,7 +70,8 @@ export class EditPlateformeComponent implements OnInit {
   };
 
   elementsfields = ELEMENTS_FIELDS;
-components = [ featuredelements,headingelements, headerelements, otherselements ]
+  headerelements = headerelements;
+components = [ featuredelements,headingelements, otherselements ]
   currentStep: number = 1;
   currentModal: string | null = null;
   readonly MAX_SELECTIONS = MAX_SELECTIONS; 
@@ -83,7 +84,7 @@ components = [ featuredelements,headingelements, headerelements, otherselements 
   users: any[] = [];
   isLoading = false;
   selectedPlateforme: any = null;
-  contentJson: PlatformContent = {}; 
+  contentJson: any = {}; 
   selectedComponent: string | null = null;
 
   constructor(
@@ -244,6 +245,32 @@ components = [ featuredelements,headingelements, headerelements, otherselements 
           this.currentStep = step;
         }
       }
+
+      const selectedComponents = this.getSelectedComponents();
+      
+      // Initialize contentJson structure
+      this.contentJson = {
+        header: { type: this.platformForm.get('field1')?.value || '' }
+      };
+
+      selectedComponents.forEach((component, i) => {
+        const name = `component${i + 1}`;
+        // Initialize the component object with its type
+        this.contentJson[name] = {
+          type: component.type
+        };
+
+        const fields = this.getComponentFields(component.type);
+        fields.forEach((field) => {
+          // Get the form control value for this field
+          const fieldValue = this.platformForm.get(field)?.value;
+          // Set the field in the contentJson
+          this.contentJson[name][field] = fieldValue || '';
+        });
+      });
+
+      // Update the form's content field with the new JSON
+      this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson), { emitEvent: false });
       console.log('JSON content step 3:', this.contentJson);
 
     } else if (step === 4) {
