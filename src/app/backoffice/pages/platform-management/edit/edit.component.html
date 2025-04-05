@@ -302,8 +302,73 @@
                   </div>
                 </div>
 
-                <!-- Step 3: Sort Components -->
+                <!-- Step 3: Additional Content -->
                 <div class="row g-3" *ngIf="currentStep === 3">
+                  <div class="col-12">
+                    <h5 class="text-muted mb-3">Additional Content</h5>
+                    <div class="alert alert-info">
+                      Click on each component to add its content. Only one section can be open at a time.
+                    </div>
+                  </div>
+
+                  <!-- Header Accordion -->
+                  <div class="col-12" *ngIf="platformForm.get('field1')?.value">
+                    <div class="accordion-item">
+                      <div class="accordion-header" (click)="toggleAccordion('header')">
+                        <button class="accordion-button" [class.collapsed]="activeAccordion !== 'header'" type="button">
+                          Header Component ({{ platformForm.get('field1')?.value }})
+                        </button>
+                      </div>
+                      <div class="accordion-collapse" [class.show]="activeAccordion === 'header'">
+                        <div class="accordion-body">
+                          <div class="form-floating">
+                            <input type="text" class="form-control" id="field1Title" formControlName="field1Title" required
+                              [ngClass]="{'is-invalid': platformForm.get('field1Title')?.invalid && platformForm.get('field1Title')?.touched}">
+                            <label for="field1Title">Header Title</label>
+                            <div class="invalid-feedback">Title is required</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Component Accordions -->
+                  <ng-container *ngFor="let item of getSortableItems(); let i = index">
+                    <div class="col-12">
+                      <div class="accordion-item">
+                        <div class="accordion-header" (click)="toggleAccordion(item.key)">
+                          <button class="accordion-button" [class.collapsed]="activeAccordion !== item.key" type="button">
+                            {{ item.label }} Component ({{ item.value }})
+                          </button>
+                        </div>
+                        <div class="accordion-collapse" [class.show]="activeAccordion === item.key">
+                          <div class="accordion-body">
+                            <div class="form-floating">
+                              <input type="text" class="form-control" [id]="'field' + (i + 2) + 'Title'"
+                                [formControlName]="'field' + (i + 2) + 'Title'" required
+                                [ngClass]="{'is-invalid': platformForm.get('field' + (i + 2) + 'Title')?.invalid && platformForm.get('field' + (i + 2) + 'Title')?.touched}">
+                              <label [for]="'field' + (i + 2) + 'Title'">{{ item.label }} Title</label>
+                              <div class="invalid-feedback">Title is required</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+
+                  <!-- Back and Next Buttons -->
+                  <div class="col-12 mt-4">
+                    <button type="button" class="btn btn-outline-secondary w-100 mb-2" (click)="goToStep(2)">
+                      Back
+                    </button>
+                    <button type="button" class="btn btn-primary w-100" (click)="goToStep(4)">
+                      Next
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Step 4: Sort Components -->
+                <div class="row g-3" *ngIf="currentStep === 4">
                   <div class="col-12">
                     <h5 class="text-muted mb-3">Sort Components</h5>
                     <div class="alert alert-info">
@@ -367,71 +432,6 @@
                       </div>
                     </div>
                   </div>
-
-                  <!-- Back and Next Buttons -->
-                  <div class="col-12 mt-4">
-                    <button type="button" class="btn btn-outline-secondary w-100 mb-2" (click)="goToStep(2)">
-                      Back
-                    </button>
-                    <button type="button" class="btn btn-primary w-100" (click)="goToStep(4)">
-                      Next
-                    </button>
-                  </div>
-                </div>
-
-                <!-- Step 4: Additional Content -->
-                <div class="row g-3" *ngIf="currentStep === 4">
-                  <div class="col-12">
-                    <h5 class="text-muted mb-3">Additional Content</h5>
-                    <div class="alert alert-info">
-                      Click on each component to add its content. Only one section can be open at a time.
-                    </div>
-                  </div>
-
-                  <!-- Header Accordion -->
-                  <div class="col-12" *ngIf="platformForm.get('field1')?.value">
-                    <div class="accordion-item">
-                      <div class="accordion-header" (click)="toggleAccordion('header')">
-                        <button class="accordion-button" [class.collapsed]="activeAccordion !== 'header'" type="button">
-                          Header Component ({{ platformForm.get('field1')?.value }})
-                        </button>
-                      </div>
-                      <div class="accordion-collapse" [class.show]="activeAccordion === 'header'">
-                        <div class="accordion-body">
-                          <div class="form-floating">
-                            <input type="text" class="form-control" id="field1Title" formControlName="field1Title" required
-                              [ngClass]="{'is-invalid': platformForm.get('field1Title')?.invalid && platformForm.get('field1Title')?.touched}">
-                            <label for="field1Title">Header Title</label>
-                            <div class="invalid-feedback">Title is required</div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Component Accordions -->
-                  <ng-container *ngFor="let item of getSortableItems(); let i = index">
-                    <div class="col-12">
-                      <div class="accordion-item">
-                        <div class="accordion-header" (click)="toggleAccordion(item.key)">
-                          <button class="accordion-button" [class.collapsed]="activeAccordion !== item.key" type="button">
-                            {{ item.label }} Component ({{ item.value }})
-                          </button>
-                        </div>
-                        <div class="accordion-collapse" [class.show]="activeAccordion === item.key">
-                          <div class="accordion-body">
-                            <div class="form-floating">
-                              <input type="text" class="form-control" [id]="'field' + (i + 2) + 'Title'"
-                                [formControlName]="'field' + (i + 2) + 'Title'" required
-                                [ngClass]="{'is-invalid': platformForm.get('field' + (i + 2) + 'Title')?.invalid && platformForm.get('field' + (i + 2) + 'Title')?.touched}">
-                              <label [for]="'field' + (i + 2) + 'Title'">{{ item.label }} Title</label>
-                              <div class="invalid-feedback">Title is required</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </ng-container>
 
                   <!-- Back and Submit Buttons -->
                   <div class="col-12 mt-4">

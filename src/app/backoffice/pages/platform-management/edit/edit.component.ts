@@ -192,13 +192,13 @@ export class EditPlateformeComponent implements OnInit {
       }
     } else if (step === 3) {
       if (this.platformForm.get('field1')?.valid && this.getSelectionCount() >= this.MINIMUM_SELECTIONS) {
-        this.currentStep = step;
+        const sortedItems = this.getSortableItems();
+        if (sortedItems.length > 0) {
+          this.currentStep = step;
+        }
       }
     } else if (step === 4) {
-      const sortedItems = this.getSortableItems();
-      if (sortedItems.length > 0) {
-        this.currentStep = step;
-      }
+      this.currentStep = step;
     }
   }
 
