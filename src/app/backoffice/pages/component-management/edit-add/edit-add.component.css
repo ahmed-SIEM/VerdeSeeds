@@ -68,7 +68,7 @@ body.app {
 }
 
 .step.active .bs-stepper-circle {
-  background-color: #4f46e5;
+  background-color: #69A619;
   color: white;
   transform: scale(1.1);
 }
@@ -102,7 +102,7 @@ body.app {
 
 .form-control:focus,
 .form-select:focus {
-  border-color: #4f46e5;
+  border-color: #69A619;
   box-shadow: 0 0 0 0.25rem rgba(79, 70, 229, 0.25);
 }
 
@@ -114,13 +114,13 @@ body.app {
 }
 
 .btn-primary {
-  background-color: #4f46e5;
-  border-color: #4f46e5;
+  background-color: #69A619;
+  border-color: #69A619;
 }
 
 .btn-primary:hover {
-  background-color: #4338ca;
-  border-color: #4338ca;
+  background-color: #69A619;
+  border-color: #69A619;
 }
 
 .btn-secondary {
@@ -156,7 +156,7 @@ body.app {
 .modal-body {
   padding: 0;
   overflow: hidden;
-  height: calc(90vh - 60px); /* Subtract header height */
+  height: calc(90vh - 60px); 
 }
 
 .component-list {
@@ -215,7 +215,7 @@ body.app {
 
 .component-card:hover {
   background-color: #f7fafc;
-  border-color: #4f46e5;
+  border-color: #69A619;
   transform: translateY(-2px);
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
@@ -244,7 +244,7 @@ body.app {
 
 .component-card:hover {
   background-color: #f7fafc;
-  border-color: #4f46e5;
+  border-color: #69A619;
   transform: translateY(-2px);
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
