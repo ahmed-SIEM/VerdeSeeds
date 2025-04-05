@@ -3,13 +3,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { componentServcie } from 'src/app/services/plateforme/component.service';
 import { PlateformeService } from 'src/app/services/plateforme/plateforme.service';
-
-type ComponentType = 'headerwithicons' | 'centeredhero' | 'herowithimage' | 'verticallycenteredhero' | 
-                    'columnswithicons' | 'customcards' | 'headings' | 'headingleftwithimage' | 
-                    'headingrightwithimage' | 'newsletter' | 'plateformeabout';
+type ComponentType = 'headerwithicons' | 'centeredhero' | 'herowithimage' | 'verticallycenteredhero' |
+  'columnswithicons' | 'customcards' | 'headings' | 'headingleftwithimage' |
+  'headingrightwithimage' | 'newsletter' | 'plateformeabout';
 
 interface ContentJson {
-  [key: string]: any; 
+  [key: string]: any;
 }
 
 @Component({
@@ -24,7 +23,7 @@ export class EditAddComponent implements OnInit {
   isEditMode = false;
   isLoading = false;
   selectedComponent: any;
-  contentJson: ContentJson = {}; 
+  contentJson: ContentJson = {};
   users: any[] = [];
   componentId: number | null = null;
   currentStep = 1;
@@ -35,21 +34,21 @@ export class EditAddComponent implements OnInit {
 
   categorizedComponents = {
     headers: [
-      { name: 'Header with Icons', value: 'headerwithicons', preview :'https://picsum.photos/200' },
-      { name: 'Centered Hero', value: 'centeredhero', preview :'https://picsum.photos/200' },
-      { name: 'Hero with Image', value: 'herowithimage', preview :'https://picsum.photos/200' },
-      { name: 'Vertically Centered Hero', value: 'verticallycenteredhero', preview :'https://picsum.photos/200' }
+      { name: 'Header with Icons', value: 'headerwithicons', preview: '../../../../../assets/backoffice/img/preview-images/CustomHeaderWithIcons.png' },
+      { name: 'Centered Hero', value: 'centeredhero', preview: '../../../../../assets/backoffice/img/preview-images/centered-hero.png' },
+      { name: 'Hero with Image', value: 'herowithimage', preview: '../../../../../assets/backoffice/img/preview-images/hero-image.png' },
+      { name: 'Vertically Centered Hero', value: 'verticallycenteredhero', preview: '../../../../../assets/backoffice/img/preview-images/VerticallyCenteredHeroSignUpForm.png' }
     ],
     features: [
-      { name: 'Columns with Icons', value: 'columnswithicons', preview :'https://picsum.photos/200' },
-      { name: 'Custom Cards', value: 'customcards', preview :'https://picsum.photos/200' },
-      { name: 'Headings', value: 'headings' , preview :'https://picsum.photos/200'},
-      { name: 'Heading Left with Image', value: 'headingleftwithimage' , preview :'https://picsum.photos/200'},
-      { name: 'Heading Right with Image', value: 'headingrightwithimage' , preview :'https://picsum.photos/200'}
+      { name: 'Columns with Icons', value: 'columnswithicons', preview: '../../../../../assets/backoffice/img/preview-images/ColumnsWithIcons.png' },
+      { name: 'Custom Cards', value: 'customcards', preview: '../../../../../assets/backoffice/img/preview-images/CustomCards.png' },
+      { name: 'Headings', value: 'headings', preview: '../../../../../assets/backoffice/img/preview-images/Headings.png' },
+      { name: 'Heading Left with Image', value: 'headingleftwithimage', preview: '../../../../../assets/backoffice/img/preview-images/LeftImage.png' },
+      { name: 'Heading Right with Image', value: 'headingrightwithimage', preview: '../../../../../assets/backoffice/img/preview-images/RightImage.png' }
     ],
     others: [
-      { name: 'Newsletter', value: 'newsletter', preview :'https://picsum.photos/200' },
-      { name: 'Plateforme About', value: 'plateformeabout', preview :'https://picsum.photos/200' }
+      { name: 'Newsletter', value: 'newsletter', preview: '../../../../../assets/backoffice/img/preview-images/Newsletter.png' },
+      { name: 'Plateforme About', value: 'plateformeabout', preview: '../../../../../assets/backoffice/img/preview-images/AboutUs.png' }
     ]
   };
 
