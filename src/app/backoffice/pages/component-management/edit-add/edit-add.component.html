@@ -93,19 +93,49 @@
 
 <!-- Component Selection Modal -->
 <div class="modal" tabindex="-1" [class.show]="showModal" [style.display]="showModal ? 'block' : 'none'">
-  <div class="modal-dialog">
-    <div class="modal-content">
+  <div class="modal-dialog modal-xl" >
+    <div class="modal-content" style="min-height: 600px;">
       <div class="modal-header">
         <h5 class="modal-title">Select Component Type</h5>
         <button type="button" class="btn-close" (click)="closeComponentModal()"></button>
       </div>
       <div class="modal-body">
-        <div class="list-group">
-          <button type="button" class="list-group-item list-group-item-action"
-                  *ngFor="let comp of Allcomponents"
-                  (click)="selectComponent(comp.value)">
-            {{comp.name}}
-          </button>
+        <div class="component-categories">
+          <!-- Header Components -->
+          <div class="category-section mb-4">
+            <h6 class="category-title mb-3">Header Components</h6>
+            <div class="row g-2">
+              <div class="col-md-6" *ngFor="let comp of categorizedComponents.headers">
+                <div class="component-card" (click)="selectComponent(comp.value)">
+                  {{comp.name}}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Feature Components -->
+          <div class="category-section mb-4">
+            <h6 class="category-title mb-3">Feature Components</h6>
+            <div class="row g-2">
+              <div class="col-md-6" *ngFor="let comp of categorizedComponents.features">
+                <div class="component-card" (click)="selectComponent(comp.value)">
+                  {{comp.name}}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Other Components -->
+          <div class="category-section">
+            <h6 class="category-title mb-3">Other Components</h6>
+            <div class="row g-2">
+              <div class="col-md-6" *ngFor="let comp of categorizedComponents.others">
+                <div class="component-card" (click)="selectComponent(comp.value)">
+                  {{comp.name}}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

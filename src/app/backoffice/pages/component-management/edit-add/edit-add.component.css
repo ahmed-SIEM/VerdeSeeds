@@ -163,6 +163,35 @@ body.app {
   font-weight: 500;
 }
 
+/* Component Categories Modal */
+.category-title {
+  color: #2d3748;
+  font-weight: 600;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.component-card {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.component-card:hover {
+  background-color: #f7fafc;
+  border-color: #4f46e5;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
 /* Responsive Fixes */
 @media (max-width: 768px) {
   .bs-stepper-header {

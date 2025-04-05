@@ -32,19 +32,26 @@ export class EditAddComponent implements OnInit {
   selectedComponentType: ComponentType | null = null;
   componentFields: string[] = [];
 
-  Allcomponents = [
-    { name: 'Header with Icons', value: 'headerwithicons' },
-    { name: 'Centered Hero', value: 'centeredhero' },
-    { name: 'Hero with Image', value: 'herowithimage' },
-    { name: 'Vertically Centered Hero', value: 'verticallycenteredhero' },
-    { name: 'Columns with Icons', value: 'columnswithicons' },
-    { name: 'Custom Cards', value: 'customcards' },
-    { name: 'Headings', value: 'headings' },
-    { name: 'Heading Left with Image', value: 'headingleftwithimage' },
-    { name: 'Heading Right with Image', value: 'headingrightwithimage' },
-    { name: 'Newsletter', value: 'newsletter' },
-    { name: 'Plateforme About', value: 'plateformeabout' }
-  ];
+  categorizedComponents = {
+    headers: [
+      { name: 'Header with Icons', value: 'headerwithicons' },
+      { name: 'Centered Hero', value: 'centeredhero' },
+      { name: 'Hero with Image', value: 'herowithimage' },
+      { name: 'Vertically Centered Hero', value: 'verticallycenteredhero' }
+    ],
+    features: [
+      { name: 'Columns with Icons', value: 'columnswithicons' },
+      { name: 'Custom Cards', value: 'customcards' },
+      { name: 'Headings', value: 'headings' },
+      { name: 'Heading Left with Image', value: 'headingleftwithimage' },
+      { name: 'Heading Right with Image', value: 'headingrightwithimage' }
+    ],
+    others: [
+      { name: 'Newsletter', value: 'newsletter' },
+      { name: 'Plateforme About', value: 'plateformeabout' }
+    ]
+  };
+
   ELEMENTS_FIELDS: Record<ComponentType, string[]> = {
     headerwithicons: [
       "title", "subtitle", "Ftitle", "Fimage",
@@ -168,8 +175,11 @@ export class EditAddComponent implements OnInit {
   }
 
   getComponentDisplayName(value: ComponentType | null): string {
-    const component = this.Allcomponents.find(comp => comp.value === value);
-    return component ? component.name : '';
+    for (const category of Object.values(this.categorizedComponents)) {
+      const component = category.find(comp => comp.value === value);
+      if (component) return component.name;
+    }
+    return '';
   }
 
   nextStep() {
