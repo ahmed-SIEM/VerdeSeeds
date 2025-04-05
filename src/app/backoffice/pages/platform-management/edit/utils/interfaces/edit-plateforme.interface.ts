@@ -1,21 +1,17 @@
 export interface PlatformContent {
     header?: {
       type: string;
-      title: string;
     };
     component1?: {
       type: string;
-      title: string;
       order: number;
     };
     component2?: {
       type: string;
-      title: string;
       order: number;
     };
     component3?: {
       type: string;
-      title: string;
       order: number;
     };
     [key: string]: any;

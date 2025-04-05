@@ -154,10 +154,7 @@ components = [ featuredelements,headingelements, headerelements, otherselements 
               field2: parsedContent.component1?.type || '',
               field3: parsedContent.component2?.type || '',
               field4: parsedContent.component3?.type || '',
-              field1Title: parsedContent.header?.title || '',
-              field2Title: parsedContent.component1?.title || '',
-              field3Title: parsedContent.component2?.title || '',
-              field4Title: parsedContent.component3?.title || ''
+           
             });
           } catch (error) {
             console.error('Error parsing content JSON:', error);
@@ -282,18 +279,16 @@ components = [ featuredelements,headingelements, headerelements, otherselements 
   clearSelections() {
     const header = {
       type: this.platformForm.get('field1')?.value,
-      title: this.platformForm.get('field1Title')?.value
     };
 
     for (let i = 2; i <= 4; i++) {
       this.platformForm.patchValue({
         [`field${i}`]: '',
-        [`field${i}Title`]: ''
       });
     }
 
     this.contentJson = {
-      header: header.type ? { type: header.type, title: header.title || '' } : undefined
+      header: header.type ? { type: header.type } : undefined
     };
 
     this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson));

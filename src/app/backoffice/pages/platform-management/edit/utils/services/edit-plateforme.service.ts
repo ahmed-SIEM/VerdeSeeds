@@ -39,17 +39,17 @@ export class EditPlateformeService {
     const contentJson: PlatformContent = {};
 
     if (formValues.field1) {
-      contentJson.header = { type: formValues.field1, title: formValues.field1Title || '' };
+      contentJson.header = { type: formValues.field1 };
     }
 
     if (formValues.field2) {
-      contentJson.component1 = { type: formValues.field2, title: formValues.field2Title || '', order: 0 };
+      contentJson.component1 = { type: formValues.field2, order: 0 };
     }
     if (formValues.field3) {
-      contentJson.component2 = { type: formValues.field3, title: formValues.field3Title || '', order: 1 };
+      contentJson.component2 = { type: formValues.field3, order: 1 };
     }
     if (formValues.field4) {
-      contentJson.component3 = { type: formValues.field4, title: formValues.field4Title || '', order: 2 };
+      contentJson.component3 = { type: formValues.field4, order: 2 };
     }
 
     return contentJson;
