@@ -6,7 +6,7 @@ import { PlateformeService } from 'src/app/services/plateforme/plateforme.servic
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgFor } from '@angular/common';
-
+import { headerelements, featuredelements, headingelements, otherselements, TypePack} from './constants/types';
 @Component({
   selector: 'app-edit',
   templateUrl: './edit.component.html',
@@ -20,8 +20,6 @@ import { NgFor } from '@angular/common';
   ]
 })
 export class EditPlateformeComponent implements OnInit {
-
-
 
 
   elementsfields = {
@@ -68,52 +66,24 @@ export class EditPlateformeComponent implements OnInit {
   };
 
 
-
- headerelements = [
-  "headerwithicons",
-  "centeredhero",
-  "herowithimage",
-  "verticallycenteredhero",
- ]
-
- featuredelements = [
-  "columnswithicons",
-  "customcards"]
-
-  headingelements = [
-    "headings",
-    "headingleftwithimage",
-    "headingrightwithimage"]
-
-    otherselements = [
-      "newsletter",
-      "plateformeabout"
-    ]
+  components = [ featuredelements,headingelements, headerelements, otherselements ]
 
 
-    components = [ this.featuredelements,this.headingelements, this.headerelements, this.otherselements ]
-
-
-
-  currentStep: number = 1; // Track the current step
+  currentStep: number = 1;
   currentModal: string | null = null;
-  readonly MAX_SELECTIONS = 3; // Update max selections to 3
-  readonly MINIMUM_SELECTIONS = 3; // Update minimum selections to 3
+  readonly MAX_SELECTIONS = 3; 
+  readonly MINIMUM_SELECTIONS = 3; 
 
-  TypePack = {
-    BASIC: 'BASIC',
-    PREMIUM: 'PREMIUM',
-    ADVANCED: 'ADVANCED'
-  }
+
   platformForm: FormGroup;
   isEditMode = false;
   platformId: number | null = null;
-  typePackOptions = Object.values(this.TypePack);
+  typePackOptions = Object.values(TypePack);
   users: any[] = [];
   isLoading = false;
   selectedPlateforme: any = null;
-  contentJson: any = {}; // Track the current content JSON dynamically
-  activeAccordion: string | null = null;  // Track active accordion
+  contentJson: any = {}; 
+  activeAccordion: string | null = null; 
 
   constructor(
     private fb: FormBuilder,
@@ -147,16 +117,13 @@ export class EditPlateformeComponent implements OnInit {
       field6Title: ['', Validators.required]
     });
 
-    // Update contentJson to include titles
     this.platformForm.valueChanges.subscribe(() => {
       const { field1, field2, field3, field4,
         field1Title, field2Title, field3Title, field4Title } = this.platformForm.value;
       this.contentJson = {};
 
-      // Set header first (always order 0)
       if (field1) this.contentJson.header = { "type": field1, "title": field1Title };
 
-      // Add other components with their order and title
       if (field2) this.contentJson.component1 = { "type": field2, "title": field2Title, "order": 0 };
       if (field3) this.contentJson.component2 = { "type": field3, "title": field3Title, "order": 1 };
       if (field4) this.contentJson.component3 = { "type": field4, "title": field4Title, "order": 2 };
@@ -181,7 +148,6 @@ export class EditPlateformeComponent implements OnInit {
         dateCreation: today.toISOString().split('T')[0],
         valabilite: new Date(today.setMonth(today.getMonth() + 12)).toISOString().split('T')[0]
       });
-      // Add required validator for 'agriculteur' in create mode
       this.platformForm.get('agriculteur')?.setValidators(Validators.required);
     }
     this.platformForm.get('agriculteur')?.updateValueAndValidity();
@@ -210,13 +176,11 @@ export class EditPlateformeComponent implements OnInit {
           valabilite: platform.valabilite.split('T')[0]
         });
 
-        // Parse and set the stored content JSON
         if (platform.content) {
           try {
             const parsedContent = JSON.parse(platform.content);
             this.contentJson = parsedContent;
 
-            // Set the values for the radio fields
             this.platformForm.patchValue({
               field1: parsedContent.header?.type || '',
               field2: parsedContent.component1?.type || '',
@@ -242,7 +206,6 @@ export class EditPlateformeComponent implements OnInit {
   }
 
   onSubmit() {
-    // Add validation for required header
     if (this.platformForm.get('field1')?.value &&
       this.platformForm.valid &&
       this.getSelectionCount() <= this.MAX_SELECTIONS) {
@@ -253,7 +216,6 @@ export class EditPlateformeComponent implements OnInit {
         next: (user) => {
           platformData.agriculteur = user;
 
-          // Ajoute l'idPlateforme seulement si c’est un update
           if (this.isEditMode) {
             platformData.idPlateforme = this.platformId;
           }
@@ -316,12 +278,10 @@ export class EditPlateformeComponent implements OnInit {
         this.currentStep = step;
       }
     } else if (step === 3) {
-      // Validate that we have a header and minimum selections
       if (this.platformForm.get('field1')?.valid && this.getSelectionCount() >= this.MINIMUM_SELECTIONS) {
         this.currentStep = step;
       }
     } else if (step === 4) {
-      // Only allow proceeding to step 4 if step 3 is valid
       const sortedItems = this.getSortableItems();
       if (sortedItems.length > 0) {
         this.currentStep = step;
@@ -342,8 +302,6 @@ export class EditPlateformeComponent implements OnInit {
   }
 
   openModal(type: string): void {
-    // Only allow opening modal if we haven't reached the limit
-    // or if we're editing an existing selection
     const fieldNumber = parseInt(type.replace('component', '')) + 1;
     const fieldValue = this.platformForm.get(`field${fieldNumber}`)?.value;
     
@@ -353,13 +311,11 @@ export class EditPlateformeComponent implements OnInit {
   }
 
   closeModal(): void {
-    // Update contentJson when closing modal
     const formValues = this.platformForm.value;
     this.contentJson = {
       header: formValues.field1 ? { type: formValues.field1, title: formValues.field1Title || '' } : null
     };
 
-    // Add components to contentJson
     for (let i = 2; i <= 4; i++) {
       if (formValues[`field${i}`]) {
         this.contentJson[`component${i-1}`] = {
@@ -370,19 +326,16 @@ export class EditPlateformeComponent implements OnInit {
       }
     }
 
-    // Update the content form control
     this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson));
     this.currentModal = null;
   }
 
   clearSelections() {
-    // Keep header (field1) values
     const header = {
       type: this.platformForm.get('field1')?.value,
       title: this.platformForm.get('field1Title')?.value
     };
 
-    // Reset component fields
     for (let i = 2; i <= 4; i++) {
       this.platformForm.patchValue({
         [`field${i}`]: '',
@@ -390,12 +343,10 @@ export class EditPlateformeComponent implements OnInit {
       });
     }
 
-    // Reset contentJson but keep header
     this.contentJson = {
       header: header.type ? { type: header.type, title: header.title || '' } : null
     };
 
-    // Update content form control
     this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson));
   }
 
@@ -410,7 +361,7 @@ export class EditPlateformeComponent implements OnInit {
   getSortableItems(): { key: string, label: string, value: any }[] {
     return Object.entries(this.contentJson)
       .filter(([key]) => key !== 'header')
-      .sort((a, b) => ((a[1] as { order: number }).order ?? 0) - ((b[1] as { order: number }).order ?? 0)) // Sort by order, default to 0 if not set
+      .sort((a, b) => ((a[1] as { order: number }).order ?? 0) - ((b[1] as { order: number }).order ?? 0)) 
       .map(([key, value]) => ({
         key,
         label: key.charAt(0).toUpperCase() + key.slice(1),
@@ -441,7 +392,7 @@ export class EditPlateformeComponent implements OnInit {
 
   updateContentJson(items: { key: string; label: string; value: any }[]): void {
     const newContentJson: any = {
-      header: this.contentJson.header // Preserve the header
+      header: this.contentJson.header 
     };
 
     items.forEach((item, index) => {
@@ -449,13 +400,12 @@ export class EditPlateformeComponent implements OnInit {
         newContentJson[item.key] = {
           type: this.contentJson[item.key].type,
           title: this.contentJson[item.key].title,
-          order: index // Order based on current position in the sorted list
+          order: index 
         };
       }
     });
 
     this.contentJson = newContentJson;
-    // Ensure content form field is updated with the new JSON
     this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson), { emitEvent: false });
   }
 
