@@ -103,7 +103,8 @@ export class EditAddComponent implements OnInit {
     private router: Router
   ) {
     this.componentForm = this.fb.group({
-      user_id: [null, Validators.required]
+      user_id: [null, Validators.required],
+      name: ['', Validators.required]
     });
     this.contentForm = this.fb.group({});
   }
@@ -203,6 +204,7 @@ export class EditAddComponent implements OnInit {
       const payload = {
         type: this.selectedComponentType,
         content: JSON.stringify(this.contentForm.value),
+        name: this.componentForm.get('name')?.value,
         user: {
           idUser: this.componentForm.get('user_id')?.value
         }

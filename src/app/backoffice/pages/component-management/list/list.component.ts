@@ -8,6 +8,7 @@ type ComponentType = 'headerwithicons' | 'centeredhero' | 'herowithimage' | 'ver
 
 interface ComponentPlatforme {
   id: number;
+  name: string; // Added name field
   type: ComponentType;
   content: string;
 }
@@ -21,6 +22,8 @@ export class ListComponent implements OnInit {
   components: ComponentPlatforme[] = [];
   searchTerm: string = '';
   selectedPreviewImage: string = '';
+  selectedType: ComponentType | '' = ''; // Added type filter property
+
   constructor(private componentService: componentServcie, private router: Router) {}
 
   categorizedComponents: Record<ComponentType, { name: string; preview: string }> = {
@@ -48,8 +51,10 @@ export class ListComponent implements OnInit {
   get filteredComponentsList() {
     return this.components.filter(component => {
       const matchesSearch = !this.searchTerm || 
-        component.type.toLowerCase().includes(this.searchTerm.toLowerCase());
-      return matchesSearch;
+        component.type.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        component.name.toLowerCase().includes(this.searchTerm.toLowerCase()); // Added name search
+      const matchesType = !this.selectedType || component.type === this.selectedType; // Added type filter
+      return matchesSearch && matchesType;
     });
   }
 

@@ -20,7 +20,15 @@
       <div class="card-body">
           <div class="row g-3">
               <div class="col-md-4">
-                  <input type="text" class="form-control" placeholder="Search platforms..." [(ngModel)]="searchTerm">
+                  <input type="text" class="form-control" placeholder="Search by name or type..." [(ngModel)]="searchTerm">
+              </div>
+              <div class="col-md-4">
+                  <select class="form-select" [(ngModel)]="selectedType">
+                      <option value="">All Types</option>
+                      <option *ngFor="let type of categorizedComponents | keyvalue" [value]="type.key">
+                          {{type.value.name}}
+                      </option>
+                  </select>
               </div>
           </div>
       </div>
@@ -28,7 +36,7 @@
 
   <!-- Platforms List -->
   <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
-      <div class="col" *ngFor="let component of components">
+      <div class="col" *ngFor="let component of filteredComponentsList">
           <div class="card h-100">
               <div class="card-body">
                   <img [src]="categorizedComponents[component.type].preview" 
@@ -40,7 +48,8 @@
                        (click)="previewComponent(component)">
                        
                   <div class="component-info">
-                      <h5 class="card-title mb-3">{{categorizedComponents[component.type].name}}</h5>
+                      <h4 class="card-title  mb-0"><strong>{{component.name}}</strong></h4>
+                      <p class="text-muted small mb-0">Type: {{categorizedComponents[component.type].name}}</p>
                   </div>
 
                   <div class="d-flex gap-2 mt-auto">
@@ -63,7 +72,7 @@
   </div>
 
   <!-- Empty State -->
-  <div *ngIf="components.length === 0" class="text-center py-5">
+  <div *ngIf="filteredComponentsList.length === 0" class="text-center py-5">
       <i class="fas fa-database fa-3x text-muted mb-3"></i>
       <h4>No Components Found</h4>
       <p class="text-muted">Start by adding a new components using the button above.</p>

@@ -43,6 +43,11 @@
                     </div>
 
                     <div class="form-floating mb-3">
+                      <input type="text" class="form-control" id="name" formControlName="name" required>
+                      <label for="name">Component Name</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
                       <select class="form-select" id="user_id" formControlName="user_id" required>
                         <option value="">Select a User</option>
                         <option *ngFor="let user of users" [value]="user.idUser">{{ user.nom }}</option>
