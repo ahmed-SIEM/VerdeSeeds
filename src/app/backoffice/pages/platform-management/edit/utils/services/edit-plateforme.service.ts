@@ -27,12 +27,15 @@ export class EditPlateformeService {
 
   updateContentJson(formValue: any): any {
     
+    // remove user from formValue before using it
+    delete formValue["field1"]['user'];
     const contentJson: any = {
       header: { type: formValue.field1 || '' }
     };
 
     for (let i = 2; i <= 4; i++) {
       const fieldValue = formValue[`field${i}`];
+      delete formValue[`field${i}`][`user`]; 
       if (fieldValue) {
         contentJson[`component${i - 1}`] = { type: fieldValue };
       }

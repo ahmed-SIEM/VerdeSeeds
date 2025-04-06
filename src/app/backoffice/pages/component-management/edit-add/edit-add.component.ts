@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { componentServcie } from 'src/app/services/plateforme/component.service';
 import { PlateformeService } from 'src/app/services/plateforme/plateforme.service';
+import { CommonService } from 'src/app/services/common.service';
 type ComponentType = 'headerwithicons' | 'centeredhero' | 'herowithimage' | 'verticallycenteredhero' |
   'columnswithicons' | 'customcards' | 'headings' | 'headingleftwithimage' |
   'headingrightwithimage' | 'newsletter' | 'plateformeabout';
@@ -24,7 +25,8 @@ export class EditAddComponent implements OnInit {
   isLoading = false;
   selectedComponent: any;
   contentJson: ContentJson = {};
-  users: any[] = [];
+  userid = 1;
+  user: any[] = [];
   componentId: number | null = null;
   currentStep = 1;
   showModal = false;
@@ -99,6 +101,7 @@ export class EditAddComponent implements OnInit {
     private fb: FormBuilder,
     private componentService: componentServcie,
     private platformService: PlateformeService,
+    private commonservice : CommonService,
     private route: ActivatedRoute,
     private router: Router
   ) {
@@ -107,17 +110,19 @@ export class EditAddComponent implements OnInit {
       name: ['', Validators.required]
     });
     
-    // Only add user_id control if not in edit mode
-    if (!this.route.snapshot.paramMap.get('id')) {
-      this.componentForm.addControl('user_id', this.fb.control(null, Validators.required));
-    }
+  
     
     this.contentForm = this.fb.group({});
   }
 
-  loadusers() {
-    this.platformService.getUsers().subscribe((data) => {
-      this.users = data;
+  loaduser() {
+    this.commonservice.getUserById(this.userid).subscribe({
+      next: (user) => {
+        this.user = user;
+      },
+      error: (error) => {
+        console.error('Error loading users:', error);
+      }
     });
   }
 
@@ -153,7 +158,7 @@ export class EditAddComponent implements OnInit {
       this.componentId = +id;
       this.loadcomponent(this.componentId);
     }
-    this.loadusers();
+    this.loaduser();
   }
 
   openComponentModal() {
@@ -209,15 +214,16 @@ export class EditAddComponent implements OnInit {
         type: this.selectedComponentType,
         content: JSON.stringify(this.contentForm.value),
         name: this.componentForm.get('name')?.value,
+        user :  this.user,
       };
 
-      // Only add user object if user_id exists (create mode)
-      if (this.componentForm.get('user_id')) {
-        payload.user = {
-          idUser: this.componentForm.get('user_id')?.value
-        };
+      if (this.isEditMode && this.componentId) {
+        payload.id = this.componentId;
       }
 
+   
+      
+        console.log('Payload:', payload); // Debugging line
       const request = this.isEditMode && this.componentId
         ? this.componentService.updateComponent(payload)
         : this.componentService.createComponent(payload);

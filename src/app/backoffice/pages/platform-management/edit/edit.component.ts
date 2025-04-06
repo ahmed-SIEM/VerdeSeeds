@@ -20,11 +20,7 @@ interface objectUnderCOmponentContent {
   type: string;
   name: string;
   content: string;
-  userid: number;
 }
-
-
-
 
 interface ContentJson {
   header: ComponentContent;
@@ -79,26 +75,25 @@ export class EditPlateformeComponent implements OnInit {
         type: '',
         name: '',
         content: '',
-        userid: this.userid
       }
     },
     component1: {
       type: {
-        id: 0, type: '', name: '', content: '', userid: this.userid
+        id: 0, type: '', name: '', content: ''
       }
     },
     component2: {
       type: {
-        id: 0, type: '', name: '', content: '', userid: this.userid
+        id: 0, type: '', name: '', content: ''
       }
     },
     component3: {
       type: {
-        id: 0, type: '', name: '', content: '', userid: this.userid
+        id: 0, type: '', name: '', content: ''
       }
     }, component4: {
       type: {
-        id: 0, type: '', name: '', content: '', userid: this.userid
+        id: 0, type: '', name: '', content: ''
       }
     }
   };
@@ -263,8 +258,16 @@ export class EditPlateformeComponent implements OnInit {
 
   private submitPlatformData(formData: any, user: any): void {
     formData.agriculteur = user;
-    if (this.isEditMode) formData.idPlateforme = this.platformId;
+    if (this.isEditMode) {
+      formData.agriculteur.plateforme_id = this.platformId;
+      formData.idPlateforme = this.platformId;}
 
+    delete formData.field1;
+    delete formData.field2;
+    delete formData.field3;
+    delete formData.field4;
+
+    console.log('Form data to submit:', formData);
     const operation = this.isEditMode
       ? this.platformService.updatePlateforme(formData)
       : this.platformService.createPlateforme(formData);

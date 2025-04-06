@@ -175,7 +175,7 @@
                     <!-- Selection Buttons -->
                     <div class="col-12">
                       <button type="button" class="selection-button" (click)="openModal('component1')"
-                        [class.selected]="platformForm.get('field2')?.value"
+                        [class.selected]="platformForm.get('field2')?.value.id"
                         [disabled]="isSelectionLimitReached() && !platformForm.get('field2')?.value">
                         <span>Component 1: {{platformForm.get('field2')?.value.name || 'Not selected'}}</span>
                         <i class="fas fa-chevron-right"></i>

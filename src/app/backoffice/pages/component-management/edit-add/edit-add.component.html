@@ -47,16 +47,16 @@
                       <label for="name">Component Name</label>
                     </div>
 
-                    <div class="form-floating mb-3" *ngIf="!isEditMode">
+                    <!-- <div class="form-floating mb-3" *ngIf="!isEditMode">
                       <select class="form-select" id="user_id" formControlName="user_id" required>
                         <option value="">Select a User</option>
                         <option *ngFor="let user of users" [value]="user.idUser">{{ user.nom }}</option>
                       </select>
                       <label for="user_id">User</label>
-                    </div>
+                    </div> -->
 
                     <button type="button" class="btn btn-primary" 
-                            [disabled]="!selectedComponentType || (!isEditMode && !componentForm.get('user_id')?.valid)"
+                            [disabled]="!selectedComponentType || (!isEditMode && !componentForm.get('name')?.valid)"
                             (click)="nextStep()">
                       Next
                     </button>
