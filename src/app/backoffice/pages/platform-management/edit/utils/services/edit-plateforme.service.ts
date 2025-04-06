@@ -26,6 +26,8 @@ export class EditPlateformeService {
   }
 
   updateContentJson(formValue: any): any {
+    console.log('Updating contentJson with form values:', formValue);
+    
     const contentJson: any = {
       header: { type: formValue.field1 || '' }
     };
@@ -37,6 +39,7 @@ export class EditPlateformeService {
       }
     }
 
+    console.log('Generated contentJson:', contentJson);
     return contentJson;
   }
 
@@ -56,6 +59,7 @@ export class EditPlateformeService {
         count++;
       }
     }
+    console.log('Selection count:', count);
     return count;
   }
 

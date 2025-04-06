@@ -151,8 +151,6 @@
                 <div class="row g-3" *ngIf="currentStep === 2">
                   <!-- Step 2: Content Field -->
                   <div class="col-12">
-                   
-
                     <!-- Clear Selections Button -->
                     <div class="col-12 mb-4">
                       <button type="button" class="btn btn-outline-secondary" (click)="clearSelections()">
@@ -165,11 +163,9 @@
                       <label class="form-label">Select a Header Component <span class="text-danger">*</span></label>
                       <div class="d-flex gap-3">
                         <div *ngFor="let option of headerComponent" class="position-relative">
-                          <input type="radio" [value]="option.value" formControlName="field1" 
+                          <input type="radio" [value]="option" formControlName="field1" 
                                  [id]="'field1-' + option.value" class="d-none" required>
-                          <label [for]="'field1-' + option.value" class="choice-label"
-                                 (mouseenter)="onComponentHover(option)"
-                                 (mouseleave)="onComponentHover(null)">
+                          <label [for]="'field1-' + option.value" class="choice-label">
                             {{option.name}}
                           </label>
                         </div>
@@ -208,28 +204,17 @@
                         <h5 class="modal-title">Select Component 1</h5>
                         <button type="button" class="modal-close" (click)="closeModal()">&times;</button>
                       </div>
-                      <div class="modal-body d-flex">
-                        <!-- Component Selection (60%) -->
-                        <div class="component-list">
+                      <div class="modal-body">
+                        <!-- Component Selection -->
+                        <div class="component-list w-100">
                           <div *ngFor="let component of otherComponent" class="w-100 mb-3">
                             <div class="position-relative mb-2">
-                              <input type="radio" [value]="component.name" formControlName="field2" 
+                              <input type="radio" [value]="component" formControlName="field2" 
                                      [id]="'field2-' + component.id" class="d-none" (change)="closeModal()">
                               <label [for]="'field2-' + component.id" class="choice-label w-100">
                                 {{component.name}}
                               </label>
                             </div>
-                          </div>
-                        </div>
-
-                        <!-- Preview Section (40%) -->
-                        <div class="preview-section">
-                          <div class="preview-content" *ngIf="hoveredComponent">
-                            <img [src]="hoveredComponent.preview" [alt]="hoveredComponent.name" class="preview-image">
-                            <h6 class="preview-title mt-3">{{hoveredComponent.name}}</h6>
-                          </div>
-                          <div class="preview-placeholder" *ngIf="!hoveredComponent">
-                            <p>Hover over a component to see preview</p>
                           </div>
                         </div>
                       </div>
@@ -241,28 +226,17 @@
                         <h5 class="modal-title">Select Component 2</h5>
                         <button type="button" class="modal-close" (click)="closeModal()">&times;</button>
                       </div>
-                      <div class="modal-body d-flex">
-                        <!-- Component Selection (60%) -->
-                        <div class="component-list">
+                      <div class="modal-body">
+                        <!-- Component Selection -->
+                        <div class="component-list w-100">
                           <div *ngFor="let component of otherComponent" class="w-100 mb-3">
                             <div class="position-relative mb-2">
-                              <input type="radio" [value]="component.name" formControlName="field3" 
+                              <input type="radio" [value]="component" formControlName="field3" 
                                      [id]="'field3-' + component.id" class="d-none" (change)="closeModal()">
                               <label [for]="'field3-' + component.id" class="choice-label w-100">
                                 {{component.name}}
                               </label>
                             </div>
-                          </div>
-                        </div>
-
-                        <!-- Preview Section (40%) -->
-                        <div class="preview-section">
-                          <div class="preview-content" *ngIf="hoveredComponent">
-                            <img [src]="hoveredComponent.preview" [alt]="hoveredComponent.name" class="preview-image">
-                            <h6 class="preview-title mt-3">{{hoveredComponent.name}}</h6>
-                          </div>
-                          <div class="preview-placeholder" *ngIf="!hoveredComponent">
-                            <p>Hover over a component to see preview</p>
                           </div>
                         </div>
                       </div>
@@ -275,28 +249,17 @@
                         <h5 class="modal-title">Select Component 3</h5>
                         <button type="button" class="modal-close" (click)="closeModal()">&times;</button>
                       </div>
-                      <div class="modal-body d-flex">
-                        <!-- Component Selection (60%) -->
-                        <div class="component-list">
+                      <div class="modal-body">
+                        <!-- Component Selection -->
+                        <div class="component-list w-100">
                           <div *ngFor="let component of otherComponent" class="w-100 mb-3">
                             <div class="position-relative mb-2">
-                              <input type="radio" [value]="component.name" formControlName="field4" 
+                              <input type="radio" [value]="component" formControlName="field4" 
                                      [id]="'field4-' + component.id" class="d-none" (change)="closeModal()">
                               <label [for]="'field4-' + component.id" class="choice-label w-100">
                                 {{component.name}}
                               </label>
                             </div>
-                          </div>
-                        </div>
-
-                        <!-- Preview Section (40%) -->
-                        <div class="preview-section">
-                          <div class="preview-content" *ngIf="hoveredComponent">
-                            <img [src]="hoveredComponent.preview" [alt]="hoveredComponent.name" class="preview-image">
-                            <h6 class="preview-title mt-3">{{hoveredComponent.name}}</h6>
-                          </div>
-                          <div class="preview-placeholder" *ngIf="!hoveredComponent">
-                            <p>Hover over a component to see preview</p>
                           </div>
                         </div>
                       </div>
