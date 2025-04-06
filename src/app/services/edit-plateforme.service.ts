@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   providedIn: 'root'
 })
 export class EditPlateformeService {
+
   constructor() { }
 
   initializeForm(fb: FormBuilder): FormGroup {
@@ -17,6 +18,7 @@ export class EditPlateformeService {
       valabilite: ['', Validators.required],
       logo: ['', Validators.required],
       updateTheme: ['', Validators.required],
+      agriculteur: [null, Validators.required], // Changed from '' to null
       content: [''],
       field1: [''],
       field2: [''],
@@ -64,13 +66,13 @@ export class EditPlateformeService {
   }
 
   getSelectedItems(contentJson: any): { key: string, label: string, value: any }[] {
-    return Object.keys(contentJson)
-      .filter(key => key.startsWith('component') && contentJson[key]?.type)
-      .map(key => ({
-        key,
-        label: `Component ${key.replace('component', '')}`,
-        value: contentJson[key].type
-      }));
+    const selectedItems: { key: string, label: string, value: any }[] = [];
+    Object.keys(contentJson).forEach(key => {
+      if (key.startsWith('component') && contentJson[key]?.type) {
+        selectedItems.push({ key, label: `Component ${key.replace('component', '')}`, value: contentJson[key].type });
+      }
+    });
+    return selectedItems;
   }
 
   getSortableItems(contentJson: any): { key: string, label: string, value: any }[] {

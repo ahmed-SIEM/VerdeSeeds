@@ -73,20 +73,6 @@
                     </div>
                   </div>
 
-                  <div class="col-md-6" *ngIf="!isEditMode">
-                    <div class="form-floating">
-                      <select class="form-select" id="agriculteur" formControlName="agriculteur" required
-                        [ngClass]="{'is-invalid': platformForm.get('agriculteur')?.invalid && platformForm.get('agriculteur')?.touched}">
-                        <option value="">Select a user</option>
-                        <option *ngFor="let user of users" [value]="user.id">{{ user.nom }}</option>
-                      </select>
-                      <label for="agriculteur">Platform Owner</label>
-                      <div class="invalid-feedback">
-                        Please select a platform owner
-                      </div>
-                    </div>
-                  </div>
-
                   <!-- Dates Section -->
                   <div class="col-12">
                     <h5 class="text-muted mb-3 mt-2">Platform Dates</h5>
@@ -165,13 +151,7 @@
                 <div class="row g-3" *ngIf="currentStep === 2">
                   <!-- Step 2: Content Field -->
                   <div class="col-12">
-                    <div class="col-12">
-                      <h5 class="text-muted mb-3">Content</h5>
-                      <div class="alert alert-info">
-                        Please select a header (required) and up to {{MAX_SELECTIONS}} additional components.
-                        Currently selected: {{getSelectionCount()}}/{{MAX_SELECTIONS}}
-                      </div>
-                    </div>
+                   
 
                     <!-- Clear Selections Button -->
                     <div class="col-12 mb-4">
@@ -184,17 +164,15 @@
                     <div class="col-12 mb-4">
                       <label class="form-label">Select a Header Component <span class="text-danger">*</span></label>
                       <div class="d-flex gap-3">
-                        <div *ngFor="let option of headerelements" class="position-relative">
-                          <input type="radio" [value]="option" formControlName="field1" id="field1-{{option}}"
-                            class="d-none" required>
-                          <label for="field1-{{option}}" class="choice-label">
-                            <img src="https://picsum.photos/300?random={{option}}" alt="{{option}}"
-                              class="choice-image">
+                        <div *ngFor="let option of headerComponent" class="position-relative">
+                          <input type="radio" [value]="option.value" formControlName="field1" 
+                                 [id]="'field1-' + option.value" class="d-none" required>
+                          <label [for]="'field1-' + option.value" class="choice-label"
+                                 (mouseenter)="onComponentHover(option)"
+                                 (mouseleave)="onComponentHover(null)">
+                            {{option.name}}
                           </label>
                         </div>
-                      </div>
-                      <div class="invalid-feedback" *ngIf="platformForm.get('field1')?.invalid && platformForm.get('field1')?.touched">
-                        Header component is required
                       </div>
                     </div>
 
@@ -206,14 +184,14 @@
                         <span>Component 1: {{platformForm.get('field2')?.value || 'Not selected'}}</span>
                         <i class="fas fa-chevron-right"></i>
                       </button>
-
+                    
                       <button type="button" class="selection-button" (click)="openModal('component2')"
                         [class.selected]="platformForm.get('field3')?.value"
                         [disabled]="isSelectionLimitReached() && !platformForm.get('field3')?.value">
                         <span>Component 2: {{platformForm.get('field3')?.value || 'Not selected'}}</span>
                         <i class="fas fa-chevron-right"></i>
                       </button>
-
+                    
                       <button type="button" class="selection-button" (click)="openModal('component3')"
                         [class.selected]="platformForm.get('field4')?.value"
                         [disabled]="isSelectionLimitReached() && !platformForm.get('field4')?.value">
@@ -221,47 +199,70 @@
                         <i class="fas fa-chevron-right"></i>
                       </button>
                     </div>
+                    
                   </div>
 
-                  <!-- Modals -->
                   <div class="modal" [class.show]="currentModal === 'component1'">
                     <div class="modal-content">
                       <div class="modal-header">
                         <h5 class="modal-title">Select Component 1</h5>
                         <button type="button" class="modal-close" (click)="closeModal()">&times;</button>
                       </div>
-                      <div class="modal-body">
-                        <div class="d-flex gap-3 flex-wrap">
-                          <div *ngFor="let componentGroup of components" class="w-100 mb-3">
-                            <div *ngFor="let element of componentGroup" class="position-relative mb-2">
-                              <input type="radio" [value]="element" formControlName="field2" 
-                                     [id]="'field2-' + element" class="d-none" (change)="closeModal()">
-                              <label [for]="'field2-' + element" class="choice-label w-100">
-                                {{element}}
+                      <div class="modal-body d-flex">
+                        <!-- Component Selection (60%) -->
+                        <div class="component-list">
+                          <div *ngFor="let component of otherComponent" class="w-100 mb-3">
+                            <div class="position-relative mb-2">
+                              <input type="radio" [value]="component.name" formControlName="field2" 
+                                     [id]="'field2-' + component.id" class="d-none" (change)="closeModal()">
+                              <label [for]="'field2-' + component.id" class="choice-label w-100">
+                                {{component.name}}
                               </label>
                             </div>
+                          </div>
+                        </div>
+
+                        <!-- Preview Section (40%) -->
+                        <div class="preview-section">
+                          <div class="preview-content" *ngIf="hoveredComponent">
+                            <img [src]="hoveredComponent.preview" [alt]="hoveredComponent.name" class="preview-image">
+                            <h6 class="preview-title mt-3">{{hoveredComponent.name}}</h6>
+                          </div>
+                          <div class="preview-placeholder" *ngIf="!hoveredComponent">
+                            <p>Hover over a component to see preview</p>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-
                   <div class="modal" [class.show]="currentModal === 'component2'">
                     <div class="modal-content">
                       <div class="modal-header">
                         <h5 class="modal-title">Select Component 2</h5>
                         <button type="button" class="modal-close" (click)="closeModal()">&times;</button>
                       </div>
-                      <div class="modal-body">
-                        <div class="d-flex gap-3 flex-wrap">
-                          <div *ngFor="let componentGroup of components" class="w-100 mb-3">
-                            <div *ngFor="let element of componentGroup" class="position-relative mb-2">
-                              <input type="radio" [value]="element" formControlName="field3" 
-                                     [id]="'field3-' + element" class="d-none" (change)="closeModal()">
-                              <label [for]="'field3-' + element" class="choice-label w-100">
-                                {{element}}
+                      <div class="modal-body d-flex">
+                        <!-- Component Selection (60%) -->
+                        <div class="component-list">
+                          <div *ngFor="let component of otherComponent" class="w-100 mb-3">
+                            <div class="position-relative mb-2">
+                              <input type="radio" [value]="component.name" formControlName="field3" 
+                                     [id]="'field3-' + component.id" class="d-none" (change)="closeModal()">
+                              <label [for]="'field3-' + component.id" class="choice-label w-100">
+                                {{component.name}}
                               </label>
                             </div>
+                          </div>
+                        </div>
+
+                        <!-- Preview Section (40%) -->
+                        <div class="preview-section">
+                          <div class="preview-content" *ngIf="hoveredComponent">
+                            <img [src]="hoveredComponent.preview" [alt]="hoveredComponent.name" class="preview-image">
+                            <h6 class="preview-title mt-3">{{hoveredComponent.name}}</h6>
+                          </div>
+                          <div class="preview-placeholder" *ngIf="!hoveredComponent">
+                            <p>Hover over a component to see preview</p>
                           </div>
                         </div>
                       </div>
@@ -274,16 +275,28 @@
                         <h5 class="modal-title">Select Component 3</h5>
                         <button type="button" class="modal-close" (click)="closeModal()">&times;</button>
                       </div>
-                      <div class="modal-body">
-                        <div class="d-flex gap-3 flex-wrap">
-                          <div *ngFor="let componentGroup of components" class="w-100 mb-3">
-                            <div *ngFor="let element of componentGroup" class="position-relative mb-2">
-                              <input type="radio" [value]="element" formControlName="field4" 
-                                     [id]="'field4-' + element" class="d-none" (change)="closeModal()">
-                              <label [for]="'field4-' + element" class="choice-label w-100">
-                                {{element}}
+                      <div class="modal-body d-flex">
+                        <!-- Component Selection (60%) -->
+                        <div class="component-list">
+                          <div *ngFor="let component of otherComponent" class="w-100 mb-3">
+                            <div class="position-relative mb-2">
+                              <input type="radio" [value]="component.name" formControlName="field4" 
+                                     [id]="'field4-' + component.id" class="d-none" (change)="closeModal()">
+                              <label [for]="'field4-' + component.id" class="choice-label w-100">
+                                {{component.name}}
                               </label>
                             </div>
+                          </div>
+                        </div>
+
+                        <!-- Preview Section (40%) -->
+                        <div class="preview-section">
+                          <div class="preview-content" *ngIf="hoveredComponent">
+                            <img [src]="hoveredComponent.preview" [alt]="hoveredComponent.name" class="preview-image">
+                            <h6 class="preview-title mt-3">{{hoveredComponent.name}}</h6>
+                          </div>
+                          <div class="preview-placeholder" *ngIf="!hoveredComponent">
+                            <p>Hover over a component to see preview</p>
                           </div>
                         </div>
                       </div>
@@ -296,7 +309,7 @@
                       Back
                     </button>
                     <button type="button" class="btn btn-primary w-100" (click)="goToStep(3)"
-                      [disabled]="platformForm.get('field1')?.invalid || getSelectionCount() < MINIMUM_SELECTIONS">
+                      [disabled]="platformForm.get('field1')?.invalid || getSelectionCount() < MIN_SELECTIONS">
                       Next
                     </button>
                   </div>
@@ -376,11 +389,11 @@
                       Back
                     </button>
                     <button type="submit" class="btn btn-primary w-100" 
-                      [disabled]="!platformForm.valid || getSelectionCount() < MINIMUM_SELECTIONS">
+                      [disabled]="!platformForm.valid || getSelectionCount() < MIN_SELECTIONS">
                       <i class="fas fa-save me-2"></i>{{ isEditMode ? 'Update' : 'Create' }} Platform
                     </button>
-                    <div *ngIf="!platformForm.valid || getSelectionCount() < MINIMUM_SELECTIONS" class="text-danger mt-2">
-                      Please ensure all required fields are filled and at least {{ MINIMUM_SELECTIONS }} components are selected.
+                    <div *ngIf="!platformForm.valid || getSelectionCount() < MIN_SELECTIONS" class="text-danger mt-2">
+                      Please ensure all required fields are filled and at least {{ MIN_SELECTIONS }} components are selected.
                     </div>
                   </div>
                 </div>

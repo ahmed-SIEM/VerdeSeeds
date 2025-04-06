@@ -19,7 +19,6 @@ export class CommonService {
     );
   }
 
-
   getUserByEmail(email: string): Observable<any> {
     return this.myHttp.get(`${this.url}/auth/${email}`).pipe(
       catchError(error => {
@@ -27,6 +26,9 @@ export class CommonService {
         return throwError(() => new Error('Erreur réseau. Veuillez réessayer plus tard.'));
       })
     );
-}
+  }
 
+  getUserById(id: number): Observable<any> {
+    return this.myHttp.get(`${this.url}/auth/retrieve-User/${id}`);
+  }
 }
