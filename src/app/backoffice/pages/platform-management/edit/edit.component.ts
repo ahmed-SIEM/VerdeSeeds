@@ -11,9 +11,20 @@ import { EditPlateformeService } from './utils/services/edit-plateforme.service'
 import { componentServcie } from 'src/app/services/plateforme/component.service';
 
 interface ComponentContent {
-  type: string;
+  type: objectUnderCOmponentContent;
   [key: string]: any;
 }
+
+interface objectUnderCOmponentContent {
+  id: number;
+  type: string;
+  name: string;
+  content: string;
+  userid: number;
+}
+
+
+
 
 interface ContentJson {
   header: ComponentContent;
@@ -48,10 +59,10 @@ export class EditPlateformeComponent implements OnInit {
   users: any[] = [];
 
   components: any[] = [];
-  
-  headerComponent : any[] = [];
 
-  otherComponent : any[] = [];
+  headerComponent: any[] = [];
+
+  otherComponent: any[] = [];
 
   headerelements = [
     "headerwithicons",
@@ -61,7 +72,36 @@ export class EditPlateformeComponent implements OnInit {
   ]
 
   typePackOptions = Object.values(TypePack);
-  contentJson: ContentJson = { header: { type: '' } };
+  contentJson: ContentJson = {
+    header: {
+      type: {
+        id: 0,
+        type: '',
+        name: '',
+        content: '',
+        userid: this.userid
+      }
+    },
+    component1: {
+      type: {
+        id: 0, type: '', name: '', content: '', userid: this.userid
+      }
+    },
+    component2: {
+      type: {
+        id: 0, type: '', name: '', content: '', userid: this.userid
+      }
+    },
+    component3: {
+      type: {
+        id: 0, type: '', name: '', content: '', userid: this.userid
+      }
+    }, component4: {
+      type: {
+        id: 0, type: '', name: '', content: '', userid: this.userid
+      }
+    }
+  };
   selectedPlateforme: any = null;
   hoveredComponent: ComponentOption | null = null;
   headerComponents: ComponentOption[] = [
@@ -113,16 +153,13 @@ export class EditPlateformeComponent implements OnInit {
 
   private setupFormListeners(): void {
     this.platformForm.valueChanges.subscribe((value) => {
-      console.log('Form value changed:', value);
       this.contentJson = this.editService.updateContentJson(this.platformForm.value);
-      console.log('Updated contentJson:', this.contentJson);
       this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson), { emitEvent: false });
     });
 
     // Add individual listeners for component fields
     ['field1', 'field2', 'field3', 'field4'].forEach(field => {
       this.platformForm.get(field)?.valueChanges.subscribe(value => {
-        console.log(`${field} changed to:`, value);
       });
     });
   }
@@ -146,8 +183,7 @@ export class EditPlateformeComponent implements OnInit {
       next: (components) => {
         this.headerComponent = components.filter((component) => this.headerelements.includes(component.type));
         this.otherComponent = components.filter((component) => !this.headerelements.includes(component.type));
-        console.log('Header components:', this.headerComponent);
-        console.log('Other components:', this.otherComponent);
+
       },
       error: (error) => console.error('Error loading components:', error)
     });
@@ -241,22 +277,14 @@ export class EditPlateformeComponent implements OnInit {
 
   // Navigation and UI Methods
   goToStep(step: number): void {
-    console.log('Attempting to go to step:', step);
-    console.log('Current form values:', this.platformForm.value);
-    console.log('Current contentJson:', this.contentJson);
-    
+
     if (step === 1) {
       this.currentStep = step;
-      console.log('Moving to step 1');
     } else if (step === 2 && this.validateStep1()) {
       this.currentStep = step;
-      console.log('Moving to step 2');
     } else if (step === 3) {
-      console.log('Selection count:', this.getSelectionCount());
-      console.log('Min selections required:', this.MIN_SELECTIONS);
       if (this.validateStep2()) {
         this.currentStep = step;
-        console.log('Moving to step 3');
       } else {
         console.warn('Failed to move to step 3 - validation failed');
       }
@@ -276,11 +304,9 @@ export class EditPlateformeComponent implements OnInit {
   private validateStep2(): boolean {
     const header = this.platformForm.get('field1')?.value;
     const selections = this.getSelectionCount();
-    
-    console.log('Validating step 2:');
-    console.log('Header selected:', header);
-    console.log('Number of selections:', selections);
-    
+
+
+
     return !!header && selections >= this.MIN_SELECTIONS;
   }
 
@@ -296,7 +322,6 @@ export class EditPlateformeComponent implements OnInit {
 
   closeModal(): void {
     this.contentJson = this.editService.updateContentJson(this.platformForm.value);
-    console.log('Modal closing, updated contentJson:', this.contentJson);
     this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson));
     this.currentModal = null;
   }
@@ -364,6 +389,27 @@ export class EditPlateformeComponent implements OnInit {
 
     this.contentJson = newContent;
     this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson), { emitEvent: false });
+  }
+
+  getComponentType(component: any): string {
+    if (!component) return 'Not selected';
+    if (typeof component === 'object') {
+      // If component has a type property, return it
+      if (component.type) {
+        return component.type;
+      }
+      // If component is stringified JSON, try to parse it
+      try {
+        if (component.content) {
+          const parsed = JSON.parse(component.content);
+          console.log('Parsed component content:', parsed);
+          return component.name || component.type || 'Unknown';
+        }
+      } catch (e) {
+        console.error('Error parsing component content:', e);
+      }
+    }
+    return 'Unknown';
   }
 
   onCancel(): void {

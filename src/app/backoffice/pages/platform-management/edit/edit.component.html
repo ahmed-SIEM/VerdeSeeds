@@ -306,21 +306,21 @@
                           </div>
                           <div class="border p-3 rounded">
                             <span class="sort-item-label">
-                              Header: {{ contentJson.header.type || 'Not selected' }}
+                              Header: {{ contentJson.header.type.name || 'Not selected' }}
                             </span>
                           </div>
                           <div *ngFor="let key of getSortedComponentKeys(); let i = index" class="border p-3 rounded sort-item">
                             <span class="sort-item-label">
-                              Component {{ i + 1 }}: {{ contentJson[key].type || 'Not selected' }}
+                              Component {{ i + 1 }}: {{ contentJson[key].type.name }}
                             </span>
                             <div class="sort-controls">
                               <button type="button" class="sort-button" (click)="moveItemUp(i)" [disabled]="i === 0"
-                                [attr.data-tooltip]="'Move ' + contentJson[key].type + ' up'">
+                                [attr.data-tooltip]="'Move ' + getComponentType(contentJson[key]) + ' up'">
                                 <i class="bi bi-arrow-up-short"></i>
                               </button>
                               <button type="button" class="sort-button" (click)="moveItemDown(i)"
                                 [disabled]="i === getSortedComponentKeys().length - 1"
-                                [attr.data-tooltip]="'Move ' + contentJson[key].type + ' down'">
+                                [attr.data-tooltip]="'Move ' + getComponentType(contentJson[key]) + ' down'">
                                 <i class="bi bi-arrow-down-short"></i>
                               </button>
                             </div>
