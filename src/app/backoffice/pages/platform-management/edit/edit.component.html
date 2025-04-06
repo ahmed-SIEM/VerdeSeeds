@@ -177,21 +177,21 @@
                       <button type="button" class="selection-button" (click)="openModal('component1')"
                         [class.selected]="platformForm.get('field2')?.value"
                         [disabled]="isSelectionLimitReached() && !platformForm.get('field2')?.value">
-                        <span>Component 1: {{platformForm.get('field2')?.value || 'Not selected'}}</span>
+                        <span>Component 1: {{platformForm.get('field2')?.value.name || 'Not selected'}}</span>
                         <i class="fas fa-chevron-right"></i>
                       </button>
                     
                       <button type="button" class="selection-button" (click)="openModal('component2')"
                         [class.selected]="platformForm.get('field3')?.value"
                         [disabled]="isSelectionLimitReached() && !platformForm.get('field3')?.value">
-                        <span>Component 2: {{platformForm.get('field3')?.value || 'Not selected'}}</span>
+                        <span>Component 2: {{platformForm.get('field3')?.value.name || 'Not selected'}}</span>
                         <i class="fas fa-chevron-right"></i>
                       </button>
                     
                       <button type="button" class="selection-button" (click)="openModal('component3')"
                         [class.selected]="platformForm.get('field4')?.value"
                         [disabled]="isSelectionLimitReached() && !platformForm.get('field4')?.value">
-                        <span>Component 3: {{platformForm.get('field4')?.value || 'Not selected'}}</span>
+                        <span>Component 3: {{platformForm.get('field4')?.value.name || 'Not selected'}}</span>
                         <i class="fas fa-chevron-right"></i>
                       </button>
                     </div>
