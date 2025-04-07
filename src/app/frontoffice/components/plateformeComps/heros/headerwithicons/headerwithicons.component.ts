@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-headerwithicons',
   templateUrl: './headerwithicons.component.html',
-  styleUrls: ['./headerwithicons.component.css']
+  styleUrls: ['./headerwithicons.component.css'],
+  standalone: true
 }) 
 export class HeaderwithiconsComponent {
 

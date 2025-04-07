@@ -83,8 +83,8 @@ export class ListPlateformeComponent implements OnInit {
   }
 
   previewPlateforme(platform: any) {
-    console.log('Previewing platform:', platform);
-     //preview logic here
+    this.router.navigate(['/backoffice/platform', 'preview', platform.idPlateforme]);
+
   }
 
   deletePlateforme(id: number) {

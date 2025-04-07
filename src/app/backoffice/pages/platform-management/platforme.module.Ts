@@ -5,13 +5,15 @@ import { PlateformeRoutingModule } from './platforme-routing.module';
 import { ListPlateformeComponent } from './list/ListPlateforme.component';
 import { DetailsPlatformComponent } from './details/details.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { ColumnswithiconsComponent } from 'src/app/frontoffice/components/plateformeComps/features/columnswithicons/columnswithicons.component';
 
 @NgModule({
   declarations: [
     ListPlateformeComponent,
-    DetailsPlatformComponent
+    DetailsPlatformComponent,
   ],
   imports: [
+    ColumnswithiconsComponent,
     CommonModule,
     PlateformeRoutingModule,
     ReactiveFormsModule,

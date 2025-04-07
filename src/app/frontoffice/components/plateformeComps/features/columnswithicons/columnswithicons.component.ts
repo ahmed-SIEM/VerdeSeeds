@@ -6,7 +6,8 @@ import { OnInit } from '@angular/core';
 @Component({
   selector: 'app-columnswithicons',
   templateUrl: './columnswithicons.component.html',
-  styleUrls: ['./columnswithicons.component.css']
+  styleUrls: ['./columnswithicons.component.css'],
+  standalone: true
 })
 export class ColumnswithiconsComponent {
 

@@ -4,7 +4,8 @@ import { Input } from '@angular/core';
 @Component({
   selector: 'app-customcards',
   templateUrl: './customcards.component.html',
-  styleUrls: ['./customcards.component.css']
+  styleUrls: ['./customcards.component.css'],
+  standalone: true
 })
 export class CustomcardsComponent {
  @Input() MainTitle: string = 'Columns with Icons';

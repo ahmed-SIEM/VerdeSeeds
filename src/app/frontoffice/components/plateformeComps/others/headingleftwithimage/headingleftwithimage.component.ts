@@ -3,7 +3,8 @@ import { Component, Input } from '@angular/core';
 @Component({
   selector: 'app-headingleftwithimage',
   templateUrl: './headingleftwithimage.component.html',
-  styleUrls: ['./headingleftwithimage.component.css']
+  styleUrls: ['./headingleftwithimage.component.css'],
+  standalone: true
 })
 export class HeadingleftwithimageComponent {
   @Input() title: string = 'Heading Left with Image Title';

@@ -3,7 +3,8 @@ import { Input } from '@angular/core';
 @Component({
   selector: 'app-herowithimage',
   templateUrl: './herowithimage.component.html',
-  styleUrls: ['./herowithimage.component.css']
+  styleUrls: ['./herowithimage.component.css'],
+  standalone: true
 })
 export class HerowithimageComponent {
   @Input() title: string = 'Centered Hero Title';

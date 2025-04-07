@@ -3,7 +3,8 @@ import { Input } from '@angular/core';
 @Component({
   selector: 'app-headings',
   templateUrl: './headings.component.html',
-  styleUrls: ['./headings.component.css']
+  styleUrls: ['./headings.component.css'],
+  standalone: true
 })
 export class HeadingsComponent {
 @Input() Ftitle: string = 'Lorem ipsum dolor sit amet,commodo consequat.';

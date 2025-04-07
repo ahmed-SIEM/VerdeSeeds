@@ -1,9 +1,11 @@
 import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-newsletter',
   templateUrl: './newsletter.component.html',
-  styleUrls: ['./newsletter.component.css']
+  styleUrls: ['./newsletter.component.css'],
+  standalone: true
 })
 export class NewsletterComponent {
   @Input() titleA: string = 'Default Newsletter Title';

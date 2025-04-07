@@ -17,7 +17,6 @@ import { ShopComponent } from './pages/shop/shop.component';
 import { CenteredheroComponent } from './components/plateformeComps/heros/centeredhero/centeredhero.component';
 import { VerticallycenteredheroComponent } from './components/plateformeComps/heros/verticallycenteredhero/verticallycenteredhero.component';
 import { HerowithimageComponent } from './components/plateformeComps/heros/herowithimage/herowithimage.component';
-import { ColumnswithiconsComponent } from './components/plateformeComps/features/columnswithicons/columnswithicons.component';
 import { CustomcardsComponent } from './components/plateformeComps/features/customcards/customcards.component';
 import { HeadingsComponent } from './components/plateformeComps/others/headings/headings.component';
 import { HeadingleftwithimageComponent } from './components/plateformeComps/others/headingleftwithimage/headingleftwithimage.component';
@@ -28,6 +27,7 @@ import { HeaderwithiconsComponent } from './components/plateformeComps/heros/hea
 import { NewsletterComponent } from './components/plateformeComps/others/newsletter/newsletter.component';
 import { SponsorsComponent } from './components/plateformeComps/others/sponsors/sponsors.component';
 import { plateformeaboutComponent } from './components/plateformeComps/others/about/about.component';
+import { ColumnswithiconsComponent } from './components/plateformeComps/features/columnswithicons/columnswithicons.component';
 
 @NgModule({
   declarations: [
@@ -43,24 +43,24 @@ import { plateformeaboutComponent } from './components/plateformeComps/others/ab
     NewsComponent,
     OurproductComponent,
     ShopComponent,
-    CenteredheroComponent,
-    VerticallycenteredheroComponent,
-    HerowithimageComponent,
-    ColumnswithiconsComponent,
-    CustomcardsComponent,
-    HeadingsComponent,
-    HeadingleftwithimageComponent,
-    HeadingrightwithimageComponent,
     HomeplateformeComponent,
-    HeaderwithiconsComponent,
-    NewsletterComponent,
-    SponsorsComponent,
-    plateformeaboutComponent
   ],
   imports: [
     MatIconModule,
     CommonModule,
-    FrontofficeRoutingModule
+    FrontofficeRoutingModule,
+    ColumnswithiconsComponent,
+    CenteredheroComponent,
+    VerticallycenteredheroComponent,
+    HerowithimageComponent,
+    CustomcardsComponent,
+    HeadingsComponent,
+    HeadingleftwithimageComponent,
+    HeadingrightwithimageComponent,
+    HeaderwithiconsComponent,
+    NewsletterComponent,
+    SponsorsComponent,
+    plateformeaboutComponent
   ]
 })
 export class FrontofficeModule { }

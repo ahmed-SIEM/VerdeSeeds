@@ -3,7 +3,8 @@ import { Input } from '@angular/core';
 @Component({
   selector: 'app-plateformeabout',
   templateUrl: './about.component.html',
-  styleUrls: ['./about.component.css']
+  styleUrls: ['./about.component.css'],
+  standalone: true
 })
 export class plateformeaboutComponent {
  

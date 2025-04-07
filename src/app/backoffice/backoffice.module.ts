@@ -19,6 +19,7 @@ import { FormationManagementModule } from './pages/formation-management/formatio
 import { FormsModule } from '@angular/forms';
 import { PlatformeModule } from './pages/platform-management/platforme.module';
 import { ComponentManagementModule } from './pages/component-management/component-management.module';
+import { PreviewComponent } from './pages/platform-management/preview/preview.component';
 @NgModule({
   declarations: [
     LayoutsComponent,
@@ -34,6 +35,7 @@ import { ComponentManagementModule } from './pages/component-management/componen
     NotificationComponent,
     ResetpasswordComponent,
     SignUpComponent,
+    PreviewComponent,
   ],
   imports: [
     CommonModule,

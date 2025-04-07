@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ListPlateformeComponent } from './list/ListPlateforme.component';
 import { EditPlateformeComponent } from './edit/edit.component';
 import { DetailsPlatformComponent } from './details/details.component';
+import { PreviewComponent } from './preview/preview.component';
 
 const routes: Routes = [
   { 
@@ -20,6 +21,9 @@ const routes: Routes = [
   { 
     path: ':id', 
     component: DetailsPlatformComponent 
+  },{
+    path : 'preview/:id',
+    component : PreviewComponent
   }
 ];
 
