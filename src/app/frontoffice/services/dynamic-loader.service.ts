@@ -1,24 +1,18 @@
-import { Injectable, ComponentFactoryResolver, ViewContainerRef, Type } from '@angular/core';
+import { ComponentFactoryResolver, Injectable, Type, ViewContainerRef } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class DynamicLoaderService {
-  constructor(private resolver: ComponentFactoryResolver) {}
+  constructor(private componentFactoryResolver: ComponentFactoryResolver) {}
 
-  loadComponent(
-    container: ViewContainerRef,
-    component: Type<any>,
-    inputs: { [key: string]: any } = {}
-  ) {
-    const factory = this.resolver.resolveComponentFactory(component);
-    const componentRef = container.createComponent(factory);
-
-    // Assign inputs dynamically
-    Object.keys(inputs).forEach(key => {
-      componentRef.instance[key] = inputs[key];
-    });
-
+  loadComponent(container: ViewContainerRef, component: Type<any>, props: any = {}) {
+    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(component);
+    const componentRef = container.createComponent(componentFactory);
+    
+    // Set the properties on the component instance
+    Object.assign(componentRef.instance, props);
+    
     return componentRef;
   }
 }
