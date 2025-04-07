@@ -48,14 +48,11 @@ export class PreviewComponent implements OnInit {
       next: (data) => {
         this.platform = data;
         this.color.next(this.platform.couleur);
-        console.log(this.platform.couleur);
-        console.log(this.color.value);
-
         if (this.platform.content) {
           const content = JSON.parse(this.platform.content);
           this.selectedElements = Object.values(content)
             .map((element: any) => element.type.type)
-            .filter(type => !!ComponentRegistry[type]);
+            .filter(type => ComponentRegistry[type]);
           
           Object.values(content).forEach((element: any) => {
             const type = element.type.type;
