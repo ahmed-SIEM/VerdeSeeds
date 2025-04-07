@@ -4,6 +4,7 @@ import { PlateformeService } from 'src/app/services/plateforme/plateforme.servic
 import { DynamicLoaderService } from 'src/app/frontoffice/services/dynamic-loader.service';
 import { ComponentRegistry } from './component-registry';
 import { settings } from './elements';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-preview',
@@ -12,10 +13,8 @@ import { settings } from './elements';
 export class PreviewComponent implements OnInit {
   @ViewChild('dynamicContainer', { read: ViewContainerRef, static: true }) dynamicContainer!: ViewContainerRef;
 
-
-
   selectedElements: string[] = [];
-  color = "#1DCD9F";
+  color = new BehaviorSubject<string>("#FEBA17");
   platform: any;
 
   constructor(
@@ -34,7 +33,7 @@ export class PreviewComponent implements OnInit {
           componentType,
           {
             ...settings[elementKey as keyof typeof settings],
-            color: this.color
+            color: this.color.value
           }
         );
       }
@@ -45,12 +44,12 @@ export class PreviewComponent implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) return;
 
-
-
     this.platformService.getPlateforme(+id).subscribe({
       next: (data) => {
         this.platform = data;
-        this.color = this.platform.couleur;
+        this.color.next(this.platform.couleur);
+        console.log(this.platform.couleur);
+        console.log(this.color.value);
 
         if (this.platform.content) {
           const content = JSON.parse(this.platform.content);
@@ -58,7 +57,6 @@ export class PreviewComponent implements OnInit {
             .map((element: any) => element.type.type)
             .filter(type => !!ComponentRegistry[type]);
           
-          // Update settings for each component
           Object.values(content).forEach((element: any) => {
             const type = element.type.type;
             if (element.type.content) {

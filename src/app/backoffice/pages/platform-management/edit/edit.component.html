@@ -164,8 +164,9 @@
                       <div class="d-flex gap-3">
                         <div *ngFor="let option of headerComponent" class="position-relative">
                           <input type="radio" [value]="option" formControlName="field1" 
-                                 [id]="'field1-' + option.value" class="d-none" required>
-                          <label [for]="'field1-' + option.value" class="choice-label">
+                                 [id]="'field1-' + option.type" class="d-none" required
+                                 [checked]="platformForm.get('field1')?.value?.type === option.type">
+                          <label [for]="'field1-' + option.type" class="choice-label">
                             {{option.name}}
                           </label>
                         </div>

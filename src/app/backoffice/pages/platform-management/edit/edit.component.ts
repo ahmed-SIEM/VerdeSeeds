@@ -176,9 +176,17 @@ export class EditPlateformeComponent implements OnInit {
 
     this.componentService.getAllcomponentsbyuserid(userId).subscribe({
       next: (components) => {
-        this.headerComponent = components.filter((component) => this.headerelements.includes(component.type));
-        this.otherComponent = components.filter((component) => !this.headerelements.includes(component.type));
+        this.headerComponent = components.filter((component) => 
+          this.headerelements.includes(component.type)
+        );
+        this.otherComponent = components.filter((component) => 
+          !this.headerelements.includes(component.type)
+        );
 
+        // If in edit mode and we have content, reparse it after components are loaded
+        if (this.isEditMode && this.selectedPlateforme?.content) {
+          this.parsePlatformContent(this.selectedPlateforme.content);
+        }
       },
       error: (error) => console.error('Error loading components:', error)
     });
@@ -225,8 +233,14 @@ export class EditPlateformeComponent implements OnInit {
     try {
       const parsed = JSON.parse(content);
       this.contentJson = parsed;
+      
+      // Find the matching header component from headerComponent array
+      const headerComponent = this.headerComponent.find(
+        comp => comp.type === parsed?.header?.type?.type
+      );
+
       this.platformForm.patchValue({
-        field1: parsed?.header?.type || '',
+        field1: headerComponent || null,
         field2: parsed?.component1?.type || '',
         field3: parsed?.component2?.type || '',
         field4: parsed?.component3?.type || ''
