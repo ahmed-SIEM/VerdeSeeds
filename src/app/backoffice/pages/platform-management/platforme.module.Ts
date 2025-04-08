@@ -18,7 +18,6 @@ import { ColumnswithiconsComponent } from 'src/app/frontoffice/components/platef
     PlateformeRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-    DragDropModule
   ],
   exports: [
     DetailsPlatformComponent,
