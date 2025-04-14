@@ -6,9 +6,19 @@ import { PlateformeService } from 'src/app/services/plateforme/plateforme.servic
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgFor } from '@angular/common';
-import { TypePack } from './utils/interfaces/edit-plateforme.interface';
 import { EditPlateformeService } from './utils/services/edit-plateforme.service';
 import { componentServcie } from 'src/app/services/plateforme/component.service';
+
+
+export enum TypePack {
+  GUEST = 'GUEST',
+  BASIC = 'BASIC',
+  STANDARD = 'STANDARD',
+  PREMIUM = 'PREMIUM'
+}
+
+
+
 
 interface ComponentContent {
   type: objectUnderCOmponentContent;
@@ -45,6 +55,9 @@ export class EditPlateformeComponent implements OnInit {
 
   userid = 1;
 
+  selectPacktype =  "";
+  
+
   currentStep = 1;
   currentModal: string | null = null;
   isEditMode = false;
@@ -67,7 +80,6 @@ export class EditPlateformeComponent implements OnInit {
     "verticallycenteredhero",
   ]
 
-  typePackOptions = Object.values(TypePack);
   contentJson: ContentJson = {
     header: {
       type: {
@@ -123,6 +135,9 @@ export class EditPlateformeComponent implements OnInit {
     this.commonService.getUserById(this.userid).subscribe({
       next: (user) => {
         this.users = [user];
+        this.selectPacktype = user.typePack;
+        console.log('Constant user loaded:', this.selectPacktype);
+
         this.loadComponents(user.idUser);
       },
       error: (error) => console.error('Error loading constant user:', error)
@@ -309,7 +324,7 @@ export class EditPlateformeComponent implements OnInit {
   }
 
   private validateStep1(): boolean {
-    const step1Fields = ['nomPlateforme', 'typePack', 'couleur', 'description',
+    const step1Fields = ['nomPlateforme', 'couleur', 'description',
       'dateCreation', 'valabilite', 'logo', 'updateTheme'];
     return step1Fields.every(field => {
       const control = this.platformForm.get(field);

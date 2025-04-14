@@ -1,12 +1,7 @@
 
 
   
-  export enum TypePack {
-    BASIC = 'BASIC',
-    STANDARD = 'STANDARD',
-    PREMIUM = 'PREMIUM'
-  }
-  
+ 
   export const headerelements = [
     { name: 'headerwithicons', label: 'Header with Icons' },
     { name: 'centeredhero', label: 'Centered Hero' },

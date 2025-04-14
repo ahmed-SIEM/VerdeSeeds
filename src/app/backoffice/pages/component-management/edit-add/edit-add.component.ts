@@ -236,6 +236,6 @@ export class EditAddComponent implements OnInit {
   }
 
   onCancel() {
-    this.router.navigate(['/backoffice/platform']);
+    this.router.navigate(['/backoffice/component']);
   }
 }

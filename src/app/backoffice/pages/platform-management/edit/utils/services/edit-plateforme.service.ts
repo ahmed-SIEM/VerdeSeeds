@@ -10,13 +10,11 @@ export class EditPlateformeService {
   initializeForm(fb: FormBuilder): FormGroup {
     return fb.group({
       nomPlateforme: ['', [Validators.required, Validators.minLength(3)]],
-      typePack: ['', Validators.required],
-      couleur: ['', Validators.required],
+      couleur: ['#3A59D1', Validators.required],
       description: ['', [Validators.required, Validators.minLength(10)]],
       dateCreation: ['', Validators.required],
       valabilite: ['', Validators.required],
       logo: ['', Validators.required],
-      updateTheme: ['', Validators.required],
       content: [''],
       field1: [''],
       field2: [''],

@@ -45,22 +45,8 @@
                     </div>
                   </div>
 
-                  <!-- Platform Type -->
-                  <div class="col-md-6">
-                    <div class="form-floating">
-                      <select class="form-select" id="typePack" formControlName="typePack" required
-                        [ngClass]="{'is-invalid': platformForm.get('typePack')?.invalid && platformForm.get('typePack')?.touched}">
-                        <option value="">Select a type</option>
-                        <option *ngFor="let type of typePackOptions" [value]="type">{{type}}</option>
-                      </select>
-                      <label for="typePack">Platform Type</label>
-                      <div class="invalid-feedback">
-                        Please select a platform type
-                      </div>
-                    </div>
-                  </div>
+              
 
-                  <!-- Color Picker -->
                   <div class="col-md-6">
                     <div class="form-floating">
                       <input type="color" class="form-control form-control-color w-100" id="couleur"
@@ -132,14 +118,7 @@
                     </div>
                   </div>
 
-                  <!-- Theme Update -->
-                  <div class="col-md-6">
-                    <div class="form-floating">
-                      <input type="text" class="form-control" id="updateTheme" formControlName="updateTheme" required
-                        [ngClass]="{'is-invalid': platformForm.get('updateTheme')?.invalid && platformForm.get('updateTheme')?.touched}">
-                      <label for="updateTheme">Theme Update</label>
-                    </div>
-                  </div>
+                 
 
                   <div class="col-12 mt-4">
                     <button type="button" class="btn btn-primary w-100" (click)="goToStep(2)">
