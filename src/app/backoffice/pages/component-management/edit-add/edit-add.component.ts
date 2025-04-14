@@ -102,16 +102,18 @@ export class EditAddComponent implements OnInit {
     private fb: FormBuilder,
     private componentService: componentServcie,
     private platformService: PlateformeService,
-    private commonservice : CommonService,
+    private commonservice: CommonService,
     private route: ActivatedRoute,
     private router: Router
   ) {
-    // Initialize form without user_id validator by default
     this.componentForm = this.fb.group({
-      name: ['', Validators.required]
+      name: ['', [
+        Validators.required,
+        Validators.minLength(1),
+        Validators.maxLength(100),
+        Validators.pattern('^[a-zA-Z0-9\\s]+$')
+      ]]
     });
-    
-  
     
     this.contentForm = this.fb.group({});
   }
@@ -180,7 +182,10 @@ export class EditAddComponent implements OnInit {
   initializeContentForm() {
     const group: any = {};
     this.componentFields.forEach(field => {
-      group[field] = ['', Validators.required];
+      group[field] = ['', [
+        Validators.required,
+        Validators.minLength(1)
+      ]];
     });
     this.contentForm = this.fb.group(group);
   }
@@ -190,6 +195,32 @@ export class EditAddComponent implements OnInit {
       const component = category.find(comp => comp.value === value);
       if (component) return component.name;
     }
+    return '';
+  }
+
+  getErrorMessage(control: string, form: 'component' | 'content'): string {
+    const formControl = form === 'component' ? 
+      this.componentForm.get(control) : 
+      this.contentForm.get(control);
+
+    if (!formControl) return '';
+
+    if (formControl.hasError('required')) {
+      return `${control} is required`;
+    }
+
+    if (formControl.hasError('minlength')) {
+      return `${control} must be at least ${formControl.errors?.['minlength'].requiredLength} characters`;
+    }
+
+    if (formControl.hasError('maxlength')) {
+      return `${control} cannot exceed ${formControl.errors?.['maxlength'].requiredLength} characters`;
+    }
+
+    if (formControl.hasError('pattern')) {
+      return `${control} can only contain letters, numbers, and spaces`;
+    }
+
     return '';
   }
 

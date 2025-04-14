@@ -43,8 +43,12 @@
                     </div>
 
                     <div class="form-floating mb-3">
-                      <input type="text" class="form-control" id="name" formControlName="name" required>
+                      <input type="text" class="form-control" id="name" formControlName="name" required
+                             [class.is-invalid]="componentForm.get('name')?.invalid && componentForm.get('name')?.touched">
                       <label for="name">Component Name</label>
+                      <div class="invalid-feedback" *ngIf="componentForm.get('name')?.invalid && componentForm.get('name')?.touched">
+                        {{ getErrorMessage('name', 'component') }}
+                      </div>
                     </div>
 
                     <!-- <div class="form-floating mb-3" *ngIf="!isEditMode">
@@ -70,8 +74,12 @@
                       <div class="col-md-6" *ngFor="let field of componentFields">
                         <div class="form-floating">
                           <input type="text" class="form-control" [id]="field"
-                                 [formControlName]="field" required>
+                                 [formControlName]="field" required
+                                 [class.is-invalid]="contentForm.get(field)?.invalid && contentForm.get(field)?.touched">
                           <label [for]="field">{{field}}</label>
+                          <div class="invalid-feedback" *ngIf="contentForm.get(field)?.invalid && contentForm.get(field)?.touched">
+                            {{ getErrorMessage(field, 'content') }}
+                          </div>
                         </div>
                       </div>
                     </div>
