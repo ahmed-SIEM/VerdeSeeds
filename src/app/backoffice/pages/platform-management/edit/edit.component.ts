@@ -12,7 +12,7 @@ import { componentServcie } from 'src/app/services/plateforme/component.service'
 export enum TypePack {
   GUEST = 'GUEST',
   BASIC = 'BASIC',
-  STANDARD = 'STANDARD',
+  ADVANCED = 'ADVANCED',
   PREMIUM = 'PREMIUM'
 }
 
@@ -138,31 +138,27 @@ export class EditPlateformeComponent implements OnInit {
         this.selectPacktype = user.typePack;
         console.log('Constant user loaded:', this.selectPacktype);
 
-        // Check user's pack type and handle accordingly
         if (this.selectPacktype === TypePack.GUEST) {
           alert('Guest users cannot create platforms');
           this.router.navigate(['/backoffice/platform']);
           return;
         }
 
-        // Set color picker and max selections based on pack type
         this.isColorPickerEnabled =
           this.selectPacktype === TypePack.PREMIUM ||
-          this.selectPacktype === TypePack.STANDARD;
+          this.selectPacktype === TypePack.ADVANCED;
 
         this.maxSelections =
-          (this.selectPacktype === TypePack.PREMIUM || this.selectPacktype === TypePack.STANDARD)
+          (this.selectPacktype === TypePack.PREMIUM || this.selectPacktype === TypePack.ADVANCED)
             ? this.MAX_PREMIUM_SELECTIONS
             : this.MAX_BASIC_SELECTIONS;
 
-        // Set default color based on pack type
         if (this.selectPacktype === TypePack.BASIC) {
           this.platformForm.patchValue({
             couleur: this.BASIC_COLORS[0]
           });
         }
 
-        // Set dates
         const today = new Date();
         const nextYear = new Date(today);
         nextYear.setFullYear(today.getFullYear() + 1);
@@ -199,18 +195,13 @@ export class EditPlateformeComponent implements OnInit {
       this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson), { emitEvent: false });
     });
 
-    // Add individual listeners for component fields
     ['field1', 'field2', 'field3', 'field4'].forEach(field => {
       this.platformForm.get(field)?.valueChanges.subscribe(value => {
       });
     });
   }
 
-  private setDefaultDates(): void {
-    // Dates are now handled in loadConstantUser
-  }
 
-  // User and Component Methods
   loadComponents(userId: number): void {
     if (!userId) return;
 
@@ -223,7 +214,6 @@ export class EditPlateformeComponent implements OnInit {
           !this.headerelements.includes(component.type)
         );
 
-        // If in edit mode and we have content, reparse it after components are loaded
         if (this.isEditMode && this.selectedPlateforme?.content) {
           this.parsePlatformContent(this.selectedPlateforme.content);
         }
@@ -238,7 +228,6 @@ export class EditPlateformeComponent implements OnInit {
     if (userId) this.loadComponents(userId);
   }
 
-  // Platform CRUD Methods
   loadPlatform(id: number): void {
     this.isLoading = true;
     this.platformService.getPlateforme(id).subscribe({
@@ -274,7 +263,6 @@ export class EditPlateformeComponent implements OnInit {
       const parsed = JSON.parse(content);
       this.contentJson = parsed;
 
-      // Find the matching header component from headerComponent array
       const headerComponent = this.headerComponent.find(
         comp => comp.type === parsed?.header?.type?.type
       );
@@ -333,12 +321,10 @@ export class EditPlateformeComponent implements OnInit {
     });
   }
 
-  // Navigation and UI Methods
   private validateStep1(): boolean {
     const requiredFields = ['nomPlateforme', 'couleur', 'description', 'logo'];
     let isValid = true;
     
-    // Mark all required fields as touched to trigger validation visuals
     requiredFields.forEach(field => {
       const control = this.platformForm.get(field);
       if (control) {
@@ -378,7 +364,6 @@ export class EditPlateformeComponent implements OnInit {
     return !!header && selections >= this.MIN_SELECTIONS;
   }
 
-  // Component Selection Methods
   openModal(type: string): void {
     const fieldNumber = parseInt(type.replace('component', '')) + 1;
     const fieldValue = this.platformForm.get(`field${fieldNumber}`)?.value;
@@ -403,7 +388,6 @@ export class EditPlateformeComponent implements OnInit {
     this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson));
   }
 
-  // Helper Methods
   getSelectionCount(): number {
     return this.editService.getSelectionCount(this.platformForm);
   }
@@ -468,11 +452,9 @@ export class EditPlateformeComponent implements OnInit {
   getComponentType(component: any): string {
     if (!component) return 'Not selected';
     if (typeof component === 'object') {
-      // If component has a type property, return it
       if (component.type) {
         return component.type;
       }
-      // If component is stringified JSON, try to parse it
       try {
         if (component.content) {
           const parsed = JSON.parse(component.content);
