@@ -11,6 +11,7 @@ import { ShopComponent } from './pages/shop/shop.component';
 import { ErrorComponent } from '../error/error.component';
 import { LayoutsComponent } from './layouts/layouts.component';
 import { HomeplateformeComponent } from './pages/homeplateforme/homeplateforme.component';
+import { PlatformeComponent } from './pages/platforme/platforme.component';
 
 const routes: Routes = [
   {
@@ -27,7 +28,9 @@ const routes: Routes = [
       {path : 'newsdetails', component : NewsdetailsComponent},
       {path : 'ourproduct', component : OurproductComponent},
       {path : 'shop', component : ShopComponent},
-      {path : 'error', component : ErrorComponent}
+      {path : 'Platforme', component : PlatformeComponent},
+
+      {path : '**', component : ErrorComponent},
     ]
     }
 ];

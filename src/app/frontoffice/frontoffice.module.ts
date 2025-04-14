@@ -28,6 +28,7 @@ import { NewsletterComponent } from './components/plateformeComps/others/newslet
 import { SponsorsComponent } from './components/plateformeComps/others/sponsors/sponsors.component';
 import { plateformeaboutComponent } from './components/plateformeComps/others/about/about.component';
 import { ColumnswithiconsComponent } from './components/plateformeComps/features/columnswithicons/columnswithicons.component';
+import { PlatformeComponent } from './pages/platforme/platforme.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { ColumnswithiconsComponent } from './components/plateformeComps/features
     OurproductComponent,
     ShopComponent,
     HomeplateformeComponent,
+    PlatformeComponent,
   ],
   imports: [
     MatIconModule,
