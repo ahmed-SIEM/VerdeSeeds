@@ -26,7 +26,12 @@ export class EditAddSponsor implements OnInit {
     private PlatformeService: PlateformeService,
   ) {
     this.sponsorForm = this.formBuilder.group({
-      nomSponsor: ['', Validators.required],
+      nomSponsor: ['', [
+        Validators.required,
+        Validators.minLength(1),
+        Validators.maxLength(100),
+        Validators.pattern(/^[a-zA-Z][a-zA-Z0-9 ]*$/)
+      ]],
       logo: ['', Validators.required],
       datepartenariat: ['', Validators.required],
       plateformeSponsor: ['', !this.isEditMode ? Validators.required : null]
@@ -68,7 +73,40 @@ export class EditAddSponsor implements OnInit {
     });
   }
 
+  getErrorMessage(controlName: string): string {
+    const control = this.sponsorForm.get(controlName);
+    if (!control) return '';
+    
+    if (control.hasError('required')) {
+      return `${controlName} cannot be blank`;
+    }
+    
+    if (control.hasError('minlength')) {
+      return `${controlName} must be at least 1 character`;
+    }
+    
+    if (control.hasError('maxlength')) {
+      return `${controlName} cannot exceed 100 characters`;
+    }
+    
+    if (control.hasError('pattern')) {
+      return `${controlName} must start with a letter and can only contain letters, numbers, and spaces`;
+    }
+    
+    return '';
+  }
+
   onSubmit() {
+    if (this.sponsorForm.invalid) {
+      Object.keys(this.sponsorForm.controls).forEach(key => {
+        const control = this.sponsorForm.get(key);
+        if (control?.invalid) {
+          control.markAsTouched();
+        }
+      });
+      return;
+    }
+
     if (this.sponsorForm.valid) {
       const sponsorData = {...this.sponsorForm.value};
       

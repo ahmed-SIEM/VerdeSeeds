@@ -6,9 +6,18 @@
         <div class="app-card shadow-sm mb-4 border-left-decoration">
           <div class="app-card-body p-4">
             <form [formGroup]="sponsorForm" (ngSubmit)="onSubmit()">
-              <div class="mb-3">
-                <label for="nomSponsor" class="form-label">Name</label>
-                <input type="text" class="form-control" id="nomSponsor" formControlName="nomSponsor">
+              <div class="form-group">
+                <label for="nomSponsor">Sponsor Name</label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="nomSponsor" 
+                  formControlName="nomSponsor"
+                  [class.is-invalid]="sponsorForm.get('nomSponsor')?.invalid && sponsorForm.get('nomSponsor')?.touched"
+                >
+                <div class="invalid-feedback">
+                  {{ getErrorMessage('nomSponsor') }}
+                </div>
               </div>
 
               <div class="mb-3">

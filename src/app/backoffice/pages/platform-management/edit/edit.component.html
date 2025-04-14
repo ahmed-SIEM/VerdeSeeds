@@ -36,16 +36,13 @@
                         required
                         [ngClass]="{'is-invalid': platformForm.get('nomPlateforme')?.invalid && platformForm.get('nomPlateforme')?.touched}">
                       <label for="nomPlateforme">Platform Name</label>
-                      <div class="invalid-feedback" *ngIf="platformForm.get('nomPlateforme')?.errors?.['required']">
-                        Platform name is required
-                      </div>
-                      <div class="invalid-feedback" *ngIf="platformForm.get('nomPlateforme')?.errors?.['minlength']">
-                        Platform name must be at least 3 characters
+                      <div class="invalid-feedback">
+                        {{ getErrorMessage('nomPlateforme') }}
                       </div>
                     </div>
                   </div>
 
-                  <div  class="col-md-6">
+                  <div class="col-md-6">
                     <div [ngStyle]="{'border': '3px solid ' + (platformForm.get('couleur')?.value || 'transparent'), 'border-radius': '10px'}" class="form-floating" *ngIf="!isColorPickerEnabled">
                       <select class="form-control" id="couleur" formControlName="couleur" required
                       [ngClass]="{'is-invalid': platformForm.get('couleur')?.invalid && platformForm.get('couleur')?.touched}">
@@ -83,11 +80,8 @@
                         style="height: 100px" required
                         [ngClass]="{'is-invalid': platformForm.get('description')?.invalid && platformForm.get('description')?.touched}"></textarea>
                       <label for="description">Description</label>
-                      <div class="invalid-feedback" *ngIf="platformForm.get('description')?.errors?.['required']">
-                        Description is required
-                      </div>
-                      <div class="invalid-feedback" *ngIf="platformForm.get('description')?.errors?.['minlength']">
-                        Description must be at least 10 characters
+                      <div class="invalid-feedback">
+                        {{ getErrorMessage('description') }}
                       </div>
                     </div>
                   </div>

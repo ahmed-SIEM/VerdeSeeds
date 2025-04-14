@@ -127,8 +127,52 @@ export class EditPlateformeComponent implements OnInit {
     private router: Router,
     private editService: EditPlateformeService
   ) {
-    this.platformForm = this.editService.initializeForm(this.fb);
-    this.setupFormListeners();
+    this.platformForm = fb.group({
+      nomPlateforme: ['', [
+        Validators.required,
+        Validators.minLength(5),
+        Validators.maxLength(100),
+        Validators.pattern(/^[a-zA-Z][a-zA-Z0-9 ]*$/)
+      ]],
+      couleur: ['#3A59D1', Validators.required],
+      description: ['', [
+        Validators.required,
+        Validators.minLength(5),
+        Validators.maxLength(100),
+        Validators.pattern(/^[a-zA-Z][a-zA-Z0-9 ]*$/)
+      ]],
+      dateCreation: [new Date().toISOString().slice(0, 10), Validators.required],
+      valabilite: [new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().slice(0, 10), Validators.required],
+      logo: ['', Validators.required],
+      content: [''],
+      field1: [''],
+      field2: [''],
+      field3: [''],
+      field4: ['']
+    });
+  }
+
+  getErrorMessage(controlName: string): string {
+    const control = this.platformForm.get(controlName);
+    if (!control) return '';
+    
+    if (control.hasError('required')) {
+      return `${controlName} cannot be blank`;
+    }
+    
+    if (control.hasError('minlength')) {
+      return `${controlName} must be at least 5 characters`;
+    }
+    
+    if (control.hasError('maxlength')) {
+      return `${controlName} cannot exceed 100 characters`;
+    }
+    
+    if (control.hasError('pattern')) {
+      return `${controlName} must start with a letter and can only contain letters, numbers, and spaces`;
+    }
+    
+    return '';
   }
 
   private loadConstantUser(): void {
