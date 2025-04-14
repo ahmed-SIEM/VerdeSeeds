@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { Sponsor } from '../../models/sponsor.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -11,30 +12,28 @@ export class SponsorServcie {
 
   constructor(private http: HttpClient) {}
 
-  getComponents(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}`);
+  getSponsors(): Observable<Sponsor[]> {
+    return this.http.get<Sponsor[]>(`${this.apiUrl}`);
   }
 
-  getComponent(id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${id}`);
+  getSponsor(id: number): Observable<Sponsor> {
+    return this.http.get<Sponsor>(`${this.apiUrl}/${id}`);
   }
 
-
-
-  createComponent(component: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}`, component);
+  createSponsor(sponsor: Sponsor): Observable<Sponsor> {
+    return this.http.post<Sponsor>(`${this.apiUrl}`, sponsor);
   }
 
-  updateComponent( component: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}`, component);
+  updateSponsor(sponsor: Sponsor): Observable<Sponsor> {
+    return this.http.put<Sponsor>(`${this.apiUrl}`, sponsor);
   }
 
-  deleteComponent(id: number): Observable<void> {
+  deleteSponsor(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  getAllsponsorsbyplatformid(userId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/user/${userId}`);
+  getAllsponsorsbyplatformid(Id: number): Observable<Sponsor[]> {
+    return this.http.get<Sponsor[]>(`${this.apiUrl}/platform/${Id}`);
   }
 
 }

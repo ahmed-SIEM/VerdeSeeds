@@ -1,5 +1,46 @@
 <body class="app">
   <div class="app-wrapper">
-       <h1>works</h1>
+    <div class="app-content pt-3 p-md-3 p-lg-4">
+      <div class="container-xl">
+        <h1 class="app-page-title">{{ isEditMode ? 'Edit' : 'Add' }} Sponsor</h1>
+        <div class="app-card shadow-sm mb-4 border-left-decoration">
+          <div class="app-card-body p-4">
+            <form [formGroup]="sponsorForm" (ngSubmit)="onSubmit()">
+              <div class="mb-3">
+                <label for="nomSponsor" class="form-label">Name</label>
+                <input type="text" class="form-control" id="nomSponsor" formControlName="nomSponsor">
+              </div>
+
+              <div class="mb-3">
+                <label for="logo" class="form-label">Logo URL</label>
+                <input type="text" class="form-control" id="logo" formControlName="logo">
+              </div>
+
+              <div class="mb-3">
+                <label for="datepartenariat" class="form-label">Partnership Date</label>
+                <input type="date" class="form-control" id="datepartenariat" formControlName="datepartenariat">
+              </div>
+
+              <div class="mb-3" *ngIf="!isEditMode">
+                <label for="plateformeSponsor" class="form-label">Platform</label>
+                <select class="form-control" id="plateformeSponsor" formControlName="plateformeSponsor">
+                  <option value="">Select a platform</option>
+                  <option *ngFor="let platform of platforms" [ngValue]="platform">
+                    {{platform.nomPlateforme}}
+                  </option>
+                </select>
+              </div>
+
+              <div class="mt-4">
+                <button type="submit" class="btn btn-primary me-2" [disabled]="!sponsorForm.valid">
+                  {{ isEditMode ? 'Update' : 'Create' }}
+                </button>
+                <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </body>
