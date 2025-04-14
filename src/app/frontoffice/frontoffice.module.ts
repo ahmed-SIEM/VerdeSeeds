@@ -14,7 +14,21 @@ import { NewsdetailsComponent } from './pages/newsdetails/newsdetails.component'
 import { NewsComponent } from './pages/news/news.component';
 import { OurproductComponent } from './pages/ourproduct/ourproduct.component';
 import { ShopComponent } from './pages/shop/shop.component';
-
+import { CenteredheroComponent } from './components/plateformeComps/heros/centeredhero/centeredhero.component';
+import { VerticallycenteredheroComponent } from './components/plateformeComps/heros/verticallycenteredhero/verticallycenteredhero.component';
+import { HerowithimageComponent } from './components/plateformeComps/heros/herowithimage/herowithimage.component';
+import { CustomcardsComponent } from './components/plateformeComps/features/customcards/customcards.component';
+import { HeadingsComponent } from './components/plateformeComps/others/headings/headings.component';
+import { HeadingleftwithimageComponent } from './components/plateformeComps/others/headingleftwithimage/headingleftwithimage.component';
+import { HeadingrightwithimageComponent } from './components/plateformeComps/others/headingrightwithimage/headingrightwithimage.component';
+import { HomeplateformeComponent } from './pages/homeplateforme/homeplateforme.component';
+import {MatIconModule} from '@angular/material/icon';
+import { HeaderwithiconsComponent } from './components/plateformeComps/heros/headerwithicons/headerwithicons.component';
+import { NewsletterComponent } from './components/plateformeComps/others/newsletter/newsletter.component';
+import { SponsorsComponent } from './components/plateformeComps/others/sponsors/sponsors.component';
+import { plateformeaboutComponent } from './components/plateformeComps/others/about/about.component';
+import { ColumnswithiconsComponent } from './components/plateformeComps/features/columnswithicons/columnswithicons.component';
+import { PlatformeComponent } from './pages/platforme/platforme.component';
 
 @NgModule({
   declarations: [
@@ -30,11 +44,25 @@ import { ShopComponent } from './pages/shop/shop.component';
     NewsComponent,
     OurproductComponent,
     ShopComponent,
-
+    HomeplateformeComponent,
+    PlatformeComponent,
   ],
   imports: [
+    MatIconModule,
     CommonModule,
-    FrontofficeRoutingModule
+    FrontofficeRoutingModule,
+    ColumnswithiconsComponent,
+    CenteredheroComponent,
+    VerticallycenteredheroComponent,
+    HerowithimageComponent,
+    CustomcardsComponent,
+    HeadingsComponent,
+    HeadingleftwithimageComponent,
+    HeadingrightwithimageComponent,
+    HeaderwithiconsComponent,
+    NewsletterComponent,
+    SponsorsComponent,
+    plateformeaboutComponent
   ]
 })
 export class FrontofficeModule { }

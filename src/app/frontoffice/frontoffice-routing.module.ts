@@ -10,6 +10,8 @@ import { OurproductComponent } from './pages/ourproduct/ourproduct.component';
 import { ShopComponent } from './pages/shop/shop.component';
 import { ErrorComponent } from '../error/error.component';
 import { LayoutsComponent } from './layouts/layouts.component';
+import { HomeplateformeComponent } from './pages/homeplateforme/homeplateforme.component';
+import { PlatformeComponent } from './pages/platforme/platforme.component';
 
 const routes: Routes = [
   {
@@ -17,6 +19,7 @@ const routes: Routes = [
     component : LayoutsComponent,
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
+       {path : 'hometest', component : HomeplateformeComponent},
       {path : 'home', component : HomeComponent},
       {path : 'about', component : AboutComponent},
       {path : 'contact', component : ContactComponent},
@@ -25,7 +28,9 @@ const routes: Routes = [
       {path : 'newsdetails', component : NewsdetailsComponent},
       {path : 'ourproduct', component : OurproductComponent},
       {path : 'shop', component : ShopComponent},
-      {path : 'error', component : ErrorComponent}
+      {path : 'Platforme', component : PlatformeComponent},
+
+      {path : '**', component : ErrorComponent},
     ]
     }
 ];
