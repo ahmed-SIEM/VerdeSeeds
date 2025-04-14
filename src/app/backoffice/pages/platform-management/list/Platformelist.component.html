@@ -16,19 +16,14 @@
         </button>
     </div>
 
-    <!-- Search and Filter Section -->
+    <!-- Search   Section -->
     <div class="card mb-4">
         <div class="card-body">
             <div class="row g-3">
-                <div class="col-md-4">
+                <div >
                     <input type="text" class="form-control" placeholder="Search platforms..." [(ngModel)]="searchTerm">
                 </div>
-                <div class="col-md-3">
-                    <select class="form-select" [(ngModel)]="filterType">
-                        <option value="">All Types</option>
-                        <option *ngFor="let type of typePackOptions" [value]="type">{{type}}</option>
-                    </select>
-                </div>
+               
             </div>
         </div>
     </div>
@@ -55,7 +50,6 @@
                     <p class="card-text text-muted mb-2">{{platform.description | slice:0:100}}{{platform.description?.length > 100 ? '...' : ''}}</p>
                     
                     <div class="platform-details mb-3">
-                        <div><strong>Type:</strong> {{platform.typePack}}</div>
                         <div><strong>Created:</strong> {{platform.dateCreation | date}}</div>
                         <div><strong>Valid Until:</strong> {{platform.valabilite | date}}</div>
                     </div>

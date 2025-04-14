@@ -76,10 +76,6 @@
                     <h5 class="text-muted mb-3 mt-2">Additional Information</h5>
                   </div>
 
-               
-
-                 
-
                   <!-- Description -->
                   <div class="col-12">
                     <div class="form-floating">
@@ -96,8 +92,6 @@
                     </div>
                   </div>
 
-                
-
                   <!-- Logo URL -->
                   <div class="col-md-12">
                     <div class="form-floating">
@@ -108,9 +102,19 @@
                   </div>
 
                   <div class="col-12 mt-4">
-                    <button type="button" class="btn btn-primary w-100" (click)="goToStep(2)">
+                    <button type="button" class="btn btn-primary w-100" (click)="goToStep(2)"
+                      [disabled]="!platformForm.get('nomPlateforme')?.valid || 
+                                 !platformForm.get('couleur')?.valid || 
+                                 !platformForm.get('description')?.valid || 
+                                 !platformForm.get('logo')?.valid">
                       Next
                     </button>
+                    <div class="text-danger mt-2" *ngIf="platformForm.get('nomPlateforme')?.touched && platformForm.get('nomPlateforme')?.invalid || 
+                                                        platformForm.get('couleur')?.touched && platformForm.get('couleur')?.invalid ||
+                                                        platformForm.get('description')?.touched && platformForm.get('description')?.invalid ||
+                                                        platformForm.get('logo')?.touched && platformForm.get('logo')?.invalid">
+                      Please fill in all required fields correctly before proceeding
+                    </div>
                   </div>
                 </div>
 

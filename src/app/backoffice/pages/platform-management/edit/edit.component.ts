@@ -334,12 +334,34 @@ export class EditPlateformeComponent implements OnInit {
   }
 
   // Navigation and UI Methods
-  goToStep(step: number): void {
+  private validateStep1(): boolean {
+    const requiredFields = ['nomPlateforme', 'couleur', 'description', 'logo'];
+    let isValid = true;
+    
+    // Mark all required fields as touched to trigger validation visuals
+    requiredFields.forEach(field => {
+      const control = this.platformForm.get(field);
+      if (control) {
+        control.markAsTouched();
+        if (control.invalid) {
+          console.log(`Field ${field} is invalid:`, control.errors);
+          isValid = false;
+        }
+      }
+    });
 
+    return isValid;
+  }
+
+  goToStep(step: number): void {
     if (step === 1) {
       this.currentStep = step;
-    } else if (step === 2 && this.validateStep1()) {
-      this.currentStep = step;
+    } else if (step === 2) {
+      if (this.validateStep1()) {
+        this.currentStep = step;
+      } else {
+        console.warn('Form validation failed for step 1');
+      }
     } else if (step === 3) {
       if (this.validateStep2()) {
         this.currentStep = step;
@@ -347,16 +369,6 @@ export class EditPlateformeComponent implements OnInit {
         console.warn('Failed to move to step 3 - validation failed');
       }
     }
-  }
-
-  private validateStep1(): boolean {
-    const step1Fields = ['nomPlateforme', 'couleur', 'description',
-      'dateCreation', 'valabilite', 'logo', 'updateTheme'];
-    return step1Fields.every(field => {
-      const control = this.platformForm.get(field);
-      control?.markAsTouched();
-      return control?.valid;
-    });
   }
 
   private validateStep2(): boolean {
