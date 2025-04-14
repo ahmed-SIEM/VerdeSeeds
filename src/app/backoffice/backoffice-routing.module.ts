@@ -50,6 +50,10 @@ const routes: Routes = [
           path: 'component',
           loadChildren: () => import('./pages/component-management/component-management.module')
             .then(m => m.ComponentManagementModule)
+        },{ 
+          path: 'sponsor',
+          loadChildren: () => import('./pages/sponsor-management/sponsor-management.module')
+            .then(m => m.SponsorManagementModule)
         }
   ]
   },

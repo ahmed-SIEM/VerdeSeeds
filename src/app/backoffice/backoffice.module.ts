@@ -43,7 +43,8 @@ import { PreviewComponent } from './pages/platform-management/preview/preview.co
     FormationManagementModule,
     FormsModule,
     PlatformeModule,
-    ComponentManagementModule
+    ComponentManagementModule,
+    ComponentManagementModule,
    
   ]
 })
