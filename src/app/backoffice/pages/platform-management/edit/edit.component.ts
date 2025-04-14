@@ -9,16 +9,12 @@ import { NgFor } from '@angular/common';
 import { EditPlateformeService } from './utils/services/edit-plateforme.service';
 import { componentServcie } from 'src/app/services/plateforme/component.service';
 
-
 export enum TypePack {
   GUEST = 'GUEST',
   BASIC = 'BASIC',
   STANDARD = 'STANDARD',
   PREMIUM = 'PREMIUM'
 }
-
-
-
 
 interface ComponentContent {
   type: objectUnderCOmponentContent;
@@ -51,12 +47,16 @@ interface ComponentOption {
   imports: [CommonModule, FormsModule, ReactiveFormsModule, NgFor]
 })
 export class EditPlateformeComponent implements OnInit {
+  color: string = '#FEBA17';
   readonly MIN_SELECTIONS = 3;
+  readonly MAX_BASIC_SELECTIONS = 3;
+  readonly MAX_PREMIUM_SELECTIONS = 5;
+  readonly BASIC_COLORS = ['#102E50', '#328E6E', '#F7374F', '#FFF085'];
+  isColorPickerEnabled = false;
+  maxSelections = this.MAX_BASIC_SELECTIONS;
 
   userid = 1;
-
-  selectPacktype =  "";
-  
+  selectPacktype = "";
 
   currentStep = 1;
   currentModal: string | null = null;
@@ -138,6 +138,40 @@ export class EditPlateformeComponent implements OnInit {
         this.selectPacktype = user.typePack;
         console.log('Constant user loaded:', this.selectPacktype);
 
+        // Check user's pack type and handle accordingly
+        if (this.selectPacktype === TypePack.GUEST) {
+          alert('Guest users cannot create platforms');
+          this.router.navigate(['/backoffice/platform']);
+          return;
+        }
+
+        // Set color picker and max selections based on pack type
+        this.isColorPickerEnabled =
+          this.selectPacktype === TypePack.PREMIUM ||
+          this.selectPacktype === TypePack.STANDARD;
+
+        this.maxSelections =
+          (this.selectPacktype === TypePack.PREMIUM || this.selectPacktype === TypePack.STANDARD)
+            ? this.MAX_PREMIUM_SELECTIONS
+            : this.MAX_BASIC_SELECTIONS;
+
+        // Set default color based on pack type
+        if (this.selectPacktype === TypePack.BASIC) {
+          this.platformForm.patchValue({
+            couleur: this.BASIC_COLORS[0]
+          });
+        }
+
+        // Set dates
+        const today = new Date();
+        const nextYear = new Date(today);
+        nextYear.setFullYear(today.getFullYear() + 1);
+
+        this.platformForm.patchValue({
+          dateCreation: today.toISOString().split('T')[0],
+          valabilite: nextYear.toISOString().split('T')[0],
+        });
+
         this.loadComponents(user.idUser);
       },
       error: (error) => console.error('Error loading constant user:', error)
@@ -156,8 +190,6 @@ export class EditPlateformeComponent implements OnInit {
       this.isEditMode = true;
       this.platformId = +id;
       this.loadPlatform(this.platformId);
-    } else {
-      this.setDefaultDates();
     }
   }
 
@@ -175,14 +207,7 @@ export class EditPlateformeComponent implements OnInit {
   }
 
   private setDefaultDates(): void {
-    const today = new Date();
-    const validityDate = new Date(today);
-    validityDate.setMonth(today.getMonth() + 12);
-
-    this.platformForm.patchValue({
-      dateCreation: today.toISOString().split('T')[0],
-      valabilite: validityDate.toISOString().split('T')[0]
-    });
+    // Dates are now handled in loadConstantUser
   }
 
   // User and Component Methods
@@ -191,10 +216,10 @@ export class EditPlateformeComponent implements OnInit {
 
     this.componentService.getAllcomponentsbyuserid(userId).subscribe({
       next: (components) => {
-        this.headerComponent = components.filter((component) => 
+        this.headerComponent = components.filter((component) =>
           this.headerelements.includes(component.type)
         );
-        this.otherComponent = components.filter((component) => 
+        this.otherComponent = components.filter((component) =>
           !this.headerelements.includes(component.type)
         );
 
@@ -248,7 +273,7 @@ export class EditPlateformeComponent implements OnInit {
     try {
       const parsed = JSON.parse(content);
       this.contentJson = parsed;
-      
+
       // Find the matching header component from headerComponent array
       const headerComponent = this.headerComponent.find(
         comp => comp.type === parsed?.header?.type?.type
@@ -289,7 +314,8 @@ export class EditPlateformeComponent implements OnInit {
     formData.agriculteur = user;
     if (this.isEditMode) {
       formData.agriculteur.plateforme_id = this.platformId;
-      formData.idPlateforme = this.platformId;}
+      formData.idPlateforme = this.platformId;
+    }
 
     delete formData.field1;
     delete formData.field2;
@@ -337,8 +363,6 @@ export class EditPlateformeComponent implements OnInit {
     const header = this.platformForm.get('field1')?.value;
     const selections = this.getSelectionCount();
 
-
-
     return !!header && selections >= this.MIN_SELECTIONS;
   }
 
@@ -376,10 +400,16 @@ export class EditPlateformeComponent implements OnInit {
     const selections = [
       this.platformForm.get('field2')?.value,
       this.platformForm.get('field3')?.value,
-      this.platformForm.get('field4')?.value
+      this.platformForm.get('field4')?.value,
+      this.platformForm.get('field5')?.value,
+      this.platformForm.get('field6')?.value
     ].filter(value => value).length;
 
-    return selections >= this.MIN_SELECTIONS;
+    return selections >= this.maxSelections;
+  }
+
+  getComponentSlots(): number[] {
+    return Array.from({ length: this.maxSelections }, (_, i) => i + 1);
   }
 
   getSelectedItems(): { key: string, label: string, value: any }[] {
@@ -446,5 +476,13 @@ export class EditPlateformeComponent implements OnInit {
 
   onCancel(): void {
     this.router.navigate(['/backoffice/platform']);
+  }
+
+  canUseColorPicker(): boolean {
+    return this.isColorPickerEnabled;
+  }
+
+  getAvailableColors(): string[] {
+    return this.selectPacktype === TypePack.BASIC ? this.BASIC_COLORS : [];
   }
 }

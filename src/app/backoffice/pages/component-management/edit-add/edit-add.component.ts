@@ -34,6 +34,7 @@ export class EditAddComponent implements OnInit {
   componentFields: string[] = [];
   hoveredComponent: any = null;
 
+
   categorizedComponents = {
     headers: [
       { name: 'Header with Icons', value: 'headerwithicons', preview: '../../../../../assets/backoffice/img/preview-images/CustomHeaderWithIcons.png' },

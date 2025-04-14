@@ -12,14 +12,16 @@ export class EditPlateformeService {
       nomPlateforme: ['', [Validators.required, Validators.minLength(3)]],
       couleur: ['#3A59D1', Validators.required],
       description: ['', [Validators.required, Validators.minLength(10)]],
-      dateCreation: ['', Validators.required],
-      valabilite: ['', Validators.required],
+      dateCreation: [new Date().toISOString().slice(0, 10).toString],
+      valabilite: [ new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().slice(0, 10).toString() ],
       logo: ['', Validators.required],
       content: [''],
       field1: [''],
       field2: [''],
       field3: [''],
-      field4: ['']
+      field4: [''],
+      field5: [''], 
+      field6: ['']
     });
   }
 
@@ -31,10 +33,11 @@ export class EditPlateformeService {
       header: { type: formValue.field1 || '' }
     };
 
-    for (let i = 2; i <= 4; i++) {
+    // Update to handle up to 5 components
+    for (let i = 2; i <= 6; i++) {
       const fieldValue = formValue[`field${i}`];
-      delete formValue[`field${i}`][`user`]; 
       if (fieldValue) {
+        delete formValue[`field${i}`][`user`];
         contentJson[`component${i - 1}`] = { type: fieldValue };
       }
     }
@@ -53,7 +56,7 @@ export class EditPlateformeService {
 
   getSelectionCount(formGroup: FormGroup): number {
     let count = 0;
-    for (let i = 2; i <= 4; i++) {
+    for (let i = 2; i <= 6; i++) {
       if (formGroup.get(`field${i}`)?.value) {
         count++;
       }
@@ -62,7 +65,7 @@ export class EditPlateformeService {
   }
 
   isSelectionLimitReached(formGroup: FormGroup): boolean {
-    return this.getSelectionCount(formGroup) >= 3;
+    return this.getSelectionCount(formGroup) >= 5;
   }
 
   getSelectedItems(contentJson: any): { key: string, label: string, value: any }[] {

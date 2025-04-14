@@ -45,10 +45,22 @@
                     </div>
                   </div>
 
-              
+                  <div  class="col-md-6">
+                    <div [ngStyle]="{'border': '3px solid ' + (platformForm.get('couleur')?.value || 'transparent'), 'border-radius': '10px'}" class="form-floating" *ngIf="!isColorPickerEnabled">
+                      <select class="form-control" id="couleur" formControlName="couleur" required
+                      [ngClass]="{'is-invalid': platformForm.get('couleur')?.invalid && platformForm.get('couleur')?.touched}">
+                      <option value="">Select a color</option>
+                      <option *ngFor="let color of getAvailableColors()" [value]="color" [style.background-color]="color">
+                        {{color}}
+                      </option>
+                      </select>
+                      <label for="couleur">Theme Color</label>
+                      <div class="invalid-feedback">
+                      Please select a color
+                      </div>
+                    </div>
 
-                  <div class="col-md-6">
-                    <div class="form-floating">
+                    <div class="form-floating" *ngIf="isColorPickerEnabled">
                       <input type="color" class="form-control form-control-color w-100" id="couleur"
                         formControlName="couleur" required
                         [ngClass]="{'is-invalid': platformForm.get('couleur')?.invalid && platformForm.get('couleur')?.touched}">
@@ -59,34 +71,14 @@
                     </div>
                   </div>
 
-                  <!-- Dates Section -->
+                  <!-- Additional Fields -->
                   <div class="col-12">
-                    <h5 class="text-muted mb-3 mt-2">Platform Dates</h5>
+                    <h5 class="text-muted mb-3 mt-2">Additional Information</h5>
                   </div>
 
-                  <!-- Creation Date -->
-                  <div class="col-md-6">
-                    <div class="form-floating">
-                      <input type="date" class="form-control" id="dateCreation" formControlName="dateCreation" required
-                        [ngClass]="{'is-invalid': platformForm.get('dateCreation')?.invalid && platformForm.get('dateCreation')?.touched}">
-                      <label for="dateCreation">Creation Date</label>
-                      <div class="invalid-feedback">
-                        Creation date is required
-                      </div>
-                    </div>
-                  </div>
+               
 
-                  <!-- Validity Date -->
-                  <div class="col-md-6">
-                    <div class="form-floating">
-                      <input type="date" class="form-control" id="valabilite" formControlName="valabilite" required
-                        [ngClass]="{'is-invalid': platformForm.get('valabilite')?.invalid && platformForm.get('valabilite')?.touched}">
-                      <label for="valabilite">Valid Until</label>
-                      <div class="invalid-feedback">
-                        Validity date is required
-                      </div>
-                    </div>
-                  </div>
+                 
 
                   <!-- Description -->
                   <div class="col-12">
@@ -104,10 +96,7 @@
                     </div>
                   </div>
 
-                  <!-- Additional Fields -->
-                  <div class="col-12">
-                    <h5 class="text-muted mb-3 mt-2">Additional Information</h5>
-                  </div>
+                
 
                   <!-- Logo URL -->
                   <div class="col-md-12">
@@ -117,8 +106,6 @@
                       <label for="logo">Logo URL</label>
                     </div>
                   </div>
-
-                 
 
                   <div class="col-12 mt-4">
                     <button type="button" class="btn btn-primary w-100" (click)="goToStep(2)">
@@ -154,26 +141,14 @@
 
                     <!-- Selection Buttons -->
                     <div class="col-12">
-                      <button type="button" class="selection-button" (click)="openModal('component1')"
-                        [class.selected]="platformForm.get('field2')?.value.id"
-                        [disabled]="isSelectionLimitReached() && !platformForm.get('field2')?.value">
-                        <span>Component 1: {{platformForm.get('field2')?.value.name || 'Not selected'}}</span>
-                        <i class="fas fa-chevron-right"></i>
-                      </button>
-                    
-                      <button type="button" class="selection-button" (click)="openModal('component2')"
-                        [class.selected]="platformForm.get('field3')?.value"
-                        [disabled]="isSelectionLimitReached() && !platformForm.get('field3')?.value">
-                        <span>Component 2: {{platformForm.get('field3')?.value.name || 'Not selected'}}</span>
-                        <i class="fas fa-chevron-right"></i>
-                      </button>
-                    
-                      <button type="button" class="selection-button" (click)="openModal('component3')"
-                        [class.selected]="platformForm.get('field4')?.value"
-                        [disabled]="isSelectionLimitReached() && !platformForm.get('field4')?.value">
-                        <span>Component 3: {{platformForm.get('field4')?.value.name || 'Not selected'}}</span>
-                        <i class="fas fa-chevron-right"></i>
-                      </button>
+                      <div *ngFor="let index of getComponentSlots()">
+                        <button type="button" class="selection-button" (click)="openModal('component' + index)"
+                          [class.selected]="platformForm.get('field' + (index + 1))?.value"
+                          [disabled]="isSelectionLimitReached() && !platformForm.get('field' + (index + 1))?.value">
+                          <span>Component {{index}}: {{platformForm.get('field' + (index + 1))?.value?.name || 'Not selected'}}</span>
+                          <i class="fas fa-chevron-right"></i>
+                        </button>
+                      </div>
                     </div>
                     
                   </div>
@@ -246,6 +221,50 @@
                     </div>
                   </div>
 
+                  <div class="modal" [class.show]="currentModal === 'component4'">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Select Component 4</h5>
+                        <button type="button" class="modal-close" (click)="closeModal()">&times;</button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="component-list w-100">
+                          <div *ngFor="let component of otherComponent" class="w-100 mb-3">
+                            <div class="position-relative mb-2">
+                              <input type="radio" [value]="component" formControlName="field5" 
+                                     [id]="'field5-' + component.id" class="d-none" (change)="closeModal()">
+                              <label [for]="'field5-' + component.id" class="choice-label w-100">
+                                {{component.name}}
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="modal" [class.show]="currentModal === 'component5'">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Select Component 5</h5>
+                        <button type="button" class="modal-close" (click)="closeModal()">&times;</button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="component-list w-100">
+                          <div *ngFor="let component of otherComponent" class="w-100 mb-3">
+                            <div class="position-relative mb-2">
+                              <input type="radio" [value]="component" formControlName="field6" 
+                                     [id]="'field6-' + component.id" class="d-none" (change)="closeModal()">
+                              <label [for]="'field6-' + component.id" class="choice-label w-100">
+                                {{component.name}}
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                   <!-- Back and Submit Buttons -->
                   <div class="col-12 mt-4">
                     <button type="button" class="btn btn-outline-secondary w-100 mb-2" (click)="goToStep(1)">
@@ -259,7 +278,6 @@
                 </div>
 
                 <!-- Step 3: Component Configuration -->
-             
 
                 <!-- Step 4: Sort Components -->
                 <div class="row g-3" *ngIf="currentStep === 3">
