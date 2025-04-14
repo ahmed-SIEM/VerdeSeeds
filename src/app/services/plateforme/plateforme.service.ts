@@ -31,6 +31,13 @@ export class PlateformeService {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
+
+  updateUserPlan(id: number, plan: string): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/user/${id}/${plan}` , {});
+  }
+
+
+
   getUsers(): Observable<any[]> {
     return this.http.get<any[]>(`${environment.apiUrl}/auth/retrieve-all-Users`);
   }
