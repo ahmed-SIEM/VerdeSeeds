@@ -1,3 +1,4 @@
+<!-- ✅ edit.component.html FINAL avec validations + messages -->
 <div class="app-wrapper">
   <div class="app-content pt-3 p-md-3 p-lg-4">
     <div class="container-xl">
@@ -6,11 +7,23 @@
       <form *ngIf="formation" (ngSubmit)="onSubmit()" #formationForm="ngForm" class="card p-4 shadow-sm">
         <div class="row g-3">
 
+          <!-- NOM -->
           <div class="col-md-6">
             <label class="form-label fw-semibold">Nom *</label>
-            <input class="form-control" [(ngModel)]="formation.nom" name="nom" required />
+            <input
+              class="form-control"
+              [(ngModel)]="formation.nom"
+              name="nom"
+              pattern="^[A-Za-z0-9\s\-'']+$"
+              required
+              #nomInput="ngModel"
+            />
+            <small class="text-danger" *ngIf="nomInput.invalid && nomInput.touched">
+              Nom invalide (pas de caractères spéciaux).
+            </small>
           </div>
 
+          <!-- TYPE -->
           <div class="col-md-6">
             <label class="form-label fw-semibold">Type de formation *</label>
             <select class="form-select" [(ngModel)]="formation.typeFormation" name="typeFormation" required>
@@ -20,43 +33,97 @@
             </select>
           </div>
 
+          <!-- DATES -->
           <div class="col-md-6">
             <label class="form-label fw-semibold">Date début *</label>
-            <input type="date" class="form-control" [(ngModel)]="formation.dateDebut" name="dateDebut" required />
+            <input
+              type="date"
+              class="form-control"
+              [(ngModel)]="formation.dateDebut"
+              name="dateDebut"
+              [min]="today"
+              required
+              #startDate="ngModel"
+            />
+            <small class="text-danger" *ngIf="startDate.invalid && startDate.touched">
+              La date ne peut pas être dans le passé.
+            </small>
           </div>
 
           <div class="col-md-6">
             <label class="form-label fw-semibold">Date fin *</label>
-            <input type="date" class="form-control" [(ngModel)]="formation.dateFin" name="dateFin" required />
+            <input
+              type="date"
+              class="form-control"
+              [(ngModel)]="formation.dateFin"
+              name="dateFin"
+              [min]="formation.dateDebut"
+              required
+              #endDate="ngModel"
+            />
+            <small class="text-danger" *ngIf="endDate.invalid && endDate.touched">
+              La date de fin doit être après la date de début.
+            </small>
           </div>
 
+          <!-- LIEU -->
           <div class="col-md-12">
             <label class="form-label fw-semibold">Lieu *</label>
             <input class="form-control" [(ngModel)]="formation.lieu" name="lieu" required />
           </div>
 
+          <!-- DESCRIPTION -->
           <div class="col-md-12">
             <label class="form-label fw-semibold">Description</label>
             <textarea class="form-control" rows="3" [(ngModel)]="formation.description" name="description"></textarea>
           </div>
 
+          <!-- CAPACITE SLIDER -->
           <div class="col-md-6">
-            <label class="form-label fw-semibold">Capacité *</label>
-            <input type="number" class="form-control" [(ngModel)]="formation.capacity" name="capacity" required />
+            <label class="form-label fw-semibold">Capacité: {{ formation.capacity }}</label>
+            <input
+              type="range"
+              class="form-range"
+              min="3"
+              max="20"
+              [(ngModel)]="formation.capacity"
+              name="capacity"
+              required
+            />
           </div>
 
+          <!-- CERTIF CHECKBOX -->
           <div class="col-md-6">
             <div class="form-check mt-4">
-              <input type="checkbox" class="form-check-input" [(ngModel)]="formation.certification" name="certification" id="certifCheckbox" />
+              <input
+                type="checkbox"
+                class="form-check-input"
+                [(ngModel)]="formation.certification"
+                name="certification"
+                id="certifCheckbox"
+              />
               <label for="certifCheckbox" class="form-check-label fw-semibold">Formation certifiante</label>
             </div>
           </div>
 
+          <!-- NOTE MIN POUR CERTIF -->
           <div class="col-md-6" *ngIf="formation.certification">
             <label class="form-label fw-semibold">Note minimum pour certificat *</label>
-            <input type="number" class="form-control" [(ngModel)]="formation.noteMinPourCertificat" name="noteMinPourCertificat" />
+            <input
+              type="number"
+              class="form-control"
+              [(ngModel)]="formation.noteMinPourCertificat"
+              name="noteMinPourCertificat"
+              min="10"
+              required
+              #noteInput="ngModel"
+            />
+            <small class="text-danger" *ngIf="noteInput.invalid && noteInput.touched">
+              Note minimum invalide (au moins 10).
+            </small>
           </div>
 
+          <!-- IMAGE -->
           <div class="col-md-6">
             <label class="form-label fw-semibold">Image</label>
             <input type="file" class="form-control" (change)="onFileSelected($event)" />
@@ -65,9 +132,14 @@
             </div>
           </div>
 
+          <!-- BOUTONS -->
           <div class="col-12 d-flex justify-content-between pt-3">
             <button type="button" class="btn btn-outline-secondary" (click)="onCancel()">Annuler</button>
-            <button type="submit" class="btn btn-primary" [disabled]="!formationForm.form.valid">
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="!formationForm.form.valid || !datesAreValid()"
+            >
               {{ isEditMode ? 'Mettre à jour' : 'Créer' }}
             </button>
           </div>

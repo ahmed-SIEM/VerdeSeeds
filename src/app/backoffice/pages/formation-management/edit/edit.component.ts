@@ -1,4 +1,3 @@
-// ✅ edit.component.ts
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Formation, FormationService } from '../services/formation.service';
@@ -18,13 +17,14 @@ export class EditComponent implements OnInit {
     description: '',
     certification: false,
     photoPath: '',
-    noteMinPourCertificat: 0,
-    capacity: 0
+    noteMinPourCertificat: 10,
+    capacity: 3
   };
 
   selectedFile: File | null = null;
   isEditMode: boolean = false;
   imagePreviewUrl: string | null = null;
+  today: string = new Date().toISOString().split('T')[0];
 
   constructor(
     private formationService: FormationService,
@@ -60,7 +60,17 @@ export class EditComponent implements OnInit {
     return this.imagePreviewUrl || (this.formation.photoPath ? `http://localhost:8081/${this.formation.photoPath}` : null);
   }
 
+  // ✅ Vérifie cohérence entre date début et date fin
+  datesAreValid(): boolean {
+    return this.formation.dateDebut <= this.formation.dateFin;
+  }
+
   onSubmit(): void {
+    if (!this.datesAreValid()) {
+      alert("❌ La date de fin ne peut pas être avant la date de début !");
+      return;
+    }
+
     const formData = new FormData();
     formData.append('formation', JSON.stringify(this.formation));
     if (this.selectedFile) formData.append('photo', this.selectedFile);
