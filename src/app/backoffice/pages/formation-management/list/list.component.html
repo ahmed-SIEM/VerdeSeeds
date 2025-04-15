@@ -1,142 +1,73 @@
-<!DOCTYPE html>
-<html lang="en">
+<div class="app-wrapper">
+  <div class="container-xl mt-4">
+    <h1 class="app-page-title">📚 Liste des Formations</h1>
+    <div class="mb-3 text-end">
+      <a routerLink="new" class="btn btn-sm btn-primary">➕ Ajouter une formation</a>
+    </div>
 
-<body class="app">
-
-    <div class="app-wrapper">
-
-        <div class="app-content pt-3 p-md-3 p-lg-4">
-            <div class="container-xl">
-
-                <div class="row g-3 mb-4 align-items-center justify-content-between">
-                    <div class="col-auto">
-                        <h1 class="app-page-title mb-0">Formations</h1>
-                    </div>
-                    <div class="col-auto">
-                        <div class="page-utilities">
-                            <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
-                                <div class="col-auto">
-                                    <form class="table-search-form row gx-1 align-items-center">
-                                        <div class="col-auto">
-                                            <input type="text" id="search-formation" name="searchformation"
-                                                class="form-control search-formation" placeholder="Search">
-                                        </div>
-                                        <div class="col-auto">
-                                            <button type="submit" class="btn app-btn-secondary">Search</button>
-                                        </div>
-                                    </form>
-                                </div><!--//col-->
-                                <div class="col-auto">
-                                    <select class="form-select w-auto">
-                                        <option selected value="option-1">All</option>
-                                        <option value="option-2">This week</option>
-                                        <option value="option-3">This month</option>
-                                        <option value="option-4">Last 3 months</option>
-                                    </select>
-                                </div>
-                                <!-- Add Formation Button with routerLink -->
-                                <div class="col-auto">
-                                    <a routerLink="new" class="btn app-btn-primary">
-                                        <i class="fas fa-plus me-1"></i> Add Formation
-                                    </a>
-                                </div><!--//col-auto-->
-                            </div><!--//row-->
-                        </div><!--//table-utilities-->
-                    </div><!--//col-auto-->
-                </div><!--//row-->
-
-                <nav id="formation-table-tab"
-                    class="formation-table-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-4">
-                    <a class="flex-sm-fill text-sm-center nav-link active" id="formation-all-tab" data-bs-toggle="tab"
-                        href="#formation-all" role="tab" aria-controls="formation-all" aria-selected="true">All</a>
-                    <a class="flex-sm-fill text-sm-center nav-link" id="formation-upcoming-tab" data-bs-toggle="tab"
-                        href="#formation-upcoming" role="tab" aria-controls="formation-upcoming" aria-selected="false">Upcoming</a>
-                    <a class="flex-sm-fill text-sm-center nav-link" id="formation-past-tab" data-bs-toggle="tab"
-                        href="#formation-past" role="tab" aria-controls="formation-past" aria-selected="false">Past</a>
-                </nav>
-
-                <div class="tab-content" id="formation-table-tab-content">
-                    <div class="tab-pane fade show active" id="formation-all" role="tabpanel"
-                        aria-labelledby="formation-all-tab">
-                        <div class="app-card app-card-formation-table shadow-sm mb-5">
-                            <div class="app-card-body">
-                                <div class="table-responsive">
-                                    <table class="table app-table-hover mb-0 text-left">
-                                        <thead class="table-light">
-                                            <tr>
-                                                <th class="cell">Formation Name</th>
-                                                <th class="cell">Date Start</th>
-                                                <th class="cell">Date End</th>
-                                                <th class="cell">Location</th>
-                                                <th class="cell">Type</th>
-                                                <th class="cell">Status</th>
-                                                <th class="cell">Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <!-- Add your formation data here -->
-                                        </tbody>
-                                    </table>
-                                </div><!--//table-responsive-->
-                            </div><!--//app-card-body-->
-                        </div><!--//app-card-->
-                    </div><!--//tab-pane-->
-                    <div class="tab-pane fade" id="formation-upcoming" role="tabpanel"
-                        aria-labelledby="formation-upcoming-tab">
-                        <div class="app-card app-card-formation-table mb-5">
-                            <div class="app-card-body">
-                                <div class="table-responsive">
-                                    <table class="table mb-0 text-left">
-                                        <thead class="table-light">
-                                            <tr>
-                                                <th class="cell">Formation Name</th>
-                                                <th class="cell">Date Start</th>
-                                                <th class="cell">Date End</th>
-                                                <th class="cell">Location</th>
-                                                <th class="cell">Type</th>
-                                                <th class="cell">Status</th>
-                                                <th class="cell">Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <!-- Add your upcoming formation data here -->
-                                        </tbody>
-                                    </table>
-                                </div><!--//table-responsive-->
-                            </div><!--//app-card-body-->
-                        </div><!--//app-card-->
-                    </div><!--//tab-pane-->
-                    <div class="tab-pane fade" id="formation-past" role="tabpanel"
-                        aria-labelledby="formation-past-tab">
-                        <div class="app-card app-card-formation-table mb-5">
-                            <div class="app-card-body">
-                                <div class="table-responsive">
-                                    <table class="table mb-0 text-left">
-                                        <thead class="table-light">
-                                            <tr>
-                                                <th class="cell">Formation Name</th>
-                                                <th class="cell">Date Start</th>
-                                                <th class="cell">Date End</th>
-                                                <th class="cell">Location</th>
-                                                <th class="cell">Type</th>
-                                                <th class="cell">Status</th>
-                                                <th class="cell">Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <!-- Add your past formation data here -->
-                                        </tbody>
-                                    </table>
-                                </div><!--//table-responsive-->
-                            </div><!--//app-card-body-->
-                        </div><!--//app-card-->
-                    </div><!--//tab-pane-->
-                </div><!--//tab-content-->
-
-            </div><!--//container-xl-->
-        </div><!--//app-content-->
-    </div><!--//app-wrapper-->
-
-</body>
-
-</html>
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <table class="table table-striped table-hover text-center align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>Photo</th>
+              <th>Nom</th>
+              <th>Dates</th>
+              <th>Lieu</th>
+              <th>Type</th>
+              <th>Capacité</th>
+              <th>Note min</th>
+              <th>Détails</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let formation of formations; trackBy: trackById">
+              <td>
+                <img
+                  [src]="getImagePath(formation.photoPath || '')"
+                  alt="Image"
+                  width="80"
+                  class="img-thumbnail"
+                />
+              </td>
+              <td>{{ formation.nom }}</td>
+              <td>{{ formation.dateDebut | date:'dd/MM/yyyy' }} → {{ formation.dateFin | date:'dd/MM/yyyy' }}</td>
+              <td>{{ formation.lieu }}</td>
+              <td>{{ formation.typeFormation }}</td>
+              <td>{{ formation.capacity }}</td>
+              <td>{{ formation.certification ? formation.noteMinPourCertificat : '—' }}</td>
+              <td>
+                <ng-container *ngIf="formation.detailFormation; else addDetail">
+                  <a
+                    [routerLink]="['details', formation.idFormation]"
+                    class="btn btn-sm btn-outline-success"
+                    title="Afficher les détails"
+                  >
+                    👁️ Afficher Détails
+                  </a>
+                </ng-container>
+          
+                <ng-template #addDetail>
+                  <a
+                    [routerLink]="['edit-details', formation.idFormation]"
+                    class="btn btn-sm btn-outline-info"
+                    title="Ajouter des détails"
+                  >
+                    🧾 Ajouter Détails
+                  </a>
+                </ng-template>
+              </td>
+              <td>
+                <a [routerLink]="['edit', formation.idFormation]" class="btn btn-sm btn-outline-warning me-1">✏️</a>
+                <button class="btn btn-sm btn-outline-danger" (click)="deleteFormation(formation.idFormation)">
+                  🗑️
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
