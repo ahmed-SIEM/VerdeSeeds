@@ -1,6 +1,6 @@
-import { Component, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-// import { LayoutsComponent } from './layouts/layouts.component';
+import { LayoutsComponent } from './layouts/layouts.component';
 import { HomeComponent } from './pages/home/home.component';
 import { OrdersComponent } from './pages/orders/orders.component';
 import { ErrorComponent } from '../error/error.component';
@@ -12,7 +12,6 @@ import { AccountComponent } from './pages/account/account.component';
 import { NotificationComponent } from './pages/notification/notification.component';
 import { ResetpasswordComponent } from './pages/resetpassword/resetpassword.component';
 import { SignUpComponent } from './pages/sign-up/sign-up.component';
-import { LayoutsComponent } from './layouts/layouts.component'; 
 
 const routes: Routes = [
   {
@@ -65,4 +64,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class BackofficeRoutingModule { }
+export class BackofficeRoutingModule {}
