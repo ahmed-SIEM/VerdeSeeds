@@ -27,6 +27,26 @@
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
 }
 
+/* Statistics Cards */
+.card.bg-primary, .card.bg-success, .card.bg-danger {
+  border: none;
+  transition: transform 0.2s ease-in-out;
+}
+
+.card.bg-primary:hover, .card.bg-success:hover, .card.bg-danger:hover {
+  transform: translateY(-5px);
+}
+
+.card .card-title {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.card h2 {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
 .badge {
   font-size: 0.75rem;
   padding: 0.35em 0.65em;

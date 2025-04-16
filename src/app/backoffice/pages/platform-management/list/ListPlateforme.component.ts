@@ -3,6 +3,13 @@ import { Router } from '@angular/router';
 import { PlateformeService } from 'src/app/services/plateforme/plateforme.service';
   
 
+
+interface report {
+  TotalPlateformes: number,
+  ExpiredPlateformes: number, 
+  ActivePlateformes: number
+}
+
 @Component({
   selector: 'app-Plateformelist',
   templateUrl: './Platformelist.component.html',
@@ -17,6 +24,11 @@ export class ListPlateformeComponent implements OnInit {
     ADVANCED : 'ADVANCED'
   }
   plateformes: any[] = [];
+  report: report = {
+    TotalPlateformes: 0,
+    ExpiredPlateformes: 0,
+    ActivePlateformes: 0
+  };
   users: any[] = [];
   searchTerm: string = '';
   filterType: string = '';
@@ -31,6 +43,7 @@ export class ListPlateformeComponent implements OnInit {
   ngOnInit() {
     this.loadPlateformes();
     this.loadUsers();
+    this.generateReport();
   }
 
   get filteredPlatforms() {
@@ -114,4 +127,20 @@ export class ListPlateformeComponent implements OnInit {
   navigateToCreate(): void {
     this.router.navigate(['/backoffice/platform/new']);
   }
+
+
+  
+  generateReport(){
+    this.ps.getReport().subscribe({
+      next: (data) => {
+        this.report = data;
+        console.log('Report generated:', this.report);
+      },
+      error: (error) => {
+        console.error('Error generating report:', error);
+      }
+    });
+  }
+
+
 }
