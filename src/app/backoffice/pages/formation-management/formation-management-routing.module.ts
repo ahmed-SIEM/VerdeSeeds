@@ -9,8 +9,10 @@ const routes: Routes = [
   { path: '', component: ListComponent },
   { path: 'new', component: EditComponent },
   { path: 'edit/:id', component: EditComponent }, // ✅ Pour édition
-  { path: 'edit-details/:id', component: EditDetailsComponent },
-  { path: 'details/:id', component: DetailsComponent }
+  { path: 'edit-details/by-formation/:idFormation', component: EditDetailsComponent }, // 🔧 pour AJOUT
+  { path: 'edit-details/:idDetaille', component: EditDetailsComponent },
+  { path: 'details/:id', component: DetailsComponent },
+  
 ];
 
 @NgModule({
