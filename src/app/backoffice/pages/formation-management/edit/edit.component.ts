@@ -16,13 +16,12 @@ export class EditComponent implements OnInit {
     lieu: '',
     description: '',
     certification: false,
-    photoPath: '',
     noteMinPourCertificat: 10,
     capacity: 3
   };
 
   selectedFile: File | null = null;
-  isEditMode: boolean = false;
+  isEditMode = false;
   imagePreviewUrl: string | null = null;
   today: string = new Date().toISOString().split('T')[0];
 
@@ -39,7 +38,7 @@ export class EditComponent implements OnInit {
       this.isEditMode = true;
       this.formationService.getById(id).subscribe({
         next: (data) => this.formation = data,
-        error: (err) => console.error('Erreur chargement formation:', err)
+        error: (err) => console.error('❌ Erreur chargement formation:', err)
       });
     }
   }
@@ -60,28 +59,35 @@ export class EditComponent implements OnInit {
     return this.imagePreviewUrl || (this.formation.photoPath ? `http://localhost:8081/${this.formation.photoPath}` : null);
   }
 
-  // ✅ Vérifie cohérence entre date début et date fin
   datesAreValid(): boolean {
     return this.formation.dateDebut <= this.formation.dateFin;
   }
 
   onSubmit(): void {
     if (!this.datesAreValid()) {
-      alert("❌ La date de fin ne peut pas être avant la date de début !");
+      alert("❌ La date de fin doit être après la date de début !");
       return;
     }
 
     const formData = new FormData();
     formData.append('formation', JSON.stringify(this.formation));
-    if (this.selectedFile) formData.append('photo', this.selectedFile);
+    if (this.selectedFile) {
+      formData.append('photo', this.selectedFile);
+    }
 
     const request = this.isEditMode
       ? this.formationService.update(this.formation.idFormation, formData)
       : this.formationService.create(formData);
 
     request.subscribe({
-      next: () => this.router.navigate(['/backoffice/formations']),
-      error: (err) => console.error('Erreur submit:', err)
+      next: () => {
+        console.log('✅ Formation enregistrée !');
+        this.router.navigate(['/backoffice/formations']);
+      },
+      error: (err) => {
+        console.error('❌ Erreur submit:', err);
+        alert("Erreur lors de l'enregistrement de la formation.");
+      }
     });
   }
 

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Formation, FormationService } from '../services/formation.service';
-import { DetailsFormationService } from '../services/DetailsFormation.service';
+import { DetailsFormationService } from '../services/Detailsformation.service';
 
 @Component({
   selector: 'app-details',
@@ -29,10 +29,7 @@ export class DetailsComponent implements OnInit {
     this.formationService.getByIdWithDetails(id).subscribe({
       next: (data) => {
         this.formation = data;
-
-        // ✅ Vérifie que l’ID de détail est bien reçu
         console.log('🧩 ID du détail reçu :', this.formation.detailFormation?.idDetaille);
-
         this.isLoading = false;
       },
       error: (err) => {
@@ -44,13 +41,15 @@ export class DetailsComponent implements OnInit {
 
   onEdit(): void {
     if (this.formation?.detailFormation?.idDetaille) {
-      // ✅ Envoie l’idDetaille et non l’idFormation
+      // ✅ Si détail existe → ÉDITION
       this.router.navigate(['/backoffice/formations/edit-details', this.formation.detailFormation.idDetaille]);
+    } else if (this.formation?.idFormation) {
+      // ✅ Sinon → AJOUT
+      this.router.navigate(['/backoffice/formations/edit-details/by-formation', this.formation.idFormation]);
     } else {
-      console.warn('⚠️ Aucun détail associé à cette formation !');
+      console.warn('⚠️ Impossible de déterminer si ajout ou édition');
     }
   }
-  
 
   onDelete(): void {
     const id = this.formation?.detailFormation?.idDetaille;

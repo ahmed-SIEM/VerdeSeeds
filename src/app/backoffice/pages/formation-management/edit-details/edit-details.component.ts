@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DetailsFormationDTO, DetailsFormationService } from '../services/DetailsFormation.service';
+import { DetailsFormationDTO, DetailsFormationService } from '../services/Detailsformation.service';
 
 @Component({
   selector: 'app-edit-details',
@@ -25,40 +25,60 @@ export class EditDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const idDetaille = this.route.snapshot.paramMap.get('id');
+    const idDetaille = this.route.snapshot.paramMap.get('idDetaille');
+    const idFormation = this.route.snapshot.paramMap.get('idFormation');
+
     if (idDetaille) {
+      // 🛠️ Mode ÉDITION
       const id = +idDetaille;
-      console.log('🧩 Chargement détail ID:', id);
+      console.log('🧩 Mode édition - ID détail :', id);
 
       this.detailService.getById(id).subscribe({
         next: (data) => {
-          if (data) {
-            console.log('✅ Données chargées:', data);
-            this.detail = data;
-            this.isEditMode = true;
-          } else {
-            console.warn('⚠️ Détail introuvable, passage en ajout');
-            this.isEditMode = false;
-          }
+          this.detail = data;
+          this.isEditMode = true;
+          console.log('✅ Données chargées pour modification :', this.detail);
         },
         error: (err) => {
-          console.error('❌ Erreur chargement:', err);
-          this.isEditMode = false;
+          console.error('❌ Erreur chargement détail (édition)', err);
+          this.router.navigate(['/backoffice/formations']);
         }
       });
+
+    } else if (idFormation) {
+      // ✨ Mode AJOUT
+      const id = +idFormation;
+      console.log('🆕 Mode ajout - ID formation :', id);
+      this.detail.idFormation = id;
+      this.isEditMode = false;
+    } else {
+      console.error('❌ Aucun ID valide trouvé dans l’URL');
+      this.router.navigate(['/backoffice/formations']);
     }
   }
 
   onSubmit(): void {
+    console.log('📤 Soumission du formulaire...', this.detail);
+
     if (this.isEditMode && this.detail.idDetaille) {
       this.detailService.update(this.detail.idDetaille, this.detail).subscribe({
-        next: () => this.router.navigate(['/backoffice/formations']),
-        error: (err) => console.error('❌ Erreur maj détail:', err)
+        next: () => {
+          console.log('✅ Détail modifié avec succès !');
+          this.router.navigate(['/backoffice/formations']);
+        },
+        error: (err) => {
+          console.error('❌ Erreur modification', err);
+        }
       });
     } else {
       this.detailService.add(this.detail).subscribe({
-        next: () => this.router.navigate(['/backoffice/formations']),
-        error: (err) => console.error('❌ Erreur ajout détail:', err)
+        next: () => {
+          console.log('✅ Détail ajouté avec succès !');
+          this.router.navigate(['/backoffice/formations']);
+        },
+        error: (err) => {
+          console.error('❌ Erreur ajout', err);
+        }
       });
     }
   }
