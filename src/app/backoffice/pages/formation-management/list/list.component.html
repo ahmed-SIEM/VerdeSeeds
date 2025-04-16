@@ -49,11 +49,7 @@
                 </ng-container>
           
                 <ng-template #addDetail>
-                  <a
-                    [routerLink]="['edit-details', formation.idFormation]"
-                    class="btn btn-sm btn-outline-info"
-                    title="Ajouter des détails"
-                  >
+                  <a [routerLink]="['/backoffice/formations/edit-details/by-formation', formation.idFormation]">
                     🧾 Ajouter Détails
                   </a>
                 </ng-template>
