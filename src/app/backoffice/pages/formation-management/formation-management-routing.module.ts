@@ -4,6 +4,7 @@ import { ListComponent } from './list/list.component';
 import { EditComponent } from './edit/edit.component';
 import { DetailsComponent } from './details/details.component';
 import { EditDetailsComponent } from './edit-details/edit-details.component';
+import { StatistiquesComponent } from './statistiques/statistiques.component';
 
 const routes: Routes = [
   { path: '', component: ListComponent },
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: 'edit-details/by-formation/:idFormation', component: EditDetailsComponent }, // 🔧 pour AJOUT
   { path: 'edit-details/:idDetaille', component: EditDetailsComponent },
   { path: 'details/:id', component: DetailsComponent },
+  { path: 'stats', component: StatistiquesComponent }
   
 ];
 

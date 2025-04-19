@@ -1,0 +1,21 @@
+<div class="app-wrapper">
+    <div class="container-xl mt-4">
+      <h1 class="app-page-title">📊 Statistiques des Formations</h1>
+  
+      <div class="card shadow-sm p-4">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">📦 Total des formations : <strong>{{ totalFormations }}</strong></li>
+          <li class="list-group-item">✅ Formations certifiantes : <strong>{{ certifiantes }}</strong></li>
+          <li class="list-group-item">👥 Capacité moyenne : <strong>{{ moyenneCapacite }}</strong></li>
+          <li class="list-group-item">🛎️ Formations sans détails : <strong>{{ sansDetails }}</strong></li>
+        </ul>
+  
+        <div class="text-end mt-4">
+          <a routerLink="/backoffice/formations" class="btn btn-outline-secondary">
+            ⬅️ Retour à la liste des formations
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
