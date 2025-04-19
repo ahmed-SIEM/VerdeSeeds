@@ -8,13 +8,15 @@ import { ListComponent } from './list/list.component';
 import { EditComponent } from './edit/edit.component';
 import { EditDetailsComponent } from './edit-details/edit-details.component';
 import { DetailsComponent } from './details/details.component';
+import { StatistiquesComponent } from './statistiques/statistiques.component';
 
 @NgModule({
   declarations: [
     ListComponent,
     EditComponent,
     EditDetailsComponent,
-    DetailsComponent
+    DetailsComponent,
+    StatistiquesComponent
   ],
   imports: [
     CommonModule,
