@@ -69,8 +69,9 @@
 
                                 </div>
                                 <div class="platform-logo" [style.backgroundColor]="platform.couleur">
-                                    <img [src]="platform.imageUrl "
-                                        [alt]="platform.nomPlateforme" class="img-fluid"
+                                    <img [src]="platform.imageUrl"
+                                        [alt]="platform.nomPlateforme" 
+                                        class="img-fluid"
                                         style="max-width: 100px; max-height: 100px; object-fit: cover;"
                                         [class.loading]="!platform.imageUrl" />
                                 </div>
@@ -120,6 +121,7 @@
 
 
 
+        <img [src]="loadtestimage()" alt="Loading..." class="loading-spinner"  />
 
     </div>
 

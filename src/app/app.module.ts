@@ -8,7 +8,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ErrorComponent } from './error/error.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { initializeApp } from 'firebase/app';
+import {environment}  from '../environments/environment';
 
+
+// Initialize Firebase
+initializeApp(environment.firebase);
 
 @NgModule({
   declarations: [
