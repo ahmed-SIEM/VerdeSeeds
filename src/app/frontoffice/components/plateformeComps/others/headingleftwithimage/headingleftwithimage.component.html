@@ -1,13 +1,138 @@
-<div class="container marketing">
-  <div class="row featurette mb-5">
-    <div class="col-md-7">
-      <h2 class="featurette-heading" [style.color]="color">{{title}} </h2>
-      <p class="lead">{{subtitle}}</p>
-    </div>
-    <div class="col-md-5">
-      <img class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" src="http://localhost:8081/api/firebase/{{imageUrl}}" alt=""
-        width="500" height="500" preserveAspectRatio="xMidYMid slice" focusable="false">
+<style>
+  .feature-section {
+    padding: 6rem 1rem;
+    background-color: #ffffff;
+    position: relative;
+  }
+
+  .feature-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .feature-content {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+  }
+
+  .feature-text {
+    flex: 1;
+    padding-right: 2rem;
+  }
+
+  .feature-title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 1.5rem;
+    position: relative;
+    display: inline-block;
+  }
+
+  .feature-title::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background-color: var(--feature-color);
+    border-radius: 2px;
+  }
+
+  .feature-subtitle {
+    font-size: 1.25rem;
+    line-height: 1.7;
+    color: #4a5568;
+    margin-bottom: 2rem;
+  }
+
+  .feature-image-container {
+    flex: 1;
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+    transform: perspective(1000px);
+  }
+
+  .feature-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .feature-image-container:hover .feature-image {
+    transform: scale(1.05) rotate(1deg);
+  }
+
+  .feature-image-container::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+    z-index: 1;
+  }
+
+  /* Decorative elements */
+  .feature-decoration {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--feature-color-light) 0%, transparent 70%);
+    z-index: 0;
+    opacity: 0.15;
+  }
+
+  .decoration-right {
+    top: -50px;
+    right: -50px;
+  }
+
+  .decoration-left {
+    bottom: -50px;
+    left: -50px;
+  }
+
+  @media (max-width: 992px) {
+    .feature-content {
+      flex-direction: column;
+      gap: 3rem;
+    }
+    
+    .feature-text {
+      padding-right: 0;
+      text-align: center;
+    }
+    
+    .feature-title::after {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+</style>
+
+<section class="feature-section" [style]="{'--feature-color': color, '--feature-color-light': color + '20'}">
+  <div class="feature-decoration decoration-right"></div>
+  <div class="feature-decoration decoration-left"></div>
+  
+  <div class="feature-container">
+    <div class="feature-content">
+      <div class="feature-text">
+        <h2 class="feature-title" [style.color]="color">{{title}}</h2>
+        <p class="feature-subtitle">{{subtitle}}</p>
+      </div>
+      
+      <div class="feature-image-container">
+        <img 
+          src="http://localhost:8081/api/firebase/{{imageUrl}}" 
+          class="feature-image" 
+          alt="Feature image"
+          loading="lazy">
+      </div>
     </div>
   </div>
-
-</div>
+</section>
