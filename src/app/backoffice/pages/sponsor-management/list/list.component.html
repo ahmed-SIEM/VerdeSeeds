@@ -32,7 +32,8 @@
       <div class="col" *ngFor="let sponsor of filteredSponsorstsList">
           <div class="card h-100">
               <div class="card-body">
-                  <img [src]="sponsor.imageUrl"
+                  <img src="http://localhost:8081/api/firebase/{{sponsor.logo}}"
+                  
                        [alt]="sponsor.name"
                        class="component-preview-img"
                        [title]="sponsor.name"  >
@@ -47,7 +48,7 @@
                       <button class="btn btn-outline-secondary btn-sm" (click)="editSponsor(sponsor)">
                           <i class="fas fa-edit me-1"></i> Edit
                       </button>
-                      <button class="btn btn-outline-danger btn-sm" (click)="deleteSponsor(sponsor.id)">
+                      <button class="btn btn-outline-danger btn-sm" (click)="deleteSponsor(sponsor)">
                           <i class="fas fa-trash me-1"></i> Delete
                       </button>
                   </div>

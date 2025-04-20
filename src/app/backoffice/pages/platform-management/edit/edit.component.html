@@ -86,12 +86,25 @@
                     </div>
                   </div>
 
-                  <!-- Logo URL -->
+                  <!-- Logo Upload -->
                   <div class="col-md-12">
-                    <div class="form-floating">
-                      <input type="text" class="form-control" id="logo" formControlName="logo" required
-                        [ngClass]="{'is-invalid': platformForm.get('logo')?.invalid && platformForm.get('logo')?.touched}">
-                      <label for="logo">Logo URL</label>
+                    <div class="form-group">
+                      <label for="logo">Platform Logo</label>
+                      <input 
+                        type="file" 
+                        class="form-control" 
+                        id="logo"
+                        accept="image/*"
+                        (change)="onLogoFileSelected($event)"
+                      >
+                      <div class="preview-image mt-2" *ngIf="platformForm.get('logo')?.value">
+                        <img 
+                          [src]="platformForm.get('logo')?.value.startsWith('data:') ? platformForm.get('logo')?.value : (platformForm.get('logo')?.value | firebaseUrl)" 
+                          alt="Platform Logo"
+                          class="img-fluid"
+                          style="max-height: 200px"
+                        >
+                      </div>
                     </div>
                   </div>
 
@@ -127,10 +140,15 @@
                       <label class="form-label">Select a Header Component <span class="text-danger">*</span></label>
                       <div class="d-flex gap-3">
                         <div *ngFor="let option of headerComponent" class="position-relative">
-                          <input type="radio" [value]="option" formControlName="field1" 
-                                 [id]="'field1-' + option.type" class="d-none" required
-                                 [checked]="platformForm.get('field1')?.value?.type === option.type">
-                          <label [for]="'field1-' + option.type" class="choice-label">
+                          <input type="radio" 
+                                 [value]="option" 
+                                 formControlName="field1" 
+                                 [id]="'header-' + option.id" 
+                                 class="d-none" 
+                                 required
+                                 [checked]="platformForm.get('field1')?.value?.id === option.id"
+                                 (change)="onHeaderComponentSelect(option)">
+                          <label [for]="'header-' + option.id" class="choice-label">
                             {{option.name}}
                           </label>
                         </div>

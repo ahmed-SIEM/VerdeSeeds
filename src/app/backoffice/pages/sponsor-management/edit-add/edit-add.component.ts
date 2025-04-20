@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonService } from 'src/app/services/common.service';
 import { SponsorServcie } from 'src/app/services/plateforme/sponsor.service';
 import { PlateformeService } from 'src/app/services/plateforme/plateforme.service';
+import { FirebaseStorageService } from 'src/app/services/firebase-storage.service';
 import { Platform, Sponsor } from 'src/app/models/sponsor.interface';
 
 @Component({
@@ -16,6 +17,9 @@ export class EditAddSponsor implements OnInit {
   isEditMode = false;
   platforms: Platform[] = [];
   sponsorId: number | null = null;
+  logoPreview: string | null = null;
+  selectedFile: File | null = null;
+  validFileTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 
   constructor(
     private router: Router, 
@@ -24,6 +28,7 @@ export class EditAddSponsor implements OnInit {
     private commonService: CommonService,
     private sponsorService: SponsorServcie,
     private PlatformeService: PlateformeService,
+    private firebaseStorage: FirebaseStorageService
   ) {
     this.sponsorForm = this.formBuilder.group({
       nomSponsor: ['', [
@@ -32,8 +37,7 @@ export class EditAddSponsor implements OnInit {
         Validators.maxLength(100),
         Validators.pattern(/^[a-zA-Z][a-zA-Z0-9 ]*$/)
       ]],
-      logo: ['', Validators.required],
-      datepartenariat: ['', Validators.required],
+      datepartenariat: [new Date().toISOString().split('T')[0], Validators.required],
       plateformeSponsor: ['', !this.isEditMode ? Validators.required : null]
     });
   }
@@ -96,6 +100,29 @@ export class EditAddSponsor implements OnInit {
     return '';
   }
 
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+      
+      if (!this.validFileTypes.includes(file.type)) {
+        alert('Please select a valid image file (JPEG, PNG, GIF, or WEBP)');
+        input.value = ''; // Clear the input
+        this.logoPreview = null;
+        this.selectedFile = null;
+        return;
+      }
+
+      this.selectedFile = file;
+      // Create preview only
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.logoPreview = e.target?.result as string;
+      };
+      reader.readAsDataURL(this.selectedFile);
+    }
+  }
+
   onSubmit() {
     if (this.sponsorForm.invalid) {
       Object.keys(this.sponsorForm.controls).forEach(key => {
@@ -107,23 +134,45 @@ export class EditAddSponsor implements OnInit {
       return;
     }
 
-    if (this.sponsorForm.valid) {
-      const sponsorData = {...this.sponsorForm.value};
-      
-      // Make sure we're using the full platform object
-      if (!this.isEditMode) {
-        sponsorData.plateformeSponsor = this.sponsorForm.get('plateformeSponsor')?.value;
-      }
-      
-      const request = this.isEditMode && this.sponsorId
-        ? this.sponsorService.updateSponsor({ ...sponsorData, idSponsor: this.sponsorId })
-        : this.sponsorService.createSponsor(sponsorData);
+    const sponsorData = { ...this.sponsorForm.value };
 
-      request.subscribe({
-        next: () => this.router.navigate(['/backoffice/sponsor']),
-        error: (error) => console.error('Error saving sponsor:', error)
-      });
+    // Check if we need a logo (only for new sponsors)
+    if (!this.isEditMode && !this.selectedFile) {
+      alert('Please select a logo image');
+      return;
     }
+
+    // If there's a new file, upload it first
+    if (this.selectedFile) {
+      this.firebaseStorage.uploadFile(this.selectedFile).subscribe({
+        next: (response) => {
+          sponsorData.logo = response.fileName;
+          this.submitSponsorData(sponsorData);
+        },
+        error: (error) => {
+          console.error('Error uploading logo:', error);
+          alert('Error uploading logo. Please try again.');
+        }
+      });
+    } else {
+      // No new file, submit with existing data
+      this.submitSponsorData(sponsorData);
+    }
+  }
+
+  private submitSponsorData(sponsorData: any) {
+    if (!this.isEditMode) {
+      sponsorData.plateformeSponsor = this.sponsorForm.get('plateformeSponsor')?.value;
+    }
+   console.log('Submitting sponsor data:', sponsorData);
+    const request = this.isEditMode && this.sponsorId
+      ? this.sponsorService.updateSponsor({ ...sponsorData, idSponsor: this.sponsorId })
+      : this.sponsorService.createSponsor(sponsorData);
+
+    request.subscribe({
+      next: () => this.router.navigate(['/backoffice/sponsor']),
+      error: (error) => console.error('Error saving sponsor:', error)
+    });
   }
 
   onCancel() {
