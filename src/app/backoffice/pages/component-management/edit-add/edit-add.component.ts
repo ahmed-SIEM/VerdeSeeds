@@ -48,7 +48,12 @@ export class EditAddComponent implements OnInit {
   availableIcons = [
     'bi-balloon', 'bi-alarm', 'bi-archive',
     'bi-award', 'bi-bag', 'bi-bell',
-    'bi-bookmark', 'bi-camera', 'bi-cart'
+    'bi-bookmark', 'bi-camera', 'bi-cart',
+    'bi-chat', 'bi-check', 'bi-clock',
+    'bi-cloud', 'bi-code', 'bi-cup',
+    'bi-emoji-smile', 'bi-envelope', 'bi-flag',
+    'bi-gear', 'bi-heart', 'bi-house',
+    'bi-info-circle', 'bi-key', 'bi-lightning',
   ];
 
   categorizedComponents = {
