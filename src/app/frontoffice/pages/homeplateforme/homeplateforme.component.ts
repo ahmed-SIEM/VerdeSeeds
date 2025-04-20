@@ -2,6 +2,17 @@ import { Component, ViewChild, ViewContainerRef, OnInit } from '@angular/core';
 import { DynamicLoaderService } from '../../services/dynamic-loader.service';
 import { ComponentRegistry } from './component-registry';
 
+
+
+
+interface Sponsor{
+  datapartenariat: string;
+  logo: string;
+  nomSponsor: string;
+}
+
+
+
 @Component({
   selector: 'app-homeplateforme',
   templateUrl: './homeplateforme.component.html',
@@ -113,7 +124,6 @@ export class HomeplateformeComponent implements OnInit {
 
 
 
-
   selectedElements: (keyof typeof this.settings)[] = [
     'headerwithicons',
     'centeredhero',
@@ -148,4 +158,53 @@ export class HomeplateformeComponent implements OnInit {
       }
     });
   }
+
+  Sponsors: Sponsor[] = [
+     {
+      datapartenariat: '2023-10-01',
+      logo: 'https://picsum.photos/200/',
+      nomSponsor: 'Sponsor 1'
+     },
+      {
+        datapartenariat: '2023-10-01',
+        logo: 'https://picsum.photos/200/',
+        nomSponsor: 'Sponsor 2'
+      },
+      {
+        datapartenariat: '2023-10-01',
+        logo: 'https://picsum.photos/200/',
+        nomSponsor: 'Sponsor 3'
+      },
+      {
+        datapartenariat: '2023-10-01',
+        logo: 'https://picsum.photos/200/',
+        nomSponsor: 'Sponsor 4'
+      },
+      {
+        datapartenariat: '2023-10-01',
+        logo: 'https://picsum.photos/200/',
+        nomSponsor: 'Sponsor 5'
+      },
+      {
+        datapartenariat: '2023-10-01',
+        logo: 'https://picsum.photos/200/',
+        nomSponsor: 'Sponsor 6'
+      },
+      {
+        datapartenariat: '2023-10-01',
+        logo: 'https://picsum.photos/200/',
+        nomSponsor: 'Sponsor 7'
+      },
+      {
+        datapartenariat: '2023-10-01',
+        logo: 'https://picsum.photos/200/',
+        nomSponsor: 'Sponsor 8'
+      }]
+
+
+
+
+
+
+
 }

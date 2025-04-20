@@ -44,7 +44,6 @@ import { PreviewComponent } from './pages/platform-management/preview/preview.co
     FormsModule,
     PlatformeModule,
     ComponentManagementModule,
-    ComponentManagementModule,
    
   ]
 })
