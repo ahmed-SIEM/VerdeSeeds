@@ -6,6 +6,7 @@ import { ListPlateformeComponent } from './list/ListPlateforme.component';
 import { DetailsPlatformComponent } from './details/details.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ColumnswithiconsComponent } from 'src/app/frontoffice/components/plateformeComps/features/columnswithicons/columnswithicons.component';
+import { SharedModule } from '../../../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { ColumnswithiconsComponent } from 'src/app/frontoffice/components/platef
     PlateformeRoutingModule,
     ReactiveFormsModule,
     FormsModule,
+    SharedModule
   ],
   exports: [
     DetailsPlatformComponent,

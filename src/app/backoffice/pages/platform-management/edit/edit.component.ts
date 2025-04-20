@@ -8,6 +8,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgFor } from '@angular/common';
 import { EditPlateformeService } from './utils/services/edit-plateforme.service';
 import { componentServcie } from 'src/app/services/plateforme/component.service';
+import { FirebaseStorageService } from 'src/app/services/firebase-storage.service';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 export enum TypePack {
   GUEST = 'GUEST',
@@ -44,7 +46,7 @@ interface ComponentOption {
   templateUrl: './edit.component.html',
   styleUrls: ['./edit.component.css'],
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, NgFor]
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, NgFor, SharedModule]
 })
 export class EditPlateformeComponent implements OnInit {
   color: string = '#FEBA17';
@@ -125,7 +127,8 @@ export class EditPlateformeComponent implements OnInit {
     private commonService: CommonService,
     private route: ActivatedRoute,
     private router: Router,
-    private editService: EditPlateformeService
+    private editService: EditPlateformeService,
+    private firebaseStorage: FirebaseStorageService
   ) {
     this.platformForm = fb.group({
       nomPlateforme: ['', [
@@ -321,6 +324,24 @@ export class EditPlateformeComponent implements OnInit {
       });
     } catch (error) {
       console.error('Error parsing content:', error);
+    }
+  }
+
+  onLogoFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+      this.firebaseStorage.uploadFile(file).subscribe({
+        next: (response) => {
+          this.platformForm.patchValue({
+            logo: response.fileName
+          });
+          console.log('Logo uploaded successfully:', response);
+        },
+        error: (error) => {
+          console.error('Error uploading logo:', error);
+        }
+      });
     }
   }
 

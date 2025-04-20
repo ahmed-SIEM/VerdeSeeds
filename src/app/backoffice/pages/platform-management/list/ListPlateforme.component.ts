@@ -54,7 +54,7 @@ export class ListPlateformeComponent implements OnInit {
     this.loadPlateformes();
     this.loadUsers();
     this.generateReport();
-    this.loadImages();
+   
   }
 
   get filteredPlatforms() {
@@ -137,14 +137,7 @@ export class ListPlateformeComponent implements OnInit {
     });
   }
 
-  loadImages() {
-    this.imageService.list().subscribe((data: Image[]) => {
-      this.images = data;
-      console.log('Images loaded:', this.images);
-    }, (error) => {
-      console.error('Error loading images:', error);
-    });
-  }
+
 
   onFileChange(event: any) {
     const file = event.target.files[0];
@@ -162,29 +155,8 @@ export class ListPlateformeComponent implements OnInit {
     }
   }
 
-  onUpload(): void {
-    if (this.image) {
-      this.imageService.upload(this.image).subscribe({
-        next: (data) => {
-          console.log('Image uploaded:', data);
-          this.loadImages();
-          this.image = null;
-          this.imageMin = null;
-        }
-      });
-    }
-  }
 
-  onDelete(id: number): void {
-    if (confirm('Are you sure you want to delete this image?')) {
-      this.imageService.delete(id).subscribe({
-        next: (data) => {
-          console.log('Image deleted:', data);
-          this.loadImages();
-        }
-      });
-    }
-  }
+ 
 
   getImageUrl(imageId: string): string {
     return this.imageService.getImageUrl(imageId);

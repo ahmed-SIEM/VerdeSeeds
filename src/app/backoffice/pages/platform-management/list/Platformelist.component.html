@@ -113,39 +113,6 @@
 
 
 
-
-<br/>
-<br/>
-
-    <!-- Image Upload Section -->
-    <div class="card mb-4">
-        <div class="card-body">
-            <h5 class="card-title">Image Management</h5>
-            <div class="mb-3">
-                <input type="file" class="form-control" (change)="onFileChange($event)" accept="image/*">
-            </div>
-            <div class="mb-3" *ngIf="imageMin">
-                <img [src]="imageMin" alt="Preview" style="max-width: 200px; max-height: 200px;">
-            </div>
-            <button class="btn btn-primary" (click)="onUpload()" [disabled]="!image">Upload Image</button>
-            
-            <!-- Image Gallery -->
-            <div class="row mt-4">
-                <div class="col-md-3 mb-3" *ngFor="let img of images">
-                    <div class="card">
-                        <img [src]="getImageUrl(img.imageId!)" 
-                             class="card-img-top"
-                             alt="Uploaded image"
-                             style="height: 200px; object-fit: cover;">
-                        <div class="card-body">
-                            <h6 class="card-title text-truncate">{{img.name}}</h6>
-                            <button class="btn btn-sm btn-danger" (click)="onDelete(img.id!)">Delete</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
  
 </div>
 
