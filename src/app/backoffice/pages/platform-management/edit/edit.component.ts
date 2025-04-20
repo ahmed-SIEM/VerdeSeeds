@@ -120,6 +120,8 @@ export class EditPlateformeComponent implements OnInit {
     { name: 'Vertically Centered Hero', value: 'verticallycenteredhero', preview: '../../../../../assets/backoffice/img/preview-images/VerticallyCenteredHeroSignUpForm.png' }
   ];
 
+  private selectedLogoFile: File | null = null;
+
   constructor(
     private fb: FormBuilder,
     private platformService: PlateformeService,
@@ -330,18 +332,37 @@ export class EditPlateformeComponent implements OnInit {
   onLogoFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
-      const file = input.files[0];
-      this.firebaseStorage.uploadFile(file).subscribe({
+      this.selectedLogoFile = input.files[0];
+      // Create a temporary URL for preview
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.platformForm.patchValue({
+          logo: e.target?.result as string
+        });
+      };
+      reader.readAsDataURL(this.selectedLogoFile);
+    }
+  }
+
+  private prepareAndSubmitData(): void {
+    if (this.selectedLogoFile) {
+      // Upload the logo first, then submit form data
+      this.firebaseStorage.uploadFile(this.selectedLogoFile).subscribe({
         next: (response) => {
-          this.platformForm.patchValue({
-            logo: response.fileName
-          });
-          console.log('Logo uploaded successfully:', response);
+          const formData = { ...this.platformForm.value };
+          formData.logo = response.fileName;
+          const user = this.users[0];
+          this.submitPlatformData(formData, user);
         },
         error: (error) => {
           console.error('Error uploading logo:', error);
         }
       });
+    } else {
+      // If no new logo was selected, proceed with existing logo
+      const formData = { ...this.platformForm.value };
+      const user = this.users[0];
+      this.submitPlatformData(formData, user);
     }
   }
 
@@ -357,12 +378,6 @@ export class EditPlateformeComponent implements OnInit {
   private handleInvalidForm(): void {
     this.editService.markFormGroupTouched(this.platformForm);
     console.warn('Form validation failed');
-  }
-
-  private prepareAndSubmitData(): void {
-    const formData = { ...this.platformForm.value };
-    const user = this.users[0];
-    this.submitPlatformData(formData, user);
   }
 
   private submitPlatformData(formData: any, user: any): void {
@@ -545,5 +560,16 @@ export class EditPlateformeComponent implements OnInit {
 
   getAvailableColors(): string[] {
     return this.selectPacktype === TypePack.BASIC ? this.BASIC_COLORS : [];
+  }
+
+  onHeaderComponentSelect(option: any): void {
+    this.platformForm.patchValue({
+      field1: option
+    });
+    // Update content JSON when header changes
+    this.contentJson.header = {
+      type: option
+    };
+    this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson));
   }
 }

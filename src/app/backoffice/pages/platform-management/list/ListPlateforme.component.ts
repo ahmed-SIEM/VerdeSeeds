@@ -72,21 +72,8 @@ export class ListPlateformeComponent implements OnInit, OnDestroy {
   loadPlateformes() {
     this.ps.getPlateforms().subscribe({
       next: async (data) => {
-        const platformsWithImages = await Promise.all(
-          data.map(async platform => {
-            if (platform.imageId) {
-              try {
-                const imageUrl = await firstValueFrom(this.firestore.getDirectImageUrl(platform.imageId));
-                return { ...platform, imageUrl };
-              } catch (err) {
-                console.error('Error loading image:', err);
-                return { ...platform, imageUrl: null };
-              }
-            }
-            return { ...platform, imageUrl: null };
-          })
-        );
-        this.plateformes = platformsWithImages;
+        
+        this.plateformes = data;
       },
       error: (error) => {
         console.error('Error loading platforms:', error);
@@ -122,16 +109,36 @@ export class ListPlateformeComponent implements OnInit, OnDestroy {
   }
 
   deletePlateforme(id: number) {
+    const platform = this.plateformes.find(p => p.idPlateforme === id);
+    if (!platform) return;
+
     if (confirm('Are you sure you want to delete this platform?')) {
-      this.ps.deletePlateforme(id).subscribe({
-        next: () => {
-          this.loadPlateformes();
-        },
-        error: (error) => {
-          console.error('Error deleting platform:', error);
-        }
-      });
+      if (platform.logo) {
+        this.firestore.deleteFile(platform.logo).subscribe({
+          next: () => {
+            this.deleteFromDatabase(id);
+          },
+          error: (error) => {
+            console.error('Error deleting platform image:', error);
+            this.deleteFromDatabase(id);
+          }
+        });
+      } else {
+        // If no image, just delete the platform
+        this.deleteFromDatabase(id);
+      }
     }
+  }
+
+  private deleteFromDatabase(id: number) {
+    this.ps.deletePlateforme(id).subscribe({
+      next: () => {
+        this.loadPlateformes();
+      },
+      error: (error) => {
+        console.error('Error deleting platform:', error);
+      }
+    });
   }
 
   isExpired(date: string): boolean {

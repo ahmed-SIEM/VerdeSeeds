@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, from, of } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { catchError } from 'rxjs/operators';
 
 export interface FirebaseUploadResponse {
   id: string;
@@ -32,9 +33,11 @@ export class FirebaseStorageService {
     return this.http.post<FirebaseUploadResponse>(`${this.apiUrl}/upload`, formData);
   }
 
-  deleteFile(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+
+    deleteFile(fileName: string): Observable<void> {
+      return this.http.delete<void>(`${this.apiUrl}/${fileName}`);
   }
+
 
   getFileUrl(fileName: string): Observable<string> {
     console.log('Fetching URL for file:', fileName);
