@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PlateformeService } from 'src/app/services/plateforme/plateforme.service';
-import { ImageService } from 'src/app/services/image.service';
+import { FirebaseStorageService } from 'src/app/services/firebase-storage.service';
 
 interface Image {
   id?: number;
@@ -47,7 +47,7 @@ export class ListPlateformeComponent implements OnInit {
   constructor(
     private ps: PlateformeService,
     private router: Router,
-    private imageService: ImageService
+    private firestore : FirebaseStorageService
   ) { }
 
   ngOnInit() {
@@ -70,7 +70,16 @@ export class ListPlateformeComponent implements OnInit {
   loadPlateformes() {
     this.ps.getPlateforms().subscribe({
       next: (data) => {
-        this.plateformes = data 
+        this.plateformes = data.map((platform: any) => {
+          const imageId = platform.imageId || platform.image?.id || null;
+          const imageUrl = imageId ? this.getImageUrl(imageId) : null;
+          return {
+            ...platform,
+            imageUrl: imageUrl
+          };
+        }
+        );
+
         console.log('Platforms loaded:', this.plateformes);
       },
       error: (error) => {
@@ -159,6 +168,15 @@ export class ListPlateformeComponent implements OnInit {
  
 
   getImageUrl(imageId: string): string {
-    return this.imageService.getImageUrl(imageId);
+    let imageUrl = '';
+    this.firestore.getFileUrl(imageId).subscribe({
+      next: (url) => {
+        imageUrl = url;
+      },
+      error: (error: any) => {
+        console.error('Error getting image URL:', error);
+      }
+    });
+    return imageUrl;
   }
 }
