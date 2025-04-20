@@ -51,10 +51,10 @@
                 <div >
                     <input type="text" class="form-control" placeholder="Search platforms..." [(ngModel)]="searchTerm">
                 </div>
-               
             </div>
         </div>
     </div>
+
 
     <!-- Platforms List -->
     <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
@@ -69,8 +69,10 @@
                           
                         </div>
                         <div class="platform-logo" [style.backgroundColor]="platform.couleur">
-                            <!-- <img [src]="platform.logo || 'assets/default-logo.png'" alt="Platform Logo"> -->
-                            <img [src]="" alt="Platform Logo">
+                            <img [src]="platform.logo || 'assets/images/default-logo.png'" 
+                                 [alt]="platform.nomPlateforme"
+                                 class="img-fluid"
+                                 style="max-width: 100px; max-height: 100px; object-fit: cover;">
                         </div>
 
                     </div>
@@ -102,15 +104,54 @@
     </div>
 
     <!-- Empty State -->
-    <div *ngIf="plateformes.length === 0" class="text-center py-5">
+    <div *ngIf="filteredPlatforms.length === 0" class="text-center py-5">
         <i class="fas fa-database fa-3x text-muted mb-3"></i>
         <h4>No Platforms Found</h4>
         <p class="text-muted">Start by adding a new platform using the button above.</p>
     </div>
 
+
+
+
+
+<br/>
+<br/>
+
+    <!-- Image Upload Section -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Image Management</h5>
+            <div class="mb-3">
+                <input type="file" class="form-control" (change)="onFileChange($event)" accept="image/*">
+            </div>
+            <div class="mb-3" *ngIf="imageMin">
+                <img [src]="imageMin" alt="Preview" style="max-width: 200px; max-height: 200px;">
+            </div>
+            <button class="btn btn-primary" (click)="onUpload()" [disabled]="!image">Upload Image</button>
+            
+            <!-- Image Gallery -->
+            <div class="row mt-4">
+                <div class="col-md-3 mb-3" *ngFor="let img of images">
+                    <div class="card">
+                        <img [src]="getImageUrl(img.imageId!)" 
+                             class="card-img-top"
+                             alt="Uploaded image"
+                             style="height: 200px; object-fit: cover;">
+                        <div class="card-body">
+                            <h6 class="card-title text-truncate">{{img.name}}</h6>
+                            <button class="btn btn-sm btn-danger" (click)="onDelete(img.id!)">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
  
 </div>
 
 
-    </div>
+
+
+</div>
+    
 </body>

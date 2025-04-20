@@ -14,7 +14,7 @@ interface Image {
 @Injectable({
   providedIn: 'root'
 })
-export class CommonService {
+export class ImageService {
   private url: string = 'http://localhost:8081/cloudinary'
 
   constructor(private myHttp: HttpClient) {}
@@ -25,7 +25,7 @@ export class CommonService {
 
   public upload(image:File): Observable<any> {
     const formData = new FormData();
-    formData.append('file', image);
+    formData.append('mfile', image);
     return this.myHttp.post(`${this.url}/upload`, formData);
   }
 
@@ -37,5 +37,8 @@ export class CommonService {
         return this.myHttp.get(`${this.url}/get/${id}`);
     }
 
+  public getImageUrl(imageId: string): string {
+    return `${this.url}/get/${imageId}`;
+  }
  
 }

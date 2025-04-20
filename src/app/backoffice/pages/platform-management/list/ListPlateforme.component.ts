@@ -1,12 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PlateformeService } from 'src/app/services/plateforme/plateforme.service';
-  
+import { ImageService } from 'src/app/services/image.service';
 
+interface Image {
+  id?: number;
+  name?: string;
+  imageUrl?: string;
+  imageId?: string;
+}
 
 interface report {
   TotalPlateformes: number,
-  ExpiredPlateformes: number, 
+  ExpiredPlateformes: number,
   ActivePlateformes: number
 }
 
@@ -17,11 +23,10 @@ interface report {
 })
 export class ListPlateformeComponent implements OnInit {
 
-
   TypePack = {
-    BASIC : 'BASIC',
-    PREMIUM : 'PREMIUM',
-    ADVANCED : 'ADVANCED'
+    BASIC: 'BASIC',
+    PREMIUM: 'PREMIUM',
+    ADVANCED: 'ADVANCED'
   }
   plateformes: any[] = [];
   report: report = {
@@ -35,15 +40,21 @@ export class ListPlateformeComponent implements OnInit {
   typePackOptions = Object.values(this.TypePack);
   selectedPlateforme: any = null;
 
+  image: File | null = null;
+  imageMin: string | null = null;
+  images: Image[] = [];
+
   constructor(
     private ps: PlateformeService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private imageService: ImageService
+  ) { }
 
   ngOnInit() {
     this.loadPlateformes();
     this.loadUsers();
     this.generateReport();
+    this.loadImages();
   }
 
   get filteredPlatforms() {
@@ -51,9 +62,7 @@ export class ListPlateformeComponent implements OnInit {
       const matchesSearch = !this.searchTerm || 
         platform.nomPlateforme.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         platform.description?.toLowerCase().includes(this.searchTerm.toLowerCase());
-      
       const matchesType = !this.filterType || platform.typePack === this.filterType;
-      
       return matchesSearch && matchesType;
     });
   }
@@ -61,7 +70,7 @@ export class ListPlateformeComponent implements OnInit {
   loadPlateformes() {
     this.ps.getPlateforms().subscribe({
       next: (data) => {
-        this.plateformes = data;
+        this.plateformes = data 
         console.log('Platforms loaded:', this.plateformes);
       },
       error: (error) => {
@@ -81,10 +90,8 @@ export class ListPlateformeComponent implements OnInit {
     });
   }
 
-
-  addplateforme(){
+  addplateforme() {
     this.router.navigate(['/backoffice/platform', 'new']);
-
   }
 
   editPlateforme(platform: any) {
@@ -97,7 +104,6 @@ export class ListPlateformeComponent implements OnInit {
 
   previewPlateforme(platform: any) {
     this.router.navigate(['/backoffice/platform', 'preview', platform.idPlateforme]);
-
   }
 
   deletePlateforme(id: number) {
@@ -113,24 +119,13 @@ export class ListPlateformeComponent implements OnInit {
     }
   }
 
-
   isExpired(date: string): boolean {
     const currentDate = new Date();
     const expirationDate = new Date(date);
     return expirationDate < currentDate;
   }
 
-  navigateToEdit(id: number): void {
-    this.router.navigate([`/backoffice/platform/${id}/edit`]);
-  }
-
-  navigateToCreate(): void {
-    this.router.navigate(['/backoffice/platform/new']);
-  }
-
-
-  
-  generateReport(){
+  generateReport() {
     this.ps.getReport().subscribe({
       next: (data) => {
         this.report = data;
@@ -142,5 +137,56 @@ export class ListPlateformeComponent implements OnInit {
     });
   }
 
+  loadImages() {
+    this.imageService.list().subscribe((data: Image[]) => {
+      this.images = data;
+      console.log('Images loaded:', this.images);
+    }, (error) => {
+      console.error('Error loading images:', error);
+    });
+  }
 
+  onFileChange(event: any) {
+    const file = event.target.files[0];
+    if (file && file.type.startsWith('image/')) {
+      this.image = file;
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imageMin = reader.result as string;
+      };
+      reader.readAsDataURL(file);
+    } else {
+      this.image = null;
+      this.imageMin = null;
+      alert('Please select an image file');
+    }
+  }
+
+  onUpload(): void {
+    if (this.image) {
+      this.imageService.upload(this.image).subscribe({
+        next: (data) => {
+          console.log('Image uploaded:', data);
+          this.loadImages();
+          this.image = null;
+          this.imageMin = null;
+        }
+      });
+    }
+  }
+
+  onDelete(id: number): void {
+    if (confirm('Are you sure you want to delete this image?')) {
+      this.imageService.delete(id).subscribe({
+        next: (data) => {
+          console.log('Image deleted:', data);
+          this.loadImages();
+        }
+      });
+    }
+  }
+
+  getImageUrl(imageId: string): string {
+    return this.imageService.getImageUrl(imageId);
+  }
 }
