@@ -28,6 +28,7 @@ export class FirebaseStorageService {
   }
 
   getFileUrl(fileName: string): Observable<string> {
+    console.log('Fetching URL for file:', fileName);
     return this.http.get<string>(`${this.apiUrl}/url/${fileName}`);
   }
 

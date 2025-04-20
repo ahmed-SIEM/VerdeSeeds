@@ -3,122 +3,124 @@
 <body class="app">
 
     <div class="app-wrapper">
-     
-          
-          <!-- Modal -->
-         
-<div class="container-fluid p-4">
-    <!-- Header Section -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="text-primary mb-0">Platform Management</h2>
-        <button class="btn btn-success" (click)="addplateforme()">
-            <i class="fas fa-plus me-2"></i>Add New Platform
-        </button>
-    </div>
 
-    <!-- Statistics Cards -->
-    <div class="row mb-4">
-        <div class="col-md-4">
-            <div class="card bg-primary text-white">
+
+        <!-- Modal -->
+
+        <div class="container-fluid p-4">
+            <!-- Header Section -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="text-primary mb-0">Platform Management</h2>
+                <button class="btn btn-success" (click)="addplateforme()">
+                    <i class="fas fa-plus me-2"></i>Add New Platform
+                </button>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="card bg-primary text-white">
+                        <div class="card-body">
+                            <h5 class="card-title">Total Platforms</h5>
+                            <h2 class="mb-0">{{report.TotalPlateformes}}</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card bg-success text-white">
+                        <div class="card-body">
+                            <h5 class="card-title">Active Platforms</h5>
+                            <h2 class="mb-0">{{report.ActivePlateformes}}</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card bg-danger text-white">
+                        <div class="card-body">
+                            <h5 class="card-title">Expired Platforms</h5>
+                            <h2 class="mb-0">{{report.ExpiredPlateformes}}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search Section -->
+            <div class="card mb-4">
                 <div class="card-body">
-                    <h5 class="card-title">Total Platforms</h5>
-                    <h2 class="mb-0">{{report.TotalPlateformes}}</h2>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card bg-success text-white">
-                <div class="card-body">
-                    <h5 class="card-title">Active Platforms</h5>
-                    <h2 class="mb-0">{{report.ActivePlateformes}}</h2>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card bg-danger text-white">
-                <div class="card-body">
-                    <h5 class="card-title">Expired Platforms</h5>
-                    <h2 class="mb-0">{{report.ExpiredPlateformes}}</h2>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Search Section -->
-    <div class="card mb-4">
-        <div class="card-body">
-            <div class="row g-3">
-                <div >
-                    <input type="text" class="form-control" placeholder="Search platforms..." [(ngModel)]="searchTerm">
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <!-- Platforms List -->
-    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
-        <div class="col" *ngFor="let platform of filteredPlatforms">
-            <div    [ngClass]="(isExpired(platform.valabilite) ?  'border-2 border-danger' : 'border-3 border-success')"  class="card h-100">
-                <div  class="card-body">
-                    <div 
-                  
-                    class="d-flex justify-content-between align-items-start mb-3">
+                    <div class="row g-3">
                         <div>
-                            <h5 class="card-title mb-1">{{platform.nomPlateforme}}</h5>
-                          
+                            <input type="text" class="form-control" placeholder="Search platforms..."
+                                [(ngModel)]="searchTerm">
                         </div>
-                        <div class="platform-logo" [style.backgroundColor]="platform.couleur">
-                            <img [src]="platform.logo || 'assets/images/default-logo.png'" 
-                                 [alt]="platform.nomPlateforme"
-                                 class="img-fluid"
-                                 style="max-width: 100px; max-height: 100px; object-fit: cover;">
-                        </div>
-
-                    </div>
-                   
-                    <p class="card-text text-muted mb-2">{{platform.description | slice:0:100}}{{platform.description?.length > 100 ? '...' : ''}}</p>
-                    
-                    <div class="platform-details mb-3">
-                        <div><strong>Created:</strong> {{platform.dateCreation | date}}</div>
-                        <div><strong>Valid Until:</strong> {{platform.valabilite | date}}</div>
-                    </div>
-
-                    <div class="d-flex gap-2 mt-auto">
-                        <button class="btn btn-outline-primary btn-sm"  (click)="viewPlateforme(platform)">
-                            <i class="fas fa-eye me-1"></i> View
-                        </button>
-                        <button class="btn btn-outline-info btn-sm"   (click)="previewPlateforme(platform)">
-                            <i class="fas fa-eye me-1"></i> Preview
-                        </button>
-                        <button class="btn btn-outline-secondary btn-sm" (click)="editPlateforme(platform)">
-                            <i class="fas fa-edit me-1"></i> Edit
-                        </button>
-                        <button class="btn btn-outline-danger btn-sm" (click)="deletePlateforme(platform.idPlateforme)">
-                            <i class="fas fa-trash me-1"></i> Delete
-                        </button>
                     </div>
                 </div>
             </div>
+
+
+            <!-- Platforms List -->
+            <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+                <div class="col" *ngFor="let platform of filteredPlatforms">
+                    <div [ngClass]="(isExpired(platform.valabilite) ?  'border-2 border-danger' : 'border-3 border-success')"
+                        class="card h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div>
+                                    <h5 class="card-title mb-1">{{platform.nomPlateforme}}</h5>
+
+                                </div>
+                                <div class="platform-logo" [style.backgroundColor]="platform.couleur">
+                                    <img [src]="platform.imageUrl "
+                                        [alt]="platform.nomPlateforme" class="img-fluid"
+                                        style="max-width: 100px; max-height: 100px; object-fit: cover;"
+                                        [class.loading]="!platform.imageUrl" />
+                                </div>
+
+                            </div>
+
+                            <p class="card-text text-muted mb-2">{{platform.description |
+                                slice:0:100}}{{platform.description?.length > 100 ? '...' : ''}}</p>
+
+                            <div class="platform-details mb-3">
+                                <div><strong>Created:</strong> {{platform.dateCreation | date}}</div>
+                                <div><strong>Valid Until:</strong> {{platform.valabilite | date}}</div>
+                            </div>
+
+                            <div class="d-flex gap-2 mt-auto">
+                                <button class="btn btn-outline-primary btn-sm" (click)="viewPlateforme(platform)">
+                                    <i class="fas fa-eye me-1"></i> View
+                                </button>
+                                <button class="btn btn-outline-info btn-sm" (click)="previewPlateforme(platform)">
+                                    <i class="fas fa-eye me-1"></i> Preview
+                                </button>
+                                <button class="btn btn-outline-secondary btn-sm" (click)="editPlateforme(platform)">
+                                    <i class="fas fa-edit me-1"></i> Edit
+                                </button>
+                                <button class="btn btn-outline-danger btn-sm"
+                                    (click)="deletePlateforme(platform.idPlateforme)">
+                                    <i class="fas fa-trash me-1"></i> Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Empty State -->
+            <div *ngIf="filteredPlatforms.length === 0" class="text-center py-5">
+                <i class="fas fa-database fa-3x text-muted mb-3"></i>
+                <h4>No Platforms Found</h4>
+                <p class="text-muted">Start by adding a new platform using the button above.</p>
+            </div>
+
+
+
+
+
         </div>
+
+
+
+
     </div>
 
-    <!-- Empty State -->
-    <div *ngIf="filteredPlatforms.length === 0" class="text-center py-5">
-        <i class="fas fa-database fa-3x text-muted mb-3"></i>
-        <h4>No Platforms Found</h4>
-        <p class="text-muted">Start by adding a new platform using the button above.</p>
-    </div>
-
-
-
-
- 
-</div>
-
-
-
-
-</div>
-    
 </body>

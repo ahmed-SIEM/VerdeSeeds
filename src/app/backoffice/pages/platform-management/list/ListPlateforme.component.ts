@@ -2,13 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PlateformeService } from 'src/app/services/plateforme/plateforme.service';
 import { FirebaseStorageService } from 'src/app/services/firebase-storage.service';
-
-interface Image {
-  id?: number;
-  name?: string;
-  imageUrl?: string;
-  imageId?: string;
-}
+import { firstValueFrom } from 'rxjs';
 
 interface report {
   TotalPlateformes: number,
@@ -42,7 +36,6 @@ export class ListPlateformeComponent implements OnInit {
 
   image: File | null = null;
   imageMin: string | null = null;
-  images: Image[] = [];
 
   constructor(
     private ps: PlateformeService,
@@ -54,7 +47,6 @@ export class ListPlateformeComponent implements OnInit {
     this.loadPlateformes();
     this.loadUsers();
     this.generateReport();
-   
   }
 
   get filteredPlatforms() {
@@ -68,18 +60,39 @@ export class ListPlateformeComponent implements OnInit {
   }
 
   loadPlateformes() {
+    // Clean up previous object URLs
+    this.plateformes.forEach((platform: any) => {
+      if (platform._blobUrl) {
+        URL.revokeObjectURL(platform._blobUrl);
+      }
+    });
+  
     this.ps.getPlateforms().subscribe({
-      next: (data) => {
-        this.plateformes = data.map((platform: any) => {
-          const imageId = platform.imageId || platform.image?.id || null;
-          const imageUrl = imageId ? this.getImageUrl(imageId) : null;
-          return {
-            ...platform,
-            imageUrl: imageUrl
-          };
-        }
+      next: async (data) => {
+        const platformsWithImages = await Promise.all(
+          data.map(async (platform: any) => {
+            let imageUrl: string | null = null;
+  
+            if (platform.imageId) {
+              try {
+                const blob = await this.firestore.getFile(platform.imageId).toPromise();
+                if (blob) {
+                  imageUrl = URL.createObjectURL(blob);
+                  platform._blobUrl = imageUrl;
+                }
+              } catch (err) {
+                console.error('Error getting image blob:', err);
+              }
+            }
+  
+            return {
+              ...platform,
+              imageUrl
+            };
+          })
         );
-
+  
+        this.plateformes = platformsWithImages;
         console.log('Platforms loaded:', this.plateformes);
       },
       error: (error) => {
@@ -87,6 +100,7 @@ export class ListPlateformeComponent implements OnInit {
       }
     });
   }
+  
 
   loadUsers() {
     this.ps.getUsers().subscribe({
@@ -146,8 +160,6 @@ export class ListPlateformeComponent implements OnInit {
     });
   }
 
-
-
   onFileChange(event: any) {
     const file = event.target.files[0];
     if (file && file.type.startsWith('image/')) {
@@ -164,19 +176,20 @@ export class ListPlateformeComponent implements OnInit {
     }
   }
 
+  async getImageUrl(imageId: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      this.firestore.getFile(imageId).subscribe({
+        next: (blob) => {
+          const url = URL.createObjectURL(blob);
+          resolve(url);
+          console.log('Image URL:', url);
 
- 
-
-  getImageUrl(imageId: string): string {
-    let imageUrl = '';
-    this.firestore.getFileUrl(imageId).subscribe({
-      next: (url) => {
-        imageUrl = url;
-      },
-      error: (error: any) => {
-        console.error('Error getting image URL:', error);
-      }
+        },
+        error: (error) => {
+          console.error('Error fetching image:', error);
+          reject(error);
+        }
+      });
     });
-    return imageUrl;
   }
 }
