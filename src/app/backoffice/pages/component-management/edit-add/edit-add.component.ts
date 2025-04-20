@@ -43,6 +43,14 @@ export class EditAddComponent implements OnInit {
   private imagePreviews: { [key: string]: string } = {};
   private validFileTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 
+  showIconModal = false;
+  currentIconField = '';
+  availableIcons = [
+    'bi-balloon', 'bi-alarm', 'bi-archive',
+    'bi-award', 'bi-bag', 'bi-bell',
+    'bi-bookmark', 'bi-camera', 'bi-cart'
+  ];
+
   categorizedComponents = {
     headers: [
       { name: 'Header with Icons', value: 'headerwithicons', preview: '../../../../../assets/backoffice/img/preview-images/CustomHeaderWithIcons.png' },
@@ -193,6 +201,7 @@ export class EditAddComponent implements OnInit {
     const group: any = {};
     this.componentFields.forEach(field => {
       const isImageField = field.includes('image') || field.includes('imageUrl');
+      const isIconField = field.toLowerCase().includes('icon');
       group[field] = ['', [
         Validators.required,
         isImageField ? this.imageValidator() : Validators.minLength(1)
@@ -302,6 +311,19 @@ export class EditAddComponent implements OnInit {
     }
   }
 
+  openIconModal(fieldName: string) {
+    this.currentIconField = fieldName;
+    this.showIconModal = true;
+  }
+
+  closeIconModal() {
+    this.showIconModal = false;
+  }
+
+  selectIcon(icon: string) {
+    this.contentForm.get(this.currentIconField)?.setValue(icon);
+    this.closeIconModal();
+  }
 
   private async uploadImages(): Promise<any> {
     const updates: any = {};

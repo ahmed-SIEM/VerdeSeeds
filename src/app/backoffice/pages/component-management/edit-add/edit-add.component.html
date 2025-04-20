@@ -73,10 +73,21 @@
                     <div class="row g-3">
                       <div class="col-md-6" *ngFor="let field of componentFields">
                         <div class="form-floating" *ngIf="!field.includes('image') && !field.includes('imageUrl')">
-                          <input type="text" class="form-control" [id]="field"
-                                 [formControlName]="field" required
-                                 [class.is-invalid]="contentForm.get(field)?.invalid && contentForm.get(field)?.touched">
-                          <label [for]="field">{{field}}</label>
+                          <div class="input-group" *ngIf="field.toLowerCase().includes('icon'); else regularInput">
+                            <input type="text" class="form-control" [id]="field"
+                                   [formControlName]="field" required readonly
+                                   [class.is-invalid]="contentForm.get(field)?.invalid && contentForm.get(field)?.touched">
+                            <button class="btn btn-outline-secondary" type="button" (click)="openIconModal(field)">
+                              Select Icon
+                            </button>
+                            <label [for]="field">{{field}}</label>
+                          </div>
+                          <ng-template #regularInput>
+                            <input type="text" class="form-control" [id]="field"
+                                   [formControlName]="field" required
+                                   [class.is-invalid]="contentForm.get(field)?.invalid && contentForm.get(field)?.touched">
+                            <label [for]="field">{{field}}</label>
+                          </ng-template>
                           <div class="invalid-feedback" *ngIf="contentForm.get(field)?.invalid && contentForm.get(field)?.touched">
                             {{ getErrorMessage(field, 'content') }}
                           </div>
@@ -196,3 +207,26 @@
   </div>
 </div>
 <div class="modal-backdrop fade show" *ngIf="showModal"></div>
+
+<!-- Icon Selection Modal -->
+<div class="modal" tabindex="-1" [class.show]="showIconModal" [style.display]="showIconModal ? 'block' : 'none'">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Select Icon</h5>
+        <button type="button" class="btn-close" (click)="closeIconModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-4 text-center" *ngFor="let icon of availableIcons">
+            <button class="btn btn-outline-primary w-100" (click)="selectIcon(icon)">
+              <i [class]="icon"></i>
+              <small class="d-block mt-1">{{icon}}</small>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade show" *ngIf="showIconModal"></div>
