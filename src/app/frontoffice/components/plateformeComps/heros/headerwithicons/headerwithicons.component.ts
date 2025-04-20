@@ -13,18 +13,18 @@ export class HeaderwithiconsComponent {
 
  
 
-
+ 
 
 
   @Input() title: string = 'Default Title';
   @Input() subtitle: string = 'Default Subtitle';
   @Input() color: string = 'gray';
   @Input() Ftitle: string = 'Default Ftitle';
-  @Input() Fimage: string = 'fa fa-th';
+  @Input() Ficon: string = 'fa fa-th';
   @Input() Stitle: string = 'Default Stitle';
-  @Input() Simage: string = 'fa fa-th';
+  @Input() Sicon: string = 'fa fa-th';
   @Input() Ttitle: string = 'Default Stitle';
-  @Input() Timage: string = 'fa fa-th';
+  @Input() Ticon: string = 'fa fa-th';
   @Input() Ptitle: string = 'Default Faction';
-  @Input() Pimage: string = 'bi-balloon';
+  @Input() Picon: string = 'bi-balloon';
 }

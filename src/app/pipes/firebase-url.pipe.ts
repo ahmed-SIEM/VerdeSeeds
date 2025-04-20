@@ -3,7 +3,7 @@ import { FirebaseStorageService } from '../services/firebase-storage.service';
 import { Observable, of } from 'rxjs';
 
 @Pipe({
-  name: 'firebaseUrl'
+  name: 'firebaseUrl',
 })
 export class FirebaseUrlPipe implements PipeTransform {
   constructor(private firebaseStorage: FirebaseStorageService) {}

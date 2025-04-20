@@ -3,14 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FirebaseUrlPipe } from '../pipes/firebase-url.pipe';
 
 @NgModule({
-  declarations: [
-    FirebaseUrlPipe
-  ],
-  imports: [
-    CommonModule
-  ],
-  exports: [
-    FirebaseUrlPipe
-  ]
+  declarations: [FirebaseUrlPipe],
+  imports: [CommonModule],
+  exports: [FirebaseUrlPipe]
 })
 export class SharedModule { }

@@ -72,13 +72,31 @@
                   <form [formGroup]="contentForm" (ngSubmit)="onSubmit()">
                     <div class="row g-3">
                       <div class="col-md-6" *ngFor="let field of componentFields">
-                        <div class="form-floating">
+                        <div class="form-floating" *ngIf="!field.includes('image') && !field.includes('imageUrl')">
                           <input type="text" class="form-control" [id]="field"
                                  [formControlName]="field" required
                                  [class.is-invalid]="contentForm.get(field)?.invalid && contentForm.get(field)?.touched">
                           <label [for]="field">{{field}}</label>
                           <div class="invalid-feedback" *ngIf="contentForm.get(field)?.invalid && contentForm.get(field)?.touched">
                             {{ getErrorMessage(field, 'content') }}
+                          </div>
+                        </div>
+                        <div class="form-group" *ngIf="field.includes('image') || field.includes('imageUrl')">
+                          <label [for]="field">{{field}}</label>
+                          <input 
+                            type="file" 
+                            class="form-control" 
+                            [id]="field"
+                            [class.is-invalid]="contentForm.get(field)?.invalid && contentForm.get(field)?.touched"
+                            accept="image/jpeg,image/png,image/gif,image/webp"
+                            (change)="onImageFileSelected($event, field)"
+                          >
+                         
+                          <div class="invalid-feedback" *ngIf="contentForm.get(field)?.errors?.['required'] && contentForm.get(field)?.touched">
+                            {{field}} image is required
+                          </div>
+                          <div class="invalid-feedback" *ngIf="contentForm.get(field)?.errors?.['invalidType']">
+                            Please select a valid image file (JPEG, PNG, GIF, or WEBP)
                           </div>
                         </div>
                       </div>
