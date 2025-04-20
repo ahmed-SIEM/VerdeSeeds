@@ -121,6 +121,7 @@ export class EditAddComponent implements OnInit {
   loaduser() {
     this.commonservice.getUserById(this.userid).subscribe({
       next: (user) => {
+        console.log('User loaded:', user);
         this.user = user;
       },
       error: (error) => {
