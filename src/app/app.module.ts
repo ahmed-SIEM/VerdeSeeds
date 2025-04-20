@@ -9,11 +9,11 @@ import { AppComponent } from './app.component';
 import { ErrorComponent } from './error/error.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { initializeApp } from 'firebase/app';
-import {environment}  from '../environments/environment';
+import {firebase}  from '../environments/fireBaseEnv';
 
 
 // Initialize Firebase
-initializeApp(environment.firebase);
+initializeApp(firebase);
 
 @NgModule({
   declarations: [
