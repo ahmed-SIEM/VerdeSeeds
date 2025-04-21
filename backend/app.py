@@ -6,12 +6,17 @@ from PIL import Image
 import io
 import warnings
 from groq import Groq
+import os
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
 
 # Groq initialization
-client = Groq(api_key="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")
+client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 VALIDATION_PROMPT = "You are an intelligent assistant. Analyze the input question carefully. Respond with 'Yes' if the input is agriculture-related, and 'No' otherwise."
 RESPONSE_PROMPT = "You are an agriculture expert. Provide a concise and accurate answer to the following agriculture-related question:"
 
