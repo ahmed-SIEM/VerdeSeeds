@@ -31,4 +31,12 @@ export class CommonService {
   getUserById(id: number): Observable<any> {
     return this.myHttp.get(`${this.url}/auth/retrieve-User/${id}`);
   }
+
+
+
+
+
+
+
+
 }

@@ -148,38 +148,62 @@
             <div class="category-section mb-4">
               <h6 class="category-title mb-3">Header Components</h6>
               <div class="row g-2">
-                <div class="col-12" *ngFor="let comp of categorizedComponents.headers">
-                  <div class="component-card" (click)="selectComponent(comp.value)"
-                    (mouseenter)="onComponentHover(comp)" (mouseleave)="onComponentHover(null)">
-                    {{comp.name}}
-                  </div>
-                </div>
+          <div class="col-12" *ngFor="let comp of categorizedComponents.headers">
+              <div class="component-card position-relative" (click)="selectComponent(comp.value)"
+              (mouseenter)="onComponentHover(comp)" (mouseleave)="onComponentHover(null)">
+              {{comp.name}}
+              <span class="badge position-absolute top-0 end-0 translate-middle p-2 rounded-circle"
+                style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;"
+                [ngClass]="{
+                  'bg-success': comp.usageRate > 75,
+                  'bg-warning': comp.usageRate >= 25 && comp.usageRate <= 50,
+                  'bg-danger': comp.usageRate < 25
+                  }">
+                {{comp.usageRate}}
+              </span>
+              </div>
+          </div>
               </div>
             </div>
 
             <!-- Feature Components -->
-            <div class="category-section mb-4">
-              <h6 class="category-title mb-3">Feature Components</h6>
-              <div class="row g-2">
-                <div class="col-12" *ngFor="let comp of categorizedComponents.features">
-                  <div class="component-card" (click)="selectComponent(comp.value)"
-                    (mouseenter)="onComponentHover(comp)" (mouseleave)="onComponentHover(null)">
-                    {{comp.name}}
-                  </div>
-                </div>
+            <h6 class="category-title mb-3">Features Components</h6>
+
+            <div class="col-12" *ngFor="let comp of categorizedComponents.features">
+              <div class="component-card position-relative" (click)="selectComponent(comp.value)"
+              (mouseenter)="onComponentHover(comp)" (mouseleave)="onComponentHover(null)">
+              {{comp.name}}
+              <span class="badge position-absolute top-0 end-0 translate-middle p-2 rounded-circle"
+          style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;"
+          [ngClass]="{
+          'bg-success': comp.usageRate > 75,
+          'bg-warning': comp.usageRate >= 25 && comp.usageRate <= 50,
+          'bg-danger': comp.usageRate < 25
+          }">
+          {{comp.usageRate}}
+              </span>
               </div>
-            </div>
+          </div>
 
             <!-- Other Components -->
             <div class="category-section">
               <h6 class="category-title mb-3">Other Components</h6>
               <div class="row g-2">
-                <div class="col-12" *ngFor="let comp of categorizedComponents.others">
-                  <div class="component-card" (click)="selectComponent(comp.value)"
-                    (mouseenter)="onComponentHover(comp)" (mouseleave)="onComponentHover(null)">
-                    {{comp.name}}
-                  </div>
-                </div>
+          <div class="col-12" *ngFor="let comp of categorizedComponents.others">
+            <div class="component-card position-relative" (click)="selectComponent(comp.value)"
+            (mouseenter)="onComponentHover(comp)" (mouseleave)="onComponentHover(null)">
+            {{comp.name}}
+            <span class="badge position-absolute top-0 end-0 translate-middle p-2 rounded-circle"
+              style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;"
+              [ngClass]="{
+                'bg-success': comp.usageRate > 75,
+                'bg-warning': comp.usageRate >= 25 && comp.usageRate <= 50,
+                'bg-danger': comp.usageRate < 25
+                }">
+              {{comp.usageRate}}
+            </span>
+            </div>
+              </div>
               </div>
             </div>
           </div>
