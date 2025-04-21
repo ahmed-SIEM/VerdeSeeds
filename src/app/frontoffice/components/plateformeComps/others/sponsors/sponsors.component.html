@@ -11,7 +11,10 @@
         <ng-container *ngFor="let sponsor of Sponsors">
           <div class="slide">
             <div class="slide-inner">
-              <img [src]="sponsor.logo" [alt]="sponsor.nomSponsor" class="sponsor-logo">
+              <img 
+              src="http://localhost:8081/api/firebase/{{sponsor.logo}}" 
+             
+              [alt]="sponsor.nomSponsor" class="sponsor-logo">
               <div class="sponsor-overlay">
                 <div class="sponsor-name">{{sponsor.nomSponsor}}</div>
               </div>
@@ -23,7 +26,7 @@
         <ng-container *ngFor="let sponsor of Sponsors">
           <div class="slide">
             <div class="slide-inner">
-              <img [src]="sponsor.logo" [alt]="sponsor.nomSponsor" class="sponsor-logo">
+              <img     src="http://localhost:8081/api/firebase/{{sponsor.logo}}"  [alt]="sponsor.nomSponsor" class="sponsor-logo">
               <div class="sponsor-overlay">
                 <div class="sponsor-name">{{sponsor.nomSponsor}}</div>
               </div>

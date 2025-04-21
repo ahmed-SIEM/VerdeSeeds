@@ -74,11 +74,13 @@ export class ListPlateformeComponent implements OnInit, OnDestroy {
       next: async (data) => {
         
         this.plateformes = data;
+        this.generateReport();
       },
       error: (error) => {
         console.error('Error loading platforms:', error);
       }
     });
+    
   }
 
   loadUsers() {
