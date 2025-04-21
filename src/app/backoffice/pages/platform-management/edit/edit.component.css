@@ -423,3 +423,12 @@ input[type="radio"]:checked + label.choice-label .check-icon {
   color: #718096;
   text-align: center;
 }
+
+.input-group> .form-control:focus {
+  z-index: 0;
+}
+
+
+.dacalage{
+  margin-left: 10px;
+}

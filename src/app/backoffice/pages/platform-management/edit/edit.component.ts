@@ -392,6 +392,12 @@ export class EditPlateformeComponent implements OnInit {
     delete formData.field3;
     delete formData.field4;
 
+    if(this.selectPacktype === TypePack.BASIC) {
+      formData.nomPlateforme = 'verdeseeds.' + formData.nomPlateforme;
+    }
+
+
+
     console.log('Form data to submit:', formData);
     const operation = this.isEditMode
       ? this.platformService.updatePlateforme(formData)

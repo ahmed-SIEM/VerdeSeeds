@@ -33,12 +33,11 @@ export class ListPlateformeComponent implements OnInit, OnDestroy {
   filterType: string = '';
   typePackOptions = Object.values(this.TypePack);
   selectedPlateforme: any = null;
-  test: Blob | null = null;
 
   image: File | null = null;
   imageMin: string | null = null;
 
-  itemsPerPage: number = 1;
+  itemsPerPage: number = 6;
   currentPage: number = 1;
 
   constructor(
@@ -183,32 +182,8 @@ export class ListPlateformeComponent implements OnInit, OnDestroy {
     });
   }
 
-  onFileChange(event: any) {
-    const file = event.target.files[0];
-    if (file && file.type.startsWith('image/')) {
-      this.image = file;
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.imageMin = reader.result as string;
-      };
-      reader.readAsDataURL(file);
-    } else {
-      this.image = null;
-      this.imageMin = null;
-      alert('Please select an image file');
-    }
-  }
+  
 
 
-  loadtestimage() {
-    console.log('Loading image...');
-    this.firestore.getFile('a09b23e3-2986-484f-9523-cb491f7eeb53_1715448051648.jpeg').subscribe({
-      next: (url) => {
-        this.test = url;
-      },
-      error: (error) => {
-        console.error('Error loading image:', error);
-      }
-    });
-  }
+  
 }
