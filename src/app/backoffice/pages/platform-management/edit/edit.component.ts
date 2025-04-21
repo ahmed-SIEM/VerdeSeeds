@@ -120,9 +120,11 @@ export class EditPlateformeComponent implements OnInit {
     { name: 'Vertically Centered Hero', value: 'verticallycenteredhero', preview: '../../../../../assets/backoffice/img/preview-images/VerticallyCenteredHeroSignUpForm.png' }
   ];
 
-  private selectedLogoFile: File | null = null;
+  selectedLogoFile: File | null = null;
   isGeneratingColors = false;
   showColorGenerator = false;
+  showColorModal = false;
+  generatedColors: string[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -611,13 +613,23 @@ export class EditPlateformeComponent implements OnInit {
       }
 
       const result = await response.json();
-      console.log('Colors fetched:', result.dominant_colors);
-//['#90b607', '#000001', '#052973', '#afd752', '#4b7151']
-     
+      this.generatedColors = result.dominant_colors;
+      this.showColorModal = true;
     } catch (error) {
       console.error('Error uploading image:', error);
     } finally {
       this.isGeneratingColors = false;
     }
+  }
+
+  selectColor(color: string): void {
+    this.platformForm.patchValue({
+      couleur: color
+    });
+    this.showColorModal = false;
+  }
+
+  closeColorModal(): void {
+    this.showColorModal = false;
   }
 }
