@@ -38,6 +38,9 @@ export class ListPlateformeComponent implements OnInit, OnDestroy {
   image: File | null = null;
   imageMin: string | null = null;
 
+  itemsPerPage: number = 6;
+  currentPage: number = 1;
+
   constructor(
     private ps: PlateformeService,
     private router: Router,
@@ -60,13 +63,32 @@ export class ListPlateformeComponent implements OnInit, OnDestroy {
   }
 
   get filteredPlatforms() {
-    return this.plateformes.filter(platform => {
+    const filtered = this.plateformes.filter(platform => {
       const matchesSearch = !this.searchTerm || 
         platform.nomPlateforme.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         platform.description?.toLowerCase().includes(this.searchTerm.toLowerCase());
       const matchesType = !this.filterType || platform.typePack === this.filterType;
       return matchesSearch && matchesType;
     });
+
+    // Apply pagination
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    return filtered.slice(startIndex, startIndex + this.itemsPerPage);
+  }
+
+  get totalPages(): number {
+    const filtered = this.plateformes.filter(platform => {
+      const matchesSearch = !this.searchTerm || 
+        platform.nomPlateforme.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        platform.description?.toLowerCase().includes(this.searchTerm.toLowerCase());
+      const matchesType = !this.filterType || platform.typePack === this.filterType;
+      return matchesSearch && matchesType;
+    });
+    return Math.ceil(filtered.length / this.itemsPerPage);
+  }
+
+  changePage(page: number): void {
+    this.currentPage = page;
   }
 
   loadPlateformes() {
