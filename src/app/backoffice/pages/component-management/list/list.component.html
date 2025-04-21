@@ -15,6 +15,32 @@
       </button>
   </div>
 
+  <!-- Top Components Ranking -->
+  <div class="top-components">
+      <h3 class="ranking-title">
+          <i class="fas fa-trophy me-2"></i>
+          Most Used Components
+      </h3>
+      <div class="ranking-item rank-1" *ngIf="topComponents[0] && categorizedComponents[topComponents[0].type]">
+          <span class="rank-number">1</span>
+          <i class="fas fa-crown rank-icon"></i>
+          <span class="component-name">{{categorizedComponents[topComponents[0].type].name}}</span>
+          <span class="usage-count">{{topComponents[0].count}} uses</span>
+      </div>
+      <div class="ranking-item rank-2" *ngIf="topComponents[1] && categorizedComponents[topComponents[1].type]">
+          <span class="rank-number">2</span>
+          <i class="fas fa-medal rank-icon"></i>
+          <span class="component-name">{{categorizedComponents[topComponents[1].type].name}}</span>
+          <span class="usage-count">{{topComponents[1].count}} uses</span>
+      </div>
+      <div class="ranking-item rank-3" *ngIf="topComponents[2] && categorizedComponents[topComponents[2].type]">
+          <span class="rank-number">3</span>
+          <i class="fas fa-award rank-icon"></i>
+          <span class="component-name">{{categorizedComponents[topComponents[2].type].name}}</span>
+          <span class="usage-count">{{topComponents[2].count}} uses</span>
+      </div>
+  </div>
+
   <!-- Search and Filter Section -->
   <div class="card mb-4">
       <div class="card-body">

@@ -38,6 +38,7 @@ export class ListComponent implements OnInit {
     newsletter: 0,
     plateformeabout: 0
   };
+  topComponents: {type: ComponentType, count: number}[] = []; // Update the type definition
 
   constructor(private componentService: componentServcie, private router: Router) {}
 
@@ -119,11 +120,47 @@ export class ListComponent implements OnInit {
     this.router.navigate(['/backoffice/component', 'add']);
   }
 
-
   loadstats(): void {
     this.componentService.getusageRate().subscribe(data => {
       this.stats = data;
+      this.topComponents = Object.entries(this.stats)
+        .map(([type, count]) => ({
+          type: type as ComponentType, // Cast the type to ComponentType
+          count: count as number
+        }))
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 3);
       console.log(this.stats);
     });
+  }
+
+  getelementtype(type: string): string {
+    switch (type) {
+      case 'headerwithicons':
+        return 'Header with Icons';
+      case 'centeredhero':
+        return 'Centered Hero';
+      case 'herowithimage':
+        return 'Hero with Image';
+      case 'verticallycenteredhero':
+        return 'Vertically Centered Hero';
+      case 'columnswithicons':
+        return 'Columns with Icons';
+      case 'customcards':
+        return 'Custom Cards';
+      case 'headings':
+        return 'Headings';
+      case 'headingleftwithimage':
+        return 'Heading Left with Image';
+      case 'headingrightwithimage':
+        return 'Heading Right with Image';
+      case 'newsletter':
+        return 'Newsletter';
+      case 'plateformeabout':
+        return 'Plateforme About';
+      default:
+        return '';
+    }
+
   }
 }
