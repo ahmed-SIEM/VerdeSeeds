@@ -1145,4 +1145,11 @@ text-shadow: none;
 		font-size: 2em;
 	}
 
-	
+	.fc-event-title {
+		white-space: normal !important;
+		word-break: break-word;
+		font-size: 13px;
+		padding: 2px;
+		line-height: 1.2;
+		overflow-wrap: anywhere;
+	  }	
