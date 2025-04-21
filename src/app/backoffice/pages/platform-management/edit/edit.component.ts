@@ -590,7 +590,7 @@ export class EditPlateformeComponent implements OnInit {
 
 
 
-  async uploadImage(): Promise<void> {
+  async generateColors(): Promise<void> {
     if (!this.selectedLogoFile) {
       console.warn('No file selected for upload');
       return;
