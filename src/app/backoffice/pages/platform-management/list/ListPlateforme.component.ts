@@ -24,11 +24,29 @@ export class ListPlateformeComponent implements OnInit, OnDestroy {
     ADVANCED: 'ADVANCED'
   }
   plateformes: any[] = [];
-  report: report = {
-    TotalPlateformes: 0,
-    ExpiredPlateformes: 0,
-    ActivePlateformes: 0
-  };
+  report = [
+    {
+      label: 'Total Platforms',
+      value: 0,
+      icon: 'fas fa-globe',
+      color: 'text-success',
+      iconBg: 'bg-success bg-opacity-10'
+    },
+    {
+      label: 'Active Platforms',
+      value: 0,
+      icon: 'fas fa-check-circle',
+      color: 'text-info',
+      iconBg: 'bg-info bg-opacity-10'
+    },
+    {
+      label: 'Expired Platforms',
+      value: 0,
+      icon: 'fas fa-exclamation-circle',
+      color: 'text-warning',
+      iconBg: 'bg-warning bg-opacity-10'
+    }
+  ];
   users: any[] = [];
   searchTerm: string = '';
   filterType: string = '';
@@ -181,9 +199,10 @@ export class ListPlateformeComponent implements OnInit, OnDestroy {
 
   generateReport() {
     this.ps.getReport().subscribe({
-      next: (data) => {
-        this.report = data;
-        console.log('Report generated:', this.report);
+      next: (data: report) => {
+        this.report[0].value = data.TotalPlateformes;
+        this.report[1].value = data.ActivePlateformes;
+        this.report[2].value = data.ExpiredPlateformes;
       },
       error: (error) => {
         console.error('Error generating report:', error);
@@ -193,24 +212,23 @@ export class ListPlateformeComponent implements OnInit, OnDestroy {
     this.ps.getMostlyBoughtPacks().subscribe({
       next: (data) => {
         this.mostlyboughtpack = data;
-        console.log('Mostly bought packs:', this.mostlyboughtpack);
       },
       error: (error) => {
         console.error('Error fetching mostly bought packs:', error);
       }
     });
-
   }
 
   get sortedPacks() {
     return Object.entries(this.mostlyboughtpack)
+      .filter(([_, count]) => count > 0) // Only show packs with count > 0
       .map(([name, count]) => ({ name, count }))
       .sort((a, b) => b.count - a.count);
   }
 
   getPackPercentage(count: number): number {
-    const maxCount = Math.max(...Object.values(this.mostlyboughtpack));
-    return maxCount === 0 ? 0 : (count / maxCount) * 100;
+    const total = Object.values(this.mostlyboughtpack).reduce((sum, c) => sum + (c as number), 0);
+    return total === 0 ? 0 : Math.round((count / total) * 100);
   }
   
 }

@@ -203,3 +203,47 @@
   font-size: 0.9rem;
   color: #666;
 }
+
+
+.stat-card {
+  transition: transform 0.2s ease;
+  border-radius: 12px;
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+}
+
+.stat-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.stat-value {
+  font-size: 1.75rem;
+}
+
+.stat-title {
+  letter-spacing: 0.5px;
+}
+
+.pack-distribution .progress {
+  border-radius: 4px;
+  background-color: #f8f9fa;
+}
+
+.card-header {
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.card {
+  border-radius: 1rem;
+}
+
+.progress-bar {
+  transition: width 0.6s ease;
+}
