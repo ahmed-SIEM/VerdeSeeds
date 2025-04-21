@@ -12,6 +12,7 @@ import { ErrorComponent } from '../error/error.component';
 import { LayoutsComponent } from './layouts/layouts.component';
 import { HomeplateformeComponent } from './pages/homeplateforme/homeplateforme.component';
 import { PlatformeComponent } from './pages/platforme/platforme.component';
+import { DetailsformationComponent } from './pages/detailsformation/detailsformation.component';
 
 const routes: Routes = [
   {
@@ -24,6 +25,8 @@ const routes: Routes = [
       {path : 'about', component : AboutComponent},
       {path : 'contact', component : ContactComponent},
       {path : 'farmingpractice', component : FarmingPracticeComponent},
+      { path: 'details/:id', component: DetailsformationComponent },
+
       {path : 'news', component : NewsComponent},
       {path : 'newsdetails', component : NewsdetailsComponent},
       {path : 'ourproduct', component : OurproductComponent},
