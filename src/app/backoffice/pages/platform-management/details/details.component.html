@@ -34,6 +34,11 @@
                     <label>Platform Name</label>
                     <p>{{platform.nomPlateforme}}</p>
                   </div>
+                  <div class="info-item">
+                    <label>Import Image</label>
+                    <input type="file" class="form-control" (change)="onFileSelected($event)" accept="image/*">
+                    <small class="text-muted">Upload an image to analyze colors</small>
+                  </div>
                 </div>
               </div>
 
