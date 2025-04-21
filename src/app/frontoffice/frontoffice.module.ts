@@ -29,6 +29,7 @@ import { SponsorsComponent } from './components/plateformeComps/others/sponsors/
 import { plateformeaboutComponent } from './components/plateformeComps/others/about/about.component';
 import { ColumnswithiconsComponent } from './components/plateformeComps/features/columnswithicons/columnswithicons.component';
 import { PlatformeComponent } from './pages/platforme/platforme.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import { PlatformeComponent } from './pages/platforme/platforme.component';
     HeaderwithiconsComponent,
     NewsletterComponent,
     SponsorsComponent,
-    plateformeaboutComponent
+    plateformeaboutComponent,
+    FormsModule,
   ]
 })
 export class FrontofficeModule { }
