@@ -48,3 +48,16 @@
 .component-info {
     flex-grow: 1;
 }
+
+.pagination {
+    margin-top: 20px;
+}
+
+.page-link {
+    cursor: pointer;
+}
+
+.page-link.disabled {
+    pointer-events: none;
+    color: #6c757d;
+}

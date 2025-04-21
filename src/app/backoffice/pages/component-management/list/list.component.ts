@@ -23,6 +23,8 @@ export class ListComponent implements OnInit {
   searchTerm: string = '';
   selectedPreviewImage: string = '';
   selectedType: ComponentType | '' = ''; // Added type filter property
+  currentPage: number = 1;
+  itemsPerPage: number = 6;
 
   constructor(private componentService: componentServcie, private router: Router) {}
 
@@ -49,13 +51,31 @@ export class ListComponent implements OnInit {
   }
 
   get filteredComponentsList() {
-    return this.components.filter(component => {
+    const filtered = this.components.filter(component => {
       const matchesSearch = !this.searchTerm || 
         component.type.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         component.name.toLowerCase().includes(this.searchTerm.toLowerCase()); // Added name search
       const matchesType = !this.selectedType || component.type === this.selectedType; // Added type filter
       return matchesSearch && matchesType;
     });
+
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    return filtered.slice(startIndex, startIndex + this.itemsPerPage);
+  }
+
+  get totalPages(): number {
+    const filtered = this.components.filter(component => {
+      const matchesSearch = !this.searchTerm || 
+        component.type.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        component.name.toLowerCase().includes(this.searchTerm.toLowerCase());
+      const matchesType = !this.selectedType || component.type === this.selectedType;
+      return matchesSearch && matchesType;
+    });
+    return Math.ceil(filtered.length / this.itemsPerPage);
+  }
+
+  changePage(page: number): void {
+    this.currentPage = page;
   }
 
   loadComponents(): void {
@@ -79,8 +99,6 @@ export class ListComponent implements OnInit {
   previewComponent(component: ComponentPlatforme): void {
     this.selectedPreviewImage = this.categorizedComponents[component.type].preview;
   }
-
- 
 
   addComponent(): void {
     this.router.navigate(['/backoffice/component', 'add']);
