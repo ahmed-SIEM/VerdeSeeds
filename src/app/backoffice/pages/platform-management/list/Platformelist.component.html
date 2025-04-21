@@ -19,29 +19,57 @@
             <!-- Statistics Cards -->
             <div class="row mb-4">
                 <div class="col-md-4">
-                    <div class="card bg-primary text-white">
-                        <div class="card-body">
-                            <h5 class="card-title">Total Platforms</h5>
-                            <h2 class="mb-0">{{report.TotalPlateformes}}</h2>
+                    <div class="pack-ranking-card">
+                        <h5 class="ranking-title">Most Used Packs</h5>
+                        <div class="pack-list">
+                            <div class="pack-item" *ngFor="let pack of sortedPacks">
+                                <span class="pack-name">{{pack.name}}</span>
+                                <div class="pack-bar-wrapper">
+                                    <div class="pack-bar" [style.width]="getPackPercentage(pack.count) + '%'"></div>
+                                    <span class="pack-count">{{pack.count}}</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="card bg-success text-white">
-                        <div class="card-body">
-                            <h5 class="card-title">Active Platforms</h5>
-                            <h2 class="mb-0">{{report.ActivePlateformes}}</h2>
+                <div class="col-md-8">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="stat-card total">
+                                <div class="stat-card-content">
+                                    <i class="fas fa-globe fa-2x"></i>
+                                    <div class="stat-info">
+                                        <h5>Total Platforms</h5>
+                                        <h2>{{report.TotalPlateformes}}</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-card active">
+                                <div class="stat-card-content">
+                                    <i class="fas fa-check-circle fa-2x"></i>
+                                    <div class="stat-info">
+                                        <h5>Active Platforms</h5>
+                                        <h2>{{report.ActivePlateformes}}</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-card expired">
+                                <div class="stat-card-content">
+                                    <i class="fas fa-exclamation-circle fa-2x"></i>
+                                    <div class="stat-info">
+                                        <h5>Expired Platforms</h5>
+                                        <h2>{{report.ExpiredPlateformes}}</h2>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="card bg-danger text-white">
-                        <div class="card-body">
-                            <h5 class="card-title">Expired Platforms</h5>
-                            <h2 class="mb-0">{{report.ExpiredPlateformes}}</h2>
-                        </div>
-                    </div>
-                </div>
+
             </div>
 
             <!-- Search Section -->
@@ -70,8 +98,7 @@
                                 </div>
                                 <div class="platform-logo" [style.backgroundColor]="platform.couleur">
                                     <img src="http://localhost:8081/api/firebase/{{platform.logo}}"
-                                        [alt]="platform.nomPlateforme" 
-                                        class="img-fluid"
+                                        [alt]="platform.nomPlateforme" class="img-fluid"
                                         style="max-width: 100px; max-height: 100px; object-fit: cover;"
                                         [class.loading]="!platform.imageUrl" />
                                 </div>

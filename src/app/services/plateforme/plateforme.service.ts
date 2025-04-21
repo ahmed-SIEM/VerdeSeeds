@@ -53,4 +53,8 @@ export class PlateformeService {
   getAllPlatforms(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}`);
   }
+  getMostlyBoughtPacks(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/mostlyBoughtPacks`);
+  }
+
 }

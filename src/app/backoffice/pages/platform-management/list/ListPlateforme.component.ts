@@ -18,6 +18,7 @@ interface report {
 export class ListPlateformeComponent implements OnInit, OnDestroy {
 
   TypePack = {
+    GUEST: 'GUEST',
     BASIC: 'BASIC',
     PREMIUM: 'PREMIUM',
     ADVANCED: 'ADVANCED'
@@ -31,6 +32,7 @@ export class ListPlateformeComponent implements OnInit, OnDestroy {
   users: any[] = [];
   searchTerm: string = '';
   filterType: string = '';
+  mostlyboughtpack: any[] = [];
   typePackOptions = Object.values(this.TypePack);
   selectedPlateforme: any = null;
 
@@ -103,6 +105,13 @@ export class ListPlateformeComponent implements OnInit, OnDestroy {
     });
     
   }
+
+
+  
+
+
+
+
 
   loadUsers() {
     this.ps.getUsers().subscribe({
@@ -180,10 +189,28 @@ export class ListPlateformeComponent implements OnInit, OnDestroy {
         console.error('Error generating report:', error);
       }
     });
+
+    this.ps.getMostlyBoughtPacks().subscribe({
+      next: (data) => {
+        this.mostlyboughtpack = data;
+        console.log('Mostly bought packs:', this.mostlyboughtpack);
+      },
+      error: (error) => {
+        console.error('Error fetching mostly bought packs:', error);
+      }
+    });
+
   }
 
-  
+  get sortedPacks() {
+    return Object.entries(this.mostlyboughtpack)
+      .map(([name, count]) => ({ name, count }))
+      .sort((a, b) => b.count - a.count);
+  }
 
-
+  getPackPercentage(count: number): number {
+    const maxCount = Math.max(...Object.values(this.mostlyboughtpack));
+    return maxCount === 0 ? 0 : (count / maxCount) * 100;
+  }
   
 }
