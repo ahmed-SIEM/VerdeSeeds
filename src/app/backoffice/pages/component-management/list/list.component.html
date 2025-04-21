@@ -21,23 +21,47 @@
           <i class="fas fa-trophy me-2"></i>
           Most Used Components
       </h3>
-      <div class="ranking-item rank-1" *ngIf="topComponents[0] && categorizedComponents[topComponents[0].type]">
-          <span class="rank-number">1</span>
-          <i class="fas fa-crown rank-icon"></i>
-          <span class="component-name">{{categorizedComponents[topComponents[0].type].name}}</span>
-          <span class="usage-count">{{topComponents[0].count}} uses</span>
-      </div>
-      <div class="ranking-item rank-2" *ngIf="topComponents[1] && categorizedComponents[topComponents[1].type]">
-          <span class="rank-number">2</span>
-          <i class="fas fa-medal rank-icon"></i>
-          <span class="component-name">{{categorizedComponents[topComponents[1].type].name}}</span>
-          <span class="usage-count">{{topComponents[1].count}} uses</span>
-      </div>
-      <div class="ranking-item rank-3" *ngIf="topComponents[2] && categorizedComponents[topComponents[2].type]">
-          <span class="rank-number">3</span>
-          <i class="fas fa-award rank-icon"></i>
-          <span class="component-name">{{categorizedComponents[topComponents[2].type].name}}</span>
-          <span class="usage-count">{{topComponents[2].count}} uses</span>
+      <div class="row">
+          <div class="col-md-6">
+              <div class="ranking-item rank-1" *ngIf="topComponents[0] && categorizedComponents[topComponents[0].type]">
+                  <span class="rank-number">1</span>
+                  <i class="fas fa-crown rank-icon"></i>
+                  <span class="component-name">{{categorizedComponents[topComponents[0].type].name}}</span>
+                  <span class="usage-count">{{topComponents[0].count}} uses</span>
+              </div>
+              <div class="ranking-item rank-2" *ngIf="topComponents[1] && categorizedComponents[topComponents[1].type]">
+                  <span class="rank-number">2</span>
+                  <i class="fas fa-medal rank-icon"></i>
+                  <span class="component-name">{{categorizedComponents[topComponents[1].type].name}}</span>
+                  <span class="usage-count">{{topComponents[1].count}} uses</span>
+              </div>
+              <div class="ranking-item rank-3" *ngIf="topComponents[2] && categorizedComponents[topComponents[2].type]">
+                  <span class="rank-number">3</span>
+                  <i class="fas fa-award rank-icon"></i>
+                  <span class="component-name">{{categorizedComponents[topComponents[2].type].name}}</span>
+                  <span class="usage-count">{{topComponents[2].count}} uses</span>
+              </div>
+          </div>
+          <div class="col-md-6">
+              <div class="ranking-item rank-4" *ngIf="topComponents[3] && categorizedComponents[topComponents[3].type]">
+                  <span class="rank-number">4</span>
+                  <i class="fas fa-gem rank-icon"></i>
+                  <span class="component-name">{{categorizedComponents[topComponents[3].type].name}}</span>
+                  <span class="usage-count">{{topComponents[3].count}} uses</span>
+              </div>
+              <div class="ranking-item rank-5" *ngIf="topComponents[4] && categorizedComponents[topComponents[4].type]">
+                  <span class="rank-number">5</span>
+                  <i class="fas fa-certificate rank-icon"></i>
+                  <span class="component-name">{{categorizedComponents[topComponents[4].type].name}}</span>
+                  <span class="usage-count">{{topComponents[4].count}} uses</span>
+              </div>
+              <div class="ranking-item rank-6" *ngIf="topComponents[5] && categorizedComponents[topComponents[5].type]">
+                  <span class="rank-number">6</span>
+                  <i class="fas fa-shield-alt rank-icon"></i>
+                  <span class="component-name">{{categorizedComponents[topComponents[5].type].name}}</span>
+                  <span class="usage-count">{{topComponents[5].count}} uses</span>
+              </div>
+          </div>
       </div>
   </div>
 

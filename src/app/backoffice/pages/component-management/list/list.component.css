@@ -135,6 +135,21 @@
     color: #cd7f32;
 }
 
+.rank-4 .rank-icon {
+    color: #20c997;
+    font-size: 1.3rem;
+}
+
+.rank-5 .rank-icon {
+    color: #0dcaf0;
+    font-size: 1.3rem;
+}
+
+.rank-6 .rank-icon {
+    color: #6610f2;
+    font-size: 1.3rem;
+}
+
 .rank-icon {
     margin-right: 15px;
     font-size: 1.5rem;

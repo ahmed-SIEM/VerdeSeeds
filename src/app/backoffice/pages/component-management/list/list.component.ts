@@ -129,7 +129,7 @@ export class ListComponent implements OnInit {
           count: count as number
         }))
         .sort((a, b) => b.count - a.count)
-        .slice(0, 3);
+        .slice(0, 6); // Changed from 3 to 6 to show top 6 components
       console.log(this.stats);
     });
   }
