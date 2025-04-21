@@ -122,6 +122,9 @@ export class EditPlateformeComponent implements OnInit {
 
   private selectedLogoFile: File | null = null;
 
+
+
+
   constructor(
     private fb: FormBuilder,
     private platformService: PlateformeService,
@@ -333,6 +336,9 @@ export class EditPlateformeComponent implements OnInit {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       this.selectedLogoFile = input.files[0];
+      
+   
+      
       // Create a temporary URL for preview
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -342,6 +348,8 @@ export class EditPlateformeComponent implements OnInit {
       };
       reader.readAsDataURL(this.selectedLogoFile);
     }
+
+
   }
 
   private prepareAndSubmitData(): void {
@@ -582,31 +590,35 @@ export class EditPlateformeComponent implements OnInit {
 
 
 
+  async uploadImage(): Promise<void> {
+    if (!this.selectedLogoFile) {
+      console.warn('No file selected for upload');
+      return;
+    }
 
-  async uploadImage(file: File): Promise<void> {
     const formData = new FormData();
+    const file = this.selectedLogoFile as File;
     formData.append("file", file);
 
-    return fetch("http://localhost:5000/analyze-colors", {
+    try {
+      const response = await fetch("http://localhost:5000/analyze-colors", {
         method: "POST",
         body: formData,
-    })
-    .then(response => response.json())
-    .then(result => {
-        console.log(result);  // { dominant_colors: [...], color_schemes: {...} }
-    })
-    .catch(error => {
-        console.error('Error uploading image:', error);
-    });
-}
+      });
 
-onFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input?.files && input.files.length > 0) {
-        const file = input.files[0];
-        this.uploadImage(file);
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+
+      const result = await response.json();
+      console.log('Colors fetched:', result);
+
+     
+    } catch (error) {
+      console.error('Error uploading image:', error);
     }
-}
+  }
+
 
 
 
