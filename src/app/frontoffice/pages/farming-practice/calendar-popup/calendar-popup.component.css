@@ -1,0 +1,17 @@
+/* facultatif */
+.fc .fc-event {
+    white-space: normal !important;
+    word-break: break-word;
+    font-size: 13px;
+    line-height: 1.2;
+    overflow-wrap: break-word;
+  }
+  .fc .fc-event-main {
+    white-space: normal !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    font-size: 13px;
+    padding: 2px;
+    line-height: 1.2;
+    max-width: 100%;
+  }
