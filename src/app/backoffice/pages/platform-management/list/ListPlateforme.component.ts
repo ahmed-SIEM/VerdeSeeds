@@ -10,6 +10,12 @@ interface report {
   ActivePlateformes: number
 }
 
+interface packstats {
+  BASIC: number,  
+  PREMIUM: number,
+  ADVANCED: number
+}
+
 @Component({
   selector: 'app-Plateformelist',
   templateUrl: './Platformelist.component.html',
@@ -47,6 +53,31 @@ export class ListPlateformeComponent implements OnInit, OnDestroy {
       iconBg: 'bg-warning bg-opacity-10'
     }
   ];
+
+  packstats = [
+    {
+      label: 'Basic',
+      value: 0,
+      icon: 'fas fa-box',
+      color: 'text-primary',
+      iconBg: 'bg-primary'
+    },
+    {
+      label: 'Premium',
+      value: 0,
+      icon: 'fas fa-box-open',
+      color: 'text-warning',
+      iconBg: 'bg-warning'
+    },
+    {
+      label: 'Advanced',
+      value: 0,
+      icon: 'fas fa-boxes',
+      color: 'text-success',
+      iconBg: 'bg-success'
+    }
+  ];
+
   users: any[] = [];
   searchTerm: string = '';
   filterType: string = '';
@@ -123,13 +154,6 @@ export class ListPlateformeComponent implements OnInit, OnDestroy {
     });
     
   }
-
-
-  
-
-
-
-
 
   loadUsers() {
     this.ps.getUsers().subscribe({
@@ -210,8 +234,16 @@ export class ListPlateformeComponent implements OnInit, OnDestroy {
     });
 
     this.ps.getMostlyBoughtPacks().subscribe({
-      next: (data) => {
-        this.mostlyboughtpack = data;
+      next: (data: any) => {
+          const packData: packstats = {
+            BASIC: data.BASIC || 0,
+            PREMIUM: data.PREMIUM || 0,
+            ADVANCED: data.ADVANCED || 0
+          };
+          this.packstats[0].value = packData.BASIC;
+          this.packstats[1].value = packData.PREMIUM;
+          this.packstats[2].value = packData.ADVANCED;
+          
       },
       error: (error) => {
         console.error('Error fetching mostly bought packs:', error);
@@ -220,15 +252,12 @@ export class ListPlateformeComponent implements OnInit, OnDestroy {
   }
 
   get sortedPacks() {
-    return Object.entries(this.mostlyboughtpack)
-      .filter(([_, count]) => count > 0) // Only show packs with count > 0
-      .map(([name, count]) => ({ name, count }))
-      .sort((a, b) => b.count - a.count);
+    return this.packstats.sort((a, b) => b.value - a.value).slice(0, 3);
   }
 
   getPackPercentage(count: number): number {
-    const total = Object.values(this.mostlyboughtpack).reduce((sum, c) => sum + (c as number), 0);
-    return total === 0 ? 0 : Math.round((count / total) * 100);
+    const total = this.packstats.reduce((sum, pack) => sum + pack.value, 0);
+    return total > 0 ? (count / total) * 100 : 0;
   }
   
 }

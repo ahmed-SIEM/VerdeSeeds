@@ -18,56 +18,72 @@
 
             <div class="row g-4 mb-4">
                 <!-- Pack Distribution -->
-                <div class="col-lg-4">
-                  <div class="card border-0 shadow-sm h-100">
-                    <div class="card-header bg-white border-0 pb-0">
-                      <h5 class="text-success fw-semibold mb-0">
-                        <i class="fas fa-chart-pie me-2"></i>Pack Distribution
-                      </h5>
+                <div class="col-lg-3">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header bg-white border-0">
+                            <h5 class="text-success fw-semibold mb-0">
+                                <i class="fas fa-chart-pie me-2"></i>Pack Distribution
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div *ngFor="let pack of sortedPacks" class="mb-3">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="text-muted small">{{ pack.label }}</span>
+                                    <span class="fw-semibold small">{{ pack.value }}</span>
+                                </div>
+                                <div class="progress" style="height: 6px;">
+                                    <div class="progress-bar bg-success" 
+                                         role="progressbar"
+                                         [style.width]="getPackPercentage(pack.value) + '%'"
+                                         [attr.aria-valuenow]="getPackPercentage(pack.value)"
+                                         aria-valuemin="0" aria-valuemax="100">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-body pt-3">
-                      <div *ngFor="let pack of sortedPacks" class="mb-4">
-                        <div class="d-flex justify-content-between">
-                          <span class="text-muted">{{ pack.name }}</span>
-                          <span class="fw-semibold text-dark">{{ pack.count }}</span>
-                        </div>
-                        <div class="progress mt-1" style="height: 8px;">
-                          <div class="progress-bar bg-success" 
-                               role="progressbar"
-                               [style.width]="getPackPercentage(pack.count) + '%'"
-                               [attr.aria-valuenow]="getPackPercentage(pack.count)"
-                               aria-valuemin="0" aria-valuemax="100">
-                          </div>
-                        </div>
-                        <div class="text-end text-muted small mt-1">
-                          {{ getPackPercentage(pack.count) }}% of total
-                        </div>
-                      </div>
-                    </div>
-                  </div>
                 </div>
-              
+
                 <!-- Platform Stats -->
-                <div class="col-lg-8">
-                  <div class="row g-4">
-                    <!-- Reusable Stat Card -->
-                    <div class="col-md-4" *ngFor="let stat of report">
-                      <div class="card border-0 shadow-sm h-100">
-                        <div class="card-body p-4 d-flex align-items-center">
-                          <div [ngClass]="stat.iconBg" class="rounded-circle p-3 me-3 d-flex align-items-center justify-content-center">
-                            <i [class]="stat.icon + ' fa-lg ' + stat.color"></i>
-                          </div>
-                          <div>
-                            <div class="text-muted text-uppercase small mb-1">{{ stat.label }}</div>
-                            <h4 [ngClass]="stat.color" class="fw-bold mb-0">{{ stat.value }}</h4>
-                          </div>
+                <div class="col-lg-9">
+                    <div class="row g-3">
+                        <div class="col-md-4" *ngFor="let stat of report">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-body p-4">
+                                    <div class="d-flex align-items-center">
+                                        <div [ngClass]="stat.iconBg" class="rounded p-2 me-3">
+                                            <i [class]="stat.icon + ' ' + stat.color"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="text-muted small text-uppercase mb-1">{{ stat.label }}</h6>
+                                            <h3 class="mb-0 fw-bold" [ngClass]="stat.color">{{ stat.value }}</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                      </div>
                     </div>
-                  </div>
+                <br/>
+                <div class="row g-3">
+                    <div class="col-md-4" *ngFor="let pack of sortedPacks">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-center">
+                                    <div [ngClass]="pack.iconBg" class="rounded p-2 me-3">
+                                        <i [class]="pack.icon + ' text-white'"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="text-muted small text-uppercase mb-1">{{pack.label}} Pack</h6>
+                                        <h3 class="mb-0 fw-bold" [ngClass]="pack.color">{{pack.value}}</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-              
+                    
+                </div>
+            </div>
 
             <!-- Search Section -->
             <div class="card mb-4">
