@@ -428,7 +428,74 @@ input[type="radio"]:checked + label.choice-label .check-icon {
   z-index: 0;
 }
 
-
-.dacalage{
+.dacalage {
   margin-left: 10px;
+}
+
+/* Color Generator Styles */
+.color-generator {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  margin-left: 10px;
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: all 0.3s ease;
+}
+
+.color-generator.show {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.color-generator-btn {
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.color-generator-btn:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.color-generator-btn:active {
+  transform: scale(0.95);
+}
+
+.color-generator-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.generating-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.generating-overlay.show {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.generating-animation {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
 }

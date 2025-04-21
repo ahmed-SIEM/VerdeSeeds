@@ -121,9 +121,8 @@ export class EditPlateformeComponent implements OnInit {
   ];
 
   private selectedLogoFile: File | null = null;
-
-
-
+  isGeneratingColors = false;
+  showColorGenerator = false;
 
   constructor(
     private fb: FormBuilder,
@@ -336,8 +335,7 @@ export class EditPlateformeComponent implements OnInit {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       this.selectedLogoFile = input.files[0];
-      
-   
+      this.showColorGenerator = true;
       
       // Create a temporary URL for preview
       const reader = new FileReader();
@@ -347,9 +345,9 @@ export class EditPlateformeComponent implements OnInit {
         });
       };
       reader.readAsDataURL(this.selectedLogoFile);
+    } else {
+      this.showColorGenerator = false;
     }
-
-
   }
 
   private prepareAndSubmitData(): void {
@@ -587,20 +585,22 @@ export class EditPlateformeComponent implements OnInit {
     this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson));
   }
 
-
-
-
   async generateColors(): Promise<void> {
     if (!this.selectedLogoFile) {
       console.warn('No file selected for upload');
       return;
     }
 
-    const formData = new FormData();
-    const file = this.selectedLogoFile as File;
-    formData.append("file", file);
+    this.isGeneratingColors = true;
 
     try {
+      const formData = new FormData();
+      const file = this.selectedLogoFile as File;
+      formData.append("file", file);
+
+      // Wait for animation to play
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
       const response = await fetch("http://localhost:5000/analyze-colors", {
         method: "POST",
         body: formData,
@@ -611,22 +611,13 @@ export class EditPlateformeComponent implements OnInit {
       }
 
       const result = await response.json();
-      console.log('Colors fetched:', result);
-
+      console.log('Colors fetched:', result.dominant_colors);
+//['#90b607', '#000001', '#052973', '#afd752', '#4b7151']
      
     } catch (error) {
       console.error('Error uploading image:', error);
+    } finally {
+      this.isGeneratingColors = false;
     }
   }
-
-
-
-
-
-
-
-
-
-
-
 }
