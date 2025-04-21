@@ -39,6 +39,7 @@ import { HeadingrightwithimageComponent } from './components/plateformeComps/oth
 import { NewsletterComponent } from './components/plateformeComps/others/newsletter/newsletter.component';
 import { SponsorsComponent } from './components/plateformeComps/others/sponsors/sponsors.component';
 import { plateformeaboutComponent } from './components/plateformeComps/others/about/about.component';
+import { FormsModule } from '@angular/forms';
 import { DetailsformationComponent } from './pages/detailsformation/detailsformation.component';
 
 @NgModule({
@@ -79,6 +80,7 @@ import { DetailsformationComponent } from './pages/detailsformation/detailsforma
     NewsletterComponent,
     SponsorsComponent,
     plateformeaboutComponent,
+    FormsModule,
   ]
 })
 export class FrontofficeModule {}

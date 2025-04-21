@@ -37,4 +37,8 @@ export class componentServcie {
     return this.http.get<any[]>(`${this.apiUrl}/user/${userId}`);
   }
 
+  getusageRate(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/usageRate`)
+  }
+
 }

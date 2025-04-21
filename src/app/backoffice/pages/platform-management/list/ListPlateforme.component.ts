@@ -10,6 +10,12 @@ interface report {
   ActivePlateformes: number
 }
 
+interface packstats {
+  BASIC: number,  
+  PREMIUM: number,
+  ADVANCED: number
+}
+
 @Component({
   selector: 'app-Plateformelist',
   templateUrl: './Platformelist.component.html',
@@ -18,25 +24,72 @@ interface report {
 export class ListPlateformeComponent implements OnInit, OnDestroy {
 
   TypePack = {
+    GUEST: 'GUEST',
     BASIC: 'BASIC',
     PREMIUM: 'PREMIUM',
     ADVANCED: 'ADVANCED'
   }
   plateformes: any[] = [];
-  report: report = {
-    TotalPlateformes: 0,
-    ExpiredPlateformes: 0,
-    ActivePlateformes: 0
-  };
+  report = [
+    {
+      label: 'Total Platforms',
+      value: 0,
+      icon: 'fas fa-globe',
+      color: 'text-success',
+      iconBg: 'bg-success bg-opacity-10'
+    },
+    {
+      label: 'Active Platforms',
+      value: 0,
+      icon: 'fas fa-check-circle',
+      color: 'text-info',
+      iconBg: 'bg-info bg-opacity-10'
+    },
+    {
+      label: 'Expired Platforms',
+      value: 0,
+      icon: 'fas fa-exclamation-circle',
+      color: 'text-warning',
+      iconBg: 'bg-warning bg-opacity-10'
+    }
+  ];
+
+  packstats = [
+    {
+      label: 'Basic',
+      value: 0,
+      icon: 'fas fa-box',
+      color: 'text-primary',
+      iconBg: 'bg-primary'
+    },
+    {
+      label: 'Premium',
+      value: 0,
+      icon: 'fas fa-box-open',
+      color: 'text-warning',
+      iconBg: 'bg-warning'
+    },
+    {
+      label: 'Advanced',
+      value: 0,
+      icon: 'fas fa-boxes',
+      color: 'text-success',
+      iconBg: 'bg-success'
+    }
+  ];
+
   users: any[] = [];
   searchTerm: string = '';
   filterType: string = '';
+  mostlyboughtpack: any[] = [];
   typePackOptions = Object.values(this.TypePack);
   selectedPlateforme: any = null;
-  test: Blob | null = null;
 
   image: File | null = null;
   imageMin: string | null = null;
+
+  itemsPerPage: number = 6;
+  currentPage: number = 1;
 
   constructor(
     private ps: PlateformeService,
@@ -60,13 +113,32 @@ export class ListPlateformeComponent implements OnInit, OnDestroy {
   }
 
   get filteredPlatforms() {
-    return this.plateformes.filter(platform => {
+    const filtered = this.plateformes.filter(platform => {
       const matchesSearch = !this.searchTerm || 
         platform.nomPlateforme.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         platform.description?.toLowerCase().includes(this.searchTerm.toLowerCase());
       const matchesType = !this.filterType || platform.typePack === this.filterType;
       return matchesSearch && matchesType;
     });
+
+    // Apply pagination
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    return filtered.slice(startIndex, startIndex + this.itemsPerPage);
+  }
+
+  get totalPages(): number {
+    const filtered = this.plateformes.filter(platform => {
+      const matchesSearch = !this.searchTerm || 
+        platform.nomPlateforme.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        platform.description?.toLowerCase().includes(this.searchTerm.toLowerCase());
+      const matchesType = !this.filterType || platform.typePack === this.filterType;
+      return matchesSearch && matchesType;
+    });
+    return Math.ceil(filtered.length / this.itemsPerPage);
+  }
+
+  changePage(page: number): void {
+    this.currentPage = page;
   }
 
   loadPlateformes() {
@@ -74,11 +146,13 @@ export class ListPlateformeComponent implements OnInit, OnDestroy {
       next: async (data) => {
         
         this.plateformes = data;
+        this.generateReport();
       },
       error: (error) => {
         console.error('Error loading platforms:', error);
       }
     });
+    
   }
 
   loadUsers() {
@@ -149,42 +223,41 @@ export class ListPlateformeComponent implements OnInit, OnDestroy {
 
   generateReport() {
     this.ps.getReport().subscribe({
-      next: (data) => {
-        this.report = data;
-        console.log('Report generated:', this.report);
+      next: (data: report) => {
+        this.report[0].value = data.TotalPlateformes;
+        this.report[1].value = data.ActivePlateformes;
+        this.report[2].value = data.ExpiredPlateformes;
       },
       error: (error) => {
         console.error('Error generating report:', error);
       }
     });
-  }
 
-  onFileChange(event: any) {
-    const file = event.target.files[0];
-    if (file && file.type.startsWith('image/')) {
-      this.image = file;
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.imageMin = reader.result as string;
-      };
-      reader.readAsDataURL(file);
-    } else {
-      this.image = null;
-      this.imageMin = null;
-      alert('Please select an image file');
-    }
-  }
-
-
-  loadtestimage() {
-    console.log('Loading image...');
-    this.firestore.getFile('a09b23e3-2986-484f-9523-cb491f7eeb53_1715448051648.jpeg').subscribe({
-      next: (url) => {
-        this.test = url;
+    this.ps.getMostlyBoughtPacks().subscribe({
+      next: (data: any) => {
+          const packData: packstats = {
+            BASIC: data.BASIC || 0,
+            PREMIUM: data.PREMIUM || 0,
+            ADVANCED: data.ADVANCED || 0
+          };
+          this.packstats[0].value = packData.BASIC;
+          this.packstats[1].value = packData.PREMIUM;
+          this.packstats[2].value = packData.ADVANCED;
+          
       },
       error: (error) => {
-        console.error('Error loading image:', error);
+        console.error('Error fetching mostly bought packs:', error);
       }
     });
   }
+
+  get sortedPacks() {
+    return this.packstats.sort((a, b) => b.value - a.value).slice(0, 3);
+  }
+
+  getPackPercentage(count: number): number {
+    const total = this.packstats.reduce((sum, pack) => sum + pack.value, 0);
+    return total > 0 ? (count / total) * 100 : 0;
+  }
+  
 }

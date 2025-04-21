@@ -120,7 +120,11 @@ export class EditPlateformeComponent implements OnInit {
     { name: 'Vertically Centered Hero', value: 'verticallycenteredhero', preview: '../../../../../assets/backoffice/img/preview-images/VerticallyCenteredHeroSignUpForm.png' }
   ];
 
-  private selectedLogoFile: File | null = null;
+  selectedLogoFile: File | null = null;
+  isGeneratingColors = false;
+  showColorGenerator = false;
+  showColorModal = false;
+  generatedColors: string[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -333,6 +337,8 @@ export class EditPlateformeComponent implements OnInit {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       this.selectedLogoFile = input.files[0];
+      this.showColorGenerator = true;
+      
       // Create a temporary URL for preview
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -341,6 +347,8 @@ export class EditPlateformeComponent implements OnInit {
         });
       };
       reader.readAsDataURL(this.selectedLogoFile);
+    } else {
+      this.showColorGenerator = false;
     }
   }
 
@@ -391,6 +399,12 @@ export class EditPlateformeComponent implements OnInit {
     delete formData.field2;
     delete formData.field3;
     delete formData.field4;
+
+    if(this.selectPacktype === TypePack.BASIC) {
+      formData.nomPlateforme = 'verdeseeds.' + formData.nomPlateforme;
+    }
+
+
 
     console.log('Form data to submit:', formData);
     const operation = this.isEditMode
@@ -571,5 +585,51 @@ export class EditPlateformeComponent implements OnInit {
       type: option
     };
     this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson));
+  }
+
+  async generateColors(): Promise<void> {
+    if (!this.selectedLogoFile) {
+      console.warn('No file selected for upload');
+      return;
+    }
+
+    this.isGeneratingColors = true;
+
+    try {
+      const formData = new FormData();
+      const file = this.selectedLogoFile as File;
+      formData.append("file", file);
+
+      // Wait for animation to play
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
+      const response = await fetch("http://localhost:5000/analyze-colors", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+
+      const result = await response.json();
+      this.generatedColors = result.dominant_colors;
+      this.showColorModal = true;
+    } catch (error) {
+      console.error('Error uploading image:', error);
+    } finally {
+      this.isGeneratingColors = false;
+    }
+  }
+
+  selectColor(color: string): void {
+    this.platformForm.patchValue({
+      couleur: color
+    });
+    this.showColorModal = false;
+  }
+
+  closeColorModal(): void {
+    this.showColorModal = false;
   }
 }

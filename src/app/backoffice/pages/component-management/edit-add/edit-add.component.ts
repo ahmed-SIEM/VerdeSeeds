@@ -38,11 +38,10 @@ export class EditAddComponent implements OnInit {
   selectedComponentType: ComponentType | null = null;
   componentFields: string[] = [];
   hoveredComponent: any = null;
-
   private selectedImageFiles: { [key: string]: File } = {};
   private imagePreviews: { [key: string]: string } = {};
   private validFileTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-
+  
   showIconModal = false;
   currentIconField = '';
   availableIcons = [
@@ -58,21 +57,21 @@ export class EditAddComponent implements OnInit {
 
   categorizedComponents = {
     headers: [
-      { name: 'Header with Icons', value: 'headerwithicons', preview: '../../../../../assets/backoffice/img/preview-images/CustomHeaderWithIcons.png' },
-      { name: 'Centered Hero', value: 'centeredhero', preview: '../../../../../assets/backoffice/img/preview-images/HeadingWithImageTitle.png' },
-      { name: 'Hero with Image', value: 'herowithimage', preview: '../../../../../assets/backoffice/img/preview-images/HeadingRightWithImageTitle.png' },
-      { name: 'Vertically Centered Hero', value: 'verticallycenteredhero', preview: '../../../../../assets/backoffice/img/preview-images/VerticallyCenteredHeroSignUpForm.png' }
+      { usageRate : 0 , name: 'Header with Icons', value: 'headerwithicons',  preview: '../../../../../assets/backoffice/img/preview-images/CustomHeaderWithIcons.png' },
+      { usageRate : 0 , name: 'Centered Hero', value: 'centeredhero', preview: '../../../../../assets/backoffice/img/preview-images/HeadingWithImageTitle.png' },
+      { usageRate : 0 , name: 'Hero with Image', value: 'herowithimage', preview: '../../../../../assets/backoffice/img/preview-images/HeadingRightWithImageTitle.png' },
+      { usageRate : 0 , name: 'Vertically Centered Hero', value: 'verticallycenteredhero', preview: '../../../../../assets/backoffice/img/preview-images/VerticallyCenteredHeroSignUpForm.png' }
     ],
     features: [
-      { name: 'Columns with Icons', value: 'columnswithicons', preview: '../../../../../assets/backoffice/img/preview-images/ColumnsWithIcons.png' },
-      { name: 'Custom Cards', value: 'customcards', preview: '../../../../../assets/backoffice/img/preview-images/CustomCards.png' },
-      { name: 'Headings', value: 'headings', preview: '../../../../../assets/backoffice/img/preview-images/Headings.png' },
-      { name: 'Heading Left with Image', value: 'headingleftwithimage', preview: '../../../../../assets/backoffice/img/preview-images/LeftImage.png' },
-      { name: 'Heading Right with Image', value: 'headingrightwithimage', preview: '../../../../../assets/backoffice/img/preview-images/RightImage.png' }
+      {  usageRate : 0 ,name: 'Columns with Icons', value: 'columnswithicons', preview: '../../../../../assets/backoffice/img/preview-images/ColumnsWithIcons.png' },
+      {  usageRate : 0 ,name: 'Custom Cards', value: 'customcards', preview: '../../../../../assets/backoffice/img/preview-images/CustomCards.png' },
+      { usageRate : 0 , name: 'Headings', value: 'headings', preview: '../../../../../assets/backoffice/img/preview-images/Headings.png' },
+      { usageRate : 0 ,name: 'Heading Left with Image', value: 'headingleftwithimage', preview: '../../../../../assets/backoffice/img/preview-images/LeftImage.png' },
+      { usageRate : 0 , name: 'Heading Right with Image', value: 'headingrightwithimage', preview: '../../../../../assets/backoffice/img/preview-images/RightImage.png' }
     ],
     others: [
-      { name: 'Newsletter', value: 'newsletter', preview: '../../../../../assets/backoffice/img/preview-images/Newsletter.png' },
-      { name: 'Plateforme About', value: 'plateformeabout', preview: '../../../../../assets/backoffice/img/preview-images/AboutUs.png' }
+      { usageRate : 0 , name: 'Newsletter', value: 'newsletter', preview: '../../../../../assets/backoffice/img/preview-images/Newsletter.png' },
+      { usageRate : 0 , name: 'Plateforme About', value: 'plateformeabout', preview: '../../../../../assets/backoffice/img/preview-images/AboutUs.png' }
     ]
   };
 
@@ -122,7 +121,6 @@ export class EditAddComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private componentService: componentServcie,
-    private platformService: PlateformeService,
     private commonservice: CommonService,
     private route: ActivatedRoute,
     private router: Router,
@@ -152,6 +150,32 @@ export class EditAddComponent implements OnInit {
     });
   }
 
+
+
+  loadmetrics() {
+    this.componentService.getusageRate().subscribe({
+      next: (data) => {
+       
+        for (const category of Object.values(this.categorizedComponents)) {
+          for (const component of category) {
+             component.usageRate = data[component.value] || 0; // Assign usage rate to each component
+          }
+        }
+
+
+
+
+        console.log('Metrics loaded:', data);
+      }
+  })
+}
+
+
+
+
+
+
+
   loadcomponent(id: number) {
     this.isLoading = true;
     this.componentService.getComponent(id).subscribe({
@@ -175,6 +199,8 @@ export class EditAddComponent implements OnInit {
         this.isLoading = false;
       }
     });
+
+    
   }
 
   ngOnInit(): void {
@@ -185,6 +211,7 @@ export class EditAddComponent implements OnInit {
       this.loadcomponent(this.componentId);
     }
     this.loaduser();
+    this.loadmetrics();
   }
 
   openComponentModal() {

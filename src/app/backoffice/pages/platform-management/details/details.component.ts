@@ -71,4 +71,11 @@ export class DetailsPlatformComponent implements OnInit {
   editPlatform() {
     this.router.navigate(['/backoffice/platform', this.platform.idPlateforme, 'edit']);
   }
+
+
+
+
+
+
+
 }
