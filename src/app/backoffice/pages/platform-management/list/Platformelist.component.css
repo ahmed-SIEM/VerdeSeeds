@@ -70,7 +70,7 @@
 
 .page-link {
   cursor: pointer;
-  color: #0d6efd;
+  color: #198754;
   background-color: #fff;
   border: 1px solid #dee2e6;
   transition: all 0.2s ease-in-out;
@@ -79,12 +79,12 @@
 .page-link:hover {
   background-color: #e9ecef;
   border-color: #dee2e6;
-  color: #0a58ca;
+  color: #198754;
 }
 
 .page-item.active .page-link {
-  background-color: #0d6efd;
-  border-color: #0d6efd;
+  background-color: #198754;
+  border-color: #198754;
   color: #fff;
 }
 

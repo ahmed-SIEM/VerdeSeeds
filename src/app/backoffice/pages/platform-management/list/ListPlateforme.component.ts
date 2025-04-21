@@ -38,7 +38,7 @@ export class ListPlateformeComponent implements OnInit, OnDestroy {
   image: File | null = null;
   imageMin: string | null = null;
 
-  itemsPerPage: number = 6;
+  itemsPerPage: number = 1;
   currentPage: number = 1;
 
   constructor(
