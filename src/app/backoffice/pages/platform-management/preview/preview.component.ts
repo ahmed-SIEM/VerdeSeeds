@@ -4,7 +4,8 @@ import { PlateformeService } from 'src/app/services/plateforme/plateforme.servic
 import { DynamicLoaderService } from 'src/app/frontoffice/services/dynamic-loader.service';
 import { ComponentRegistry } from './component-registry';
 import { settings } from './elements';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, forkJoin } from 'rxjs';
+import { componentServcie } from 'src/app/services/plateforme/component.service';
 
 @Component({
   selector: 'app-preview',
@@ -20,7 +21,8 @@ export class PreviewComponent implements OnInit {
   constructor(
     private dynamicLoader: DynamicLoaderService,
     private route: ActivatedRoute,
-    private platformService: PlateformeService
+    private platformService: PlateformeService,
+    private componentService : componentServcie
   ) { }
 
   loadSelectedComponents() {
@@ -54,14 +56,27 @@ export class PreviewComponent implements OnInit {
             .map((element: any) => element.type.type)
             .filter(type => ComponentRegistry[type]);
           
-          Object.values(content).forEach((element: any) => {
-            const type = element.type.type;
-            if (element.type.content) {
-              settings[type as keyof typeof settings] = JSON.parse(element.type.content);
+          // Create an array of observables for all component requests
+          const componentRequests = Object.values(content).map((element: any) => 
+            this.componentService.getComponent(element.type.id)
+          );
+
+          // Wait for all component requests to complete
+          forkJoin(componentRequests).subscribe({
+            next: (components) => {
+              // Update settings for all components
+              components.forEach(component => {
+                const type = component.type;
+                settings[type as keyof typeof settings] = JSON.parse(component.content);
+              });
+              
+              // Load components after all settings are updated
+              this.loadSelectedComponents();
+            },
+            error: (error) => {
+              console.error('Error loading components:', error);
             }
           });
-
-          this.loadSelectedComponents();
         }
       },
       error: (error) => {

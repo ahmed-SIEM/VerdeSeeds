@@ -154,8 +154,6 @@ export class EditPlateformeComponent implements OnInit {
       field2: [''],
       field3: [''],
       field4: [''],
-      field5: [''],
-      field6: [''],
     });
   }
 
