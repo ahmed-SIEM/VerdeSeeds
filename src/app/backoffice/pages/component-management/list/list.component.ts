@@ -25,6 +25,19 @@ export class ListComponent implements OnInit {
   selectedType: ComponentType | '' = ''; // Added type filter property
   currentPage: number = 1;
   itemsPerPage: number = 6;
+  stats: any = {
+    headerwithicons: 0,
+    centeredhero: 0,
+    herowithimage: 0,
+    verticallycenteredhero: 0,
+    columnswithicons: 0,
+    customcards: 0,
+    headings: 0,
+    headingleftwithimage: 0,
+    headingrightwithimage: 0,
+    newsletter: 0,
+    plateformeabout: 0
+  };
 
   constructor(private componentService: componentServcie, private router: Router) {}
 
@@ -48,6 +61,7 @@ export class ListComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadComponents();
+    
   }
 
   get filteredComponentsList() {
@@ -82,6 +96,7 @@ export class ListComponent implements OnInit {
     this.componentService.getComponents().subscribe(data => {
       this.components = data;
     });
+    this.loadstats();
   }
 
   deleteComponent(id: number): void {
@@ -102,5 +117,13 @@ export class ListComponent implements OnInit {
 
   addComponent(): void {
     this.router.navigate(['/backoffice/component', 'add']);
+  }
+
+
+  loadstats(): void {
+    this.componentService.getusageRate().subscribe(data => {
+      this.stats = data;
+      console.log(this.stats);
+    });
   }
 }
