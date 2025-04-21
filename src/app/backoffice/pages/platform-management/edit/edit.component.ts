@@ -578,4 +578,43 @@ export class EditPlateformeComponent implements OnInit {
     };
     this.platformForm.get('content')?.setValue(JSON.stringify(this.contentJson));
   }
+
+
+
+
+
+  async uploadImage(file: File): Promise<void> {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    return fetch("http://localhost:5000/analyze-colors", {
+        method: "POST",
+        body: formData,
+    })
+    .then(response => response.json())
+    .then(result => {
+        console.log(result);  // { dominant_colors: [...], color_schemes: {...} }
+    })
+    .catch(error => {
+        console.error('Error uploading image:', error);
+    });
+}
+
+onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input?.files && input.files.length > 0) {
+        const file = input.files[0];
+        this.uploadImage(file);
+    }
+}
+
+
+
+
+
+
+
+
+
+
 }
