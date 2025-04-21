@@ -73,7 +73,7 @@
                   <form [formGroup]="contentForm" (ngSubmit)="onSubmit()">
                     <div class="row g-3">
                       <div class="col-md-6" *ngFor="let field of componentFields">
-                        <div class="form-floating" *ngIf="!field.includes('image') && !field.includes('imageUrl')">
+                        <div class="form-floating" *ngIf="!field.includes('image') && !field.includes('imageUrl') && !field.includes('Image')">
                           <div class="input-group" *ngIf="field.toLowerCase().includes('icon'); else regularInput">
 
                             <button style="height: 58px;width: 100%;" class="btn btn-icon-outline-green" type="button"
