@@ -35,9 +35,9 @@ import { ElementsFields } from "../interfaces/edit-plateforme.interface";
 
   export const ELEMENTS_FIELDS: ElementsFields = {
     headerwithicons: [
-      "title", "subtitle", "Ftitle", "Fimage",
-      "Stitle", "Simage", "Ttitle", "Timage",
-      "Ptitle", "Pimage"
+      "title", "subtitle", "Ftitle", "Ficon",
+      "Stitle", "Sicon", "Ttitle", "Ticon",
+      "Ptitle", "Picon"
     ],
     centeredhero: [
       "title", "subtitle", "imageUrl"
@@ -49,9 +49,9 @@ import { ElementsFields } from "../interfaces/edit-plateforme.interface";
       "title", "subtitle"
     ],
     columnswithicons: [
-      "MainTitle", "Ftitle", "Fdescription", "Fimage",
-      "Stitle", "Sdescription", "Simage",
-      "Ttitle", "Tdescription", "Timage"
+      "MainTitle", "Ftitle", "Fdescription", "Ficon",
+      "Stitle", "Sdescription", "Sicon",
+      "Ttitle", "Tdescription", "Ticon"
     ],
     customcards: [
       "MainTitle", "Ftitle", "Fimage",

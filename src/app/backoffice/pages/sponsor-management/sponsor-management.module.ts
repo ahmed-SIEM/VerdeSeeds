@@ -4,6 +4,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { SponsorManagementRoutingModule } from './sponsor-management-routing.module';
 import { ListSponsor } from './list/list.component';
 import { EditAddSponsor } from './edit-add/edit-add.component';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { EditAddSponsor } from './edit-add/edit-add.component';
     SponsorManagementRoutingModule,
     ReactiveFormsModule,
     FormsModule,
+    SharedModule
   ],
   exports: [
     ListSponsor,
