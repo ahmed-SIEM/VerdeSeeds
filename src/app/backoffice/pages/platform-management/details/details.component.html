@@ -34,14 +34,11 @@
                     <label>Platform Name</label>
                     <p>{{platform.nomPlateforme}}</p>
                   </div>
-                  <div class="info-item">
-                    <label>Package Type</label>
-                    <p><span class="badge" [ngClass]="{
-                      'bg-success': platform.typePack === 'PREMIUM',
-                      'bg-primary': platform.typePack === 'STANDARD',
-                      'bg-warning': platform.typePack === 'BASIC'
-                    }">{{platform.typePack}}</span></p>
-                  </div>
+                  <!-- <div class="info-item">
+                    <label>Import Image</label>
+                    <input type="file" class="form-control" (change)="onFileSelected($event)" accept="image/*">
+                    <small class="text-muted">Upload an image to analyze colors</small>
+                  </div> -->
                 </div>
               </div>
 
@@ -81,7 +78,7 @@
                   </div>
 
                   <!-- Other Components -->
-                  <ng-container *ngFor="let key of ['component1', 'component2', 'component3']">
+                  <ng-container *ngFor="let key of ['component1', 'component2', 'component3','component4','component5']">
                     <div class="component-item" *ngIf="platform.content[key]">
                       <h5>{{key | titlecase}}</h5>
                       <p>name: {{platform.content[key].type?.name || 'Not specified'}}</p>

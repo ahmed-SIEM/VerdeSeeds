@@ -1,7 +1,36 @@
 <div class="Main">
-  <ng-container #dynamicContainer></ng-container>
 </div>
 
+<button class="chat-fab" (click)="toggleDrawer()">
+  <i class="fas fa-comments"></i>
+</button>
+
+<div class="chat-drawer" [class.open]="isDrawerOpen">
+  <div class="chat-header">
+    <h3>VerdeCure Assistant</h3>
+    <button class="close-btn" (click)="toggleDrawer()">×</button>
+  </div>
+  
+  <div class="chat-messages">
+    <div *ngFor="let msg of messages" 
+         [class.user-message]="msg.isUser" 
+         [class.bot-message]="!msg.isUser" 
+         class="message">
+      <div *ngIf="!msg.isHtml">{{msg.content}}</div>
+      <div *ngIf="msg.isHtml" [innerHTML]="msg.content"></div>
+    </div>
+  </div>
+
+  <div class="chat-input">
+    <input type="text" 
+           [(ngModel)]="newMessage" 
+           (keyup.enter)="handleSendMessage()" 
+           placeholder="Type your message...">
+    <button (click)="handleSendMessage()">
+      <i class="fas fa-paper-plane"></i>
+    </button>
+  </div>
+</div>
 
 <!-- <app-sponsors></app-sponsors> -->
 

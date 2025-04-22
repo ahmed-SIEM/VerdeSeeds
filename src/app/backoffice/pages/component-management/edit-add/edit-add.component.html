@@ -34,7 +34,7 @@
                 <div [hidden]="currentStep !== 1">
                   <form [formGroup]="componentForm">
                     <div class="mb-3">
-                      <button type="button" class="btn btn-primary" (click)="openComponentModal()">
+                      <button type="button" class="btn btn-verde-gradient btn-primary" (click)="openComponentModal()">
                         Select Component Type
                       </button>
                       <p class="mt-2" *ngIf="selectedComponentType">
@@ -44,9 +44,10 @@
 
                     <div class="form-floating mb-3">
                       <input type="text" class="form-control" id="name" formControlName="name" required
-                             [class.is-invalid]="componentForm.get('name')?.invalid && componentForm.get('name')?.touched">
+                        [class.is-invalid]="componentForm.get('name')?.invalid && componentForm.get('name')?.touched">
                       <label for="name">Component Name</label>
-                      <div class="invalid-feedback" *ngIf="componentForm.get('name')?.invalid && componentForm.get('name')?.touched">
+                      <div class="invalid-feedback"
+                        *ngIf="componentForm.get('name')?.invalid && componentForm.get('name')?.touched">
                         {{ getErrorMessage('name', 'component') }}
                       </div>
                     </div>
@@ -59,9 +60,9 @@
                       <label for="user_id">User</label>
                     </div> -->
 
-                    <button type="button" class="btn btn-primary" 
-                            [disabled]="!selectedComponentType || (!isEditMode && !componentForm.get('name')?.valid)"
-                            (click)="nextStep()">
+                    <button type="button" class="btn btn-verde-gradient btn-primary"
+                      [disabled]="!selectedComponentType || (!isEditMode && !componentForm.get('name')?.valid)"
+                      (click)="nextStep()">
                       Next
                     </button>
                   </form>
@@ -72,13 +73,41 @@
                   <form [formGroup]="contentForm" (ngSubmit)="onSubmit()">
                     <div class="row g-3">
                       <div class="col-md-6" *ngFor="let field of componentFields">
-                        <div class="form-floating">
-                          <input type="text" class="form-control" [id]="field"
-                                 [formControlName]="field" required
-                                 [class.is-invalid]="contentForm.get(field)?.invalid && contentForm.get(field)?.touched">
-                          <label [for]="field">{{field}}</label>
-                          <div class="invalid-feedback" *ngIf="contentForm.get(field)?.invalid && contentForm.get(field)?.touched">
+                        <div class="form-floating" *ngIf="!field.toLowerCase().includes('image') && !field.includes('imageUrl') ">
+                          <div class="input-group" *ngIf="field.toLowerCase().includes('icon'); else regularInput">
+
+                            <button style="height: 58px;width: 100%;" class="btn btn-icon-outline-green" type="button"
+                              (click)="openIconModal(field)">
+                              <i *ngIf="!contentForm.get(field)?.value"  class="bi bi-grid me-2"></i>
+                              <i *ngIf="contentForm.get(field)?.value" [class]="contentForm.get(field)?.value + ' me-2'"></i>
+                             
+                           <span *ngIf="!contentForm.get(field)?.value">  Select Icon</span> 
+                            </button>
+
+                          </div>
+                          <ng-template #regularInput>
+                            <input type="text" class="form-control" [id]="field" [formControlName]="field" required
+                              [class.is-invalid]="contentForm.get(field)?.invalid && contentForm.get(field)?.touched">
+                            <label [for]="field">{{field}}</label>
+                          </ng-template>
+                          <div class="invalid-feedback"
+                            *ngIf="contentForm.get(field)?.invalid && contentForm.get(field)?.touched">
                             {{ getErrorMessage(field, 'content') }}
+                          </div>
+                        </div>
+                        <div class="form-group" *ngIf="field.toLowerCase().includes('image') || field.includes('imageUrl')">
+                          <label [for]="field">{{field}}</label>
+                          <input type="file" class="form-control" [id]="field"
+                            [class.is-invalid]="contentForm.get(field)?.invalid && contentForm.get(field)?.touched"
+                            accept="image/jpeg,image/png,image/gif,image/webp"
+                            (change)="onImageFileSelected($event, field)">
+
+                          <div class="invalid-feedback"
+                            *ngIf="contentForm.get(field)?.errors?.['required'] && contentForm.get(field)?.touched">
+                            {{field}} image is required
+                          </div>
+                          <div class="invalid-feedback" *ngIf="contentForm.get(field)?.errors?.['invalidType']">
+                            Please select a valid image file (JPEG, PNG, GIF, or WEBP)
                           </div>
                         </div>
                       </div>
@@ -88,8 +117,7 @@
                       <button type="button" class="btn btn-secondary me-2" (click)="previousStep()">
                         Back
                       </button>
-                      <button type="submit" class="btn btn-primary" 
-                              [disabled]="!contentForm.valid">
+                      <button type="submit" class="btn btn-primary" [disabled]="!contentForm.valid">
                         Submit
                       </button>
                     </div>
@@ -120,44 +148,62 @@
             <div class="category-section mb-4">
               <h6 class="category-title mb-3">Header Components</h6>
               <div class="row g-2">
-                <div class="col-12" *ngFor="let comp of categorizedComponents.headers">
-                  <div class="component-card" 
-                       (click)="selectComponent(comp.value)"
-                       (mouseenter)="onComponentHover(comp)"
-                       (mouseleave)="onComponentHover(null)">
-                    {{comp.name}}
-                  </div>
-                </div>
+          <div class="col-12" *ngFor="let comp of categorizedComponents.headers">
+              <div class="component-card position-relative" (click)="selectComponent(comp.value)"
+              (mouseenter)="onComponentHover(comp)" (mouseleave)="onComponentHover(null)">
+              {{comp.name}}
+              <span class="badge position-absolute top-0 end-0 translate-middle p-2 rounded-circle"
+                style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;"
+                [ngClass]="{
+                  'bg-success': comp.usageRate > 75,
+                  'bg-warning': comp.usageRate >= 25 && comp.usageRate <= 50,
+                  'bg-danger': comp.usageRate < 25
+                  }">
+                {{comp.usageRate}}
+              </span>
+              </div>
+          </div>
               </div>
             </div>
 
             <!-- Feature Components -->
-            <div class="category-section mb-4">
-              <h6 class="category-title mb-3">Feature Components</h6>
-              <div class="row g-2">
-                <div class="col-12" *ngFor="let comp of categorizedComponents.features">
-                  <div class="component-card"
-                       (click)="selectComponent(comp.value)"
-                       (mouseenter)="onComponentHover(comp)"
-                       (mouseleave)="onComponentHover(null)">
-                    {{comp.name}}
-                  </div>
-                </div>
+            <h6 class="category-title mb-3">Features Components</h6>
+
+            <div class="col-12" *ngFor="let comp of categorizedComponents.features">
+              <div class="component-card position-relative" (click)="selectComponent(comp.value)"
+              (mouseenter)="onComponentHover(comp)" (mouseleave)="onComponentHover(null)">
+              {{comp.name}}
+              <span class="badge position-absolute top-0 end-0 translate-middle p-2 rounded-circle"
+          style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;"
+          [ngClass]="{
+          'bg-success': comp.usageRate > 75,
+          'bg-warning': comp.usageRate >= 25 && comp.usageRate <= 50,
+          'bg-danger': comp.usageRate < 25
+          }">
+          {{comp.usageRate}}
+              </span>
               </div>
-            </div>
+          </div>
 
             <!-- Other Components -->
             <div class="category-section">
               <h6 class="category-title mb-3">Other Components</h6>
               <div class="row g-2">
-                <div class="col-12" *ngFor="let comp of categorizedComponents.others">
-                  <div class="component-card"
-                       (click)="selectComponent(comp.value)"
-                       (mouseenter)="onComponentHover(comp)"
-                       (mouseleave)="onComponentHover(null)">
-                    {{comp.name}}
-                  </div>
-                </div>
+          <div class="col-12" *ngFor="let comp of categorizedComponents.others">
+            <div class="component-card position-relative" (click)="selectComponent(comp.value)"
+            (mouseenter)="onComponentHover(comp)" (mouseleave)="onComponentHover(null)">
+            {{comp.name}}
+            <span class="badge position-absolute top-0 end-0 translate-middle p-2 rounded-circle"
+              style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;"
+              [ngClass]="{
+                'bg-success': comp.usageRate > 75,
+                'bg-warning': comp.usageRate >= 25 && comp.usageRate <= 50,
+                'bg-danger': comp.usageRate < 25
+                }">
+              {{comp.usageRate}}
+            </span>
+            </div>
+              </div>
               </div>
             </div>
           </div>
@@ -178,3 +224,37 @@
   </div>
 </div>
 <div class="modal-backdrop fade show" *ngIf="showModal"></div>
+
+<div class="modal icon-modal" tabindex="-1" [class.show]="showIconModal"
+  [style.display]="showIconModal ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content" style="border-radius: 12px; border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
+      <div class="modal-header" style="background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%); border-bottom: none; border-radius: 12px 12px 0 0; padding: 1.5rem;">
+        <h5 class="modal-title" style="font-weight: 600; color: #2c3e50;">
+          <i class="bi bi-stars me-2" style="color: #4c9a2b;"></i>
+          Select an Icon
+        </h5>
+        <button type="button" class="btn-close" (click)="closeIconModal()" style="font-size: 0.8rem;"></button>
+      </div>
+      
+      <!-- Scrollable modal body -->
+      <div class="modal-body" style="padding: 0; max-height: 60vh; overflow-y: auto;">
+        <div class="icon-grid" style="display: grid; grid-template-columns: repeat(3, minmax(100px, 1fr)); gap: 1.5rem; padding: 1.5rem 2rem;">
+          <div class="icon-item" *ngFor="let icon of availableIcons" (click)="selectIcon(icon)" 
+               style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1rem; border-radius: 8px; cursor: pointer; transition: all 0.2s ease;">
+            <i [class]="icon" style="font-size: 2rem; color: #4c9a2b; margin-bottom: 0.5rem;"></i>
+            <small style="font-size: 0.7rem; color: #7f8c8d; text-align: center; word-break: break-all;">{{icon}}</small>
+          </div>
+        </div>
+      </div>
+      
+      <div class="modal-footer" style="border-top: none; padding: 1rem 2rem; background: #f8f9fa; border-radius: 0 0 12px 12px;">
+        <button type="button" class="btn btn-outline-secondary" (click)="closeIconModal()" 
+                style="border-radius: 6px; padding: 0.5rem 1.5rem; border: 1px solid #dee2e6;">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade show" *ngIf="showIconModal"></div>

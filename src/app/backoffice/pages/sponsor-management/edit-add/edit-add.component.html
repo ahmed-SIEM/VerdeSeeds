@@ -21,13 +21,40 @@
               </div>
 
               <div class="mb-3">
-                <label for="logo" class="form-label">Logo URL</label>
-                <input type="text" class="form-control" id="logo" formControlName="logo">
+                <label for="logo" class="form-label">Logo</label>
+                <input 
+                  type="file" 
+                  class="form-control" 
+                  id="logo"
+                  accept="image/jpeg,image/png,image/gif,image/webp"
+                  (change)="onFileSelected($event)"
+                >
+                <small class="form-text text-muted">
+                  Accepted formats: JPEG, PNG, GIF, WEBP
+                </small>
+                <div class="preview-image mt-2" *ngIf="logoPreview">
+                  <img 
+                    [src]="logoPreview"
+                    alt="Logo Preview"
+                    class="img-fluid"
+                    style="max-height: 200px"
+                  >
+                </div>
+                <div class="preview-image mt-2" *ngIf="!logoPreview && sponsorForm.get('logo')?.value">
+                  <img 
+                    [src]="sponsorForm.get('logo')?.value | firebaseUrl" 
+                    alt="Current Logo"
+                    class="img-fluid"
+                    style="max-height: 200px"
+                  >
+                </div>
               </div>
 
               <div class="mb-3">
                 <label for="datepartenariat" class="form-label">Partnership Date</label>
-                <input type="date" class="form-control" id="datepartenariat" formControlName="datepartenariat">
+                <input type="date" class="form-control" 
+                value="{{sponsorForm.get('datepartenariat')?.value | date:'yyyy-MM-dd'}}"
+                id="datepartenariat" formControlName="datepartenariat">
               </div>
 
               <div class="mb-3" *ngIf="!isEditMode">

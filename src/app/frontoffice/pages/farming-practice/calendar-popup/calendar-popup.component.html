@@ -1,0 +1,60 @@
+<!-- Overlay principal -->
+<div class="modal fade show d-block" tabindex="-1" role="dialog" style="background-color: rgba(0, 0, 0, 0.5);">
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+      <div class="modal-content p-3 position-relative">
+  
+        <!-- 💄 Bouton de fermeture ABSOLU (pas sur l'entête cette fois) -->
+        <button
+          type="button"
+          class="btn btn-danger position-absolute"
+          style="top: 15px; right: 15px; z-index: 9999;"
+          (click)="close()"
+          aria-label="Fermer"
+        >
+          ✖
+        </button>
+  
+        <!-- Header du calendrier -->
+        <div class="modal-header border-0 pt-4">
+          <h5 class="modal-title mb-0 ms-4">📅 Calendrier des Formations</h5>
+        </div>
+  
+        <!-- Le calendrier -->
+        <div class="modal-body pt-2">
+          <full-calendar [options]="calendarOptions"></full-calendar>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- 🪄 Popup d'infos sur une formation -->
+  <div
+    *ngIf="selectedEvent"
+    class="modal fade show d-block"
+    tabindex="-1"
+    style="background-color: rgba(0, 0, 0, 0.3); z-index: 1060;"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header d-flex justify-content-between align-items-center">
+          <h5 class="modal-title text-wrap mb-0">
+            🎓 {{ selectedEvent.title }}
+          </h5>
+          <button type="button" class="btn-close" (click)="selectedEvent = null" aria-label="Fermer"></button>
+        </div>
+        <div class="modal-body">
+          <p>
+            📅 Du
+            <strong>{{ selectedEvent.start | date: 'dd/MM/yyyy' }}</strong>
+            au
+            <strong>{{ selectedEvent.end | date: 'dd/MM/yyyy' }}</strong>
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary">🎓 Participer</button>
+          <button class="btn btn-secondary" (click)="selectedEvent = null">Fermer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

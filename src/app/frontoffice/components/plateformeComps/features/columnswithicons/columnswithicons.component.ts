@@ -15,16 +15,16 @@ export class ColumnswithiconsComponent {
 
   @Input() Ftitle: string = 'Lorem ipsum dolor sit amet,commodo consequat.';
   @Input() Fdescription: string = 'Lorem ipsum dolor sit amet, consectetur adipiscing eli ex ea commodo consequat.';
-  @Input() Fimage: string = 'bi bi-0-circle';
+  @Input() Ficon: string = 'bi bi-0-circle';
 
   @Input() Stitle: string = 'Lorem ipsum dolor sit aaduip ex ea commodo consequat.';
   @Input() Sdescription: string = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sedonliquip ex ea commodo consequat.';
-  @Input() Simage: string = 'bi bi-0-circle';
+  @Input() Sicon: string = 'bi bi-0-circle';
 
   @Input() Ttitle: string = 'Lorem ipstrudx ea commodo consequat.';
   @Input() Tdescription: string = 'Lorem ipsum dolea commodo consequat.';
-  @Input() Timage: string = 'bi bi-0-circle';
+  @Input() Ticon: string = 'bi bi-0-circle';
   @Input() color: string = "#cd0000";
-
+ 
 
 }

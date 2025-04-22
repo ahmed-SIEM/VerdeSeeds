@@ -48,3 +48,127 @@
 .component-info {
     flex-grow: 1;
 }
+
+.pagination {
+    margin-top: 20px;
+}
+
+.page-link {
+    cursor: pointer;
+}
+
+.page-link.disabled {
+    pointer-events: none;
+    color: #6c757d;
+}
+
+.pagination {
+  margin-bottom: 2rem;
+}
+
+.page-link {
+  cursor: pointer;
+  color: #198754;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+  transition: all 0.2s ease-in-out;
+}
+
+.page-link:hover {
+  background-color: #e9ecef;
+  border-color: #dee2e6;
+  color: #198754;
+}
+
+.page-item.active .page-link {
+  background-color: #198754;
+  border-color: #198754;
+  color: #fff;
+}
+
+.top-components {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    margin-bottom: 2rem;
+}
+
+.ranking-title {
+    color: #2c3e50;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.ranking-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    margin: 8px 0;
+    background: white;
+    border-radius: 10px;
+    transition: transform 0.2s;
+}
+
+.ranking-item:hover {
+    transform: translateX(5px);
+}
+
+.rank-number {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-right: 15px;
+    width: 30px;
+}
+
+.rank-1 .rank-icon {
+    color: #ffd700;
+    animation: bounce 2s infinite;
+}
+
+.rank-2 .rank-icon {
+    color: #c0c0c0;
+}
+
+.rank-3 .rank-icon {
+    color: #cd7f32;
+}
+
+.rank-4 .rank-icon {
+    color: #20c997;
+    font-size: 1.3rem;
+}
+
+.rank-5 .rank-icon {
+    color: #0dcaf0;
+    font-size: 1.3rem;
+}
+
+.rank-6 .rank-icon {
+    color: #6610f2;
+    font-size: 1.3rem;
+}
+
+.rank-icon {
+    margin-right: 15px;
+    font-size: 1.5rem;
+}
+
+.component-name {
+    flex-grow: 1;
+    font-weight: 500;
+}
+
+.usage-count {
+    background: #198754;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 0.9rem;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}

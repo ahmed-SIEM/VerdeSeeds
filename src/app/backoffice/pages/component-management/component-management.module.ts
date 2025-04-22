@@ -4,13 +4,11 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ComponentManagementRoutingModule } from './component-management-routing.module';
 import { ListComponent } from './list/list.component';
 import { EditAddComponent } from './edit-add/edit-add.component';
-import { DetailsComponent } from './details/details.component';
 
 @NgModule({
   declarations: [
     ListComponent,
     EditAddComponent,
-    DetailsComponent
   ],
   imports: [
     CommonModule,
@@ -21,7 +19,6 @@ import { DetailsComponent } from './details/details.component';
   exports: [
     ListComponent,
     EditAddComponent,
-    DetailsComponent
   ]
 })
 export class ComponentManagementModule { }

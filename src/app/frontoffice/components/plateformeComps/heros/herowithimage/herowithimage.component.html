@@ -1,26 +1,168 @@
 <style>
+  .modern-section {
+    padding: 6rem 1rem;
+    position: relative;
+    overflow: hidden;
+  }
 
+  .modern-container {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .modern-content-wrapper {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    gap: 4rem;
+  }
+
+  .modern-image-container {
+    flex: 1;
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    transform: perspective(1000px);
+  }
+
+  .modern-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.5s ease;
+    border-radius: 16px;
+  }
+
+  .modern-image-container:hover .modern-image {
+    transform: scale(1.03) rotate(0.5deg);
+  }
+
+  .modern-text-container {
+    flex: 1;
+    padding: 2rem 0;
+  }
+
+  .modern-title {
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(90deg, var(--title-color), color-mix(in srgb, var(--title-color) 70%, white));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .modern-subtitle {
+    font-size: 1.25rem;
+    line-height: 1.6;
+    color: #4a5568;
+    margin-bottom: 2rem;
+    max-width: 90%;
+  }
+
+  .modern-button-group {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .modern-primary-btn {
+    background: var(--title-color);
+    border: none;
+    padding: 0.8rem 2rem;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .modern-primary-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .modern-secondary-btn {
+    background: transparent;
+    border: 2px solid var(--title-color);
+    padding: 0.8rem 2rem;
+    border-radius: 8px;
+    color: var(--title-color);
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .modern-secondary-btn:hover {
+    background: rgba(0, 0, 0, 0.02);
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 992px) {
+    .modern-content-wrapper {
+      flex-direction: column-reverse;
+      gap: 2rem;
+    }
+    
+    .modern-text-container {
+      text-align: center;
+    }
+    
+    .modern-subtitle {
+      max-width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .modern-button-group {
+      justify-content: center;
+    }
+  }
+
+  /* Decorative elements */
+  .modern-decoration {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(66, 153, 225, 0.1) 0%, transparent 70%);
+    z-index: -1;
+  }
+
+  .decoration-1 {
+    top: -100px;
+    right: -100px;
+  }
+
+  .decoration-2 {
+    bottom: -50px;
+    left: -50px;
+  }
 </style>
 
-
-
-<div class="container col-xxl-8 px-4 py-5">
-    <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
-      <div class="col-10 col-sm-8 col-lg-6">
+<div class="modern-section" [style]="{'--title-color': color}">
+  <div class="modern-decoration decoration-1"></div>
+  <div class="modern-decoration decoration-2"></div>
+  
+  <div class="modern-container">
+    <div class="modern-content-wrapper">
+      <div class="modern-image-container">
         <img 
-    
-        [src]="imageUrl" 
-        class="d-block mx-lg-auto img-fluid " alt="Bootstrap Themes" width="700" height="500" loading="lazy">
+          src="http://localhost:8081/api/firebase/{{imageUrl}}" 
+          class="modern-image" 
+          alt="Featured Content"
+          loading="lazy">
       </div>
-      <div class="col-lg-6">
-        <h1 class="display-5 fw-bold lh-1 mb-3"  [style.color]="color">{{title}}</h1>
-        <p class="lead">
-          {{subtitle}}
-          </p>
-        <!-- <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-          <button type="button" class="btn btn-primary btn-lg px-4 me-md-2">Primary</button>
-          <button type="button" class="btn btn-outline-secondary btn-lg px-4">Default</button>
-        </div> -->
+      
+      <div class="modern-text-container">
+        <h1 class="modern-title">{{title}}</h1>
+        <p class="modern-subtitle">{{subtitle}}</p>
+        <div class="modern-button-group">
+          <button type="button" class="modern-primary-btn">Primary</button>
+          <button type="button" class="modern-secondary-btn">Default</button>
+        </div>
       </div>
     </div>
   </div>
+</div>

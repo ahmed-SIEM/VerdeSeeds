@@ -31,40 +31,45 @@
                   </div>
 
                   <div class="col-md-6">
-                    <div class="form-floating">
-                      <input type="text" class="form-control" id="nomPlateforme" formControlName="nomPlateforme"
-                        required
-                        [ngClass]="{'is-invalid': platformForm.get('nomPlateforme')?.invalid && platformForm.get('nomPlateforme')?.touched}">
-                      <label for="nomPlateforme">Platform Name</label>
-                      <div class="invalid-feedback">
-                        {{ getErrorMessage('nomPlateforme') }}
+                    <div>
+                      <div class="form-floating input-group">
+                        <span *ngIf="selectPacktype === 'BASIC'" class="input-group-text bg-light text-muted">
+                          verdeseeds.
+                        </span>
+
+                        <!-- Input field -->
+                        <input type="text" class="form-control"
+                          [class.is-invalid]="platformForm.get('nomPlateforme')?.invalid && platformForm.get('nomPlateforme')?.touched"
+                          id="nomPlateforme" formControlName="nomPlateforme" placeholder="Platform Name" />
+
+                        <label class="form-label" *ngIf="selectPacktype !== 'BASIC'" style="color: #6c757d;"
+                          for="nomPlateforme">Platform Name</label>
                       </div>
+                    </div>
+
+                    <!-- Error message -->
+                    <div
+                      *ngIf="platformForm.get('nomPlateforme')?.invalid && platformForm.get('nomPlateforme')?.touched"
+                      class="invalid-feedback">
+                      {{ getErrorMessage('nomPlateforme') }}
                     </div>
                   </div>
 
                   <div class="col-md-6">
-                    <div [ngStyle]="{'border': '3px solid ' + (platformForm.get('couleur')?.value || 'transparent'), 'border-radius': '10px'}" class="form-floating" *ngIf="!isColorPickerEnabled">
-                      <select class="form-control" id="couleur" formControlName="couleur" required
-                      [ngClass]="{'is-invalid': platformForm.get('couleur')?.invalid && platformForm.get('couleur')?.touched}">
-                      <option value="">Select a color</option>
-                      <option *ngFor="let color of getAvailableColors()" [value]="color" [style.background-color]="color">
-                        {{color}}
-                      </option>
-                      </select>
-                      <label for="couleur">Theme Color</label>
-                      <div class="invalid-feedback">
-                      Please select a color
-                      </div>
-                    </div>
-
-                    <div class="form-floating" *ngIf="isColorPickerEnabled">
-                      <input type="color" class="form-control form-control-color w-100" id="couleur"
-                        formControlName="couleur" required
+                   
+                    <div class="form-floating mb-3 theme-color-container">
+                      <button *ngIf="selectedLogoFile" type="button" class="color-generator-btn"
+                    [class.visible]="selectedLogoFile" [disabled]="isGeneratingColors" (click)="generateColors()"
+                    title="Generate colors from logo">
+                    <img src="../../../../../assets/backoffice/images/platform/leaves.png"
+                      [class.d-none]="isGeneratingColors" class="color-generator-icon" alt="Generate colors">
+                    <img src="../../../../../assets/backoffice/images/platform/leaves.gif"
+                      [class.d-none]="!isGeneratingColors" class="color-generator-icon" alt="Generating colors">
+                  </button>
+                      <input type="color" class="form-control" id="couleur" formControlName="couleur"
                         [ngClass]="{'is-invalid': platformForm.get('couleur')?.invalid && platformForm.get('couleur')?.touched}">
                       <label for="couleur">Theme Color</label>
-                      <div class="invalid-feedback">
-                        Please select a color
-                      </div>
+
                     </div>
                   </div>
 
@@ -86,24 +91,29 @@
                     </div>
                   </div>
 
-                  <!-- Logo URL -->
+                  <!-- Logo Upload -->
                   <div class="col-md-12">
-                    <div class="form-floating">
-                      <input type="text" class="form-control" id="logo" formControlName="logo" required
-                        [ngClass]="{'is-invalid': platformForm.get('logo')?.invalid && platformForm.get('logo')?.touched}">
-                      <label for="logo">Logo URL</label>
+                    <div class="form-group">
+                      <label for="logo">Platform Logo</label>
+                      <input type="file" class="form-control" id="logo" accept="image/*"
+                        (change)="onLogoFileSelected($event)">
+                      <div class="preview-image mt-2" *ngIf="platformForm.get('logo')?.value">
+                        <img
+                          [src]="platformForm.get('logo')?.value.startsWith('data:') ? platformForm.get('logo')?.value : (platformForm.get('logo')?.value | firebaseUrl)"
+                          alt="Platform Logo" class="img-fluid" style="max-height: 200px">
+                      </div>
                     </div>
                   </div>
 
                   <div class="col-12 mt-4">
-                    <button type="button" class="btn btn-primary w-100" (click)="goToStep(2)"
-                      [disabled]="!platformForm.get('nomPlateforme')?.valid || 
+                    <button type="button" class="btn btn-primary w-100" (click)="goToStep(2)" [disabled]="!platformForm.get('nomPlateforme')?.valid || 
                                  !platformForm.get('couleur')?.valid || 
                                  !platformForm.get('description')?.valid || 
                                  !platformForm.get('logo')?.valid">
                       Next
                     </button>
-                    <div class="text-danger mt-2" *ngIf="platformForm.get('nomPlateforme')?.touched && platformForm.get('nomPlateforme')?.invalid || 
+                    <div class="text-danger mt-2"
+                      *ngIf="platformForm.get('nomPlateforme')?.touched && platformForm.get('nomPlateforme')?.invalid || 
                                                         platformForm.get('couleur')?.touched && platformForm.get('couleur')?.invalid ||
                                                         platformForm.get('description')?.touched && platformForm.get('description')?.invalid ||
                                                         platformForm.get('logo')?.touched && platformForm.get('logo')?.invalid">
@@ -127,10 +137,10 @@
                       <label class="form-label">Select a Header Component <span class="text-danger">*</span></label>
                       <div class="d-flex gap-3">
                         <div *ngFor="let option of headerComponent" class="position-relative">
-                          <input type="radio" [value]="option" formControlName="field1" 
-                                 [id]="'field1-' + option.type" class="d-none" required
-                                 [checked]="platformForm.get('field1')?.value?.type === option.type">
-                          <label [for]="'field1-' + option.type" class="choice-label">
+                          <input type="radio" [value]="option" formControlName="field1" [id]="'header-' + option.id"
+                            class="d-none" required [checked]="platformForm.get('field1')?.value?.id === option.id"
+                            (change)="onHeaderComponentSelect(option)">
+                          <label [for]="'header-' + option.id" class="choice-label">
                             {{option.name}}
                           </label>
                         </div>
@@ -143,12 +153,13 @@
                         <button type="button" class="selection-button" (click)="openModal('component' + index)"
                           [class.selected]="platformForm.get('field' + (index + 1))?.value"
                           [disabled]="isSelectionLimitReached() && !platformForm.get('field' + (index + 1))?.value">
-                          <span>Component {{index}}: {{platformForm.get('field' + (index + 1))?.value?.name || 'Not selected'}}</span>
+                          <span>Component {{index}}: {{platformForm.get('field' + (index + 1))?.value?.name ||
+                            'Notselected'}}</span>
                           <i class="fas fa-chevron-right"></i>
                         </button>
                       </div>
                     </div>
-                    
+
                   </div>
 
                   <div class="modal" [class.show]="currentModal === 'component1'">
@@ -162,8 +173,8 @@
                         <div class="component-list w-100">
                           <div *ngFor="let component of otherComponent" class="w-100 mb-3">
                             <div class="position-relative mb-2">
-                              <input type="radio" [value]="component" formControlName="field2" 
-                                     [id]="'field2-' + component.id" class="d-none" (change)="closeModal()">
+                              <input type="radio" [value]="component" formControlName="field2"
+                                [id]="'field2-' + component.id" class="d-none" (change)="closeModal()">
                               <label [for]="'field2-' + component.id" class="choice-label w-100">
                                 {{component.name}}
                               </label>
@@ -184,8 +195,8 @@
                         <div class="component-list w-100">
                           <div *ngFor="let component of otherComponent" class="w-100 mb-3">
                             <div class="position-relative mb-2">
-                              <input type="radio" [value]="component" formControlName="field3" 
-                                     [id]="'field3-' + component.id" class="d-none" (change)="closeModal()">
+                              <input type="radio" [value]="component" formControlName="field3"
+                                [id]="'field3-' + component.id" class="d-none" (change)="closeModal()">
                               <label [for]="'field3-' + component.id" class="choice-label w-100">
                                 {{component.name}}
                               </label>
@@ -207,8 +218,8 @@
                         <div class="component-list w-100">
                           <div *ngFor="let component of otherComponent" class="w-100 mb-3">
                             <div class="position-relative mb-2">
-                              <input type="radio" [value]="component" formControlName="field4" 
-                                     [id]="'field4-' + component.id" class="d-none" (change)="closeModal()">
+                              <input type="radio" [value]="component" formControlName="field4"
+                                [id]="'field4-' + component.id" class="d-none" (change)="closeModal()">
                               <label [for]="'field4-' + component.id" class="choice-label w-100">
                                 {{component.name}}
                               </label>
@@ -229,8 +240,8 @@
                         <div class="component-list w-100">
                           <div *ngFor="let component of otherComponent" class="w-100 mb-3">
                             <div class="position-relative mb-2">
-                              <input type="radio" [value]="component" formControlName="field5" 
-                                     [id]="'field5-' + component.id" class="d-none" (change)="closeModal()">
+                              <input type="radio" [value]="component" formControlName="field5"
+                                [id]="'field5-' + component.id" class="d-none" (change)="closeModal()">
                               <label [for]="'field5-' + component.id" class="choice-label w-100">
                                 {{component.name}}
                               </label>
@@ -251,8 +262,8 @@
                         <div class="component-list w-100">
                           <div *ngFor="let component of otherComponent" class="w-100 mb-3">
                             <div class="position-relative mb-2">
-                              <input type="radio" [value]="component" formControlName="field6" 
-                                     [id]="'field6-' + component.id" class="d-none" (change)="closeModal()">
+                              <input type="radio" [value]="component" formControlName="field6"
+                                [id]="'field6-' + component.id" class="d-none" (change)="closeModal()">
                               <label [for]="'field6-' + component.id" class="choice-label w-100">
                                 {{component.name}}
                               </label>
@@ -305,7 +316,8 @@
                               Header: {{ contentJson.header.type.name || 'Not selected' }}
                             </span>
                           </div>
-                          <div *ngFor="let key of getSortedComponentKeys(); let i = index" class="border p-3 rounded sort-item">
+                          <div *ngFor="let key of getSortedComponentKeys(); let i = index"
+                            class="border p-3 rounded sort-item">
                             <span class="sort-item-label">
                               Component {{ i + 1 }}: {{ contentJson[key].type.name }}
                             </span>
@@ -347,17 +359,40 @@
                     <button type="button" class="btn btn-outline-secondary w-100 mb-2" (click)="goToStep(2)">
                       Back
                     </button>
-                    <button type="submit" class="btn btn-primary w-100" 
+                    <button type="submit" class="btn btn-primary w-100"
                       [disabled]="!platformForm.valid || getSelectionCount() < MIN_SELECTIONS">
                       <i class="fas fa-save me-2"></i>{{ isEditMode ? 'Update' : 'Create' }} Platform
                     </button>
                     <div *ngIf="!platformForm.valid || getSelectionCount() < MIN_SELECTIONS" class="text-danger mt-2">
-                      Please ensure all required fields are filled and at least {{ MIN_SELECTIONS }} components are selected.
+                      Please ensure all required fields are filled and at least {{ MIN_SELECTIONS }} components are
+                      selected.
                     </div>
                   </div>
                 </div>
               </form>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="generating-overlay" [class.show]="isGeneratingColors">
+    <img src="../../../../../assets/backoffice/images/platform/leaves.gif" class="generating-animation"
+      alt="Generating colors">
+  </div>
+
+  <!-- Add Color Selection Modal -->
+  <div class="modal color-selection-modal" [class.show]="showColorModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Select Generated Color</h5>
+        <button type="button" class="modal-close" (click)="closeColorModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="generated-colors-grid">
+          <div *ngFor="let color of generatedColors" class="color-option" [style.background-color]="color"
+            (click)="selectColor(color)">
+            <div class="color-value">{{color}}</div>
           </div>
         </div>
       </div>

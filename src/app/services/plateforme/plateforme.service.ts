@@ -2,7 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-
+interface report {
+  TotalPlateformes : number ,
+  ExpiredPlateformes : number , 
+  ActivePlateformes : number
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -13,6 +17,10 @@ export class PlateformeService {
 
   getPlateforms(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}`);
+  }
+
+  getReport(): Observable<report> {
+    return this.http.get<report>(`${this.apiUrl}/generateReport`);
   }
 
   getPlateforme(id: number): Observable<any> {
@@ -45,4 +53,8 @@ export class PlateformeService {
   getAllPlatforms(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}`);
   }
+  getMostlyBoughtPacks(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/mostlyBoughtPacks`);
+  }
+
 }

@@ -1,38 +1,166 @@
-<div class="container px-4 py-5" id="featured-3">
-  <h2 class="pb-2 border-bottom">{{MainTitle}}</h2>
-  <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
-      <div class="feature col">
-          <div   [style]="{ 'background-color': color }" class="feature-icon 
-          d-flex justify-content-center align-items-center text-white p-3 rounded">
-              <i  [class]="Fimage"  style="font-size: 2rem;"></i>
-          </div>
-          <h2>{{Ftitle}}</h2>
-          <p>{{Fdescription}}</p>
-          <a href="#" class="icon-link">
-              Call to action <i class="bi bi-chevron-right"></i>
-          </a>
+<style>
+    .features-section {
+      padding: 5rem 1rem;
+      background-color: #f8fafc;
+    }
+  
+    .section-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+  
+    .section-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #1e293b;
+      position: relative;
+      display: inline-block;
+      padding-bottom: 1rem;
+    }
+  
+    .section-title:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: var(--feature-color);
+      border-radius: 2px;
+    }
+  
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+  
+    .feature-card {
+      background: white;
+      border-radius: 16px;
+      padding: 2rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+      border: 1px solid rgba(0, 0, 0, 0.03);
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+  
+    .feature-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+    }
+  
+    .feature-icon-container {
+      width: 70px;
+      height: 70px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      transition: all 0.3s ease;
+    }
+  
+    .feature-card:hover .feature-icon-container {
+      transform: rotate(10deg) scale(1.1);
+    }
+  
+    .feature-icon {
+      font-size: 2rem !important;
+    }
+  
+    .feature-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #1e293b;
+      margin-bottom: 1rem;
+    }
+  
+    .feature-description {
+      color: #64748b;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+      flex-grow: 1;
+    }
+  
+    .feature-link {
+      display: inline-flex;
+      align-items: center;
+      color: var(--feature-color);
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+  
+    .feature-link i {
+      margin-left: 0.5rem;
+      transition: transform 0.3s ease;
+    }
+  
+    .feature-link:hover {
+      color: color-mix(in srgb, var(--feature-color) 80%, black);
+    }
+  
+    .feature-link:hover i {
+      transform: translateX(4px);
+    }
+  
+    @media (max-width: 768px) {
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .section-title {
+        font-size: 2rem;
+      }
+    }
+  </style>
+  
+  <div class="features-section" [style]="{'--feature-color': color}">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">{{MainTitle}}</h2>
       </div>
-
-      <div class="feature col">
-          <div  [style]="{ 'background-color': color }" class="feature-icon   d-flex justify-content-center align-items-center text-white p-3 rounded">
-              <i  [class]="Simage" style="font-size: 2rem;"></i>
+      
+      <div class="features-grid">
+        <!-- Feature 1 -->
+        <div class="feature-card">
+          <div class="feature-icon-container" [style.background-color]="color">
+            <i [class]="Ficon" class="feature-icon text-white"></i>
           </div>
-          <h2>{{Stitle}}</h2>
-          <p>{{Sdescription}}</p>
-          <a href="#" class="icon-link">
-              Call to action <i class="bi bi-chevron-right"></i>
+          <h3 class="feature-title">{{Ftitle}}</h3>
+          <p class="feature-description">{{Fdescription}}</p>
+          <a href="#" class="feature-link">
+            Call to action <i class="bi bi-chevron-right"></i>
           </a>
-      </div>
-
-      <div class="feature col">
-          <div  [style]="{ 'background-color': color }" class="feature-icon   d-flex justify-content-center align-items-center  text-white p-3 rounded">
-            <i  [class]="Timage" style="font-size: 2rem;"></i>
+        </div>
+        
+        <!-- Feature 2 -->
+        <div class="feature-card">
+          <div class="feature-icon-container" [style.background-color]="color">
+            <i [class]="Sicon" class="feature-icon text-white"></i>
           </div>
-          <h2>{{Tdescription}}</h2>
-          <p>{{Tdescription}}</p>
-          <a href="#" class="icon-link">
-              Call to action <i class="bi bi-chevron-right"></i>
+          <h3 class="feature-title">{{Stitle}}</h3>
+          <p class="feature-description">{{Sdescription}}</p>
+          <a href="#" class="feature-link">
+            Call to action <i class="bi bi-chevron-right"></i>
           </a>
+        </div>
+        
+        <!-- Feature 3 -->
+        <div class="feature-card">
+          <div class="feature-icon-container" [style.background-color]="color">
+            <i [class]="Ticon" class="feature-icon text-white"></i>
+          </div>
+          <h3 class="feature-title">{{Ttitle}}</h3>
+          <p class="feature-description">{{Tdescription}}</p>
+          <a href="#" class="feature-link">
+            Call to action <i class="bi bi-chevron-right"></i>
+          </a>
+        </div>
       </div>
+    </div>
   </div>
-</div>

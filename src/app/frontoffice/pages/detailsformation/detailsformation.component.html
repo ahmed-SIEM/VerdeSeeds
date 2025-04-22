@@ -1,0 +1,31 @@
+<div class="container mt-4" *ngIf="!isLoading">
+    <div *ngIf="detail; else notFound">
+      <h3 class="mb-4">🎓 Détails de la Formation</h3>
+  
+      <ul class="list-group">
+        <li class="list-group-item">
+          <strong>🎯 Objectif :</strong> {{ detail.objectif }}
+        </li>
+        <li class="list-group-item">
+          <strong>📘 Contenu :</strong> {{ detail.contenu }}
+        </li>
+        <li class="list-group-item">
+          <strong>⏱️ Durée :</strong> {{ detail.duree }}
+        </li>
+        <li class="list-group-item">
+          <strong>🧰 Matériel requis :</strong> {{ detail.materielRequis }}
+        </li>
+      </ul>
+  
+      <div class="mt-4">
+        <a routerLink="/frontoffice/farmingpractice" class="btn btn-outline-primary">⬅️ Retour</a>
+      </div>
+    </div>
+  
+    <ng-template #notFound>
+      <div class="alert alert-warning text-center">
+        Aucun détail disponible pour cette formation 😢
+      </div>
+    </ng-template>
+  </div>
+  
