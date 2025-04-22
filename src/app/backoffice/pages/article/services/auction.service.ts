@@ -36,8 +36,8 @@ export class AuctionService {
   }
 
   // Créer une nouvelle enchère (version modifiée)
-  createAuction(auctionData: Omit<Auction, 'id'>): Observable<Auction> {
-    return this.http.post<Auction>(this.apiUrl, auctionData);
+  createAuction(auctionData: Omit<Auction, 'id'> , id : number): Observable<Auction> {
+    return this.http.post<Auction>(`${this.apiUrl}/${id}`, auctionData);
   }
 
   // Mettre à jour une enchère existante (version modifiée)
@@ -50,9 +50,5 @@ export class AuctionService {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  // Optionnel: Méthode pour créer une enchère liée à un article
-  createAuctionForArticle(articleId: number, auctionData: Omit<Auction, 'id'|'articleId'>): Observable<Auction> {
-    const data = { ...auctionData, articleId };
-    return this.createAuction(data);
-  }
+
 }

@@ -43,7 +43,7 @@
 				<td>
 				  <a [routerLink]="['edit', article.id]" class="btn btn-sm btn-outline-warning me-1">✏️</a>
 				  <button class="btn btn-sm btn-outline-danger" (click)="deleteArticle(article.id)">🗑️</button>
-				  <button *ngIf="article.typeArticle === 'AUCTION'" class="btn btn-sm btn-outline-info" [routerLink]="['/backoffice/articles', article.id, 'auction']">
+				  <button *ngIf="article.typeArticle === 'AUCTION'" class="btn btn-sm btn-outline-info" [routerLink]="['/backoffice/auctions/article', article.id]">
 					📦 Voir Enchères
 				  </button>
 				</td>

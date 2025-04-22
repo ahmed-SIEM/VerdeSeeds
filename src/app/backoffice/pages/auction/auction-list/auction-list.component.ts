@@ -9,6 +9,7 @@ import { AuctionService, Auction } from '../../article/services/auction.service'
 export class AuctionListComponent implements OnInit {
   articleId!: number;
   auctions: Auction[] = [];
+  isFromArticle: boolean = false; // Indicateur pour savoir si on vient de la page article
 
   constructor(
     private route: ActivatedRoute,
@@ -17,14 +18,34 @@ export class AuctionListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.articleId = Number(this.route.snapshot.paramMap.get('id'));
-    this.fetchAuctions();
+    this.articleId = Number(this.route.snapshot.paramMap.get('articleId'));
+    if( this.articleId){
+      this.isFromArticle = true; 
+      this.fetchArtictionAuctions()
+ 
+    }else{
+      this.fetchAuctions();
+    }
+  
   }
 
   fetchAuctions(): void {
+    this.auctionService.getAllAuctions().subscribe({
+      next: (data) => {
+        this.auctions = data;
+     
+      },
+      error: (error) => {
+        console.error('Erreur lors de la récupération des enchères', error);
+      },
+    });
+  }
+
+  fetchArtictionAuctions(): void {
     this.auctionService.getAuctionsByArticle(this.articleId).subscribe({
       next: (data) => {
         this.auctions = data;
+        console.log(data)
       },
       error: (error) => {
         console.error('Erreur lors de la récupération des enchères', error);
@@ -44,7 +65,7 @@ export class AuctionListComponent implements OnInit {
   }
 
   goToAddAuction(): void {
-    this.router.navigate([`/backoffice/articles/${this.articleId}/auction`]);  // Met à jour le chemin pour la création
+    this.router.navigate([`/backoffice/auctions/create`]);  // Met à jour le chemin pour la création
   }
 
   goToEditAuction(auctionId: number): void {

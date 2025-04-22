@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuctionService } from '../../article/services/auction.service';
 import { switchMap } from 'rxjs/operators';
+import { ArticleService } from '../../article/services/article.service';
 
 @Component({
   selector: 'app-auction-form',
@@ -10,16 +11,19 @@ import { switchMap } from 'rxjs/operators';
   styleUrls: ['./auction-form.component.css']
 })
 export class AuctionFormComponent implements OnInit {
-navigateToAuctions() {
-throw new Error('Method not implemented.');
-}
+  navigateToAuctions() {
+    this.router.navigate(['/backoffice/auctions']);
+  }
   auctionForm: FormGroup;
   isEditMode = false;
   articleId?: number;
+  articles: any[] = [];
+  selectedArticleId: number = 0;
 
   constructor(
     private fb: FormBuilder,
     private auctionService: AuctionService,
+    private articleService: ArticleService,
     private route: ActivatedRoute,
     private router: Router
   ) {
@@ -32,15 +36,16 @@ throw new Error('Method not implemented.');
   }
 
   ngOnInit(): void {
+    this.loadArticle();
     this.route.queryParams.subscribe(params => {
       this.articleId = params['articleId'];
     });
 
     this.route.params.pipe(
       switchMap(params => {
-        if (params['id']) {
+        if (params['articleId']) {
           this.isEditMode = true;
-          return this.auctionService.getAuctionById(+params['id']);
+          return this.auctionService.getAuctionById(+params['articleId']);
         }
         return [null];
       })
@@ -56,20 +61,33 @@ throw new Error('Method not implemented.');
     });
   }
 
+  loadArticle(): void {
+    this.articleService.getArticles().subscribe({
+      next: (data) => {
+        this.articles = data.filter((article: any) => !article.auction);
+        console.log('Articles:', this.articles);
+      },
+      error: (error) => {
+        console.error('Erreur lors de la récupération des articles', error);
+      },
+    });
+  }
+
+  onArticleSelect(event: any): void {
+    this.selectedArticleId = parseInt(event.target.value);
+  }
+
   onSubmit(): void {
     if (this.auctionForm.valid) {
       const auctionData = this.auctionForm.value;
-      
+
       if (this.isEditMode) {
         const auctionId = +this.route.snapshot.params['id'];
         this.auctionService.updateAuction(auctionId, auctionData).subscribe(() => {
           this.router.navigate(['/backoffice/auctions']);
         });
       } else {
-        if (this.articleId) {
-          auctionData.articleId = this.articleId;
-        }
-        this.auctionService.createAuction(auctionData).subscribe(() => {
+        this.auctionService.createAuction(auctionData, this.selectedArticleId).subscribe(() => {
           this.router.navigate(['/backoffice/auctions']);
         });
       }

@@ -1,7 +1,7 @@
 <div class="container mt-4">
     <h2>🔨 Enchères liées à l'article n°{{ articleId }}</h2>
   
-    <button (click)="goToAddAuction()" class="btn btn-primary mb-3">
+    <button *ngIf="!isFromArticle" (click)="goToAddAuction()" class="btn btn-primary mb-3">
       ➕ Ajouter une enchère
     </button>
   
