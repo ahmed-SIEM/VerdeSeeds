@@ -1,0 +1,36 @@
+<div class="container mt-4">
+    <h2>🔨 Enchères liées à l'article n°{{ articleId }}</h2>
+  
+    <button (click)="goToAddAuction()" class="btn btn-primary mb-3">
+      ➕ Ajouter une enchère
+    </button>
+  
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Prix initial</th>
+          <th>Prix actuel</th>
+          <th>Date début</th>
+          <th>Date fin</th>
+          <th>Active</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let auction of auctions">
+          <td>{{ auction.id }}</td>
+          <td>{{ auction.startPrice }}</td>
+          <td>{{ auction.currentPrice }}</td>
+          <td>{{ auction.startTime | date:'short' }}</td>
+          <td>{{ auction.endTime | date:'short' }}</td>
+          <td>{{ auction.active ? '✅' : '❌' }}</td>
+          <td>
+            <button (click)="goToEditAuction(auction.id!)" class="btn btn-sm btn-warning me-1">✏️</button>
+            <button (click)="deleteAuction(auction.id!)" class="btn btn-sm btn-danger">🗑️</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

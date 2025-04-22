@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { BackofficeRoutingModule } from './backoffice-routing.module';
 import { LayoutsComponent } from './layouts/layouts.component';
 import { HomeComponent } from './pages/home/home.component';
@@ -20,6 +19,7 @@ import { FormsModule } from '@angular/forms';
 import { PlatformeModule } from './pages/platform-management/platforme.module';
 import { ComponentManagementModule } from './pages/component-management/component-management.module';
 import { PreviewComponent } from './pages/platform-management/preview/preview.component';
+
 @NgModule({
   declarations: [
     LayoutsComponent,

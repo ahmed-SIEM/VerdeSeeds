@@ -41,6 +41,19 @@ const routes: Routes = [
             .then(m => m.FormationManagementModule)
         },
         { 
+          path: 'articles',
+          loadChildren: () => import('./pages/article/article.module')
+            .then(m => m.ArticleModule)
+        },
+        {
+          path: 'auctions',
+          loadChildren: () => import('./pages/auction/auction.module').then(m => m.AuctionModule)
+        },
+        {
+          path: 'reservations',
+          loadChildren: () => import('./pages/reservation/reservation.module').then(m => m.ReservationModule)
+        },        
+        { 
           path: 'platform',
           loadChildren: () => import('./pages/platform-management/platforme.module')
             .then(m => m.PlatformeModule)
