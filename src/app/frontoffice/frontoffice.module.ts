@@ -22,9 +22,23 @@ import { HomeplateformeComponent } from './pages/homeplateforme/homeplateforme.c
 import { PlatformeComponent } from './pages/platforme/platforme.component';
 import { CalendarPopupComponent } from './pages/farming-practice/calendar-popup/calendar-popup.component';
 
+// ✅ Auth Components
+import { LoginComponent } from './pages/auth/login/login.component';
+import { RegisterComponent } from './pages/auth/register/register.component';
+import { ForgotPasswordComponent } from './pages/auth/forgot-password/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './pages/auth/reset-password/reset-password.component';
+
 // ✅ Mat & Calendar modules
 import { MatIconModule } from '@angular/material/icon';
 import { FullCalendarModule } from '@fullcalendar/angular'; // 📅 SUPER IMPORTANT
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatCardModule } from '@angular/material/card';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { RouterModule } from '@angular/router';
 
 // ✅ Composants plateforme
 import { CenteredheroComponent } from './components/plateformeComps/heros/centeredhero/centeredhero.component';
@@ -39,7 +53,7 @@ import { HeadingrightwithimageComponent } from './components/plateformeComps/oth
 import { NewsletterComponent } from './components/plateformeComps/others/newsletter/newsletter.component';
 import { SponsorsComponent } from './components/plateformeComps/others/sponsors/sponsors.component';
 import { plateformeaboutComponent } from './components/plateformeComps/others/about/about.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DetailsformationComponent } from './pages/detailsformation/detailsformation.component';
 
 @NgModule({
@@ -60,11 +74,16 @@ import { DetailsformationComponent } from './pages/detailsformation/detailsforma
     PlatformeComponent,
     CalendarPopupComponent,
     DetailsformationComponent,
+    LoginComponent,
+    RegisterComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent
   ],
   imports: [
     CommonModule,
     HttpClientModule, // ✅ Pour les requêtes HTTP
     FrontofficeRoutingModule,
+    RouterModule,
     MatIconModule,
     FullCalendarModule, // ✅ Pour le calendrier dynamique
     // Plateforme compos
@@ -81,6 +100,15 @@ import { DetailsformationComponent } from './pages/detailsformation/detailsforma
     SponsorsComponent,
     plateformeaboutComponent,
     FormsModule,
-  ]
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatCardModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
+    MatCheckboxModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+  ],
 })
 export class FrontofficeModule {}
