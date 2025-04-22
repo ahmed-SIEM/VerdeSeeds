@@ -8,6 +8,7 @@ import warnings
 from groq import Groq
 import os
 from dotenv import load_dotenv
+from openai import OpenAI
 
 # Load environment variables
 load_dotenv()
@@ -15,10 +16,38 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app)
 
-# Groq initialization
+# Client initializations
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+openrouter_client = OpenAI(
+    base_url="https://openrouter.ai/api/v1",
+    api_key=os.getenv("OPENROUTER_API_KEY"),
+)
+
+# Prompts
 VALIDATION_PROMPT = "You are an intelligent assistant. Analyze the input question carefully. Respond with 'Yes' if the input is agriculture-related, and 'No' otherwise."
 RESPONSE_PROMPT = "You are an agriculture expert. Provide a concise and accurate answer to the following agriculture-related question:"
+RECOMMEND_PROMPT = "You are an agriculture expert. Based on the following parameters, recommend suitable crops and provide brief cultivation tips:"
+
+AVAILABLE_ICONS = [
+    'bi-balloon', 'bi-alarm', 'bi-archive', 'bi-award', 'bi-bag', 'bi-bell',
+    'bi-bookmark', 'bi-camera', 'bi-cart', 'bi-chat', 'bi-check', 'bi-clock',
+    'bi-cloud', 'bi-code', 'bi-cup', 'bi-emoji-smile', 'bi-envelope', 'bi-flag',
+    'bi-gear', 'bi-heart', 'bi-house', 'bi-info-circle', 'bi-key', 'bi-lightning'
+]
+
+ELEMENTS_FIELDS = {
+    "headerwithicons": ["title", "subtitle", "Ftitle", "Ficon", "Stitle", "Sicon", "Ttitle", "Ticon", "Ptitle", "Picon"],
+    "centeredhero": ["title", "subtitle", "imageUrl"],
+    "herowithimage": ["title", "subtitle", "imageUrl"],
+    "verticallycenteredhero": ["title", "subtitle"],
+    "columnswithicons": ["MainTitle", "Ftitle", "Fdescription", "Ficon", "Stitle", "Sdescription", "Sicon", "Ttitle", "Tdescription", "Ticon"],
+    "customcards": ["MainTitle", "Ftitle", "Fimage", "Stitle", "Simage", "Ttitle", "Timage"],
+    "headings": ["Ftitle", "Fdescription", "Fimage", "Stitle", "Sdescription", "Simage", "Ttitle", "Tdescription", "Timage"],
+    "headingleftwithimage": ["title", "subtitle", "imageUrl"],
+    "headingrightwithimage": ["title", "subtitle", "imageUrl"],
+    "newsletter": ["titleA", "TextB", "TextC", "Image"],
+    "plateformeabout": ["title1", "title2", "description", "imageUrl"]
+}
 
 def validate_input(input_text):
     try:
@@ -52,6 +81,35 @@ def get_agriculture_response(input_text):
     except Exception as e:
         return f"Error: {e}"
 
+def get_recommendation(parameters):
+    try:
+        component_type = parameters.get('type')
+        if not component_type or component_type not in ELEMENTS_FIELDS:
+            return "Invalid component type"
+
+        prompt = f"""Generate a JSON component for an agricultural e-commerce website.
+Component type: {component_type}
+Required fields: {ELEMENTS_FIELDS[component_type]}
+Rules:
+- For image fields, use 'https://picsum.photos/200/300'
+- For icon fields, choose from: {AVAILABLE_ICONS}
+- Use agricultural-themed, professional, and catchy content
+- Return only the JSON object
+
+Generate content for all required fields."""
+
+        response = openrouter_client.chat.completions.create(
+            model="google/gemini-2.0-flash-exp:free",
+            messages=[{
+                "role": "user",
+                "content": [{"type": "text", "text": prompt}]
+            }]
+        )
+        
+        return response.choices[0].message.content.strip()
+    except Exception as e:
+        return f"Error: {e}"
+
 @app.route('/chat', methods=['POST'])
 def chat():
     data = request.json
@@ -69,6 +127,18 @@ def chat():
         response = f"⚠️ Unexpected response: {validation_result}"
     
     return jsonify({'response': response})
+
+@app.route('/recommend', methods=['POST'])
+def recommend():
+    data = request.json
+    if not data or 'type' not in data:
+        return jsonify({'error': 'Component type is required'}), 400
+    
+    try:
+        generated_component = get_recommendation(data)
+        return jsonify({'component': generated_component})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 def extract_dominant_colors(image_data, num_colors=5):
     """Extract dominant colors from image data and return as hex codes"""
