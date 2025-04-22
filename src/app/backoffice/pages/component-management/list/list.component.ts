@@ -23,6 +23,22 @@ export class ListComponent implements OnInit {
   searchTerm: string = '';
   selectedPreviewImage: string = '';
   selectedType: ComponentType | '' = ''; // Added type filter property
+  currentPage: number = 1;
+  itemsPerPage: number = 6;
+  stats: any = {
+    headerwithicons: 0,
+    centeredhero: 0,
+    herowithimage: 0,
+    verticallycenteredhero: 0,
+    columnswithicons: 0,
+    customcards: 0,
+    headings: 0,
+    headingleftwithimage: 0,
+    headingrightwithimage: 0,
+    newsletter: 0,
+    plateformeabout: 0
+  };
+  topComponents: {type: ComponentType, count: number}[] = []; // Update the type definition
 
   constructor(private componentService: componentServcie, private router: Router) {}
 
@@ -46,22 +62,42 @@ export class ListComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadComponents();
+    
   }
 
   get filteredComponentsList() {
-    return this.components.filter(component => {
+    const filtered = this.components.filter(component => {
       const matchesSearch = !this.searchTerm || 
         component.type.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         component.name.toLowerCase().includes(this.searchTerm.toLowerCase()); // Added name search
       const matchesType = !this.selectedType || component.type === this.selectedType; // Added type filter
       return matchesSearch && matchesType;
     });
+
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    return filtered.slice(startIndex, startIndex + this.itemsPerPage);
+  }
+
+  get totalPages(): number {
+    const filtered = this.components.filter(component => {
+      const matchesSearch = !this.searchTerm || 
+        component.type.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        component.name.toLowerCase().includes(this.searchTerm.toLowerCase());
+      const matchesType = !this.selectedType || component.type === this.selectedType;
+      return matchesSearch && matchesType;
+    });
+    return Math.ceil(filtered.length / this.itemsPerPage);
+  }
+
+  changePage(page: number): void {
+    this.currentPage = page;
   }
 
   loadComponents(): void {
     this.componentService.getComponents().subscribe(data => {
       this.components = data;
     });
+    this.loadstats();
   }
 
   deleteComponent(id: number): void {
@@ -80,9 +116,51 @@ export class ListComponent implements OnInit {
     this.selectedPreviewImage = this.categorizedComponents[component.type].preview;
   }
 
- 
-
   addComponent(): void {
     this.router.navigate(['/backoffice/component', 'add']);
+  }
+
+  loadstats(): void {
+    this.componentService.getusageRate().subscribe(data => {
+      this.stats = data;
+      this.topComponents = Object.entries(this.stats)
+        .map(([type, count]) => ({
+          type: type as ComponentType, // Cast the type to ComponentType
+          count: count as number
+        }))
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 6); // Changed from 3 to 6 to show top 6 components
+      console.log(this.stats);
+    });
+  }
+
+  getelementtype(type: string): string {
+    switch (type) {
+      case 'headerwithicons':
+        return 'Header with Icons';
+      case 'centeredhero':
+        return 'Centered Hero';
+      case 'herowithimage':
+        return 'Hero with Image';
+      case 'verticallycenteredhero':
+        return 'Vertically Centered Hero';
+      case 'columnswithicons':
+        return 'Columns with Icons';
+      case 'customcards':
+        return 'Custom Cards';
+      case 'headings':
+        return 'Headings';
+      case 'headingleftwithimage':
+        return 'Heading Left with Image';
+      case 'headingrightwithimage':
+        return 'Heading Right with Image';
+      case 'newsletter':
+        return 'Newsletter';
+      case 'plateformeabout':
+        return 'Plateforme About';
+      default:
+        return '';
+    }
+
   }
 }

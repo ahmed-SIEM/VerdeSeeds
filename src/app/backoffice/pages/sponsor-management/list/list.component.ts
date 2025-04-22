@@ -14,28 +14,44 @@ import { FirebaseStorageService } from 'src/app/services/firebase-storage.servic
 export class ListSponsor implements OnInit {
 
   Sponsors: any[] = [];
-    searchTerm: string = '';
-    selectedPreviewImage: string = '';
+  searchTerm: string = '';
+  selectedPreviewImage: string = '';
+  itemsPerPage: number = 1;
+  currentPage: number = 1;
   
-    constructor(
-      private sponsorService: SponsorServcie, 
-       private firestore : FirebaseStorageService,
-      private router: Router) {}
-  
-   
-  
+  constructor(
+    private sponsorService: SponsorServcie, 
+    private firestore : FirebaseStorageService,
+    private router: Router) {}
   
     ngOnInit(): void {
       this.loadSponsors();
     }
   
     get filteredSponsorstsList() {
-      return this.Sponsors.filter(sponsor => {
+      const filtered = this.Sponsors.filter(sponsor => {
         const matchesSearch = !this.searchTerm || 
         sponsor.type.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         sponsor.name.toLowerCase().includes(this.searchTerm.toLowerCase()); 
         return matchesSearch;
       });
+
+      // Apply pagination
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      return filtered.slice(startIndex, startIndex + this.itemsPerPage);
+    }
+
+    get totalPages(): number {
+      const filtered = this.Sponsors.filter(sponsor => {
+        return !this.searchTerm || 
+          sponsor.type.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+          sponsor.name.toLowerCase().includes(this.searchTerm.toLowerCase());
+      });
+      return Math.ceil(filtered.length / this.itemsPerPage);
+    }
+
+    changePage(page: number): void {
+      this.currentPage = page;
     }
   
     loadSponsors(): void {
@@ -54,7 +70,6 @@ export class ListSponsor implements OnInit {
         }
       });
     }
-  
   
     deleteSponsor(sponsor : any): void {
       if (confirm('Are you sure you want to delete this sponsor?')) {
@@ -77,9 +92,6 @@ export class ListSponsor implements OnInit {
     editSponsor(sponsor: any): void {
       this.router.navigate(['/backoffice/sponsor', sponsor.id, 'edit']);
     }
-  
-  
-   
   
     addSponsor(): void {
       this.router.navigate(['/backoffice/sponsor', 'add']);

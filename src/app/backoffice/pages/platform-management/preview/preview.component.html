@@ -4,8 +4,14 @@
 
         <div class="Main">
             <ng-container #dynamicContainer></ng-container>
-          </div>
-          
+        </div>
+
+        <app-sponsors 
+        *ngIf="sponsors.length > 0"
+        [color]="colorValue"
+         [Sponsors]="sponsors"
+        ></app-sponsors>
+
 
     </div>
 

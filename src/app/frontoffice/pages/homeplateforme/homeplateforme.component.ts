@@ -1,17 +1,11 @@
-import { Component, ViewChild, ViewContainerRef, OnInit } from '@angular/core';
-import { DynamicLoaderService } from '../../services/dynamic-loader.service';
-import { ComponentRegistry } from './component-registry';
+import { Component, OnInit } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
-
-
-
-interface Sponsor{
+interface Sponsor {
   datapartenariat: string;
   logo: string;
   nomSponsor: string;
 }
-
-
 
 @Component({
   selector: 'app-homeplateforme',
@@ -19,192 +13,60 @@ interface Sponsor{
   styleUrls: ['./homeplateforme.component.css']
 })
 export class HomeplateformeComponent implements OnInit {
-  @ViewChild('dynamicContainer', { read: ViewContainerRef, static: true }) dynamicContainer!: ViewContainerRef;
+  isDrawerOpen = false;
+  messages: { content: string | SafeHtml; isUser: boolean; isHtml: boolean }[] = [];
+  newMessage = '';
 
-   settings = {
-    headerwithicons: {
-      title: 'Custom Header with Icons Title',
-      subtitle: 'Custom Header with Icons Subtitle',
-      Ftitle: 'Lorem ipsum dolor sit amet,commodo consequat.',
-      Fimage: 'bi-balloon',
-      Stitle: 'Lorem ipsum dolor sit aaduip ex ea commodo consequat.',
-      Simage: 'bi-balloon',
-      Ttitle: 'Lorem ipsum dolor sit amet,commodo consequat.',
-      Timage: 'bi-balloon',
-      Ptitle: 'Lorem ipsum dolor sit aaduip ex ea commodo consequat.',
-      Pimage: 'bi-balloon',
-    },
-    centeredhero: {
-      title: 'Heading Left with Image Title',
-      subtitle: 'Heading Left with Image Subtitle',
-      imageUrl: 'https://picsum.photos/200/',
+  constructor(private sanitizer: DomSanitizer) {}
 
-    },
-    herowithimage: {
-      title: 'Heading Right with Image Title',
-      subtitle: 'Heading Right with Image Subtitle',
-      imageUrl: 'https://picsum.photos/200/',
+  ngOnInit() {}
 
-    },
+  toggleDrawer() {
+    this.isDrawerOpen = !this.isDrawerOpen;
+  }
 
-    verticallycenteredhero: {
-      title: 'Centered Hero Title',
-      subtitle: 'Centered Hero Subtitle',
-      imageUrl: 'https://picsum.photos/400/300',
+  async handleSendMessage() {
+    if (!this.newMessage.trim()) return;
 
-    },
+    const userMessage = this.newMessage;
+    this.messages.push({ content: userMessage, isUser: true, isHtml: false });
+    this.newMessage = '';
 
-    columnswithicons: {
-      MainTitle: 'Columns with Icons',
-      Ftitle: 'Lorem ipsum dolor sit amet,commodo consequat.',
-      Fdescription: 'Lorem ipsum dolor sit amet,commodo consequat.',
-      Fimage: 'bi bi-0-circle',
-      Stitle: 'Lorem ipsum dolor sit aaduip ex ea commodo consequat.',
-      Sdescription: 'Lorem ipsum dolor sit aaduip ex ea commodo consequat.',
-      Simage: 'bi bi-0-circle',
-      Ttitle: 'Lorem ipstrudx ea commodo consequat.',
-      Tdescription: 'Lorem ipstrudx ea commodo consequat.',
-      Timage: 'bi bi-0-circle',
+    const response = await this.sendChatMessage(userMessage);
+    this.messages.push({ content: response, isUser: false, isHtml: true });
+  }
 
-    },
+  private formatResponse(text: string): SafeHtml {
+    // Add basic formatting for numbered lists
+    text = text.replace(/(\d+\.\s+\*\*[^:]+\*\*)/g, '<h4>$1</h4>');
+    // Format bold text
+    text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+    // Format steps or sections
+    text = text.replace(/(\d+\.\s+)/g, '<span class="step">$1</span>');
+    return this.sanitizer.bypassSecurityTrustHtml(text);
+  }
 
-    customcards: {
-      MainTitle: 'Columns with Icons',
-      Ftitle: 'Lorem ipsum dolor sit amet,commodo consequat.',
-      Fimage: 'https://picsum.photos/400/300',
-      Stitle: 'Lorem ipsum dolor sit aaduip ex ea commodo consequat.',
-      Simage: 'https://picsum.photos/400/300',
-      Ttitle: 'Lorem ipstrudx ea commodo consequat.',
-      Timage: 'https://picsum.photos/400/300',
+  async sendChatMessage(message: string): Promise<SafeHtml> {
+    try {
+      const response = await fetch('http://localhost:5000/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: message })
+      });
 
-    },
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
-    headings: {
-      Ftitle: 'Lorem ipsum dolor sit amet,commodo consequat.',
-      Fdescription: 'Lorem ipsum dolor sit amet,commodo consequat.',
-      Fimage: 'https://picsum.photos/400/300',
-      Stitle: 'Lorem ipsum dolor sit aaduip ex ea commodo consequat.',
-      Sdescription: 'Lorem ipsum dolor sit aaduip ex ea commodo consequat.',
-      Simage: 'https://picsum.photos/400/300',
-      Ttitle: 'Lorem ipstrudx ea commodo consequat.',
-      Tdescription: 'Lorem ipstrudx ea commodo consequat.',
-      Timage: 'https://picsum.photos/400/300',
-
-    },
-
-    headingleftwithimage: {
-      title: 'Centered Hero Title',
-      subtitle: 'Centered Hero Subtitle',
-      imageUrl: 'https://picsum.photos/400/300',
-
-    },
-
-    headingrightwithimage: {
-      title: 'Centered Hero Title',
-      subtitle: 'Centered Hero Subtitle',
-      imageUrl: 'https://picsum.photos/400/300',
-
-    },
-
-    newsletter: {
-      titleA: 'Custom dqsdqsdsqNewsletter Title',
-      TextB: 'Custom Newsletter Subtitle',
-      TextC: 'Custom Newsletter Subtitle',
-      Image: 'https://picsum.photos/400/300',
-    },
-    plateformeabout: {
-      title1: 'About Us Title',
-      title2: 'About Us Subtitle',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-      imageUrl: 'https://picsum.photos/400/300',
-
+      const data = await response.json();
+      return this.formatResponse(data.response);
+    } catch (error) {
+      console.error('Error sending chat message:', error);
+      return this.sanitizer.bypassSecurityTrustHtml(
+        `<span class="error">Error: ${error instanceof Error ? error.message : 'Unknown error'}</span>`
+      );
     }
   }
-
-
-
-
-  selectedElements: (keyof typeof this.settings)[] = [
-    'headerwithicons',
-    'centeredhero',
-    'herowithimage',
-    'verticallycenteredhero',
-    'columnswithicons',
-    'customcards',
-    'headings',
-    'headingleftwithimage',
-    'headingrightwithimage',
-    'newsletter',
-    'plateformeabout',
-  ];
-
-  color = "#1B56FD";
-
-  constructor(private dynamicLoader: DynamicLoaderService) {}
-
-  ngOnInit() {
-    this.loadSelectedComponents();
-  }
-
-  loadSelectedComponents() {
-    this.dynamicContainer.clear();
-    this.selectedElements.forEach(elementKey => {
-      const component = ComponentRegistry[elementKey];
-      if (component) {
-        this.dynamicLoader.loadComponent(this.dynamicContainer, component, {
-          ...this.settings[elementKey],
-          color: this.color,
-        });
-      }
-    });
-  }
-
-  Sponsors: Sponsor[] = [
-     {
-      datapartenariat: '2023-10-01',
-      logo: 'https://picsum.photos/200/',
-      nomSponsor: 'Sponsor 1'
-     },
-      {
-        datapartenariat: '2023-10-01',
-        logo: 'https://picsum.photos/200/',
-        nomSponsor: 'Sponsor 2'
-      },
-      {
-        datapartenariat: '2023-10-01',
-        logo: 'https://picsum.photos/200/',
-        nomSponsor: 'Sponsor 3'
-      },
-      {
-        datapartenariat: '2023-10-01',
-        logo: 'https://picsum.photos/200/',
-        nomSponsor: 'Sponsor 4'
-      },
-      {
-        datapartenariat: '2023-10-01',
-        logo: 'https://picsum.photos/200/',
-        nomSponsor: 'Sponsor 5'
-      },
-      {
-        datapartenariat: '2023-10-01',
-        logo: 'https://picsum.photos/200/',
-        nomSponsor: 'Sponsor 6'
-      },
-      {
-        datapartenariat: '2023-10-01',
-        logo: 'https://picsum.photos/200/',
-        nomSponsor: 'Sponsor 7'
-      },
-      {
-        datapartenariat: '2023-10-01',
-        logo: 'https://picsum.photos/200/',
-        nomSponsor: 'Sponsor 8'
-      }]
-
-
-
-
-
-
-
 }

@@ -16,31 +16,72 @@
                 </button>
             </div>
 
-            <!-- Statistics Cards -->
-            <div class="row mb-4">
-                <div class="col-md-4">
-                    <div class="card bg-primary text-white">
+            <div class="row g-4 mb-4">
+                <!-- Pack Distribution -->
+                <div class="col-lg-3">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header bg-white border-0">
+                            <h5 class="text-success fw-semibold mb-0">
+                                <i class="fas fa-chart-pie me-2"></i>Pack Distribution
+                            </h5>
+                        </div>
                         <div class="card-body">
-                            <h5 class="card-title">Total Platforms</h5>
-                            <h2 class="mb-0">{{report.TotalPlateformes}}</h2>
+                            <div *ngFor="let pack of sortedPacks" class="mb-3">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="text-muted small">{{ pack.label }}</span>
+                                    <span class="fw-semibold small">{{ pack.value }}</span>
+                                </div>
+                                <div class="progress" style="height: 6px;">
+                                    <div class="progress-bar bg-success" 
+                                         role="progressbar"
+                                         [style.width]="getPackPercentage(pack.value) + '%'"
+                                         [attr.aria-valuenow]="getPackPercentage(pack.value)"
+                                         aria-valuemin="0" aria-valuemax="100">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="card bg-success text-white">
-                        <div class="card-body">
-                            <h5 class="card-title">Active Platforms</h5>
-                            <h2 class="mb-0">{{report.ActivePlateformes}}</h2>
+
+                <!-- Platform Stats -->
+                <div class="col-lg-9">
+                    <div class="row g-3">
+                        <div class="col-md-4" *ngFor="let stat of report">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-body p-4">
+                                    <div class="d-flex align-items-center">
+                                        <div [ngClass]="stat.iconBg" class="rounded p-2 me-3">
+                                            <i [class]="stat.icon + ' ' + stat.color"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="text-muted small text-uppercase mb-1">{{ stat.label }}</h6>
+                                            <h3 class="mb-0 fw-bold" [ngClass]="stat.color">{{ stat.value }}</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <br/>
+                <div class="row g-3">
+                    <div class="col-md-4" *ngFor="let pack of sortedPacks">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-center">
+                                    <div [ngClass]="pack.iconBg" class="rounded p-2 me-3">
+                                        <i [class]="pack.icon + ' text-white'"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="text-muted small text-uppercase mb-1">{{pack.label}} Pack</h6>
+                                        <h3 class="mb-0 fw-bold" [ngClass]="pack.color">{{pack.value}}</h3>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="card bg-danger text-white">
-                        <div class="card-body">
-                            <h5 class="card-title">Expired Platforms</h5>
-                            <h2 class="mb-0">{{report.ExpiredPlateformes}}</h2>
-                        </div>
-                    </div>
+                    
                 </div>
             </div>
 
@@ -70,8 +111,7 @@
                                 </div>
                                 <div class="platform-logo" [style.backgroundColor]="platform.couleur">
                                     <img src="http://localhost:8081/api/firebase/{{platform.logo}}"
-                                        [alt]="platform.nomPlateforme" 
-                                        class="img-fluid"
+                                        [alt]="platform.nomPlateforme" class="img-fluid"
                                         style="max-width: 100px; max-height: 100px; object-fit: cover;"
                                         [class.loading]="!platform.imageUrl" />
                                 </div>
@@ -113,9 +153,27 @@
                 <p class="text-muted">Start by adding a new platform using the button above.</p>
             </div>
 
-
-
-
+            <!-- Pagination -->
+            <div class="d-flex justify-content-center mt-4" *ngIf="totalPages > 1">
+                <nav aria-label="Platform pagination">
+                    <ul class="pagination">
+                        <li class="page-item" [class.disabled]="currentPage === 1">
+                            <a class="page-link" (click)="changePage(currentPage - 1)" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index"
+                            [class.active]="currentPage === i + 1">
+                            <a class="page-link" (click)="changePage(i + 1)">{{i + 1}}</a>
+                        </li>
+                        <li class="page-item" [class.disabled]="currentPage === totalPages">
+                            <a class="page-link" (click)="changePage(currentPage + 1)" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
 
         </div>
 
