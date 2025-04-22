@@ -13,29 +13,37 @@ import { LayoutsComponent } from './layouts/layouts.component';
 import { HomeplateformeComponent } from './pages/homeplateforme/homeplateforme.component';
 import { PlatformeComponent } from './pages/platforme/platforme.component';
 import { DetailsformationComponent } from './pages/detailsformation/detailsformation.component';
+import { RegisterComponent } from './pages/auth/register/register.component';
+import { LoginComponent } from './pages/auth/login/login.component';
+import { ForgotPasswordComponent } from './pages/auth/forgot-password/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './pages/auth/reset-password/reset-password.component';
+
 
 const routes: Routes = [
   {
     path: '',
-    component : LayoutsComponent,
+    component: LayoutsComponent,
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
-       {path : 'hometest', component : HomeplateformeComponent},
-      {path : 'home', component : HomeComponent},
-      {path : 'about', component : AboutComponent},
-      {path : 'contact', component : ContactComponent},
-      {path : 'farmingpractice', component : FarmingPracticeComponent},
+      { path: 'hometest', component: HomeplateformeComponent },
+      { path: 'home', component: HomeComponent },
+      { path: 'about', component: AboutComponent },
+      { path: 'contact', component: ContactComponent },
+      { path: 'farmingpractice', component: FarmingPracticeComponent },
       { path: 'details/:id', component: DetailsformationComponent },
 
-      {path : 'news', component : NewsComponent},
-      {path : 'newsdetails', component : NewsdetailsComponent},
-      {path : 'ourproduct', component : OurproductComponent},
-      {path : 'shop', component : ShopComponent},
-      {path : 'Platforme', component : PlatformeComponent},
-
-      {path : '**', component : ErrorComponent},
-    ]
-    }
+      { path: 'news', component: NewsComponent },
+      { path: 'newsdetails', component: NewsdetailsComponent },
+      { path: 'ourproduct', component: OurproductComponent },
+      { path: 'shop', component: ShopComponent },
+      { path: 'Platforme', component: PlatformeComponent },
+      { path: 'signup', component: RegisterComponent },
+      { path: 'login', component: LoginComponent },
+      { path: 'forgot-password', component: ForgotPasswordComponent },
+      { path: 'reset-password', component: ResetPasswordComponent },
+      { path: '**', component: ErrorComponent },
+    ],
+  },
 ];
 
 @NgModule({

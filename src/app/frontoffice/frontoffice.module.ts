@@ -25,6 +25,13 @@ import { CalendarPopupComponent } from './pages/farming-practice/calendar-popup/
 // ✅ Mat & Calendar modules
 import { MatIconModule } from '@angular/material/icon';
 import { FullCalendarModule } from '@fullcalendar/angular'; // 📅 SUPER IMPORTANT
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatCardModule } from '@angular/material/card';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 
 // ✅ Composants plateforme
 import { CenteredheroComponent } from './components/plateformeComps/heros/centeredhero/centeredhero.component';
@@ -39,7 +46,7 @@ import { HeadingrightwithimageComponent } from './components/plateformeComps/oth
 import { NewsletterComponent } from './components/plateformeComps/others/newsletter/newsletter.component';
 import { SponsorsComponent } from './components/plateformeComps/others/sponsors/sponsors.component';
 import { plateformeaboutComponent } from './components/plateformeComps/others/about/about.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DetailsformationComponent } from './pages/detailsformation/detailsformation.component';
 
 @NgModule({
@@ -81,6 +88,14 @@ import { DetailsformationComponent } from './pages/detailsformation/detailsforma
     SponsorsComponent,
     plateformeaboutComponent,
     FormsModule,
-  ]
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatCardModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
+    MatCheckboxModule,
+    MatInputModule,
+    MatButtonModule,
+  ],
 })
 export class FrontofficeModule {}
