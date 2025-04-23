@@ -90,7 +90,7 @@
 				<td>
 				  <a [routerLink]="['edit', article.id]" class="btn btn-sm btn-outline-warning me-1">✏️</a>
 				  <button class="btn btn-sm btn-outline-danger" (click)="deleteArticle(article.id)">🗑️</button>
-				  <button *ngIf="article.typeArticle === 'RESERVATION'" class="btn btn-sm btn-outline-info" [routerLink]="['/backoffice/articles', article.id, 'reservation']">
+				  <button *ngIf="article.typeArticle === 'RESERVATION'" class="btn btn-sm btn-outline-info" [routerLink]="['/backoffice/reservations/article', article.id]">
 					📅 Voir Réservations
 				  </button>
 				</td>

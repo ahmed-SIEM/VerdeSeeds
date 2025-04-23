@@ -22,27 +22,22 @@ export class ArticleService {
 
   constructor(private http: HttpClient) {}
 
-  // Récupérer tous les articles
   getArticles(): Observable<Article[]> {
     return this.http.get<Article[]>(this.apiUrl);
   }
 
-  // Récupérer un seul article par ID
   getArticleById(id: number): Observable<Article> {
     return this.http.get<Article>(`${this.apiUrl}/${id}`);
   }
 
-  // Supprimer un article
   deleteArticle(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  // Ajouter un article
   addArticle(article: Article): Observable<Article> {
     return this.http.post<Article>(this.apiUrl, article);
   }
 
-  // Modifier un article
   updateArticle(article: Article): Observable<Article> {
     return this.http.put<Article>(`${this.apiUrl}/${article.id}`, article).pipe(
       tap((updatedArticle) => {

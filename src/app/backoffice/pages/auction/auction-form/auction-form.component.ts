@@ -14,6 +14,7 @@ export class AuctionFormComponent implements OnInit {
   navigateToAuctions() {
     this.router.navigate(['/backoffice/auctions']);
   }
+  selectedArticleTitle: string = '';
   auctionForm: FormGroup;
   isEditMode = false;
   articleId?: number;
@@ -37,26 +38,31 @@ export class AuctionFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadArticle();
-    this.route.queryParams.subscribe(params => {
-      this.articleId = params['articleId'];
-    });
+  ;
 
     this.route.params.pipe(
       switchMap(params => {
-        if (params['articleId']) {
-          this.isEditMode = true;
-          return this.auctionService.getAuctionById(+params['articleId']);
-        }
-        return [null];
+      if (params['auctionId']) {
+        this.isEditMode = true;
+        return this.auctionService.getAuctionById(+params['auctionId']);
+      }
+      return [null];
       })
     ).subscribe(auction => {
       if (auction) {
-        this.auctionForm.patchValue({
-          startPrice: auction.startPrice,
-          startTime: new Date(auction.startTime).toISOString().substring(0, 16),
-          endTime: new Date(auction.endTime).toISOString().substring(0, 16),
-          active: auction.active
+      this.articleId = auction.articleId;
+      if (this.articleId !== undefined) {
+        this.articleService.getArticleById(this.articleId).subscribe((article) => {
+        this.selectedArticleTitle = article.title;
         });
+      }
+
+      this.auctionForm.patchValue({
+        startPrice: auction.startPrice,
+        startTime: new Date(auction.startTime).toISOString().substring(0, 16),
+        endTime: new Date(auction.endTime).toISOString().substring(0, 16),
+        active: auction.active
+      });
       }
     });
   }
@@ -64,8 +70,8 @@ export class AuctionFormComponent implements OnInit {
   loadArticle(): void {
     this.articleService.getArticles().subscribe({
       next: (data) => {
-        this.articles = data.filter((article: any) => !article.auction);
-        console.log('Articles:', this.articles);
+        this.articles = data.filter((article: any) => article.typeArticle === 'AUCTION' && !article.auction);
+        console.log('Auction Articles:', this.articles);
       },
       error: (error) => {
         console.error('Erreur lors de la récupération des articles', error);

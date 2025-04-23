@@ -1,1 +1,35 @@
-<p>reservation-list works!</p>
+<div class="container mt-4">
+    <h2>📅 Réservations {{ isFromArticle ? 'liées à l\'article n°' + articleId : '' }}</h2>
+  
+    <!-- Bouton Ajouter une réservation (visible uniquement si pas lié à un article) -->
+    <button *ngIf="!isFromArticle" (click)="goToAddReservation()" class="btn btn-primary mb-3">
+      ➕ Ajouter une réservation
+    </button>
+  
+    <!-- Tableau des réservations -->
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Date de début</th>
+          <th>Date de fin</th>
+          <th>Prix total</th>
+          <th>Statut</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let reservation of reservations">
+          <td>{{ reservation.id }}</td>
+          <td>{{ reservation.startDatetime | date:'short' }}</td>
+          <td>{{ reservation.endDatetime | date:'short' }}</td>
+          <td>{{ reservation.totalPrice }} €</td>
+          <td>{{ getReservationStatusIcon(reservation.status) }}</td>
+          <td>
+            <button (click)="goToEditReservation(reservation.id!)" class="btn btn-sm btn-warning me-1">✏️</button>
+            <button (click)="deleteReservation(reservation.id!)" class="btn btn-sm btn-danger">🗑️</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>

@@ -65,10 +65,10 @@ export class AuctionListComponent implements OnInit {
   }
 
   goToAddAuction(): void {
-    this.router.navigate([`/backoffice/auctions/create`]);  // Met à jour le chemin pour la création
+    this.router.navigate([`/backoffice/auctions/create`]);
   }
 
   goToEditAuction(auctionId: number): void {
-    this.router.navigate([`/backoffice/articles/${this.articleId}/auction/edit`]);  // Met à jour le chemin pour l'édition
+    this.router.navigate([`/backoffice/auctions/edit/${auctionId}`]);
   }
 }
