@@ -16,13 +16,7 @@ load_dotenv()
 
 app = Flask(__name__)
 # Update CORS configuration to be more specific
-CORS(app, resources={
-    r"/api/*": {
-        "origins": ["http://localhost:4200"],
-        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-        "allow_headers": ["Content-Type", "Authorization"]
-    }
-})
+CORS(app)
 
 # Client initializations
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
