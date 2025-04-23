@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { componentServcie } from 'src/app/services/plateforme/component.service';
 import { Router } from '@angular/router';
+import { CommonService } from 'src/app/services/common.service';
 
 type ComponentType = 'headerwithicons' | 'centeredhero' | 'herowithimage' | 'verticallycenteredhero' | 
                     'columnswithicons' | 'customcards' | 'headings' | 'headingleftwithimage' | 
@@ -11,6 +12,13 @@ interface ComponentPlatforme {
   name: string; // Added name field
   type: ComponentType;
   content: string;
+}
+
+interface output {
+  content: string;
+  type: string;
+  name: string;
+  description: string;
 }
 
 @Component({
@@ -40,10 +48,18 @@ export class ListComponent implements OnInit {
     plateformeabout: 0
   };
   topComponents: {type: ComponentType, count: number}[] = []; // Update the type definition
-  output : string = '';
+  output :  output = {
+    content: '',
+    type: '',
+    name: '',
+    description: ''
+  };
   isLoading: boolean = false;
-
-  constructor(private componentService: componentServcie, private router: Router) {}
+ userid = 1;
+ user: any[] = [];
+  constructor(
+    private commonservice: CommonService,
+    private componentService: componentServcie, private router: Router) {}
 
   categorizedComponents: Record<ComponentType, { name: string; preview: string }> = {
     headerwithicons: { name: 'Header with Icons', preview: '../../../../../assets/backoffice/img/preview-images/CustomHeaderWithIcons.png' },
@@ -62,9 +78,20 @@ export class ListComponent implements OnInit {
   toString(elemnt: any): string {
     return JSON.stringify(elemnt);
   }
+  loaduser() {
+    this.commonservice.getUserById(this.userid).subscribe({
+      next: (user) => {
+        this.user = user;
+      },
+      error: (error) => {
+        console.error('Error loading users:', error);
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.loadComponents();
+    this.loaduser();
     
   }
 
@@ -133,7 +160,6 @@ export class ListComponent implements OnInit {
         }))
         .sort((a, b) => b.count - a.count)
         .slice(0, 6); // Changed from 3 to 6 to show top 6 components
-      console.log(this.stats);
     });
   }
 
@@ -185,6 +211,7 @@ export class ListComponent implements OnInit {
 
       const result = await response.json();
       this.output = result;
+      this.output.content = JSON.stringify(this.output.content)
     } catch (error) {
       console.error('Error getting recommendation:', error);
     }
@@ -211,6 +238,22 @@ export class ListComponent implements OnInit {
     try {
       await this.generateRecommandation(componentType);
       console.log('Recommendation output:', this.output);
+
+      if(confirm(`Dont Forget To edit and add your own Images`)){
+        const newComponent: any = {
+          name: this.output.name,
+          type: this.output.type,
+          content: this.output.content,
+          user: this.user 
+        };
+
+        this.componentService.createComponent(newComponent).subscribe(() => {
+          this.loadComponents();
+        });
+      }
+    
+
+
     } catch (error) {
       console.error('Error:', error);
     } finally {

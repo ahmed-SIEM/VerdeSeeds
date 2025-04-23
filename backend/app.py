@@ -10,7 +10,7 @@ import os
 from dotenv import load_dotenv
 from openai import OpenAI
 import json
-
+import uuid
 # Load environment variables
 load_dotenv()
 
@@ -213,10 +213,10 @@ Rules:
 
         except json.JSONDecodeError:
             content_data = {"error": "Invalid response format", "raw": raw_content}
-
+        random_uuid = str(uuid.uuid4())
         # Create the final response
         formatted_response = {
-            "name": f"component_{component_type}",
+            "name": f"component_{component_type}_{random_uuid}",
             "type": component_type,
             "content": content_data,
         }
