@@ -167,19 +167,16 @@ export class ListComponent implements OnInit {
 
   }
 
-  async generateRecommandation(type : ComponentType): Promise<void> {
-   
+  async generateRecommandation(type: ComponentType): Promise<void> {
     try {
-      const formData = new FormData();
-     
-      formData.append("type", type);
-
-      // Wait for animation to play
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      const requestBody = JSON.stringify({ type });
 
       const response = await fetch("http://localhost:5000/recommend", {
         method: "POST",
-        body: formData,
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: requestBody
       });
 
       if (!response.ok) {
@@ -187,10 +184,9 @@ export class ListComponent implements OnInit {
       }
 
       const result = await response.json();
-      this.output = result
+      this.output = result;
     } catch (error) {
-      console.error('Error uploading image:', error);
-    } finally {
+      console.error('Error getting recommendation:', error);
     }
   }
 
