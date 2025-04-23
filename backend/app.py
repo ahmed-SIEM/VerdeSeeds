@@ -9,6 +9,7 @@ from groq import Groq
 import os
 from dotenv import load_dotenv
 from openai import OpenAI
+import json
 
 # Load environment variables
 load_dotenv()
@@ -81,35 +82,6 @@ def get_agriculture_response(input_text):
     except Exception as e:
         return f"Error: {e}"
 
-def get_recommendation(parameters):
-    try:
-        component_type = parameters.get('type')
-        if not component_type or component_type not in ELEMENTS_FIELDS:
-            return "Invalid component type"
-
-        prompt = f"""Generate a JSON component for an agricultural e-commerce website.
-Component type: {component_type}
-Required fields: {ELEMENTS_FIELDS[component_type]}
-Rules:
-- For image fields, use 'https://picsum.photos/200/300'
-- For icon fields, choose from: {AVAILABLE_ICONS}
-- Use agricultural-themed, professional, and catchy content
-- Return only the JSON object
-
-Generate content for all required fields."""
-
-        response = openrouter_client.chat.completions.create(
-            model="google/gemini-2.0-flash-exp:free",
-            messages=[{
-                "role": "user",
-                "content": [{"type": "text", "text": prompt}]
-            }]
-        )
-        
-        return response.choices[0].message.content.strip()
-    except Exception as e:
-        return f"Error: {e}"
-
 @app.route('/chat', methods=['POST'])
 def chat():
     data = request.json
@@ -135,8 +107,61 @@ def recommend():
         return jsonify({'error': 'Component type is required'}), 400
     
     try:
-        generated_component = get_recommendation(data)
-        return jsonify({'component': generated_component})
+        component_type = data['type']
+        if component_type not in ELEMENTS_FIELDS:
+            return jsonify({'error': 'Invalid component type'}), 400
+
+        prompt = f"""Generate ONE SINGLE agricultural e-commerce component with these fields: {ELEMENTS_FIELDS[component_type]}
+Rules:
+1. Return ONLY ONE item (not multiple)
+2. For image fields, use 'https://picsum.photos/200/300'
+3. For icon fields, choose from: {AVAILABLE_ICONS}
+4. Use agricultural-themed, professional content
+5. Return ONLY the JSON object without any markdown formatting
+6. Example format for headingrightwithimage:
+{{
+  "title": "Fresh Harvest",
+  "subtitle": "Premium quality produce",
+  "imageUrl": "https://picsum.photos/200/300"
+}}"""
+
+        response = openrouter_client.chat.completions.create(
+            model="google/gemini-2.0-flash-exp:free",
+            messages=[{
+                "role": "user",
+                "content": [{"type": "text", "text": prompt}]
+            }]
+        )
+        
+        # Clean the response
+        raw_content = response.choices[0].message.content.strip()
+        
+        # Remove markdown formatting if present
+        if raw_content.startswith('```json'):
+            raw_content = raw_content[7:-3].strip()
+        elif raw_content.startswith('```'):
+            raw_content = raw_content[3:-3].strip()
+        
+        # Parse JSON
+        try:
+            content_data = json.loads(raw_content)
+            
+            # If we got an array, take just the first item
+            if isinstance(content_data, list):
+                content_data = content_data[0]
+                
+        except json.JSONDecodeError:
+            content_data = {"error": "Invalid response format", "raw": raw_content}
+        
+        # Create the final response
+        formatted_response = {
+            "name": f"component_{component_type}",
+            "type": component_type,
+            "content": content_data
+        }
+        
+        return jsonify(formatted_response)
+
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
