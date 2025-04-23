@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { componentServcie } from 'src/app/services/plateforme/component.service';
 import { Router } from '@angular/router';
 
@@ -19,6 +19,7 @@ interface ComponentPlatforme {
   styleUrls: ['./list.component.css']
 })
 export class ListComponent implements OnInit {
+  @ViewChild('recommendationDialog') recommendationDialog!: ElementRef<HTMLDialogElement>;
   components: ComponentPlatforme[] = [];
   searchTerm: string = '';
   selectedPreviewImage: string = '';
@@ -40,6 +41,8 @@ export class ListComponent implements OnInit {
   };
   topComponents: {type: ComponentType, count: number}[] = []; // Update the type definition
   output : string = '';
+  isLoading: boolean = false;
+
   constructor(private componentService: componentServcie, private router: Router) {}
 
   categorizedComponents: Record<ComponentType, { name: string; preview: string }> = {
@@ -164,9 +167,7 @@ export class ListComponent implements OnInit {
 
   }
 
-
-
-  async generateColors(type : ComponentType): Promise<void> {
+  async generateRecommandation(type : ComponentType): Promise<void> {
    
     try {
       const formData = new FormData();
@@ -193,23 +194,31 @@ export class ListComponent implements OnInit {
     }
   }
 
+  openDialog() {
+    this.recommendationDialog.nativeElement.showModal();
+  }
 
+  closeDialog() {
+    this.recommendationDialog.nativeElement.close();
+  }
 
+  async startRecommendation(type: string): Promise<void> {
+    if (!type) {
+      alert('Please select a component type');
+      return;
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    const componentType = type as ComponentType;
+    this.closeDialog();
+    
+    this.isLoading = true;
+    try {
+      await this.generateRecommandation(componentType);
+      console.log('Recommendation output:', this.output);
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      this.isLoading = false;
+    }
+  }
 }
