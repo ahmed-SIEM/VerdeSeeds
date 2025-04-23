@@ -39,7 +39,7 @@ export class ListComponent implements OnInit {
     plateformeabout: 0
   };
   topComponents: {type: ComponentType, count: number}[] = []; // Update the type definition
-
+  output : string = '';
   constructor(private componentService: componentServcie, private router: Router) {}
 
   categorizedComponents: Record<ComponentType, { name: string; preview: string }> = {
@@ -163,4 +163,53 @@ export class ListComponent implements OnInit {
     }
 
   }
+
+
+
+  async generateColors(type : ComponentType): Promise<void> {
+   
+    try {
+      const formData = new FormData();
+     
+      formData.append("type", type);
+
+      // Wait for animation to play
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
+      const response = await fetch("http://localhost:5000/recommend", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+
+      const result = await response.json();
+      this.output = result
+    } catch (error) {
+      console.error('Error uploading image:', error);
+    } finally {
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
