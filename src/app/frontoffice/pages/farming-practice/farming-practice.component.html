@@ -1,68 +1,85 @@
-<div class="row">
-  <div class="col-12 col-sm-6 col-lg-4 mb-4" *ngFor="let formation of formations">
-    <div class="card shadow-sm h-100">
-      <!-- Image -->
-      <img
-        [src]="getImagePath(formation.photoPath)"
-        class="card-img-top"
-        alt="formation image"
-        *ngIf="formation.photoPath; else defaultImg"
-      />
-      <ng-template #defaultImg>
-        <img
-          src="assets/frontoffice/img/bg-img/placeholder.png"
-          class="card-img-top"
-          alt="Default image"
-        />
-      </ng-template>
+<div class="container my-5">
+  <!-- 🌿 Section filtre + recherche -->
+  <div class="row justify-content-center mb-5">
+    <div class="col-md-10 col-lg-8">
+      <div class="d-flex flex-wrap gap-3 justify-content-between align-items-center">
+        <!-- 🎛️ Filtrage -->
+        <div class="d-flex align-items-center gap-2 flex-grow-1" style="min-width: 220px;">
+          <label for="filterType" class="fw-semibold text-dark mb-0">Filtrer par type :</label>
+          <select id="filterType" class="form-select w-auto shadow-sm rounded-pill border-success"
+                  [(ngModel)]="selectedType" (change)="filterByType()">
+            <option value="ALL">✨ Tous les types</option>
+            <option *ngFor="let type of types" [value]="type">{{ type }}</option>
+          </select>
+        </div>
 
-      <!-- Infos principales -->
-      <div class="card-body text-center">
-        <h6 class="text-muted">{{ formation.typeFormation }}</h6>
-        <h5 class="text-success text-truncate" title="{{ formation.nom }}">{{ formation.nom }}</h5>
-        <p class="mb-1">📍 <span class="text-secondary">{{ formation.lieu }}</span></p>
-        <p>📅 Du {{ formation.dateDebut | date: 'dd/MM/yyyy' }} au {{ formation.dateFin | date: 'dd/MM/yyyy' }}</p>
-
-        <!-- ✅ Certification -->
-        <p *ngIf="formation.certification">
-          🏅 <strong>Formation Certifiante</strong><br />
-          ✅ <small>Note minimale : {{ formation.noteMinPourCertificat }}/20</small>
-        </p>
-        <p *ngIf="!formation.certification">
-          ❌ <em>Non certifiante</em>
-        </p>
-
-        <!-- ✅ Capacité -->
-        <p>
-          👥 <strong>Capacité :</strong> {{ formation.capacity }} personnes
-        </p>
-
-        <!-- Boutons -->
-        <div class="d-flex justify-content-center gap-2 mt-2 flex-wrap">
-          <a
-            *ngIf="formation.detailFormation"
-            [routerLink]="['/frontoffice/details', formation.idFormation]"
-            class="btn btn-outline-success btn-sm"
-          >
-            👁️ Voir Détails
-          </a>
-          <button class="btn btn-outline-primary btn-sm">🎓 Participer</button>
+        <!-- 🔍 Recherche -->
+        <div class="flex-grow-1" style="min-width: 220px;">
+          <input type="text"
+                 class="form-control rounded-pill shadow-sm border-success px-4 py-2"
+                 placeholder="Rechercher par nom..."
+                 [(ngModel)]="searchTerm"
+                 (input)="searchByName()" />
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Calendrier -->
-  <div class="col-12 text-center mt-4">
-    <button class="btn btn-success" (click)="showCalendarPopup()">
+  <!-- 🧩 Affichage des Formations -->
+  <div class="row">
+    <div class="col-12 col-sm-6 col-lg-4 mb-4" *ngFor="let formation of filteredFormations">
+      <div class="card h-100 shadow-sm border-0 rounded-4">
+        <!-- Image -->
+        <img [src]="getImagePath(formation.photoPath)" class="card-img-top rounded-top-4"
+             alt="Image de la formation" *ngIf="formation.photoPath; else defaultImg" />
+        <ng-template #defaultImg>
+          <img src="assets/frontoffice/img/bg-img/placeholder.png" class="card-img-top rounded-top-4"
+               alt="Image par défaut" />
+        </ng-template>
+
+        <!-- Contenu -->
+        <div class="card-body text-center">
+          <h6 class="text-uppercase text-muted small mb-2">{{ formation.typeFormation }}</h6>
+          <h5 class="text-success fw-bold mb-2 text-truncate" title="{{ formation.nom }}">{{ formation.nom }}</h5>
+          <p class="mb-1">📍 <span class="text-secondary">{{ formation.lieu }}</span></p>
+          <p>📅 Du {{ formation.dateDebut | date: 'dd/MM/yyyy' }} au {{ formation.dateFin | date: 'dd/MM/yyyy' }}</p>
+
+          <!-- Certification -->
+          <div *ngIf="formation.certification; else notCertified" class="text-success small">
+            🏅 Formation Certifiante<br />
+            ✅ Note minimale : {{ formation.noteMinPourCertificat }}/20
+          </div>
+          <ng-template #notCertified>
+            <div class="text-danger small">❌ Non certifiante</div>
+          </ng-template>
+
+          <!-- Capacité -->
+          <p class="mt-2 mb-1">👥 Capacité : {{ formation.capacity }} personnes</p>
+
+          <!-- Boutons -->
+          <div class="d-flex justify-content-center gap-2 mt-3 flex-wrap">
+            <a *ngIf="formation.detailFormation"
+               [routerLink]="['/frontoffice/details', formation.idFormation]"
+               class="btn btn-outline-success btn-sm px-3 rounded-pill">
+              👁️ Voir Détails
+            </a>
+            <button class="btn btn-outline-primary btn-sm px-3 rounded-pill">
+              🎓 Participer
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 📅 Calendrier -->
+  <div class="text-center mt-5">
+    <button class="btn btn-success btn-lg rounded-pill shadow" (click)="showCalendarPopup()">
       📅 Voir le Calendrier
     </button>
   </div>
 </div>
 
-<!-- Component du calendrier -->
-<app-calendar-popup
-  *ngIf="showCalendar"
-  [events]="calendarEvents"
+<app-calendar-popup *ngIf="showCalendar" [events]="calendarEvents"
   (closePopup)="showCalendar = false">
 </app-calendar-popup>

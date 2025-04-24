@@ -1,14 +1,356 @@
-.card-img-top {
-    height: 200px;
-    object-fit: cover;
-    border-bottom: 1px solid #eee;
+/* Base Styles */
+.farmie-container {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #2D3748;
+  background-color: #F8FAFC;
+  min-height: 100vh;
+}
+
+/* Premium Header */
+.farmie-header {
+  background: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+  padding: 1.5rem 0;
+  position: relative;
+  z-index: 10;
+}
+
+.navbar-brand {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+
+.farmie-logo {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #2F855A;
+  letter-spacing: 0.5px;
+}
+
+.farmie-subtitle {
+  font-size: 0.75rem;
+  color: #718096;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-top: 0.25rem;
+}
+
+.farmie-nav .nav-link {
+  color: #4A5568;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.farmie-nav .nav-link:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 1rem;
+  width: calc(100% - 2rem);
+  height: 2px;
+  background: #2F855A;
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.farmie-nav .nav-link:hover {
+  color: #2F855A;
+}
+
+.farmie-nav .nav-link:hover:after {
+  transform: scaleX(1);
+}
+
+/* Premium Filter Card */
+.farmie-filters {
+  padding: 2rem 0;
+}
+
+.filter-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.filter-group label {
+  font-weight: 500;
+  color: #4A5568;
+}
+
+.custom-select {
+  position: relative;
+  min-width: 180px;
+}
+
+.custom-select select {
+  appearance: none;
+  background: white;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  width: 100%;
+  font-size: 0.9375rem;
+  color: #2D3748;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.custom-select select:focus {
+  outline: none;
+  border-color: #2F855A;
+  box-shadow: 0 0 0 3px rgba(47, 133, 90, 0.1);
+}
+
+.select-arrow {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.search-group {
+  position: relative;
+  flex: 1;
+  min-width: 250px;
+}
+
+.search-group input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  transition: all 0.3s ease;
+}
+
+.search-group input:focus {
+  outline: none;
+  border-color: #2F855A;
+  box-shadow: 0 0 0 3px rgba(47, 133, 90, 0.1);
+}
+
+.search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Premium Formation Cards */
+.farmie-main {
+  padding: 2rem 0 4rem;
+}
+
+.formation-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2rem;
+}
+
+.formation-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.formation-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.card-image {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+}
+
+.card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.formation-card:hover .card-image img {
+  transform: scale(1.05);
+}
+
+.card-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #2F855A;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.card-content {
+  padding: 1.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-content h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1A202C;
+  margin-bottom: 1rem;
+}
+
+.card-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #4A5568;
+}
+
+.card-certification {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #2F855A;
+  background: rgba(47, 133, 90, 0.1);
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+
+.card-certification.not-certified {
+  color: #C53030;
+  background: rgba(197, 48, 48, 0.1);
+}
+
+.card-capacity {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #4A5568;
+  margin-bottom: 1.5rem;
+}
+
+.card-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: auto;
+}
+
+.btn-details {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #2F855A;
+  transition: all 0.3s ease;
+}
+
+.btn-details:hover {
+  background: rgba(47, 133, 90, 0.05);
+  border-color: #2F855A;
+}
+
+.btn-participate {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background: #2F855A;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.btn-participate:hover {
+  background: #276749;
+}
+
+/* Premium CTA */
+.farmie-cta {
+  padding: 2rem 0 4rem;
+  text-align: center;
+}
+
+.calendar-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 2rem;
+  background: #2F855A;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  color: white;
+  box-shadow: 0 4px 15px rgba(47, 133, 90, 0.3);
+  transition: all 0.3s ease;
+}
+
+.calendar-btn:hover {
+  background: #276749;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(47, 133, 90, 0.4);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .filter-card {
+    flex-direction: column;
+    align-items: stretch;
   }
   
-  .card h5 {
-    font-weight: bold;
+  .filter-group {
+    width: 100%;
   }
   
-  .gap-2 > * {
-    margin-right: 0.5rem;
+  .search-group {
+    width: 100%;
   }
   
+  .formation-grid {
+    grid-template-columns: 1fr;
+  }
+}
