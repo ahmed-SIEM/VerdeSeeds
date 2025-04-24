@@ -42,8 +42,7 @@ const routes: Routes = [
         },
         { 
           path: 'articles',
-          loadChildren: () => import('./pages/article/article.module')
-            .then(m => m.ArticleModule)
+          loadChildren: () => import('./pages/article/article.module').then(m => m.ArticleModule)
         },
         {
           path: 'auctions',
@@ -52,7 +51,11 @@ const routes: Routes = [
         {
           path: 'reservations',
           loadChildren: () => import('./pages/reservation/reservation.module').then(m => m.ReservationModule)
-        },        
+        }, 
+        { 
+          path: 'bids',
+          loadChildren: () => import('./pages/bids/bids.module').then(m => m.BidsModule)
+        },       
         { 
           path: 'platform',
           loadChildren: () => import('./pages/platform-management/platforme.module')

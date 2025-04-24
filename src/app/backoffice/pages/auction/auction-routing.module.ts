@@ -13,7 +13,7 @@ const routes: Routes = [
     component: AuctionFormComponent 
   },
   { 
-    path: 'edit/:auctionId', 
+    path: 'article/:articleId/edit/:auctionId', 
     component: AuctionFormComponent 
   },
   { 

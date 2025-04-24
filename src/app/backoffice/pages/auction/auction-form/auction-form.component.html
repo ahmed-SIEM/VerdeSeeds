@@ -6,15 +6,27 @@
       <div class="col-md-6">
         <label for="articleId" class="form-label">Article</label>
         <!-- Affiche le sélecteur d'article uniquement en mode création -->
-        <select *ngIf="!isEditMode" class="form-select" id="articleId" (change)="onArticleSelect($event)">
+        <select *ngIf="!isEditMode" 
+                class="form-select" 
+                id="articleId" 
+                formControlName="articleId"
+                [class.is-invalid]="auctionForm.get('articleId')?.invalid && auctionForm.get('articleId')?.touched">
           <option value="">Sélectionner un article</option>
-          <option *ngFor="let article of articles" [value]="article.id">
+          <option *ngFor="let article of availableArticles" [value]="article.id">
             {{article.title}}
           </option>
         </select>
-        <!-- Affiche le nom de l'article en mode modification -->
-        <div *ngIf="isEditMode" class="form-control" style="background-color: #f0f0f0;">
-          {{selectedArticleTitle}}
+        <!-- Message d'erreur pour la validation -->
+        <div class="invalid-feedback" *ngIf="auctionForm.get('articleId')?.invalid && auctionForm.get('articleId')?.touched">
+          Veuillez sélectionner un article
+        </div>
+        <!-- Message si aucun article disponible -->
+        <div *ngIf="!isEditMode && availableArticles.length === 0" class="alert alert-warning mt-2">
+          Aucun article disponible pour une enchère
+        </div>
+        <!-- Affiche uniquement le titre de l'article en mode modification -->
+        <div *ngIf="isEditMode" class="form-control">
+          <strong>{{ selectedArticleTitle || 'Chargement...' }}</strong>
         </div>
       </div>
     </div>
@@ -52,6 +64,16 @@
       <button type="submit" class="btn btn-primary" [disabled]="auctionForm.invalid">
         {{isEditMode ? 'Mettre à jour' : 'Créer'}}
       </button>
+    </div>
+
+    <!-- Débug info -->
+    <div *ngIf="isEditMode" class="mt-3">
+      <small class="text-muted">
+        Form valid: {{auctionForm.valid}} |
+        Start Price valid: {{auctionForm.get('startPrice')?.valid}} |
+        Start Time valid: {{auctionForm.get('startTime')?.valid}} |
+        End Time valid: {{auctionForm.get('endTime')?.valid}}
+      </small>
     </div>
   </form>
 </div>

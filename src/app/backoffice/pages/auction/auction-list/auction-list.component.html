@@ -26,11 +26,13 @@
           <td>{{ auction.endTime | date:'short' }}</td>
           <td>{{ auction.active ? '✅' : '❌' }}</td>
           <td>
-            <button (click)="goToEditAuction(auction.id!)" class="btn btn-sm btn-warning me-1">✏️</button>
+            <button class="btn btn-info btn-sm me-2" [routerLink]="['/backoffice/bids/article', articleId, 'auction', auction.id]">
+              👁️ Voir les Bids
+            </button>
+            <button *ngIf="isFromArticle" (click)="goToEditAuction(auction.id!)" class="btn btn-sm btn-warning me-1">✏️</button>
             <button (click)="deleteAuction(auction.id!)" class="btn btn-sm btn-danger">🗑️</button>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
-  

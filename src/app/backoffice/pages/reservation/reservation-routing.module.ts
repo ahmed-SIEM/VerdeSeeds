@@ -12,9 +12,9 @@ const routes: Routes = [
     path: 'create', 
     component: ReservationFormComponent 
   },
-  { 
-    path: 'edit/:reservationId', 
-    component: ReservationFormComponent 
+  {
+    path: 'article/:articleId/edit/:reservationId',
+    component: ReservationFormComponent
   },
   { 
     path: 'article/:articleId', 

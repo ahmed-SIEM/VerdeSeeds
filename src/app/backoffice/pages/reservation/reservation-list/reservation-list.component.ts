@@ -8,6 +8,26 @@ import { ReservationService, Reservation } from '../../article/services/reservat
   styleUrls: ['./reservation-list.component.css']
 })
 export class ReservationListComponent implements OnInit {
+  articleId?: number;
+  reservations: Reservation[] = [];
+  isFromArticle: boolean = false;
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private reservationService: ReservationService
+  ) {}
+
+  ngOnInit(): void {
+    const articleIdParam = this.route.snapshot.paramMap.get('articleId');
+    if (articleIdParam) {
+      this.articleId = +articleIdParam;
+      this.isFromArticle = true;
+      this.fetchReservationsByArticleId(this.articleId);
+    } else {
+      this.fetchAllReservations();
+    }
+  }
 
   getReservationStatusIcon(status: 'PENDING' | 'CONFIRMED' | 'CANCELLED'): string {
     switch (status) {
@@ -19,26 +39,6 @@ export class ReservationListComponent implements OnInit {
         return '❌ Annulée';
       default:
         return '❓ Inconnu';
-    }
-  }
-  
-  articleId!: number;
-  reservations: Reservation[] = [];
-  isFromArticle: boolean = false; // Indicateur pour savoir si on vient de la page article
-
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private reservationService: ReservationService
-  ) {}
-
-  ngOnInit(): void {
-    this.articleId = Number(this.route.snapshot.paramMap.get('articleId'));
-    if (this.articleId) {
-      this.isFromArticle = true;
-      this.fetchReservationsByArticle();
-    } else {
-      this.fetchAllReservations();
     }
   }
 
@@ -53,13 +53,13 @@ export class ReservationListComponent implements OnInit {
     });
   }
 
-  fetchReservationsByArticle(): void {
-    this.reservationService.getReservationsByArticle(this.articleId).subscribe({
+  fetchReservationsByArticleId(articleId: number): void {
+    this.reservationService.getReservationsByArticleId(articleId).subscribe({
       next: (data) => {
         this.reservations = data;
       },
       error: (error) => {
-        console.error('Erreur lors de la récupération des réservations', error);
+        console.error('Erreur lors de la récupération des réservations par article', error);
       }
     });
   }
@@ -68,7 +68,7 @@ export class ReservationListComponent implements OnInit {
     if (confirm('Voulez-vous vraiment supprimer cette réservation ?')) {
       this.reservationService.deleteReservation(id).subscribe({
         next: () => {
-          this.reservations = this.reservations.filter(reservation => reservation.id !== id);
+          this.reservations = this.reservations.filter(r => r.id !== id);
         },
         error: (error) => {
           console.error('Erreur lors de la suppression de la réservation', error);
@@ -82,6 +82,9 @@ export class ReservationListComponent implements OnInit {
   }
 
   goToEditReservation(reservationId: number): void {
-    this.router.navigate([`/backoffice/reservations/edit/${reservationId}`]);
+
+      this.router.navigate([`/backoffice/reservations/article/${this.articleId}/edit/${reservationId}`]);
+      console.log(`Navigating to edit reservation with ID ${reservationId} for article ID ${this.articleId}`);
+
   }
 }
