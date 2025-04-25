@@ -17,6 +17,7 @@ import { RegisterComponent } from './pages/auth/register/register.component';
 import { LoginComponent } from './pages/auth/login/login.component';
 import { ForgotPasswordComponent } from './pages/auth/forgot-password/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './pages/auth/reset-password/reset-password.component';
+import { CalendarComponent } from './pages/shop/calendar/calendar.component';
 
 
 const routes: Routes = [
@@ -35,6 +36,7 @@ const routes: Routes = [
       { path: 'newsdetails', component: NewsdetailsComponent },
       { path: 'ourproduct', component: OurproductComponent },
       { path: 'shop', component: ShopComponent },
+      { path: 'shop/article/:articleId/calendar', component: CalendarComponent },
       { path: 'Platforme', component: PlatformeComponent },
       { path: 'signup', component: RegisterComponent },
       { path: 'login', component: LoginComponent },

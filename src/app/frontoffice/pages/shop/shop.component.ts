@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Article, ArticleService } from '../../../backoffice/pages/article/services/article.service';
 
 @Component({
@@ -11,7 +12,10 @@ export class ShopComponent implements OnInit {
   displayedArticles: Article[] = [];
   currentFilter: 'all' | 'available' | 'unavailable' = 'all';
 
-  constructor(private articleService: ArticleService) {
+  constructor(
+    private articleService: ArticleService,
+    private router: Router
+  ) {
     console.log('ShopComponent constructed');
   }
 
@@ -62,5 +66,9 @@ export class ShopComponent implements OnInit {
       default:
         this.displayedArticles = [...this.articles];
     }
+  }
+
+  navigateToCalendar(articleId: string | number) {
+    this.router.navigate([`/frontoffice/shop/article/${articleId}/calendar`]);
   }
 }

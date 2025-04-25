@@ -30,7 +30,7 @@ import { ResetPasswordComponent } from './pages/auth/reset-password/reset-passwo
 
 // ✅ Mat & Calendar modules
 import { MatIconModule } from '@angular/material/icon';
-import { FullCalendarModule } from '@fullcalendar/angular'; // 📅 SUPER IMPORTANT
+import { FullCalendarModule } from '@fullcalendar/angular';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -55,6 +55,7 @@ import { SponsorsComponent } from './components/plateformeComps/others/sponsors/
 import { plateformeaboutComponent } from './components/plateformeComps/others/about/about.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DetailsformationComponent } from './pages/detailsformation/detailsformation.component';
+import { CalendarComponent } from './pages/shop/calendar/calendar.component';
 
 @NgModule({
   declarations: [
@@ -77,7 +78,8 @@ import { DetailsformationComponent } from './pages/detailsformation/detailsforma
     LoginComponent,
     RegisterComponent,
     ForgotPasswordComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    CalendarComponent
   ],
   imports: [
     CommonModule,
@@ -111,4 +113,4 @@ import { DetailsformationComponent } from './pages/detailsformation/detailsforma
     MatIconModule,
   ],
 })
-export class FrontofficeModule {}
+export class FrontofficeModule { }
