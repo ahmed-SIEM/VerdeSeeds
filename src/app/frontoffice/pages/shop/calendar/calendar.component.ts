@@ -17,7 +17,7 @@ export class CalendarComponent implements OnInit {
   articleTitle: string = '';
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
-    initialView: 'timeGridWeek',
+    initialView: 'dayGridMonth', // Changé de 'timeGridWeek' à 'dayGridMonth'
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',
@@ -31,7 +31,10 @@ export class CalendarComponent implements OnInit {
     selectMirror: true,
     dayMaxEvents: true,
     select: this.handleDateSelect.bind(this),
-    locale: 'fr'
+    locale: 'fr',
+    validRange: {
+      start: new Date().toISOString().split('T')[0] // Désactive les dates antérieures à aujourd'hui
+    }
   };
 
   constructor(
@@ -88,6 +91,13 @@ export class CalendarComponent implements OnInit {
   handleDateSelect(selectInfo: any) {
     const startDate = selectInfo.start;
     const endDate = selectInfo.end;
+    const now = new Date();
+    
+    // Vérification si la date sélectionnée est dans le passé
+    if (startDate < now) {
+      alert('Impossible de réserver une date dans le passé');
+      return;
+    }
     
     if (this.checkOverlap(startDate, endDate)) {
       alert('Cette plage horaire est déjà réservée');
@@ -101,7 +111,10 @@ export class CalendarComponent implements OnInit {
         status: 'PENDING'
       }).subscribe({
         next: () => this.loadReservations(),
-        error: (error) => console.error('Error creating reservation:', error)
+        error: (error) => {
+          console.error('Error creating reservation:', error);
+          alert('Erreur lors de la création de la réservation');
+        }
       });
     }
   }
