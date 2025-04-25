@@ -31,7 +31,6 @@ const routes: Routes = [
       { path: 'contact', component: ContactComponent },
       { path: 'farmingpractice', component: FarmingPracticeComponent },
       { path: 'details/:id', component: DetailsformationComponent },
-
       { path: 'news', component: NewsComponent },
       { path: 'newsdetails', component: NewsdetailsComponent },
       { path: 'ourproduct', component: OurproductComponent },

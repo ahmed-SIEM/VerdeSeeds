@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subject, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Article, ArticleService } from '../services/article.service';
 import { Router } from '@angular/router';
 
@@ -7,13 +9,42 @@ import { Router } from '@angular/router';
   templateUrl: './list-article.component.html',
   styleUrls: ['./list-article.component.css']
 })
-export class ListearticleComponent implements OnInit {
+export class ListearticleComponent implements OnInit, OnDestroy {
   articles: Article[] = [];
+  searchTerm: string = '';
+  private searchSubject = new Subject<string>();
+  private searchSubscription?: Subscription;
 
   constructor(
     private articleService: ArticleService,
     private router: Router
-  ) {}
+  ) {
+    this.setupSearch();
+  }
+
+  private setupSearch(): void {
+    this.searchSubscription = this.searchSubject.pipe(
+      debounceTime(300),
+      distinctUntilChanged()
+    ).subscribe(term => {
+      if (term.trim()) {
+        this.articleService.searchArticle(term).subscribe({
+          next: (results) => this.articles = results,
+          error: (err) => console.error('Erreur lors de la recherche:', err)
+        });
+      } else {
+        this.loadArticles();
+      }
+    });
+  }
+
+  onSearchInput(event: any): void {
+    this.searchSubject.next(event.target.value);
+  }
+
+  ngOnDestroy(): void {
+    this.searchSubscription?.unsubscribe();
+  }
 
   ngOnInit(): void {
     this.loadArticles();
