@@ -1,0 +1,17 @@
+<div class="modal-background">
+  <div class="modal-card">
+    <button class="btn-close" (click)="onCancel()">✖</button>
+
+    <h5 class="text-center mb-4">🎓 Confirmer votre participation ?</h5>
+    <div class="text-center mb-3">
+      <p><strong>Formation :</strong> {{ formation?.nom }}</p>
+      <p><strong>Lieu :</strong> {{ formation?.lieu }}</p>
+      <p><strong>Dates :</strong> {{ formation?.dateDebut | date:'dd/MM/yyyy' }} → {{ formation?.dateFin | date:'dd/MM/yyyy' }}</p>
+    </div>
+
+    <div class="d-flex justify-content-center gap-3">
+      <button class="btn btn-outline-secondary rounded-pill px-4" (click)="onCancel()">❌ Annuler</button>
+      <button class="btn btn-primary rounded-pill px-4" (click)="onConfirm()">✅ Oui, je confirme</button>
+    </div>
+  </div>
+</div>
