@@ -1,4 +1,5 @@
 <div class="container my-5">
+
   <!-- 🌿 Section filtre + recherche -->
   <div class="row justify-content-center mb-5">
     <div class="col-md-10 col-lg-8">
@@ -17,7 +18,7 @@
         <div class="flex-grow-1" style="min-width: 220px;">
           <input type="text"
                  class="form-control rounded-pill shadow-sm border-success px-4 py-2"
-                 placeholder="Rechercher par nom..."
+                 placeholder="🔍 Rechercher une formation..."
                  [(ngModel)]="searchTerm"
                  (input)="searchByName()" />
         </div>
@@ -29,6 +30,7 @@
   <div class="row">
     <div class="col-12 col-sm-6 col-lg-4 mb-4" *ngFor="let formation of filteredFormations">
       <div class="card h-100 shadow-sm border-0 rounded-4">
+
         <!-- Image -->
         <img [src]="getImagePath(formation.photoPath)" class="card-img-top rounded-top-4"
              alt="Image de la formation" *ngIf="formation.photoPath; else defaultImg" />
@@ -53,21 +55,73 @@
             <div class="text-danger small">❌ Non certifiante</div>
           </ng-template>
 
-          <!-- Capacité -->
-          <p class="mt-2 mb-1">👥 Capacité : {{ formation.capacity }} personnes</p>
+          <!-- Participants -->
+          <div class="d-flex justify-content-center align-items-center gap-2 my-2">
+            <i class="bi bi-people-fill fs-5 text-primary"></i>
+            <span class="fw-semibold">
+              {{ participantsCount[formation.idFormation] || 0 }} / {{ formation.capacity }} participants
+            </span>
+          </div>
 
-          <!-- Boutons -->
-          <div class="d-flex justify-content-center gap-2 mt-3 flex-wrap">
+          <!-- Barre de progression -->
+          <div class="progress rounded-pill mb-2" style="height: 8px;">
+            <div class="progress-bar" role="progressbar"
+                 [style.width.%]="((participantsCount[formation.idFormation] || 0) / formation.capacity) * 100"
+                 [ngClass]="{
+                   'bg-success': (participantsCount[formation.idFormation] || 0) / formation.capacity < 0.5,
+                   'bg-warning': (participantsCount[formation.idFormation] || 0) / formation.capacity >= 0.5 && (participantsCount[formation.idFormation] || 0) / formation.capacity < 0.8,
+                   'bg-danger': (participantsCount[formation.idFormation] || 0) / formation.capacity >= 0.8
+                 }">
+            </div>
+          </div>
+
+          <!-- Statut Dynamique Ultra Beau -->
+          <div class="mt-3">
+            <span *ngIf="formation._status === 'INSCRIT'" class="badge bg-gradient-success rounded-pill px-3 py-2 fs-6">
+              🎓 Inscrit avec succès
+            </span>
+            <span *ngIf="formation._status === 'WAITING'" class="badge bg-gradient-warning text-dark rounded-pill px-3 py-2 fs-6">
+              ⏳ Votre position en attente : <strong>#{{ formation._waitingPosition }}</strong>
+            </span>
+          </div>
+
+          <!-- Boutons d'action -->
+          <div class="d-flex justify-content-center gap-2 mt-4 flex-wrap">
             <a *ngIf="formation.detailFormation"
                [routerLink]="['/frontoffice/details', formation.idFormation]"
                class="btn btn-outline-success btn-sm px-3 rounded-pill">
               👁️ Voir Détails
             </a>
-            <button class="btn btn-outline-primary btn-sm px-3 rounded-pill">
-              🎓 Participer
-            </button>
+
+            <ng-container [ngSwitch]="formation._status">
+              <button *ngSwitchCase="'INSCRIT'" class="btn btn-danger btn-sm rounded-pill px-3"
+                      (click)="openCancelModal(formation._participationId, formation)">
+                ❌ Annuler participation
+              </button>
+
+              <button *ngSwitchCase="'WAITING'" class="btn btn-warning btn-sm rounded-pill px-3 text-dark"
+                      (click)="openCancelModal(formation._participationId, formation)">
+                ❌ Quitter la liste d'attente
+              </button>
+
+              <ng-container *ngSwitchDefault>
+                <button *ngIf="(participantsCount[formation.idFormation] || 0) < formation.capacity"
+                        class="btn btn-outline-primary btn-sm px-3 rounded-pill"
+                        (click)="openParticipationModal(formation)">
+                  🎓 Participer
+                </button>
+
+                <button *ngIf="(participantsCount[formation.idFormation] || 0) >= formation.capacity"
+                        class="btn btn-warning btn-sm rounded-pill px-3 text-dark"
+                        (click)="openWaitingListModal(formation)">
+                  ⏳ Rejoindre la liste d'attente
+                </button>
+              </ng-container>
+            </ng-container>
+
           </div>
         </div>
+
       </div>
     </div>
   </div>
@@ -78,8 +132,54 @@
       📅 Voir le Calendrier
     </button>
   </div>
+
 </div>
 
-<app-calendar-popup *ngIf="showCalendar" [events]="calendarEvents"
+<!-- Les Popups (restent les mêmes pour toi) -->
+<app-participation-modal *ngIf="modalVisible"
+  [formation]="selectedFormation"
+  [onConfirm]="confirmParticipation.bind(this)"
+  [onCancel]="closeParticipationModal.bind(this)">
+</app-participation-modal>
+
+<div class="modal-background" *ngIf="cancelModalVisible">
+  <div class="modal-card">
+    <h5 class="text-center mb-4">❌ Confirmer l'annulation ?</h5>
+    <div class="text-center mb-3">
+      <p><strong>Formation :</strong> {{ formationToCancel?.nom }}</p>
+      <p><strong>Lieu :</strong> {{ formationToCancel?.lieu }}</p>
+      <p><strong>Dates :</strong> {{ formationToCancel?.dateDebut | date:'dd/MM/yyyy' }} → {{ formationToCancel?.dateFin | date:'dd/MM/yyyy' }}</p>
+    </div>
+    <div class="d-flex justify-content-center gap-3">
+      <button class="btn btn-outline-secondary rounded-pill px-4" (click)="closeCancelModal()">🔙 Annuler</button>
+      <button class="btn btn-danger rounded-pill px-4" (click)="confirmCancel()">✅ Oui, annuler</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-background" *ngIf="waitingModalVisible">
+  <div class="modal-card">
+    <button class="btn-close" (click)="closeWaitingListModal()">✖</button>
+
+    <h5 class="text-center mb-4">⏳ Entrer en liste d'attente</h5>
+    <div class="text-center mb-3">
+      <p><strong>Formation :</strong> {{ selectedFormation?.nom }}</p>
+      <p><strong>Lieu :</strong> {{ selectedFormation?.lieu }}</p>
+      <p><strong>Dates :</strong> {{ selectedFormation?.dateDebut | date:'dd/MM/yyyy' }} → {{ selectedFormation?.dateFin | date:'dd/MM/yyyy' }}</p>
+      <p class="mt-4 fw-semibold">Votre position actuelle : 
+        <span class="badge bg-primary fs-5">{{ waitingPosition }}</span>
+      </p>
+    </div>
+
+    <div class="d-flex justify-content-center gap-3 mt-4">
+      <button class="btn btn-outline-secondary rounded-pill px-4" (click)="closeWaitingListModal()">❌ Annuler</button>
+      <button class="btn btn-primary rounded-pill px-4" (click)="confirmParticipation()">✅ Confirmer</button>
+    </div>
+  </div>
+</div>
+
+<!-- 📅 Popup Calendrier -->
+<app-calendar-popup *ngIf="showCalendar"
+  [events]="calendarEvents"
   (closePopup)="showCalendar = false">
 </app-calendar-popup>

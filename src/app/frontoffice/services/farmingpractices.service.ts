@@ -29,4 +29,5 @@ export class FormationService {
   getFormationsForCalendar(): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}/calendar`);
   }
+  
 }

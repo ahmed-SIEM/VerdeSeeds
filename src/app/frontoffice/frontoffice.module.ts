@@ -55,6 +55,8 @@ import { SponsorsComponent } from './components/plateformeComps/others/sponsors/
 import { plateformeaboutComponent } from './components/plateformeComps/others/about/about.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DetailsformationComponent } from './pages/detailsformation/detailsformation.component';
+import { ParticipationModalComponent } from './pages/participation-modal/participation-modal.component';
+
 
 @NgModule({
   declarations: [
@@ -77,7 +79,8 @@ import { DetailsformationComponent } from './pages/detailsformation/detailsforma
     LoginComponent,
     RegisterComponent,
     ForgotPasswordComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    ParticipationModalComponent
   ],
   imports: [
     CommonModule,
@@ -109,6 +112,7 @@ import { DetailsformationComponent } from './pages/detailsformation/detailsforma
     MatInputModule,
     MatButtonModule,
     MatIconModule,
+ 
   ],
 })
 export class FrontofficeModule {}
