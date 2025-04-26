@@ -55,6 +55,7 @@ import { SponsorsComponent } from './components/plateformeComps/others/sponsors/
 import { plateformeaboutComponent } from './components/plateformeComps/others/about/about.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DetailsformationComponent } from './pages/detailsformation/detailsformation.component';
+import { UserProfileComponent } from './pages/auth/user-profile/user-profile.component';
 
 @NgModule({
   declarations: [
@@ -77,7 +78,8 @@ import { DetailsformationComponent } from './pages/detailsformation/detailsforma
     LoginComponent,
     RegisterComponent,
     ForgotPasswordComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    UserProfileComponent
   ],
   imports: [
     CommonModule,
