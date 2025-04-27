@@ -15,6 +15,7 @@ import uuid
 load_dotenv()
 
 app = Flask(__name__)
+# Update CORS configuration to be more specific
 CORS(app)
 
 # Client initializations
@@ -186,7 +187,7 @@ Rules:
 {{
   "title": "Fresh Harvest",
   "subtitle": "Premium quality produce",
-  "imageUrl": "https://picsum.photos/200/300"
+  "imageUrl": "httphttps://picsum.photos/200/300"
 }}"""
 
         response = openrouter_client.chat.completions.create(

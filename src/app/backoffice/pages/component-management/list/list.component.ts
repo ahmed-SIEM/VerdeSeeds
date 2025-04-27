@@ -142,8 +142,9 @@ export class ListComponent implements OnInit {
     this.router.navigate(['/backoffice/component', component.id, 'edit']);
   }
 
-  previewComponent(component: ComponentPlatforme): void {
-    this.selectedPreviewImage = this.categorizedComponents[component.type].preview;
+  PreviewComponent(id: any): void {
+    this.router.navigate(['/backoffice/component', id]);
+
   }
 
   addComponent(): void {
