@@ -59,6 +59,8 @@ import { CalendarComponent } from './pages/shop/calendar/calendar.component';
 import { ArticleAuctionComponent } from './pages/article-auction/article-auction.component';
 import { BidslistComponent } from './pages/auctionbids/bidslist/bidslist.component';
 import { BidsformComponent } from './pages/auctionbids/bidsform/bidsform.component';
+import { ParticipationModalComponent } from './pages/participation-modal/participation-modal.component';
+
 
 @NgModule({
   declarations: [
@@ -87,6 +89,7 @@ import { BidsformComponent } from './pages/auctionbids/bidsform/bidsform.compone
     BidslistComponent,
     BidsformComponent,
     
+    ParticipationModalComponent
   ],
   imports: [
     CommonModule,
@@ -118,6 +121,7 @@ import { BidsformComponent } from './pages/auctionbids/bidsform/bidsform.compone
     MatInputModule,
     MatButtonModule,
     MatIconModule,
+ 
   ],
 })
 export class FrontofficeModule { }
