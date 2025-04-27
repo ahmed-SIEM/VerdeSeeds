@@ -1,0 +1,110 @@
+<div class="container mt-4">
+  <h2>{{isEditMode ? 'Modifier' : 'Créer'}} une enchère</h2>
+
+  <form [formGroup]="auctionForm" (ngSubmit)="onSubmit()">
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="articleId" class="form-label">Article</label>
+        <!-- Affiche le sélecteur d'article uniquement en mode création -->
+        <select *ngIf="!isEditMode" 
+                class="form-select" 
+                id="articleId" 
+                formControlName="articleId"
+                (change)="onArticleSelect($event)"
+                [class.is-invalid]="auctionForm.get('articleId')?.invalid && auctionForm.get('articleId')?.touched">
+          <option value="">Sélectionner un article</option>
+          <option *ngFor="let article of availableArticles" [value]="article.id">
+            {{article.title}}
+          </option>
+        </select>
+        <!-- Message d'erreur pour la validation -->
+        <div class="invalid-feedback" *ngIf="auctionForm.get('articleId')?.invalid && auctionForm.get('articleId')?.touched">
+          Veuillez sélectionner un article
+        </div>
+        <!-- Message si aucun article disponible -->
+        <div *ngIf="!isEditMode && availableArticles.length === 0" class="alert alert-warning mt-2">
+          Aucun article disponible pour une enchère
+        </div>
+        <!-- Affiche uniquement le titre de l'article en mode modification -->
+        <div *ngIf="isEditMode" class="form-control">
+          <strong>{{ selectedArticleTitle || 'Chargement...' }}</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="startPrice" class="form-label">Prix de départ</label>
+        <div class="input-group">
+          <input type="number" 
+                 class="form-control" 
+                 id="startPrice" 
+                 formControlName="startPrice" 
+                 step="0.01"
+                 [class.is-invalid]="auctionForm.get('startPrice')?.invalid && auctionForm.get('startPrice')?.touched">
+          <span class="input-group-text">€</span>
+          <div class="invalid-feedback" *ngIf="auctionForm.get('startPrice')?.errors?.['belowArticlePrice']">
+            Le prix de départ ne peut pas être inférieur au prix de l'article ({{minimumPrice}} €)
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="startTime" class="form-label">Date de début</label>
+        <input type="datetime-local" 
+               class="form-control" 
+               id="startTime" 
+               formControlName="startTime"
+               [class.is-invalid]="auctionForm.get('startTime')?.invalid && auctionForm.get('startTime')?.touched">
+        <div class="invalid-feedback" *ngIf="auctionForm.get('startTime')?.errors?.['required'] && auctionForm.get('startTime')?.touched">
+          La date de début est requise
+        </div>
+        <div class="invalid-feedback" *ngIf="auctionForm.get('startTime')?.errors?.['pastDate'] && auctionForm.get('startTime')?.touched">
+          La date de début doit être supérieure à la date actuelle
+        </div>
+      </div>
+      <div class="col-md-6">
+        <label for="endTime" class="form-label">Date de fin</label>
+        <input type="datetime-local" 
+               class="form-control" 
+               id="endTime" 
+               formControlName="endTime"
+               [class.is-invalid]="(auctionForm.get('endTime')?.invalid || auctionForm.errors?.['invalidDateRange']) && auctionForm.get('endTime')?.touched">
+        <div class="invalid-feedback" *ngIf="auctionForm.get('endTime')?.errors?.['required'] && auctionForm.get('endTime')?.touched">
+          La date de fin est requise
+        </div>
+        <div class="invalid-feedback" *ngIf="auctionForm.errors?.['invalidDateRange'] && auctionForm.get('endTime')?.touched">
+          La date de fin doit être supérieure à la date de début
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-3 form-check">
+      <input type="checkbox" class="form-check-input" id="active" formControlName="active">
+      <label class="form-check-label" for="active">Enchère active</label>
+    </div>
+
+    <div class="d-flex justify-content-end gap-2">
+      <button type="button" class="btn btn-secondary" (click)="navigateToAuctions()">
+        Annuler
+      </button>
+      <button type="submit" 
+              class="btn btn-primary" 
+              [disabled]="!auctionForm.valid || startPriceBelowMinimum()">
+        {{isEditMode ? 'Mettre à jour' : 'Créer'}}
+      </button>
+    </div>
+
+    <!-- Débug info -->
+    <div *ngIf="isEditMode" class="mt-3">
+      <small class="text-muted">
+        Form valid: {{auctionForm.valid}} |
+        Start Price valid: {{auctionForm.get('startPrice')?.valid}} |
+        Start Time valid: {{auctionForm.get('startTime')?.valid}} |
+        End Time valid: {{auctionForm.get('endTime')?.valid}}
+      </small>
+    </div>
+  </form>
+</div>

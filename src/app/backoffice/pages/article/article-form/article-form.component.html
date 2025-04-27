@@ -1,0 +1,88 @@
+<div class="app-wrapper">
+  <div class="container-xl mt-4">
+    <h1 class="app-page-title">🛠️ Gestion de l'article</h1>
+
+    <form (ngSubmit)="onSubmit()" #articleForm="ngForm" class="mt-4">
+      <!-- Titre -->
+      <div class="mb-3">
+        <label for="title" class="form-label">Nom</label>
+        <input type="text" id="title" class="form-control" [(ngModel)]="article.title" name="title"
+          required minlength="3" maxlength="100" #titleField="ngModel" />
+        <div *ngIf="titleField.invalid && titleField.touched" class="text-danger">
+          <div *ngIf="titleField.errors?.['required']">Le titre est requis.</div>
+          <div *ngIf="titleField.errors?.['minlength']">Le titre doit faire au moins 3 caractères.</div>
+          <div *ngIf="titleField.errors?.['maxlength']">Le titre ne peut pas dépasser 100 caractères.</div>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea id="description" class="form-control" [(ngModel)]="article.description" name="description"
+          rows="4" required minlength="10" maxlength="500" #descField="ngModel"></textarea>
+        <div *ngIf="descField.invalid && descField.touched" class="text-danger">
+          <div *ngIf="descField.errors?.['required']">La description est requise.</div>
+          <div *ngIf="descField.errors?.['minlength']">Minimum 10 caractères.</div>
+          <div *ngIf="descField.errors?.['maxlength']">Maximum 500 caractères.</div>
+        </div>
+      </div>
+
+      <!-- Image -->
+      <div class="mb-3">
+        <label for="imageUrl" class="form-label">URL de l'image</label>
+        <input type="text" id="imageUrl" class="form-control" [(ngModel)]="article.imageUrl" name="imageUrl"
+          required #imgField="ngModel" />
+        <div *ngIf="imgField.invalid && imgField.touched" class="text-danger">
+          L'URL de l'image est requise.
+        </div>
+      </div>
+
+      <!-- Type d'article -->
+      <div class="mb-3">
+        <label for="typeArticle" class="form-label">Type d'article</label>
+        <select id="typeArticle" class="form-select" [(ngModel)]="article.typeArticle" name="typeArticle"
+          required #typeField="ngModel">
+          <option [ngValue]="'RESERVATION'">Réservation</option>
+          <option [ngValue]="'AUCTION'">Enchère</option>
+        </select>
+        <div *ngIf="typeField.invalid && typeField.touched" class="text-danger">
+          Le type d'article est requis.
+        </div>
+      </div>
+
+      <!-- Prix par heure -->
+      <div class="mb-3" *ngIf="article.typeArticle === 'RESERVATION'">
+        <label for="pricePerHour" class="form-label">Prix par heure</label>
+        <input type="number" id="pricePerHour" class="form-control" [(ngModel)]="article.pricePerHour"
+          name="pricePerHour" required min="0" #pphField="ngModel" />
+        <div *ngIf="pphField.invalid && pphField.touched" class="text-danger">
+          <div *ngIf="pphField.errors?.['required']">Le prix par heure est requis.</div>
+          <div *ngIf="pphField.errors?.['min']">Le prix doit être positif.</div>
+        </div>
+      </div>
+
+      <!-- Prix fixe -->
+      <div class="mb-3" *ngIf="article.typeArticle === 'AUCTION'">
+        <label for="prix" class="form-label">Prix de départ</label>
+        <input type="number" id="prix" class="form-control" [(ngModel)]="article.prix" name="prix"
+          required min="0" #prixField="ngModel" />
+        <div *ngIf="prixField.invalid && prixField.touched" class="text-danger">
+          <div *ngIf="prixField.errors?.['required']">Le prix est requis.</div>
+          <div *ngIf="prixField.errors?.['min']">Le prix doit être positif ou nul.</div>
+        </div>
+      </div>
+
+      <!-- Disponible -->
+      <div class="mb-3">
+        <label for="isAvailable" class="form-check-label">Disponible</label>
+        <input type="checkbox" id="isAvailable" class="form-check-input" [(ngModel)]="article.isAvailable"
+          name="isAvailable" />
+      </div>
+
+      <!-- Bouton de soumission -->
+      <button type="submit" class="btn btn-primary" [disabled]="articleForm.invalid">
+        {{ isEdit ? 'Modifier' : 'Ajouter' }}
+      </button>
+    </form>
+  </div>
+</div>

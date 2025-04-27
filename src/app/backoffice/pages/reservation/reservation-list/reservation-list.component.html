@@ -1,0 +1,46 @@
+<div class="app-wrapper">
+  <div class="container-xl mt-4">
+    <h1 class="app-page-title">
+      📅 Réservations 
+      <span *ngIf="isFromArticle">liées à l'article n°{{ articleId }}</span>
+    </h1>
+
+    <!-- Bouton Ajouter une réservation (visible uniquement si pas lié à un article) -->
+    <div class="mb-3 text-end" *ngIf="!isFromArticle">
+      <button (click)="goToAddReservation()" class="btn btn-sm btn-primary">
+        ➕ Ajouter une réservation
+      </button>
+    </div>
+
+    <!-- Carte contenant le tableau des réservations -->
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <table class="table table-striped table-hover text-center align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>ID</th>
+              <th>Date de début</th>
+              <th>Date de fin</th>
+              <th>Prix total</th>
+              <th>Statut</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let reservation of reservations">
+              <td>{{ reservation.id }}</td>
+              <td>{{ reservation.startDatetime | date:'short' }}</td>
+              <td>{{ reservation.endDatetime | date:'short' }}</td>
+              <td>{{ reservation.totalPrice }} €</td>
+              <td>{{ getReservationStatusIcon(reservation.status) }}</td>
+              <td>
+                <button *ngIf="isFromArticle" (click)="goToEditReservation(reservation.id!)" class="btn btn-sm btn-outline-warning me-1">✏️</button>
+                <button (click)="deleteReservation(reservation.id!)" class="btn btn-sm btn-outline-danger">🗑️</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

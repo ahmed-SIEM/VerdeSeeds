@@ -1,0 +1,57 @@
+<div class="container mt-4">
+  <div class="row">
+    <!-- Article Details -->
+    <div class="col-md-4" *ngIf="article">
+      <div class="card">
+        <img [src]="article.imageUrl" class="card-img-top" [alt]="article.title">
+        <div class="card-body">
+          <h5 class="card-title">{{article.title}}</h5>
+          <p class="card-text">{{article.description}}</p>
+          <p class="text-primary">Prix initial: {{article.prix}} TND</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bids Section -->
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h4>Enchères</h4>
+        </div>
+        <div class="card-body">
+          <!-- Place Bid Form -->
+          <form (ngSubmit)="placeBid()" class="mb-4">
+            <div class="input-group">
+              <input type="number" 
+                     class="form-control" 
+                     [(ngModel)]="newBidAmount" 
+                     name="newBidAmount"
+                     placeholder="Montant de l'enchère">
+              <button type="submit" class="btn btn-primary">
+                Placer l'enchère
+              </button>
+            </div>
+          </form>
+
+          <!-- Bids List -->
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Montant</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let bid of bids">
+                  <td>{{bid.bidAmount}} TND</td>
+                  <td>{{bid.bidTime | date:'medium'}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
