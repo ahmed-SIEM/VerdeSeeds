@@ -2,9 +2,17 @@
 
   <div class="app-wrapper">
 
-      <div class="Main">
-          <ng-container #dynamicContainer></ng-container>
+
+
+
+    <div class="Main">
+
+      <div class="color-picker-container">
+        <input type="color" [value]="colorValue" (input)="onColorChange($event)" class="color-picker">
       </div>
+      
+      <ng-container #dynamicContainer></ng-container>
+    </div>
 
 
 

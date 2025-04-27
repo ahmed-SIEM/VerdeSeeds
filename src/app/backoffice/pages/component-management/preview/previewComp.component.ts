@@ -36,6 +36,12 @@ export class PreviewCompComponent implements OnInit, AfterViewInit {
   color = new BehaviorSubject<string>("#273F4F");
   colorValue = "#273F4F";
 
+  onColorChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.color.next(input.value);
+    this.loadSingleComponent();
+  }
+
   constructor(
     private componentService: componentServcie,
     private route: ActivatedRoute,
