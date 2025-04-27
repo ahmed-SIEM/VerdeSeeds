@@ -1,0 +1,34 @@
+.content{
+    display: flex;
+
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+
+
+}
+
+.app-wrapper {
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+.preview-container {
+  width: 100%;
+  background-color: white;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+}
+
+.component-preview-wrapper {
+  margin-bottom: 3rem;
+}
+
+pre {
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid #e9ecef;
+}
+
+.preview-header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}

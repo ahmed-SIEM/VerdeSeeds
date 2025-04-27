@@ -187,7 +187,7 @@ Rules:
 {{
   "title": "Fresh Harvest",
   "subtitle": "Premium quality produce",
-  "imageUrl": "https://picsum.photos/200/300"
+  "imageUrl": "httphttps://picsum.photos/200/300"
 }}"""
 
         response = openrouter_client.chat.completions.create(
