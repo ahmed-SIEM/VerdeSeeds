@@ -1,0 +1,135 @@
+<div class="auth-container">
+  <!-- Animated background -->
+  <div class="auth-bg">
+    <div class="bg-bubble bubble-1"></div>
+    <div class="bg-bubble bubble-2"></div>
+    <div class="bg-bubble bubble-3"></div>
+    <div class="bg-bubble bubble-4"></div>
+  </div>
+
+  <!-- Flash message -->
+  <div *ngIf="flashMessage" class="modern-flash-toast">
+    <div class="flash-content">
+      <div class="flash-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+        </svg>
+      </div>
+      <div class="flash-text">
+        <p class="flash-title">Check your inbox</p>
+        <p class="flash-subtitle">An email has been sent to verify your account.</p>
+      </div>
+      <button class="flash-close" (click)="flashMessage = ''" title="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="auth-card-container">
+    <div class="auth-card">
+      <!-- Logo and header -->
+      <div class="auth-header">
+        <a [routerLink]="['/dashboard']" class="auth-logo">
+          <img src="/assets/images/logo.svg" alt="Logo">
+        </a>
+        <h2>Create your account</h2>
+        <p>Join our community today</p>
+      </div>
+
+      <!-- Social login buttons -->
+      <div class="social-login">
+        <button mat-stroked-button class="social-btn google-btn">
+          <img src="/assets/images/svgs/google-icon.svg" alt="Google">
+          <span>Continue with Google</span>
+        </button>
+        <button mat-stroked-button class="social-btn facebook-btn">
+          <img src="/assets/images/svgs/facebook-icon.svg" alt="Facebook">
+          <span>Continue with Facebook</span>
+        </button>
+      </div>
+
+      <!-- Divider -->
+      <div class="divider">
+        <span>OR</span>
+      </div>
+
+      <!-- Registration form -->
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="auth-form">
+        <!-- Name fields in a row -->
+        <div class="form-row">
+          <mat-form-field appearance="fill" class="form-field">
+            <mat-label>First Name</mat-label>
+            <input matInput formControlName="prenom" placeholder="John">
+            <mat-icon matPrefix>person_outline</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="form-field">
+            <mat-label>Last Name</mat-label>
+            <input matInput formControlName="nom" placeholder="Doe">
+          </mat-form-field>
+        </div>
+
+        <!-- Email field -->
+        <mat-form-field appearance="fill" class="form-field">
+          <mat-label>Email Address</mat-label>
+          <input matInput type="email" formControlName="email" placeholder="your@email.com">
+          <mat-icon matPrefix>mail_outline</mat-icon>
+        </mat-form-field>
+
+        <!-- Password field with strength meter -->
+        <mat-form-field appearance="fill" class="form-field">
+          <mat-label>Password</mat-label>
+          <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" placeholder="••••••••">
+          <mat-icon matPrefix>lock_outline</mat-icon>
+          <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
+            <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+        </mat-form-field>
+
+        <!-- Password strength indicator -->
+        <div *ngIf="registerForm.get('password')?.value" class="password-strength">
+          <div class="strength-meter">
+            <div class="strength-bar" [ngClass]="'strength-' + passwordStrength"></div>
+          </div>
+          <div class="strength-label">
+            Password strength: <span [class]="'text-' + passwordStrength">{{ passwordStrength | titlecase }}</span>
+          </div>
+        </div>
+
+        <!-- Phone and address -->
+        <div class="form-row">
+          <mat-form-field appearance="fill" class="form-field">
+            <mat-label>Phone Number</mat-label>
+            <input matInput formControlName="telephone" placeholder="+1 (___) ___-____">
+            <mat-icon matPrefix>phone</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="form-field">
+            <mat-label>Address</mat-label>
+            <input matInput formControlName="adresse" placeholder="Your address">
+            <mat-icon matPrefix>home</mat-icon>
+          </mat-form-field>
+        </div>
+
+        <!-- Submit button -->
+        <button mat-raised-button color="primary" class="submit-btn" type="submit" [disabled]="registerForm.invalid || isLoading">
+          <span *ngIf="!isLoading">Create Account</span>
+          <mat-spinner *ngIf="isLoading" diameter="24"></mat-spinner>
+        </button>
+
+        <!-- Error message -->
+        <div *ngIf="errorMessage" class="error-message">
+          <mat-icon>error_outline</mat-icon>
+          <span>{{ errorMessage }}</span>
+        </div>
+      </form>
+
+      <!-- Login link -->
+      <div class="auth-footer">
+        Already have an account? <a [routerLink]="['/frontoffice/login']" class="auth-link">Sign in</a>
+      </div>
+    </div>
+  </div>
+</div>
