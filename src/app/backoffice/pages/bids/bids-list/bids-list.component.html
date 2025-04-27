@@ -1,0 +1,29 @@
+<div class="container mt-4">
+  <h2>🔨 {{isFromAuction ? 'Enchères pour l\'auction n°' + auctionId : 'Toutes les enchères'}}</h2>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Montant</th>
+          <th>Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let bid of bids">
+          <td>{{bid.id}}</td>
+          <td>{{bid.bidAmount}} €</td>
+          <td>{{bid.bidTime | date:'medium'}}</td>
+          <td>
+            <button (click)="deleteBid(bid.id!)" class="btn btn-danger btn-sm">🗑️</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="bids.length === 0" class="alert alert-info">
+    Aucun Bid trouvée.
+  </div>
+</div>
