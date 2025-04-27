@@ -6,7 +6,9 @@ export interface Bid {
   id?: number;
   bidAmount: number;
   bidTime: Date;
-  auctionId: number;
+  auction: {
+    id: number;
+  };
 }
 
 @Injectable({
@@ -27,10 +29,13 @@ export class BidsService {
 
   createBid(auctionId: number, bidData: Partial<Bid>): Observable<Bid> {
     const payload = {
-      ...bidData,
-      auctionId: auctionId
+      bidAmount: bidData.bidAmount,
+      bidTime: bidData.bidTime,
+      auction: {
+        id: auctionId
+      }
     };
-    return this.http.post<Bid>(`${this.apiUrl}/auction/${auctionId}`, payload);
+    return this.http.post<Bid>(`${this.apiUrl}`, payload);
   }
 
   updateBid(id: number, auctionId: number, bidData: Partial<Bid>): Observable<Bid> {

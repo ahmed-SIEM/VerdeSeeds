@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuctionService } from '../../article/services/auction.service';
 import { switchMap } from 'rxjs/operators';
@@ -26,6 +26,7 @@ export class AuctionFormComponent implements OnInit {
   articles: any[] = [];
   selectedArticleId: number = 0;
   availableArticles: any[] = [];
+  minimumPrice: number = 0;
 
   constructor(
     private fb: FormBuilder,
@@ -35,12 +36,65 @@ export class AuctionFormComponent implements OnInit {
     private router: Router
   ) {
     this.auctionForm = this.fb.group({
-      articleId: [''],  // Retiré la validation required
-      startPrice: ['', [Validators.required, Validators.min(0)]],
-      startTime: ['', Validators.required],
-      endTime: ['', Validators.required],
+      articleId: [''],
+      startPrice: ['', [Validators.required, Validators.min(0), this.startPriceValidator()]],
+      startTime: ['', [Validators.required, this.startDateValidator()]],
+      endTime: ['', [Validators.required]],
       active: [true]
-    });
+    }, { validators: this.dateRangeValidator.bind(this) });
+  }
+
+  // Fonction utilitaire pour normaliser les dates à la minute près
+  private normalizeToMinute(date: Date): Date {
+    const normalized = new Date(date);
+    normalized.setSeconds(0, 0); // Met les secondes et millisecondes à 0
+    return normalized;
+  }
+
+  // Validateur pour la date de début
+  private startDateValidator() {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (!control.value) {
+        return null;
+      }
+      const startDate = this.normalizeToMinute(new Date(control.value));
+      const now = this.normalizeToMinute(new Date());
+      
+      if (startDate < now) {
+        return { 'pastDate': true };
+      }
+      return null;
+    };
+  }
+
+  // Ajout du validateur pour le prix de départ
+  private startPriceValidator() {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (!control.value) {
+        return null;
+      }
+      const startPrice = +control.value;
+      if (startPrice < this.minimumPrice) {
+        return { 'belowArticlePrice': true };
+      }
+      return null;
+    };
+  }
+
+  // Validateur pour comparer les dates
+  private dateRangeValidator(group: AbstractControl): ValidationErrors | null {
+    const startTime = group.get('startTime')?.value;
+    const endTime = group.get('endTime')?.value;
+
+    if (startTime && endTime) {
+      const startDate = this.normalizeToMinute(new Date(startTime));
+      const endDate = this.normalizeToMinute(new Date(endTime));
+
+      if (endDate <= startDate) {
+        return { 'invalidDateRange': true };
+      }
+    }
+    return null;
   }
 
   ngOnInit(): void {
@@ -82,11 +136,11 @@ export class AuctionFormComponent implements OnInit {
           this.loadArticleDetails(this.articleId);
         }
 
-        // Mettre à jour le formulaire
+        // Mettre à jour le formulaire en ajustant pour le timezone local
         this.auctionForm.patchValue({
           startPrice: auction.startPrice,
-          startTime: new Date(auction.startTime).toISOString().substring(0, 16),
-          endTime: new Date(auction.endTime).toISOString().substring(0, 16),
+          startTime: new Date(auction.startTime).toISOString().slice(0, 16),
+          endTime: new Date(auction.endTime).toISOString().slice(0, 16),
           active: auction.active
         });
 
@@ -138,24 +192,48 @@ export class AuctionFormComponent implements OnInit {
   }
 
   onArticleSelect(event: any): void {
-    this.selectedArticleId = parseInt(event.target.value);
+    const selectedArticleId = parseInt(event.target.value);
+    if (selectedArticleId) {
+      this.articleService.getArticleById(selectedArticleId).subscribe({
+        next: (article) => {
+          if (article.prix) {
+            this.minimumPrice = article.prix;
+            this.auctionForm.patchValue({
+              startPrice: article.prix
+            });
+            // Forcer la réévaluation de la validation
+            this.auctionForm.get('startPrice')?.updateValueAndValidity();
+          }
+        },
+        error: (error) => {
+          console.error('Error loading article price:', error);
+        }
+      });
+    }
+  }
+
+  startPriceBelowMinimum(): boolean {
+    const startPrice = this.auctionForm.get('startPrice')?.value;
+    return startPrice < this.minimumPrice;
   }
 
   onSubmit(): void {
-    if (this.auctionForm.valid) {
+    if (this.auctionForm.valid && !this.startPriceBelowMinimum()) {
       const formData = this.auctionForm.value;
       
       if (this.isEditMode) {
         const auctionId = +this.route.snapshot.params['auctionId'];
-        const articleId = this.route.snapshot.params['articleId'];
+        const articleId = +this.route.snapshot.params['articleId'];
         
-        // Convert form values to proper types
-        const startPrice = +formData.startPrice;
+        // Convert form values and adjust for timezone
+        const startTime = new Date(formData.startTime);
+        const endTime = new Date(formData.endTime);
+        
         const auctionData = {
-          startPrice: startPrice,
-          currentPrice: startPrice, // Set initial current price same as start price
-          startTime: new Date(formData.startTime).toISOString(),
-          endTime: new Date(formData.endTime).toISOString(),
+          startPrice: +formData.startPrice,
+          currentPrice: +formData.startPrice,
+          startTime: startTime.toISOString(),
+          endTime: endTime.toISOString(),
           active: Boolean(formData.active),
           articleId: articleId ? +articleId : undefined
         };
@@ -183,11 +261,15 @@ export class AuctionFormComponent implements OnInit {
           return;
         }
 
+        // Convert form values and adjust for timezone
+        const startTime = new Date(formData.startTime);
+        const endTime = new Date(formData.endTime);
+
         const newAuctionData = {
           startPrice: +formData.startPrice,
           currentPrice: +formData.startPrice,
-          startTime: new Date(formData.startTime).toISOString(),
-          endTime: new Date(formData.endTime).toISOString(),
+          startTime: startTime.toISOString(),
+          endTime: endTime.toISOString(),
           active: formData.active
         };
 

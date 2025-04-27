@@ -20,11 +20,19 @@
       <div class="row">
         <div class="col-md-6 mb-3">
           <label for="startDatetime" class="form-label">Date de début</label>
-          <input type="datetime-local" class="form-control" id="startDatetime" formControlName="startDatetime" />
+          <input type="datetime-local" class="form-control" id="startDatetime" formControlName="startDatetime" 
+            [class.is-invalid]="(reservationForm.get('startDatetime')?.errors?.['pastDate'] || reservationForm.errors?.['dateRange']) && reservationForm.get('startDatetime')?.touched" />
+          <div class="invalid-feedback" *ngIf="reservationForm.get('startDatetime')?.errors?.['pastDate']">
+            La date de début ne peut pas être dans le passé
+          </div>
         </div>
         <div class="col-md-6 mb-3">
           <label for="endDatetime" class="form-label">Date de fin</label>
-          <input type="datetime-local" class="form-control" id="endDatetime" formControlName="endDatetime" />
+          <input type="datetime-local" class="form-control" id="endDatetime" formControlName="endDatetime"
+            [class.is-invalid]="reservationForm.errors?.['dateRange'] && reservationForm.get('endDatetime')?.touched" />
+          <div class="invalid-feedback" *ngIf="reservationForm.errors?.['dateRange']">
+            La date de fin doit être postérieure à la date de début
+          </div>
         </div>
       </div>
 

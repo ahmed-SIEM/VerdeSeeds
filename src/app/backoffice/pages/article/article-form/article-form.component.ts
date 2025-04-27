@@ -14,9 +14,11 @@ export class ArticleFormComponent implements OnInit {
     imageUrl: '',
     pricePerHour: 0,
     isAvailable: true,
-    typeArticle: 'RESERVATION', // Default value
-    createdAt: '',
+    typeArticle: 'RESERVATION',
+    createdAt: new Date().toISOString(),
     prix: 0,
+    isActive: undefined,
+    auction: undefined // Ajouter cette ligne
   };
   isEdit = false;
 

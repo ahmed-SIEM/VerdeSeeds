@@ -56,6 +56,9 @@ import { plateformeaboutComponent } from './components/plateformeComps/others/ab
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DetailsformationComponent } from './pages/detailsformation/detailsformation.component';
 import { CalendarComponent } from './pages/shop/calendar/calendar.component';
+import { ArticleAuctionComponent } from './pages/article-auction/article-auction.component';
+import { BidslistComponent } from './pages/auctionbids/bidslist/bidslist.component';
+import { BidsformComponent } from './pages/auctionbids/bidsform/bidsform.component';
 
 @NgModule({
   declarations: [
@@ -79,7 +82,11 @@ import { CalendarComponent } from './pages/shop/calendar/calendar.component';
     RegisterComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
-    CalendarComponent
+    CalendarComponent,
+    ArticleAuctionComponent,
+    BidslistComponent,
+    BidsformComponent,
+    
   ],
   imports: [
     CommonModule,

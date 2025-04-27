@@ -23,8 +23,8 @@ export class CalendarComponent implements OnInit {
       center: 'title',
       right: 'dayGridMonth,timeGridWeek,timeGridDay'
     },
-    slotMinTime: '08:00:00',
-    slotMaxTime: '20:00:00',
+    slotMinTime: '00:00:00',
+    slotMaxTime: '23:59:00',
     events: [],
     editable: false,
     selectable: true,
@@ -89,7 +89,8 @@ export class CalendarComponent implements OnInit {
   }
 
   handleDateSelect(selectInfo: any) {
-    const startDate = selectInfo.start;
+    const startDate = new Date(selectInfo.start.getTime() + (60 * 60 * 1000));
+
     const endDate = selectInfo.end;
     const now = new Date();
     
@@ -105,12 +106,16 @@ export class CalendarComponent implements OnInit {
     }
 
     if (confirm('Voulez-vous réserver cette plage horaire?')) {
+      console.log( startDate.toISOString(),
+             endDate.toISOString(),);
       this.reservationService.createReservation(this.articleId, {
         startDatetime: startDate.toISOString(),
         endDatetime: endDate.toISOString(),
         status: 'PENDING'
       }).subscribe({
-        next: () => this.loadReservations(),
+        next: () => 
+          { 
+            this.loadReservations()},
         error: (error) => {
           console.error('Error creating reservation:', error);
           alert('Erreur lors de la création de la réservation');
@@ -126,5 +131,5 @@ export class CalendarComponent implements OnInit {
       const eventEnd = new Date(event.end);
       return start < eventEnd && end > eventStart;
     });
-  }
+  } 
 }

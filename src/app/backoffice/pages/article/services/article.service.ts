@@ -14,6 +14,8 @@ export interface Article {
   typeArticle: string;
   createdAt: string;
   prix: number;
+  isActive?: boolean;
+  auction?: any; // Rendre auction optionnel
 }
 
 enum PaymentType {

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ReservationService } from '../../article/services/reservation.service';
 import { ArticleService } from '../../article/services/article.service';
@@ -28,11 +28,11 @@ selectedArticleTitle: any;
   ngOnInit(): void {
     this.reservationForm = this.fb.group({
       articleId: ['', Validators.required],
-      startDatetime: ['', Validators.required],
+      startDatetime: ['', [Validators.required, this.startDateValidator()]],
       endDatetime: ['', Validators.required],
       totalPrice: [{ value: 0, disabled: true }],
       status: ['PENDING', Validators.required]
-    });
+    }, { validators: this.dateRangeValidator });
 
     this.articleService.getArticles().subscribe({
       next: (data) => {
@@ -181,6 +181,41 @@ selectedArticleTitle: any;
 
   navigateToReservations(): void {
     this.router.navigate(['/backoffice/reservations']);
+  }
+
+  // Ajouter cette méthode avant calculateTotalPrice
+  private dateRangeValidator(group: AbstractControl): ValidationErrors | null {
+    const start = group.get('startDatetime')?.value;
+    const end = group.get('endDatetime')?.value;
+
+    if (start && end) {
+      const startDate = new Date(start);
+      const endDate = new Date(end);
+
+      if (endDate <= startDate) {
+        return { dateRange: true };
+      }
+    }
+    return null;
+  }
+
+  // Ajouter cette méthode après dateRangeValidator
+  private startDateValidator() {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (!control.value) {
+        return null;
+      }
+      const startDate = new Date(control.value);
+      const now = new Date();
+      // Réinitialiser les secondes et millisecondes pour une comparaison plus précise
+      startDate.setSeconds(0, 0);
+      now.setSeconds(0, 0);
+      
+      if (startDate < now) {
+        return { pastDate: true };
+      }
+      return null;
+    };
   }
 
   // Ajouter cette méthode pour vérifier si le formulaire est valide
