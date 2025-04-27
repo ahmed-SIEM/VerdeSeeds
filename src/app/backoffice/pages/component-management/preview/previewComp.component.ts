@@ -1,20 +1,23 @@
-import { Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { 
+  Component, 
+  OnInit, 
+  ViewChild, 
+  ViewContainerRef, 
+  ChangeDetectorRef,
+  AfterViewInit
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { componentServcie } from 'src/app/services/plateforme/component.service';
-import { DynamicLoaderService } from 'src/app/frontoffice/services/dynamic-loader.service';
 import { BehaviorSubject } from 'rxjs';
 import { ComponentRegistry } from '../../platform-management/preview/component-registry';
-
-type ComponentType = 'headerwithicons' | 'centeredhero' | 'herowithimage' | 'verticallycenteredhero' |
-  'columnswithicons' | 'customcards' | 'headings' | 'headingleftwithimage' |
-  'headingrightwithimage' | 'newsletter' | 'plateformeabout';
+import { settings } from '../../platform-management/preview/elements';
+import { DynamicLoaderService } from 'src/app/frontoffice/services/dynamic-loader.service';
 
 interface ComponentData {
   id: number;
-  name: string;
   type: string;
+  name: string;
   content: string;
-  user: any;
 }
 
 @Component({
@@ -22,79 +25,22 @@ interface ComponentData {
   templateUrl: './preview.component.html',
   styleUrls: ['./preview.component.css']
 })
-export class PreviewCompComponent implements OnInit {
-  @ViewChild('dynamicContainer', { read: ViewContainerRef, static: true }) dynamicContainer!: ViewContainerRef;
-  
+export class PreviewCompComponent implements OnInit, AfterViewInit {
+  @ViewChild('dynamicContainer', { read: ViewContainerRef, static: true }) 
+  dynamicContainer!: ViewContainerRef;
+
   componentData: ComponentData | null = null;
   componentContent: any = {};
-  isLoading: boolean = true;
+  isLoading = true;
   error: string | null = null;
   color = new BehaviorSubject<string>("#273F4F");
-  colorValue: string = "#273F4F";
-
-  // Display name mapping for component types
-  componentDisplayNames: Record<string, string> = {
-    headerwithicons: 'Header with Icons',
-    centeredhero: 'Centered Hero',
-    herowithimage: 'Hero with Image',
-    verticallycenteredhero: 'Vertically Centered Hero',
-    columnswithicons: 'Columns with Icons',
-    customcards: 'Custom Cards',
-    headings: 'Headings',
-    headingleftwithimage: 'Heading Left with Image',
-    headingrightwithimage: 'Heading Right with Image',
-    newsletter: 'Newsletter',
-    plateformeabout: 'Plateforme About'
-  };
-
-  ELEMENTS_FIELDS: Record<ComponentType, string[]> = {
-    headerwithicons: [
-      "title", "subtitle", "Ftitle", "Ficon",
-      "Stitle", "Sicon", "Ttitle", "Ticon",
-      "Ptitle", "Picon"
-    ],
-    centeredhero: [
-      "title", "subtitle", "imageUrl"
-    ],
-    herowithimage: [
-      "title", "subtitle", "imageUrl"
-    ],
-    verticallycenteredhero: [
-      "title", "subtitle"
-    ],
-    columnswithicons: [
-      "MainTitle", "Ftitle", "Fdescription", "Ficon",
-      "Stitle", "Sdescription", "Sicon",
-      "Ttitle", "Tdescription", "Ticon"
-    ],
-    customcards: [
-      "MainTitle", "Ftitle", "Fimage",
-      "Stitle", "Simage", "Ttitle", "Timage"
-    ],
-    headings: [
-      "Ftitle", "Fdescription", "Fimage",
-      "Stitle", "Sdescription", "Simage",
-      "Ttitle", "Tdescription", "Timage"
-    ],
-    headingleftwithimage: [
-      "title", "subtitle", "imageUrl"
-    ],
-    headingrightwithimage: [
-      "title", "subtitle", "imageUrl"
-    ],
-    newsletter: [
-      "titleA", "TextB", "TextC", "Image"
-    ],
-    plateformeabout: [
-      "title1", "title2", "description", "imageUrl"
-    ]
-  };
+  colorValue = "#273F4F";
 
   constructor(
     private componentService: componentServcie,
     private route: ActivatedRoute,
     private router: Router,
-    private dynamicLoader: DynamicLoaderService
+    private dynamicLoader: DynamicLoaderService,
   ) {
     this.color.subscribe(value => {
       this.colorValue = value;
@@ -103,63 +49,92 @@ export class PreviewCompComponent implements OnInit {
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
-    if (id !== null) {
-      this.isLoading = true;
-      this.componentService.getComponent(+id).subscribe({
-        next: (data) => {
-          this.componentData = data;
-          console.log('Component data:', data);
-          
-          if (data.content) {
-            try {
-              this.componentContent = JSON.parse(data.content);
-              this.loadComponentPreview(data.type, this.componentContent);
-            } catch (e) {
-              this.error = 'Failed to parse component content';
-              console.error('Error parsing component content:', e);
-            }
-          }
-          
-          this.isLoading = false;
-        },
-        error: (error) => {
-          this.error = 'Failed to load component';
-          console.error('Error fetching component data:', error);
-          this.isLoading = false;
-        }
-      });
-    } else {
-      this.error = 'No component ID provided';
-      this.isLoading = false;
+    if (!id) {
+      this.handleError('No component ID provided');
+      return;
+    }
+
+    this.loadComponent(+id);
+  }
+
+  ngAfterViewInit(): void {
+    // If view initializes after data loads, ensure component is loaded
+    if (this.componentData) {
+      this.loadSingleComponent();
     }
   }
 
-  loadComponentPreview(type: string, content: any): void {
-    if (!this.dynamicContainer) {
-      console.error('Dynamic container not available');
+  private loadComponent(id: number): void {
+    this.isLoading = true;
+    this.componentService.getComponent(id).subscribe({
+      next: (data) => {
+        this.componentData = data;
+        try {
+          this.componentContent = data.content ? JSON.parse(data.content) : {};
+          this.loadSingleComponent();
+        } catch (e) {
+          this.handleError('Failed to parse component content');
+        }
+        this.isLoading = false;
+      },
+      error: (error) => {
+        this.handleError('Failed to load component data');
+      }
+    });
+  }
+
+  private loadSingleComponent(): void {
+    if (!this.dynamicContainer || !this.componentData) {
       return;
     }
-    
-    this.dynamicContainer.clear();
-    const componentType = ComponentRegistry[type];
-    
-    if (componentType) {
+
+    try {
+      this.dynamicContainer.clear();
+      
+      const componentType = ComponentRegistry[this.componentData.type];
+      if (!componentType) {
+        throw new Error(`Component type '${this.componentData.type}' not registered`);
+      }
+
+      const componentSettings = settings[this.componentData.type as keyof typeof settings] || {};
+      const mergedData = {
+        ...componentSettings,
+        ...this.componentContent,
+        color: this.color.value
+      };
+
       this.dynamicLoader.loadComponent(
         this.dynamicContainer,
         componentType,
-        {
-          ...content,
-          color: this.color.value
-        }
+        mergedData
       );
-    } else {
-      this.error = `Component type '${type}' not found in registry`;
-      console.error('Component type not found:', type);
+
+    } catch (error) {
+      this.handleError(`Failed to load component: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
 
+  private handleError(message: string): void {
+    this.error = message;
+    this.isLoading = false;
+    console.error(message);
+  }
+
   getComponentDisplayName(type: string): string {
-    return this.componentDisplayNames[type] || type;
+    const names = {
+      headerwithicons: 'Header with Icons',
+      centeredhero: 'Centered Hero',
+      herowithimage: 'Hero with Image',
+      verticallycenteredhero: 'Vertically Centered Hero',
+      columnswithicons: 'Columns with Icons',
+      customcards: 'Custom Cards',
+      headings: 'Headings',
+      headingleftwithimage: 'Heading Left with Image',
+      headingrightwithimage: 'Heading Right with Image',
+      newsletter: 'Newsletter',
+      plateformeabout: 'About Section',
+    };
+    return names[type as keyof typeof names] || type;
   }
 
   goBack(): void {
