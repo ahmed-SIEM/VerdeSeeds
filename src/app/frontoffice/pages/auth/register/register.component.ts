@@ -44,22 +44,33 @@ export class RegisterComponent {
   }
 
   get passwordStrength(): string {
-    const value = this.registerForm.get('password')?.value || '';
-    if (value.length < 6) return 'Weak';
-    if (/[A-Z]/.test(value) && /[0-9]/.test(value) && /[!@#$%^&*]/.test(value))
-      return 'Strong';
-    if (/[A-Z]/.test(value) || /[0-9]/.test(value)) return 'Medium';
+    const password = this.registerForm.get('password')?.value || '';
+    if (password.length === 0) return '';
+    if (password.length < 8) return 'Weak';
+    
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasNumbers = /\d/.test(password);
+    const hasSpecialChars = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+    
+    const score = [hasUpperCase, hasLowerCase, hasNumbers, hasSpecialChars]
+      .filter(Boolean).length;
+    
+    if (score >= 4 && password.length >= 10) return 'Strong';
+    if (score >= 3) return 'Medium';
     return 'Weak';
   }
 
   get passwordStrengthColor(): string {
     switch (this.passwordStrength) {
       case 'Strong':
-        return '#4caf50';
+        return '#2E7D32'; // Dark green
       case 'Medium':
-        return '#ff9800';
+        return '#FFA000'; // Amber
+      case 'Weak':
+        return '#C62828'; // Dark red
       default:
-        return '#f44336';
+        return '#757575'; // Grey
     }
   }
 
@@ -69,8 +80,10 @@ export class RegisterComponent {
         return '100%';
       case 'Medium':
         return '66%';
-      default:
+      case 'Weak':
         return '33%';
+      default:
+        return '0%';
     }
   }
 
