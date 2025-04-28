@@ -15,3 +15,21 @@
     line-height: 1.2;
     max-width: 100%;
   }
+/* 📅 Correction pour le backdrop du modal */
+.modal.fade.show.d-block {
+  z-index: 900 !important; /* 🎯 plus petit que snackbar */
+  background-color: rgba(0, 0, 0, 0.3) !important;
+}
+
+/* 🎯 S'assurer que le contenu du modal reste au-dessus du backdrop */
+.modal-dialog {
+  z-index: 1000 !important;
+  position: relative;
+}
+
+/* ✅ Assurer que le snackbar soit par-dessus tout */
+.mat-snack-bar-container {
+  z-index: 5000 !important;
+  position: fixed !important;
+  bottom: 20px !important;
+}

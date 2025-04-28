@@ -10,6 +10,7 @@ import { ErrorComponent } from './error/error.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { initializeApp } from 'firebase/app';
 import {firebase}  from '../environments/fireBaseEnv';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 // Initialize Firebase
@@ -30,6 +31,7 @@ initializeApp(firebase);
     ReactiveFormsModule, 
     HttpClientModule, BrowserAnimationsModule,
     DragDropModule,
+    MatSnackBarModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
