@@ -20,6 +20,7 @@ import { PlatformeModule } from './pages/platform-management/platforme.module';
 import { ComponentManagementModule } from './pages/component-management/component-management.module';
 import { PreviewComponent } from './pages/platform-management/preview/preview.component';
 import { SponsorsComponent } from "../frontoffice/components/plateformeComps/others/sponsors/sponsors.component";
+import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [
     LayoutsComponent,
@@ -44,7 +45,8 @@ import { SponsorsComponent } from "../frontoffice/components/plateformeComps/oth
     FormsModule,
     PlatformeModule,
     ComponentManagementModule,
-    SponsorsComponent
+    SponsorsComponent,
+    HttpClientModule
 ]
 })
 export class BackofficeModule { }
