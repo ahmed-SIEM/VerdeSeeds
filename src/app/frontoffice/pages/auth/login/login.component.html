@@ -48,52 +48,52 @@
 
     <!-- Clean form with floating effect -->
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="auth-form">
-      <!-- Email field -->
       <div class="input-group">
         <label>Email</label>
         <input type="email" formControlName="username" placeholder="Enter your email" title="Email Address" class="modern-input">
         <span class="input-highlight"></span>
+        <span class="error-text" *ngIf="loginForm.get('username')?.errors?.['required'] && loginForm.get('username')?.touched">
+          Email is required
+        </span>
+        <span class="error-text" *ngIf="loginForm.get('username')?.errors?.['email'] && loginForm.get('username')?.touched">
+          Please enter a valid email
+        </span>
       </div>
 
-      <!-- Password field -->
       <div class="input-group">
         <label>Password</label>
         <input type="password" formControlName="password" placeholder="Enter your password" title="Password" class="modern-input">
         <span class="input-highlight"></span>
+        <span class="error-text" *ngIf="loginForm.get('password')?.errors?.['required'] && loginForm.get('password')?.touched">
+          Password is required
+        </span>
       </div>
 
-      <re-captcha 
-        (resolved)="onCaptchaResolved($event)" 
-        siteKey="6Leu4CcrAAAAAObNNJsL5TiziGY5XiVRp6MGoisz
-"       >
-  </re-captcha>
+      <div class="recaptcha-container">
+        <re-captcha
+          formControlName="recaptcha"
+          siteKey="6Leu4CcrAAAAAObNNJsL5TiziGY5XiVRp6MGoisz">
+        </re-captcha>
+      </div>
 
-      <!-- Remember me & forgot password -->
       <div class="form-options">
         <label class="remember-me">
-          <input type="checkbox">
+          <input type="checkbox" [(ngModel)]="rememberDevice" [ngModelOptions]="{standalone: true}">
           <span class="checkmark"></span>
           Remember this device
         </label>
         <a [routerLink]="['/authentication/forgot-password']" class="forgot-password">Forgot password?</a>
       </div>
 
-      <!-- Submit button with hover effect -->
       <button type="submit" [disabled]="loginForm.invalid || isLoading" class="submit-btn">
-        <span class="btn-text">Sign In</span>
+        <span class="btn-text">{{ isLoading ? 'Signing in...' : 'Sign In' }}</span>
         <span class="btn-loader" *ngIf="isLoading">
           <span class="loader-dot"></span>
           <span class="loader-dot"></span>
           <span class="loader-dot"></span>
         </span>
-        <span class="btn-arrow">
-          <svg viewBox="0 0 16 16">
-            <path d="M8 0L6.59 1.41 12.17 7H0v2h12.17l-5.58 5.59L8 16l8-8z"/>
-          </svg>
-        </span>
       </button>
 
-      <!-- Error message -->
       <div *ngIf="errorMessage" class="error-message">
         <svg viewBox="0 0 24 24">
           <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
@@ -108,7 +108,6 @@
     </div>
   </div>
 </div>
-
 <style>
 .submit-btn {
   background-color: #4caf50;
@@ -124,5 +123,11 @@
 
 .submit-btn:active {
   transform: translateY(0);
+}
+
+.recaptcha-container {
+  margin: 15px 0;
+  display: flex;
+  justify-content: center;
 }
 </style>

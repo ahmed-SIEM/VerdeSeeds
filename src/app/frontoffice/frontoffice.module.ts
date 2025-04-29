@@ -63,6 +63,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DetailsformationComponent } from './pages/detailsformation/detailsformation.component';
 import { OauthSuccessComponent } from './pages/auth/oauth-success/oauth-success.component';
 
+
+import { RecaptchaModule, RecaptchaFormsModule } from 'ng-recaptcha';
+
 @NgModule({
   declarations: [
     LayoutsComponent,
@@ -81,7 +84,7 @@ import { OauthSuccessComponent } from './pages/auth/oauth-success/oauth-success.
     PlatformeComponent,
     CalendarPopupComponent,
     DetailsformationComponent,
-    LoginComponent,
+   LoginComponent,
     RegisterComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
@@ -121,7 +124,13 @@ import { OauthSuccessComponent } from './pages/auth/oauth-success/oauth-success.
     MatDividerModule,
     MatSnackBarModule,
     MatTabsModule,
-    NgxCaptchaModule
+    NgxCaptchaModule,
+
+    RecaptchaModule,
+    RecaptchaFormsModule,
   ],
 })
 export class FrontofficeModule {}
+
+
+   
