@@ -8,12 +8,13 @@ import { AuthRequest } from 'src/app/models/user/authRequest.model';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
   loginForm!: FormGroup;
   isLoading = false;
-  errorMessage= '';
+  errorMessage = '';
+  recaptchaToken: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -23,7 +24,7 @@ export class LoginComponent {
   ngOnInit() {
     this.loginForm = this.fb.group({
       username: ['', Validators.required, Validators.email],
-      password: ['', Validators.required]
+      password: ['', Validators.required],
     });
   }
 
@@ -31,8 +32,13 @@ export class LoginComponent {
     window.location.href = 'http://localhost:8081/oauth2/authorization/google';
   }
 
-  signInWithFacebook(){
-    window.location.href = 'http://localhost:8081/oauth2/authorization/facebook';
+  signInWithFacebook() {
+    window.location.href =
+      'http://localhost:8081/oauth2/authorization/facebook';
+  }
+  onCaptchaResolved(token: string): void {
+    this.recaptchaToken = token;
+    console.log('Captcha resolved with token: ');
   }
   onSubmit(): void {
     if (this.loginForm.invalid) return;
@@ -46,12 +52,11 @@ export class LoginComponent {
         } else {
           this.router.navigate(['/frontoffice/home']);
         }
-        },
+      },
       error: (err) => {
         this.errorMessage = err.error?.message || 'Login failed';
         this.isLoading = false;
-      }
+      },
     });
   }
-
 }

@@ -44,7 +44,7 @@ import { RouterModule } from '@angular/router';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
-
+import { NgxCaptchaModule } from 'ngx-captcha';
 
 // ✅ Composants plateforme
 import { CenteredheroComponent } from './components/plateformeComps/heros/centeredhero/centeredhero.component';
@@ -120,7 +120,8 @@ import { OauthSuccessComponent } from './pages/auth/oauth-success/oauth-success.
     MatIconModule,
     MatDividerModule,
     MatSnackBarModule,
-    MatTabsModule
+    MatTabsModule,
+    NgxCaptchaModule
   ],
 })
 export class FrontofficeModule {}
