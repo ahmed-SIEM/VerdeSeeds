@@ -20,9 +20,9 @@
         <label for="description" class="form-label">Description</label>
         <div class="input-group">
           <textarea id="description" class="form-control" [(ngModel)]="article.description" name="description"
-            rows="4" required minlength="10" maxlength="500" #descField="ngModel"></textarea>
+            rows="4" required minlength="10" maxlength="2000" #descField="ngModel"></textarea>
           <button type="button" class="btn btn-success" (click)="generateAIDescription()" 
-            [disabled]="!article.title || !article.imageUrl || isGenerating">
+            [disabled]="!article.title || isGenerating">
             <i class="fas fa-robot"></i>
             {{ isGenerating ? 'Génération...' : 'Générer une description' }}
           </button>
@@ -30,7 +30,7 @@
         <div *ngIf="descField.invalid && descField.touched" class="text-danger">
           <div *ngIf="descField.errors?.['required']">La description est requise.</div>
           <div *ngIf="descField.errors?.['minlength']">Minimum 10 caractères.</div>
-          <div *ngIf="descField.errors?.['maxlength']">Maximum 500 caractères.</div>
+          <div *ngIf="descField.errors?.['maxlength']">Maximum 2000 caractères.</div>
         </div>
       </div>
 

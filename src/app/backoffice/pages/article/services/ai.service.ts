@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class AIService {
   private apiUrl = 'https://openrouter.ai/api/v1/chat/completions';
-  private apiKey = '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';
+  private apiKey = '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';
   private readonly AGRICULTURAL_KEYWORDS = [
     'tracteur', 'moissonneuse', 'semoir', 'charrue', 'cultivateur',
     'irrigation', 'engrais', 'pesticide', 'serre', 'récolte',
@@ -41,60 +41,23 @@ export class AIService {
       messages: [
         {
           role: "system",
-          content: "Vous êtes un expert en matériel agricole. Votre rôle est de décrire uniquement des équipements et produits agricoles. Si le sujet n'est pas lié à l'agriculture, refusez de générer une description."
+          content: "Vous êtes un expert agricole. Rédigez des descriptions concises et complètes. Assurez-vous que chaque phrase est terminée correctement."
         },
         {
           role: "user",
-          content: `Générez une description technique et professionnelle pour ce produit agricole: "${title}".
-          Important: Si le titre ne correspond pas à un produit agricole, répondez "ERREUR: Produit non agricole".
-          Sinon, décrivez:
-          1. L'utilité principale dans l'agriculture
-          2. Les caractéristiques techniques essentielles
-          3. Les avantages pour l'exploitation agricole
-          Format: Un paragraphe concis et professionnel.`
-        }
-      ],
-      max_tokens: 150,
-      temperature: 0.5,
-      presence_penalty: 0.1
-    };
+          content: `Décrivez le produit agricole suivant en un court paragraphe complet : "${title}"
 
-    return this.http.post(this.apiUrl, body, { headers });
-  }
-
-  validateImageAndTitle(imageUrl: string, title: string): Observable<any> {
-    if (!this.validateContent(title)) {
-      return new Observable(observer => {
-        observer.next({ choices: [{ message: { content: 'false' } }] });
-      });
-    }
-
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.apiKey}`,
-      'Content-Type': 'application/json'
-    });
-
-    const body = {
-      model: "mistralai/mixtral-8x7b-instruct",
-      messages: [
-        {
-          role: "system",
-          content: "Vous êtes un expert en validation de contenu agricole. Votre tâche est de vérifier strictement la cohérence entre les images et les titres de produits agricoles."
-        },
-        {
-          role: "user",
-          content: `Vérifiez si l'image et le titre sont cohérents et appartiennent au domaine agricole:
-          Titre: "${title}"
-          Image URL: "${imageUrl}"
+          Si ce n'est pas un produit agricole, répondez uniquement "ERREUR: Produit non agricole".
           
-          Répondez uniquement par:
-          - "true" si c'est un produit agricole ET si l'image correspond au titre
-          - "false" dans tous les autres cas`
+          En maximum 300 caractères, présentez ses caractéristiques techniques essentielles, son utilisation et son principal avantage pour l'agriculteur. Le texte doit être fluide et chaque phrase doit être complète.
+          
+          Important: Terminez toujours par une phrase complète.`
         }
       ],
-      max_tokens: 10,
-      temperature: 0.1
-    };
+      max_tokens: 300,
+      temperature: 0.5,
+      presence_penalty: 0.2,
+      frequency_penalty: 0.5    };
 
     return this.http.post(this.apiUrl, body, { headers });
   }
