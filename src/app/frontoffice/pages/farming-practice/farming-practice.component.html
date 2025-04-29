@@ -36,10 +36,10 @@
         <!-- 📸 Image -->
         <img [src]="getImagePath(formation.photoPath)" class="card-img-top rounded-top-4"
              alt="Image formation" *ngIf="formation.photoPath; else defaultImg" />
-        <ng-template #defaultImg>
-          <img src="assets/frontoffice/img/bg-img/placeholder.png" class="card-img-top rounded-top-4"
-               alt="Image par défaut" />
-        </ng-template>
+             <ng-template #defaultImg>
+              <img src="https://via.placeholder.com/500x300?text=Image+non+disponible" class="card-img-top rounded-top-4"
+                   alt="Image par défaut" />
+            </ng-template>
 
         <!-- 🧾 Contenu carte -->
         <div class="card-body text-center">

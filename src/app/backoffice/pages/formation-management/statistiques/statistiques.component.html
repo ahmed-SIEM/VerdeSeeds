@@ -1,21 +1,68 @@
 <div class="app-wrapper">
-    <div class="container-xl mt-4">
-      <h1 class="app-page-title">📊 Statistiques des Formations</h1>
-  
-      <div class="card shadow-sm p-4">
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">📦 Total des formations : <strong>{{ totalFormations }}</strong></li>
-          <li class="list-group-item">✅ Formations certifiantes : <strong>{{ certifiantes }}</strong></li>
-          <li class="list-group-item">👥 Capacité moyenne : <strong>{{ moyenneCapacite }}</strong></li>
-          <li class="list-group-item">🛎️ Formations sans détails : <strong>{{ sansDetails }}</strong></li>
-        </ul>
-  
-        <div class="text-end mt-4">
-          <a routerLink="/backoffice/formations" class="btn btn-outline-secondary">
-            ⬅️ Retour à la liste des formations
-          </a>
+  <div class="container-xl mt-4">
+    <h1 class="app-page-title text-center mb-5">📊 Statistiques des Formations</h1>
+
+    <div class="row g-4 justify-content-center">
+      <!-- 🥧 Pie Chart -->
+      <div class="col-lg-6">
+        <div class="card shadow-sm rounded-4 h-100">
+          <div class="card-body">
+            <h5 class="card-title text-center text-primary mb-4">
+              🧁 Répartition des Formations Certifiantes
+            </h5>
+            <canvas
+              baseChart
+              [data]="pieChartData"
+              [type]="pieChartType"
+              [options]="pieChartOptions"
+              style="height: 300px;"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- 📊 Bar Chart -->
+      <div class="col-lg-6">
+        <div class="card shadow-sm rounded-4 h-100">
+          <div class="card-body">
+            <h5 class="card-title text-center text-success mb-4">
+              📊 Formations Globales
+            </h5>
+            <canvas
+              baseChart
+              [data]="barChartData"
+              [type]="barChartType"
+              [options]="barChartOptions"
+              style="height: 300px;"></canvas>
+          </div>
         </div>
       </div>
     </div>
+
+    <!-- 🔍 Résumé des données -->
+    <div class="card shadow-sm rounded-4 p-4 mt-5">
+      <h5 class="card-title mb-4 text-secondary">
+        📌 Données Résumées
+      </h5>
+      <ul class="list-group list-group-flush fs-6">
+        <li class="list-group-item">
+          📦 <strong>Total des formations :</strong> {{ totalFormations }}
+        </li>
+        <li class="list-group-item">
+          ✅ <strong>Formations certifiantes :</strong> {{ certifiantes }}
+        </li>
+        <li class="list-group-item">
+          👥 <strong>Capacité moyenne :</strong> {{ moyenneCapacite | number:'1.0-2' }}
+        </li>
+        <li class="list-group-item">
+          🛎️ <strong>Formations sans détails :</strong> {{ sansDetails }}
+        </li>
+      </ul>
+
+      <div class="text-end mt-4">
+        <a routerLink="/backoffice/formations" class="btn btn-outline-primary rounded-pill px-4">
+          ⬅️ Retour à la liste des formations
+        </a>
+      </div>
+    </div>
   </div>
-  
+</div>

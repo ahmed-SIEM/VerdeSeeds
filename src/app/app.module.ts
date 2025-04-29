@@ -11,6 +11,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { initializeApp } from 'firebase/app';
 import {firebase}  from '../environments/fireBaseEnv';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { NgChartsModule } from 'ng2-charts';
 
 
 // Initialize Firebase
@@ -32,6 +33,7 @@ initializeApp(firebase);
     HttpClientModule, BrowserAnimationsModule,
     DragDropModule,
     MatSnackBarModule,
+    NgChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
