@@ -1,10 +1,11 @@
 <div class="container my-5">
 
-  <!-- 🌿 Section filtre + recherche -->
+  <!-- 🌿 Barre de filtre + recherche -->
   <div class="row justify-content-center mb-5">
     <div class="col-md-10 col-lg-8">
       <div class="d-flex flex-wrap gap-3 justify-content-between align-items-center">
-        <!-- 🎛️ Filtrage -->
+        
+        <!-- 🎛️ Filtrer par type -->
         <div class="d-flex align-items-center gap-2 flex-grow-1" style="min-width: 220px;">
           <label for="filterType" class="fw-semibold text-dark mb-0">Filtrer par type :</label>
           <select id="filterType" class="form-select w-auto shadow-sm rounded-pill border-success"
@@ -22,48 +23,51 @@
                  [(ngModel)]="searchTerm"
                  (input)="searchByName()" />
         </div>
+
       </div>
     </div>
   </div>
 
-  <!-- 🧩 Affichage des Formations -->
+  <!-- 🧩 Cartes Formations -->
   <div class="row">
     <div class="col-12 col-sm-6 col-lg-4 mb-4" *ngFor="let formation of filteredFormations">
-      <div class="card h-100 shadow-sm border-0 rounded-4">
+      <div class="card h-100 shadow-sm border-0 rounded-4 animate__animated animate__fadeInUp">
 
-        <!-- Image -->
+        <!-- 📸 Image -->
         <img [src]="getImagePath(formation.photoPath)" class="card-img-top rounded-top-4"
-             alt="Image de la formation" *ngIf="formation.photoPath; else defaultImg" />
-        <ng-template #defaultImg>
-          <img src="assets/frontoffice/img/bg-img/placeholder.png" class="card-img-top rounded-top-4"
-               alt="Image par défaut" />
-        </ng-template>
+             alt="Image formation" *ngIf="formation.photoPath; else defaultImg" />
+             <ng-template #defaultImg>
+              <img src="https://via.placeholder.com/500x300?text=Image+non+disponible" class="card-img-top rounded-top-4"
+                   alt="Image par défaut" />
+            </ng-template>
 
-        <!-- Contenu -->
+        <!-- 🧾 Contenu carte -->
         <div class="card-body text-center">
           <h6 class="text-uppercase text-muted small mb-2">{{ formation.typeFormation }}</h6>
           <h5 class="text-success fw-bold mb-2 text-truncate" title="{{ formation.nom }}">{{ formation.nom }}</h5>
           <p class="mb-1">📍 <span class="text-secondary">{{ formation.lieu }}</span></p>
           <p>📅 Du {{ formation.dateDebut | date: 'dd/MM/yyyy' }} au {{ formation.dateFin | date: 'dd/MM/yyyy' }}</p>
 
-          <!-- Certification -->
-          <div *ngIf="formation.certification; else notCertified" class="text-success small">
-            🏅 Formation Certifiante<br />
+          <!-- 🎖️ Certification -->
+          <div *ngIf="formation.certification; else notCertified" class="text-success small mt-2">
+            🏅 Formation Certifiante<br/>
             ✅ Note minimale : {{ formation.noteMinPourCertificat }}/20
           </div>
           <ng-template #notCertified>
-            <div class="text-danger small">❌ Non certifiante</div>
+            <div class="text-danger small mt-2">
+              ❌ Non certifiante
+            </div>
           </ng-template>
 
-          <!-- Participants -->
-          <div class="d-flex justify-content-center align-items-center gap-2 my-2">
+          <!-- 👥 Participants -->
+          <div class="d-flex justify-content-center align-items-center gap-2 my-3">
             <i class="bi bi-people-fill fs-5 text-primary"></i>
             <span class="fw-semibold">
               {{ participantsCount[formation.idFormation] || 0 }} / {{ formation.capacity }} participants
             </span>
           </div>
 
-          <!-- Barre de progression -->
+          <!-- 📊 Progression -->
           <div class="progress rounded-pill mb-2" style="height: 8px;">
             <div class="progress-bar" role="progressbar"
                  [style.width.%]="((participantsCount[formation.idFormation] || 0) / formation.capacity) * 100"
@@ -75,51 +79,67 @@
             </div>
           </div>
 
-          <!-- Statut Dynamique Ultra Beau -->
+          <!-- 🌟 Statut Moderne -->
           <div class="mt-3">
-            <span *ngIf="formation._status === 'INSCRIT'" class="badge bg-gradient-success rounded-pill px-3 py-2 fs-6">
-              🎓 Inscrit avec succès
+            <span *ngIf="formation._status === 'INSCRIT'" class="badge rounded-pill bg-primary text-light px-4 py-2 fs-6 shadow-sm">
+              🎉 Inscrit(e) avec succès
             </span>
-            <span *ngIf="formation._status === 'WAITING'" class="badge bg-gradient-warning text-dark rounded-pill px-3 py-2 fs-6">
-              ⏳ Votre position en attente : <strong>#{{ formation._waitingPosition }}</strong>
+            <span *ngIf="formation._status === 'WAITING'" class="badge rounded-pill bg-warning text-dark px-4 py-2 fs-6 shadow-sm">
+              ⏳ En liste d'attente (Pos #{{ formation._waitingPosition }})
             </span>
           </div>
 
-          <!-- Boutons d'action -->
-          <div class="d-flex justify-content-center gap-2 mt-4 flex-wrap">
+          <!-- 🧷 Actions -->
+          <div class="d-flex flex-column align-items-center gap-2 mt-4 flex-wrap">
+
             <a *ngIf="formation.detailFormation"
                [routerLink]="['/frontoffice/details', formation.idFormation]"
-               class="btn btn-outline-success btn-sm px-3 rounded-pill">
+               class="btn btn-outline-success btn-sm rounded-pill px-3">
               👁️ Voir Détails
             </a>
-
+          
             <ng-container [ngSwitch]="formation._status">
               <button *ngSwitchCase="'INSCRIT'" class="btn btn-danger btn-sm rounded-pill px-3"
                       (click)="openCancelModal(formation._participationId, formation)">
-                ❌ Annuler participation
+                ❌ Annuler
               </button>
-
+          
               <button *ngSwitchCase="'WAITING'" class="btn btn-warning btn-sm rounded-pill px-3 text-dark"
                       (click)="openCancelModal(formation._participationId, formation)">
-                ❌ Quitter la liste d'attente
+                ❌ Quitter Attente
               </button>
-
+          
+              <div *ngSwitchCase="'BLOQUE'" class="text-center">
+                <button class="btn btn-secondary btn-sm rounded-pill px-3 mb-2" disabled
+                        title="Vous avez été bloqué suite à plusieurs annulations 😔">
+                  🔒 Bloqué
+                </button>
+          
+                <!-- 🌟 Timer sous le bouton Bloqué -->
+                <div *ngIf="blockTimes[formation.idFormation]">
+                  <span class="badge bg-warning text-dark rounded-pill px-3 py-2 shadow-sm">
+                    ⏳ Déblocage dans {{ blockTimes[formation.idFormation] }}s
+                  </span>
+                </div>
+              </div>
+          
               <ng-container *ngSwitchDefault>
                 <button *ngIf="(participantsCount[formation.idFormation] || 0) < formation.capacity"
-                        class="btn btn-outline-primary btn-sm px-3 rounded-pill"
+                        class="btn btn-outline-primary btn-sm rounded-pill px-3"
                         (click)="openParticipationModal(formation)">
                   🎓 Participer
                 </button>
-
+          
                 <button *ngIf="(participantsCount[formation.idFormation] || 0) >= formation.capacity"
                         class="btn btn-warning btn-sm rounded-pill px-3 text-dark"
                         (click)="openWaitingListModal(formation)">
                   ⏳ Rejoindre la liste d'attente
                 </button>
               </ng-container>
+          
             </ng-container>
-
           </div>
+
         </div>
 
       </div>
@@ -135,7 +155,7 @@
 
 </div>
 
-<!-- Les Popups (restent les mêmes pour toi) -->
+<!-- 💬 Popups (inchangés) -->
 <app-participation-modal *ngIf="modalVisible"
   [formation]="selectedFormation"
   [onConfirm]="confirmParticipation.bind(this)"
@@ -178,7 +198,6 @@
   </div>
 </div>
 
-<!-- 📅 Popup Calendrier -->
 <app-calendar-popup *ngIf="showCalendar"
   [events]="calendarEvents"
   (closePopup)="showCalendar = false">

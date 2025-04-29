@@ -28,7 +28,8 @@ const routes: Routes = [
     {path : 'marketplace', component : MarketplaceManagementComponent},
     {path : 'account', component : AccountComponent},
     {path : 'notification', component : NotificationComponent},
-    {path : 'resetpassword', component : ResetpasswordComponent},    
+    {path : 'resetpassword', component : ResetpasswordComponent},   
+
     {path : 'signup', component : SignUpComponent},
     { 
       path: '', 
