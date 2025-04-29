@@ -1,4 +1,4 @@
-import { Component,OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonService } from 'src/app/services/common.service';
 import { PlateformeService } from 'src/app/services/plateforme/plateforme.service';
 
@@ -16,7 +16,7 @@ interface User {
   templateUrl: './platforme.component.html',
   styleUrls: ['./platforme.component.css']
 })
-export class PlatformeComponent implements OnInit {
+export class PlatformeComponent  {
   private readonly USER_ID = 1;
    User = {};
    typePack = '';
@@ -27,13 +27,10 @@ export class PlatformeComponent implements OnInit {
   ) {}
 
 
-  ngOnInit(): void {
-    this.loadUser();
-  }
 
 
   selectBasicPlan() {
-    this.platformeService.updateUserPlan(this.USER_ID, 'BASIC').subscribe(
+    this.platformeService.updateUserPlan('BASIC').subscribe(
       (response) => {
         console.log('Plan updated successfully:', response);
         window.location.reload();
@@ -47,7 +44,7 @@ export class PlatformeComponent implements OnInit {
 
   selectAdvancedPlan() {
 
-    this.platformeService.updateUserPlan(this.USER_ID, 'ADVANCED').subscribe(
+    this.platformeService.updateUserPlan( 'ADVANCED').subscribe(
       (response) => {
         console.log('Plan updated successfully:', response);
         window.location.reload();
@@ -59,7 +56,7 @@ export class PlatformeComponent implements OnInit {
   }
 
   selectPremiumPlan() {
-    this.platformeService.updateUserPlan(this.USER_ID, 'PREMIUM').subscribe(
+    this.platformeService.updateUserPlan('PREMIUM').subscribe(
       (response) => {
         console.log('Plan updated successfully:', response);
         window.location.reload();
@@ -73,19 +70,7 @@ export class PlatformeComponent implements OnInit {
 
 
 
-  loadUser() {
-    this.CommonService.getUserById(this.USER_ID).subscribe(
-      (response) => {
-        this.User = response;
-        this.typePack = response.typePack;
-        console.log('User loaded successfully:', this.User);
-        
-      },
-      (error) => {
-        console.error('Error loading user:', error);
-      }
-    );
-  }
+
 
 
 
