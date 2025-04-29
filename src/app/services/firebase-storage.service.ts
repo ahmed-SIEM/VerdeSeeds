@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, from, of } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { getStorage, ref, getDownloadURL, deleteObject } from "firebase/storage";
 import { catchError } from 'rxjs/operators';
 
 export interface FirebaseUploadResponse {
@@ -33,15 +33,42 @@ export class FirebaseStorageService {
     return this.http.post<FirebaseUploadResponse>(`${this.apiUrl}/upload`, formData);
   }
 
-
-    deleteFile(fileName: string): Observable<void> {
-      return this.http.delete<void>(`${this.apiUrl}/${fileName}`);
+  deleteFile(fileName: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${fileName}`, {
+      withCredentials: true
+    }).pipe(
+      catchError(error => {
+        if (error.status === 0 || error.status === 403) {
+          console.error('CORS or Auth Error:', error);
+          // Try to delete directly from Firebase if backend fails
+          return this.deleteDirectFromFirebase(fileName);
+        }
+        throw error;
+      })
+    );
   }
 
+  private deleteDirectFromFirebase(fileName: string): Observable<void> {
+    const storageRef = ref(this.storage, fileName);
+    return from(deleteObject(storageRef));
+  }
 
   getFileUrl(fileName: string): Observable<string> {
     console.log('Fetching URL for file:', fileName);
-    return this.http.get<string>(`${this.apiUrl}/url/${fileName}`);
+    return this.http.get<string>(`${this.apiUrl}/url/${fileName}`, {
+      headers: {
+        'Accept': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
+    }).pipe(
+      catchError(error => {
+        if (error.status === 0 || error.status === 403) {
+          console.warn('CORS or Firebase Auth Error, falling back to direct URL');
+          return this.getDirectImageUrl(fileName);
+        }
+        throw error;
+      })
+    );
   }
 
   getFile(fileName: string): Observable<Blob> {

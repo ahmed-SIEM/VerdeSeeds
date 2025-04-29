@@ -1,0 +1,16 @@
+<div class="calendar-container">
+  <div class="calendar-header">
+    <h2>Calendrier des réservations - {{articleTitle}}</h2>
+    <p>Sélectionnez une plage horaire disponible pour effectuer une réservation</p>
+  </div>
+  <div class="calendar-body">
+    <full-calendar [options]="calendarOptions"></full-calendar>
+  </div>
+  <div class="calendar-legend mt-3">
+    <div class="d-flex justify-content-center">
+      <div class="mx-2"><span class="status-dot confirmed"></span> Confirmé</div>
+      <div class="mx-2"><span class="status-dot pending"></span> En attente</div>
+      <div class="mx-2"><span class="status-dot cancelled"></span> Annulé</div>
+    </div>
+  </div>
+</div>

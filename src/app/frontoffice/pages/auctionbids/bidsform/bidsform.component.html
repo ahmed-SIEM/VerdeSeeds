@@ -1,0 +1,61 @@
+<section class="section-padding-0-100">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-8 col-lg-6">
+        <div class="card">
+          <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Placer une enchère</h4>
+          </div>
+          <div class="card-body">
+            <!-- Timer Display -->
+            <div class="alert" [ngClass]="{'alert-warning': !isExpired, 'alert-danger': isExpired}">
+              <h5 class="mb-0">
+                <i class="fas fa-clock me-2"></i>
+                Temps restant: {{timeLeft}}
+              </h5>
+            </div>
+
+            <form [formGroup]="bidForm" (ngSubmit)="onSubmit()">
+              <div class="mb-4">
+                <label class="form-label">Prix actuel</label>
+                <div class="input-group">
+                  <span class="input-group-text">TND</span>
+                  <input type="text" class="form-control" [value]="currentPrice" disabled>
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <label for="bidAmount" class="form-label">Votre enchère</label>
+                <div class="input-group">
+                  <span class="input-group-text">TND</span>
+                  <input type="number"
+                         id="bidAmount"
+                         class="form-control"
+                         formControlName="bidAmount"
+                         [min]="currentPrice + 1"
+                         step="0.01">
+                </div>
+                <div *ngIf="errorMessage" class="alert alert-danger mt-2">
+                  {{ errorMessage }}
+                </div>
+              </div>
+
+              <div class="d-grid gap-2">
+                <button type="submit" 
+                        class="btn btn-primary"
+                        [disabled]="bidForm.invalid || isExpired">
+                  {{ isExpired ? 'Enchère terminée' : 'Placer l\'enchère' }}
+                </button>
+                <button type="button" 
+                        class="btn btn-outline-secondary"
+                        routerLink="/frontoffice/articleauction">
+                  Annuler
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

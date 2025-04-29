@@ -32,7 +32,7 @@ import { UserProfileComponent } from './pages/auth/user-profile/user-profile.com
 
 // ✅ Mat & Calendar modules
 import { MatIconModule } from '@angular/material/icon';
-import { FullCalendarModule } from '@fullcalendar/angular'; // 📅 SUPER IMPORTANT
+import { FullCalendarModule } from '@fullcalendar/angular';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -65,6 +65,12 @@ import { OauthSuccessComponent } from './pages/auth/oauth-success/oauth-success.
 
 
 import { RecaptchaModule, RecaptchaFormsModule } from 'ng-recaptcha';
+import { CalendarComponent } from './pages/shop/calendar/calendar.component';
+import { ArticleAuctionComponent } from './pages/article-auction/article-auction.component';
+import { BidslistComponent } from './pages/auctionbids/bidslist/bidslist.component';
+import { BidsformComponent } from './pages/auctionbids/bidsform/bidsform.component';
+import { ParticipationModalComponent } from './pages/participation-modal/participation-modal.component';
+
 
 @NgModule({
   declarations: [
@@ -89,7 +95,13 @@ import { RecaptchaModule, RecaptchaFormsModule } from 'ng-recaptcha';
     ForgotPasswordComponent,
     ResetPasswordComponent,
     UserProfileComponent,
-    OauthSuccessComponent
+    OauthSuccessComponent,
+    CalendarComponent,
+    ArticleAuctionComponent,
+    BidslistComponent,
+    BidsformComponent,
+    
+    ParticipationModalComponent
   ],
   imports: [
     CommonModule,

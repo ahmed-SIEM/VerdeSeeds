@@ -1,0 +1,117 @@
+<div class="breadcrumb-area bg-img bg-overlay jarallax" style="background-image: url('../../../assets/frontoffice/img/bg-img/18.jpg');">
+  <div class="container h-100">
+    <div class="row h-100 align-items-center">
+      <div class="col-12">
+        <div class="breadcrumb-text">
+          <h2>Enchères</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Ajout du fil d'Ariane -->
+<div class="famie-breadcrumb">
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink=""><i class="fa fa-home"></i> Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Enchères</li>
+      </ol>
+    </nav>
+  </div>
+</div>
+
+<section class="auction-area section-padding-0-100">
+  <div class="container">
+    <div class="row">
+      <!-- Auction Filters -->
+      <div class="col-12">
+        <div class="auction-filters mb-30 d-flex align-items-center justify-content-between">
+          <div class="filter-buttons">
+            <div class="btn-group" role="group">
+              <button [class.active]="currentFilter === 'all'" 
+                      class="btn btn-outline-primary"
+                      (click)="applyFilter('all')">
+                Toutes les enchères
+              </button>
+              <button [class.active]="currentFilter === 'active'" 
+                      class="btn btn-outline-success"
+                      (click)="applyFilter('active')">
+                Enchères actives
+              </button>
+              <button [class.active]="currentFilter === 'closed'" 
+                      class="btn btn-outline-danger"
+                      (click)="applyFilter('closed')">
+                Enchères terminées
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <!-- Auction Products Area -->
+      <div class="col-12">
+        <div class="row">
+          <!-- Single Auction Product Area -->
+          <div class="col-12 col-sm-6 col-lg-4" *ngFor="let article of displayedArticles">
+            <div class="single-product-area mb-50">
+              <div class="product-thumbnail">
+                <img [src]="article.imageUrl" [alt]="article.title" class="img-fluid">
+                <span class="product-tags badge" 
+                      [ngClass]="{
+                        'bg-success': article.auction?.startTime <= currentDate && article.auction?.endTime > currentDate,
+                        'bg-danger': article.auction?.endTime <= currentDate,
+                        'bg-warning': article.auction?.startTime > currentDate
+                      }">
+                  {{ getAuctionStatus(article.auction?.startTime, article.auction?.endTime) }}
+                </span>
+                <div class="product-meta-data">
+                  <a (click)="navigateToAuctionDetail(article.id)" style="cursor: pointer;" 
+                     data-toggle="tooltip" data-placement="top" title="Details de l'enchère">
+                    <i class="fa fa-gavel"></i>
+                  </a>
+                  <a *ngIf="canAddBid(article.auction?.startTime, article.auction?.endTime)"
+                     (click)="navigateToAddBid(article.id)" style="cursor: pointer;"
+                     data-toggle="tooltip" data-placement="top" title="Participer à l'enchère">
+                    <i class="fa fa-plus"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="product-desc p-4">
+                <div class="mb-2">
+                  <span class="badge bg-primary">{{article.typeArticle}}</span>
+                </div>
+                <h5 class="product-title mb-3">{{article.title}}</h5>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span class="text-muted">Prix initial:</span>
+                  <h6 class="price text-success mb-0">{{article.prix}} TND</h6>
+                </div>
+                <!-- Ajout du prix courant -->
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span class="text-muted">Prix actuel:</span>
+                  <h6 class="price text-primary mb-0">{{article.auction?.currentPrice || article.prix}} TND</h6>
+                </div>
+                <div class="mb-3">
+                  <small class="text-muted">Description:</small>
+                  <p class="mb-2">{{article.description}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ajout de la pagination -->
+        <nav>
+          <ul class="pagination mb-0 mt-50 justify-content-center">
+            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#"><i class="fa fa-angle-right"></i></a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>

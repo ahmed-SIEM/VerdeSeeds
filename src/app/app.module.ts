@@ -14,6 +14,7 @@ import { NgxCaptchaModule } from 'ngx-captcha';
 
 
 
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 // Initialize Firebase
@@ -31,8 +32,9 @@ initializeApp(firebase);
     HttpClientModule,
     BrowserAnimationsModule,
     DragDropModule,
-    NgxCaptchaModule
+    NgxCaptchaModule,
   
+    MatSnackBarModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -3,167 +3,191 @@
 <body class="app">
 
   <div class="app-wrapper">
-   
-  
-<div class="container-fluid p-4">
-  <!-- Header Section -->
-  <div class="d-flex justify-content-between align-items-center mb-4">
-      <h2 class="text-primary mb-0">Component Management</h2>
-      <button class="btn btn-success" (click)="addComponent()">
-          <i class="fas fa-plus me-2"></i>Add New Component
-      </button>
-  </div>
 
-  <!-- Top Components Ranking -->
-  <div class="top-components">
-      <h3 class="ranking-title">
+    <!-- <img src="../../../../../assets/backoffice/images/platform/leaves.png"
+                       class="color-generator-icon" alt="Generate colors">
+                    <img src="../../../../../assets/backoffice/images/platform/leaves.gif"
+                       class="color-generator-icon" alt="Generating colors"> -->
+    <div class="container-fluid p-4">
+      <!-- Header Section -->
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-primary mb-0">Component Management</h2>
+        <button class="btn btn-success" (click)="addComponent()">
+          <i class="fas fa-plus me-2"></i>Add New Component
+        </button>
+      </div>
+
+      <!-- Top Components Ranking -->
+      <div class="top-components">
+        <h3 class="ranking-title">
           <i class="fas fa-trophy me-2"></i>
           Most Used Components
-      </h3>
-      <div class="row">
+        </h3>
+        <div class="row">
           <div class="col-md-6">
-              <div class="ranking-item rank-1" *ngIf="topComponents[0] && categorizedComponents[topComponents[0].type]">
-                  <span class="rank-number">1</span>
-                  <i class="fas fa-crown rank-icon"></i>
-                  <span class="component-name">{{categorizedComponents[topComponents[0].type].name}}</span>
-                  <span class="usage-count">{{topComponents[0].count}} uses</span>
-              </div>
-              <div class="ranking-item rank-2" *ngIf="topComponents[1] && categorizedComponents[topComponents[1].type]">
-                  <span class="rank-number">2</span>
-                  <i class="fas fa-medal rank-icon"></i>
-                  <span class="component-name">{{categorizedComponents[topComponents[1].type].name}}</span>
-                  <span class="usage-count">{{topComponents[1].count}} uses</span>
-              </div>
-              <div class="ranking-item rank-3" *ngIf="topComponents[2] && categorizedComponents[topComponents[2].type]">
-                  <span class="rank-number">3</span>
-                  <i class="fas fa-award rank-icon"></i>
-                  <span class="component-name">{{categorizedComponents[topComponents[2].type].name}}</span>
-                  <span class="usage-count">{{topComponents[2].count}} uses</span>
-              </div>
+            <div class="ranking-item rank-1" *ngIf="topComponents[0] && categorizedComponents[topComponents[0].type]">
+              <span class="rank-number">1</span>
+              <i class="fas fa-crown rank-icon"></i>
+              <span class="component-name">{{categorizedComponents[topComponents[0].type].name}}</span>
+              <span class="usage-count">{{topComponents[0].count}} uses</span>
+            </div>
+            <div class="ranking-item rank-2" *ngIf="topComponents[1] && categorizedComponents[topComponents[1].type]">
+              <span class="rank-number">2</span>
+              <i class="fas fa-medal rank-icon"></i>
+              <span class="component-name">{{categorizedComponents[topComponents[1].type].name}}</span>
+              <span class="usage-count">{{topComponents[1].count}} uses</span>
+            </div>
+            <div class="ranking-item rank-3" *ngIf="topComponents[2] && categorizedComponents[topComponents[2].type]">
+              <span class="rank-number">3</span>
+              <i class="fas fa-award rank-icon"></i>
+              <span class="component-name">{{categorizedComponents[topComponents[2].type].name}}</span>
+              <span class="usage-count">{{topComponents[2].count}} uses</span>
+            </div>
           </div>
           <div class="col-md-6">
-              <div class="ranking-item rank-4" *ngIf="topComponents[3] && categorizedComponents[topComponents[3].type]">
-                  <span class="rank-number">4</span>
-                  <i class="fas fa-gem rank-icon"></i>
-                  <span class="component-name">{{categorizedComponents[topComponents[3].type].name}}</span>
-                  <span class="usage-count">{{topComponents[3].count}} uses</span>
-              </div>
-              <div class="ranking-item rank-5" *ngIf="topComponents[4] && categorizedComponents[topComponents[4].type]">
-                  <span class="rank-number">5</span>
-                  <i class="fas fa-certificate rank-icon"></i>
-                  <span class="component-name">{{categorizedComponents[topComponents[4].type].name}}</span>
-                  <span class="usage-count">{{topComponents[4].count}} uses</span>
-              </div>
-              <div class="ranking-item rank-6" *ngIf="topComponents[5] && categorizedComponents[topComponents[5].type]">
-                  <span class="rank-number">6</span>
-                  <i class="fas fa-shield-alt rank-icon"></i>
-                  <span class="component-name">{{categorizedComponents[topComponents[5].type].name}}</span>
-                  <span class="usage-count">{{topComponents[5].count}} uses</span>
-              </div>
+            <div class="ranking-item rank-4" *ngIf="topComponents[3] && categorizedComponents[topComponents[3].type]">
+              <span class="rank-number">4</span>
+              <i class="fas fa-gem rank-icon"></i>
+              <span class="component-name">{{categorizedComponents[topComponents[3].type].name}}</span>
+              <span class="usage-count">{{topComponents[3].count}} uses</span>
+            </div>
+            <div class="ranking-item rank-5" *ngIf="topComponents[4] && categorizedComponents[topComponents[4].type]">
+              <span class="rank-number">5</span>
+              <i class="fas fa-certificate rank-icon"></i>
+              <span class="component-name">{{categorizedComponents[topComponents[4].type].name}}</span>
+              <span class="usage-count">{{topComponents[4].count}} uses</span>
+            </div>
+            <div class="ranking-item rank-6" *ngIf="topComponents[5] && categorizedComponents[topComponents[5].type]">
+              <span class="rank-number">6</span>
+              <i class="fas fa-shield-alt rank-icon"></i>
+              <span class="component-name">{{categorizedComponents[topComponents[5].type].name}}</span>
+              <span class="usage-count">{{topComponents[5].count}} uses</span>
+            </div>
           </div>
+        </div>
       </div>
-  </div>
 
-  <!-- Search and Filter Section -->
-  <div class="card mb-4">
-      <div class="card-body">
+      <!-- Search and Filter Section -->
+      <div class="card mb-4">
+        <div class="card-body">
           <div class="row g-3">
-              <div class="col-md-4">
-                  <input type="text" class="form-control" placeholder="Search by name or type..." [(ngModel)]="searchTerm">
-              </div>
-              <div class="col-md-4">
-                  <select class="form-select" [(ngModel)]="selectedType">
-                      <option value="">All Types</option>
-                      <option *ngFor="let type of categorizedComponents | keyvalue" [value]="type.key">
-                          {{type.value.name}}
-                      </option>
-                  </select>
-              </div>
+            <div class="col-md-4">
+              <input type="text" class="form-control" placeholder="Search by name or type..." [(ngModel)]="searchTerm">
+            </div>
+            <div class="col-md-4">
+              <select class="form-select" [(ngModel)]="selectedType">
+                <option value="">All Types</option>
+                <option *ngFor="let type of categorizedComponents | keyvalue" [value]="type.key">
+                  {{type.value.name}}
+                </option>
+              </select>
+            </div>
+
+
+            <img src="../../../../../assets/backoffice/images/platform/leaves.png" class="leaves-icon"
+              (click)="openDialog()" alt="Get recommendations">
           </div>
+
+        </div>
       </div>
-  </div>
 
-  <!-- Platforms List -->
-  <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
-      <div class="col" *ngFor="let component of filteredComponentsList">
-          <div class="card h-100">
-              <div class="card-body">
-                  <img [src]="categorizedComponents[component.type].preview" 
-                       [alt]="categorizedComponents[component.type].name"
-                       class="component-preview-img"
-                       [title]="categorizedComponents[component.type].name"
-                       data-toggle="modal" 
-                       data-target="#exampleModal"
-                       (click)="previewComponent(component)">
-                       
-                  <div class="component-info">
-                      <h4 class="card-title  mb-0"><strong>{{component.name}}</strong></h4>
-                      <p class="text-muted small mb-0">Type: {{categorizedComponents[component.type].name}}</p>
-                  </div>
+      <!-- Leaves Icon -->
 
-                  <div class="d-flex gap-2 mt-auto">
-                    
-                   
-                      <button class="btn btn-outline-secondary btn-sm" (click)="editComponent(component)">
-                          <i class="fas fa-edit me-1"></i> Edit
-                      </button>
-                      <button class="btn btn-outline-danger btn-sm" (click)="deleteComponent(component.id)">
-                          <i class="fas fa-trash me-1"></i> Delete
-                      </button>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </div>
 
-  <!-- Empty State -->
-  <div *ngIf="filteredComponentsList.length === 0" class="text-center py-5">
-      <i class="fas fa-database fa-3x text-muted mb-3"></i>
-      <h4>No Components Found</h4>
-      <p class="text-muted">Start by adding a new components using the button above.</p>
-  </div>
-
-  <!-- Pagination -->
-  <div class="d-flex justify-content-center mt-4" *ngIf="totalPages > 1">
-    <nav>
-      <ul class="pagination">
-        <li class="page-item" [class.disabled]="currentPage === 1">
-          <a class="page-link" (click)="changePage(currentPage - 1)" [class.disabled]="currentPage === 1">
-            Previous
-          </a>
-        </li>
-        <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index"
-            [class.active]="currentPage === i + 1">
-          <a class="page-link" (click)="changePage(i + 1)">{{i + 1}}</a>
-        </li>
-        <li class="page-item" [class.disabled]="currentPage === totalPages">
-          <a class="page-link" (click)="changePage(currentPage + 1)" [class.disabled]="currentPage === totalPages">
-            Next
-          </a>
-        </li>
-      </ul>
-    </nav>
-  </div>
-
-  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Component Preview</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
+      <!-- Recommendation Dialog -->
+      <dialog #recommendationDialog class="p-4 rounded shadow-lg border-0">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="modal-title m-0">Select Component Type</h5>
+          <button type="button" class="btn-close" (click)="closeDialog()"></button>
+        </div>
+        <div class="mb-3">
+          <select class="form-select" #componentTypeSelect>
+            <option value="">Choose a component type</option>
+            <option *ngFor="let type of categorizedComponents | keyvalue" [value]="type.key">
+              {{type.value.name}}
+            </option>
+          </select>
+        </div>
+       
+        <div class="d-flex justify-content-end gap-2">
+          <button type="button" class="btn btn-secondary" (click)="closeDialog()">Close</button>
+          <button type="button" class="btn btn-primary" (click)="startRecommendation(componentTypeSelect.value)">
+            Get Recommendation
           </button>
         </div>
-        <div class="modal-body text-center">
-          <img [src]="selectedPreviewImage" class="img-fluid" alt="Component Preview">
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </dialog>
+
+      <!-- Loading Overlay -->
+      <div class="loading-overlay" [class.active]="isLoading">
+        <div class="gif-container">
+          <img src="../../../../../assets/backoffice/images/platform/leaves.gif" alt="Loading...">
         </div>
       </div>
-    </div>
-  </div>
 
-</div>
+      <!-- Platforms List -->
+      <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+        <div class="col" *ngFor="let component of filteredComponentsList">
+          <div class="card h-100">
+            <div class="card-body">
+              <img [src]="categorizedComponents[component.type].preview"
+                [alt]="categorizedComponents[component.type].name" class="component-preview-img"
+                [title]="categorizedComponents[component.type].name"    >
+
+              <div class="component-info">
+                <h4 class="card-title  mb-0"><strong>{{component.name}}</strong></h4>
+                <p class="text-muted small mb-0">Type: {{categorizedComponents[component.type].name}}</p>
+              </div>
+
+              <div class="d-flex gap-2 mt-auto">
+
+
+                <button class="btn btn-outline-secondary btn-sm" (click)="editComponent(component)">
+                  <i class="fas fa-edit me-1"></i> Edit
+                </button>
+                <button class="btn btn-outline-danger btn-sm" (click)="deleteComponent(component.id)">
+                  <i class="fas fa-trash me-1"></i> Delete
+                </button>
+                <button class="btn btn-outline-primary btn-sm" (click)="PreviewComponent(component.id)">
+                  <i class="fas fa-eye me-1"></i> View
+                </button>
+               
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div *ngIf="filteredComponentsList.length === 0" class="text-center py-5">
+        <i class="fas fa-database fa-3x text-muted mb-3"></i>
+        <h4>No Components Found</h4>
+        <p class="text-muted">Start by adding a new components using the button above.</p>
+      </div>
+
+      <!-- Pagination -->
+      <div class="d-flex justify-content-center mt-4" *ngIf="totalPages > 1">
+        <nav>
+          <ul class="pagination">
+            <li class="page-item" [class.disabled]="currentPage === 1">
+              <a class="page-link" (click)="changePage(currentPage - 1)" [class.disabled]="currentPage === 1">
+                Previous
+              </a>
+            </li>
+            <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index"
+              [class.active]="currentPage === i + 1">
+              <a class="page-link" (click)="changePage(i + 1)">{{i + 1}}</a>
+            </li>
+            <li class="page-item" [class.disabled]="currentPage === totalPages">
+              <a class="page-link" (click)="changePage(currentPage + 1)" [class.disabled]="currentPage === totalPages">
+                Next
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+
+    
+
+    </div>
   </div>
 </body>

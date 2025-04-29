@@ -1,14 +1,51 @@
-.card-img-top {
-    height: 200px;
-    object-fit: cover;
-    border-bottom: 1px solid #eee;
-  }
-  
-  .card h5 {
-    font-weight: bold;
-  }
-  
-  .gap-2 > * {
-    margin-right: 0.5rem;
-  }
-  
+/* ✅ MODAL BACKGROUND STYLE */
+.modal-background {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ✅ MODAL CARD STYLE */
+.modal-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+  animation: popupFade 0.3s ease-in-out;
+}
+
+/* ✨ Smooth Appearance */
+@keyframes popupFade {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+
+}
+
+.conflict-snackbar {
+  background-color: #ffa726;
+  color: #000;
+  font-weight: bold;
+}
+
+.success-snackbar {
+  background-color: #4caf50;
+  color: white;
+  font-weight: bold;
+}
+
+.error-snackbar {
+  background-color: #f44336;
+  color: white;
+  font-weight: bold;
+}
+.warning-snackbar {
+  background: linear-gradient(45deg, #ffcc00, #ff9900);
+  color: #fff;
+  font-weight: bold;
+}

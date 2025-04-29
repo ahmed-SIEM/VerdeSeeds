@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { BackofficeRoutingModule } from './backoffice-routing.module';
 import { LayoutsComponent } from './layouts/layouts.component';
 import { HomeComponent } from './pages/home/home.component';

@@ -6,15 +6,28 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class FormationService {
-  private apiUrl = 'http://localhost:8081/formations/all-with-details';
+  private baseUrl = 'http://localhost:8081/formations';
 
   constructor(private http: HttpClient) {}
 
+  
   getAllFormations(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl);
+    return this.http.get<any[]>(`${this.baseUrl}/all-with-details`);
   }
 
+  
   getDetailsByFormationId(idFormation: number): Observable<any> {
-    return this.http.get(`http://localhost:8081/details-formation/by-formation/${idFormation}`);
+    return this.http.get(`${this.baseUrl.replace('/formations', '/details-formation')}/by-formation/${idFormation}`);
   }
+
+  
+  getFormationsByType(type: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/type/${type}`);
+  }
+
+  
+  getFormationsForCalendar(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/calendar`);
+  }
+  
 }

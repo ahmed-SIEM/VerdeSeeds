@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { componentServcie } from 'src/app/services/plateforme/component.service';
 import { Router } from '@angular/router';
+import { CommonService } from 'src/app/services/common.service';
 
 type ComponentType = 'headerwithicons' | 'centeredhero' | 'herowithimage' | 'verticallycenteredhero' | 
                     'columnswithicons' | 'customcards' | 'headings' | 'headingleftwithimage' | 
@@ -13,12 +14,20 @@ interface ComponentPlatforme {
   content: string;
 }
 
+interface output {
+  content: string;
+  type: string;
+  name: string;
+  description: string;
+}
+
 @Component({
   selector: 'app-componentlist',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })
 export class ListComponent implements OnInit {
+  @ViewChild('recommendationDialog') recommendationDialog!: ElementRef<HTMLDialogElement>;
   components: ComponentPlatforme[] = [];
   searchTerm: string = '';
   selectedPreviewImage: string = '';
@@ -39,8 +48,18 @@ export class ListComponent implements OnInit {
     plateformeabout: 0
   };
   topComponents: {type: ComponentType, count: number}[] = []; // Update the type definition
-
-  constructor(private componentService: componentServcie, private router: Router) {}
+  output :  output = {
+    content: '',
+    type: '',
+    name: '',
+    description: ''
+  };
+  isLoading: boolean = false;
+ userid = 1;
+ user: any[] = [];
+  constructor(
+    private commonservice: CommonService,
+    private componentService: componentServcie, private router: Router) {}
 
   categorizedComponents: Record<ComponentType, { name: string; preview: string }> = {
     headerwithicons: { name: 'Header with Icons', preview: '../../../../../assets/backoffice/img/preview-images/CustomHeaderWithIcons.png' },
@@ -59,9 +78,20 @@ export class ListComponent implements OnInit {
   toString(elemnt: any): string {
     return JSON.stringify(elemnt);
   }
+  loaduser() {
+    this.commonservice.getUserById(this.userid).subscribe({
+      next: (user) => {
+        this.user = user;
+      },
+      error: (error) => {
+        console.error('Error loading users:', error);
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.loadComponents();
+    this.loaduser();
     
   }
 
@@ -112,8 +142,9 @@ export class ListComponent implements OnInit {
     this.router.navigate(['/backoffice/component', component.id, 'edit']);
   }
 
-  previewComponent(component: ComponentPlatforme): void {
-    this.selectedPreviewImage = this.categorizedComponents[component.type].preview;
+  PreviewComponent(id: any): void {
+    this.router.navigate(['/backoffice/component', id]);
+
   }
 
   addComponent(): void {
@@ -130,7 +161,6 @@ export class ListComponent implements OnInit {
         }))
         .sort((a, b) => b.count - a.count)
         .slice(0, 6); // Changed from 3 to 6 to show top 6 components
-      console.log(this.stats);
     });
   }
 
@@ -162,5 +192,73 @@ export class ListComponent implements OnInit {
         return '';
     }
 
+  }
+
+  async generateRecommandation(type: ComponentType): Promise<void> {
+    try {
+      const requestBody = JSON.stringify({ type });
+
+      const response = await fetch("http://localhost:5000/recommend", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: requestBody
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+
+      const result = await response.json();
+      this.output = result;
+      this.output.content = JSON.stringify(this.output.content)
+    } catch (error) {
+      console.error('Error getting recommendation:', error);
+    }
+  }
+
+  openDialog() {
+    this.recommendationDialog.nativeElement.showModal();
+  }
+
+  closeDialog() {
+    this.recommendationDialog.nativeElement.close();
+  }
+
+  async startRecommendation(type: string): Promise<void> {
+    if (!type) {
+      alert('Please select a component type');
+      return;
+    }
+
+    const componentType = type as ComponentType;
+    this.closeDialog();
+    
+    this.isLoading = true;
+    try {
+      await this.generateRecommandation(componentType);
+      console.log('Recommendation output:', this.output);
+
+      if(confirm(`Dont Forget To edit and add your own Images`)){
+        const newComponent: any = {
+          name: this.output.name,
+          type: this.output.type,
+          content: this.output.content,
+          user: this.user 
+        };
+
+        this.componentService.createComponent(newComponent).subscribe(() => {
+          this.loadComponents();
+        });
+      }
+    
+
+
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      this.isLoading = false;
+    }
   }
 }
