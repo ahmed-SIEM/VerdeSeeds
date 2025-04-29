@@ -41,11 +41,11 @@
 
       <!-- Social login buttons with nature colors -->
       <div class="nature-social-login">
-        <button mat-stroked-button class="nature-social-btn nature-google-btn">
+        <button mat-stroked-button class="nature-social-btn nature-google-btn" (click)="signInWithGoogle()">
           <img src="/assets/images/svgs/google-icon-green.svg" alt="Google">
           <span>Continue with Google</span>
         </button>
-        <button mat-stroked-button class="nature-social-btn nature-facebook-btn">
+        <button mat-stroked-button class="nature-social-btn nature-facebook-btn" (click)="signInWithFacebook()">
           <img src="/assets/images/svgs/facebook-icon-green.svg" alt="Facebook">
           <span>Continue with Facebook</span>
         </button>
@@ -109,7 +109,7 @@
         <div class="nature-form-row">
           <mat-form-field appearance="outline" class="nature-form-field">
             <mat-label>Phone Number</mat-label>
-            <input matInput formControlName="telephone" placeholder="+1 (___) ___-____">
+            <input matInput formControlName="telephone" placeholder="+(216) __-___-___">
             <mat-icon matPrefix class="nature-icon">call</mat-icon>
           </mat-form-field>
 

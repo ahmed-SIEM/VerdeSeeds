@@ -26,6 +26,14 @@ export class LoginComponent {
       password: ['', Validators.required]
     });
   }
+
+  signInWithGoogle() {
+    window.location.href = 'http://localhost:8081/oauth2/authorization/google';
+  }
+
+  signInWithFacebook(){
+    window.location.href = 'http://localhost:8081/oauth2/authorization/facebook';
+  }
   onSubmit(): void {
     if (this.loginForm.invalid) return;
     this.isLoading = true;

@@ -40,6 +40,7 @@ export class RegisterComponent {
       telephone: ['', Validators.required],
       password: ['', [Validators.required, Validators.minLength(6)]],
       adresse: ['', Validators.required],
+    
     });
   }
 
@@ -47,15 +48,19 @@ export class RegisterComponent {
     const password = this.registerForm.get('password')?.value || '';
     if (password.length === 0) return '';
     if (password.length < 8) return 'Weak';
-    
+
     const hasUpperCase = /[A-Z]/.test(password);
     const hasLowerCase = /[a-z]/.test(password);
     const hasNumbers = /\d/.test(password);
     const hasSpecialChars = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-    
-    const score = [hasUpperCase, hasLowerCase, hasNumbers, hasSpecialChars]
-      .filter(Boolean).length;
-    
+
+    const score = [
+      hasUpperCase,
+      hasLowerCase,
+      hasNumbers,
+      hasSpecialChars,
+    ].filter(Boolean).length;
+
     if (score >= 4 && password.length >= 10) return 'Strong';
     if (score >= 3) return 'Medium';
     return 'Weak';
@@ -72,6 +77,15 @@ export class RegisterComponent {
       default:
         return '#757575'; // Grey
     }
+  }
+
+  signInWithGoogle() {
+    window.location.href = 'http://localhost:8081/oauth2/authorization/google';
+  }
+
+  signInWithFacebook() {
+    window.location.href =
+      'http://localhost:8081/oauth2/authorization/facebook';
   }
 
   get passwordStrengthWidth(): string {
@@ -92,7 +106,7 @@ export class RegisterComponent {
 
     this.isLoading = true;
     const request: RegisterRequest = this.registerForm.value;
-    request.roles = 'AGRICULTEUR'
+    request.roles = 'AGRICULTEUR';
 
     this.authService.register(request).subscribe({
       next: () => {

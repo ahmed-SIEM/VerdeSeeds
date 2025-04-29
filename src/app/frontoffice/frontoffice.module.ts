@@ -27,6 +27,8 @@ import { LoginComponent } from './pages/auth/login/login.component';
 import { RegisterComponent } from './pages/auth/register/register.component';
 import { ForgotPasswordComponent } from './pages/auth/forgot-password/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './pages/auth/reset-password/reset-password.component';
+import { UserProfileComponent } from './pages/auth/user-profile/user-profile.component';
+
 
 // ✅ Mat & Calendar modules
 import { MatIconModule } from '@angular/material/icon';
@@ -39,6 +41,10 @@ import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTabsModule } from '@angular/material/tabs';
+
 
 // ✅ Composants plateforme
 import { CenteredheroComponent } from './components/plateformeComps/heros/centeredhero/centeredhero.component';
@@ -55,7 +61,7 @@ import { SponsorsComponent } from './components/plateformeComps/others/sponsors/
 import { plateformeaboutComponent } from './components/plateformeComps/others/about/about.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DetailsformationComponent } from './pages/detailsformation/detailsformation.component';
-import { UserProfileComponent } from './pages/auth/user-profile/user-profile.component';
+import { OauthSuccessComponent } from './pages/auth/oauth-success/oauth-success.component';
 
 @NgModule({
   declarations: [
@@ -79,7 +85,8 @@ import { UserProfileComponent } from './pages/auth/user-profile/user-profile.com
     RegisterComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    OauthSuccessComponent
   ],
   imports: [
     CommonModule,
@@ -111,6 +118,9 @@ import { UserProfileComponent } from './pages/auth/user-profile/user-profile.com
     MatInputModule,
     MatButtonModule,
     MatIconModule,
+    MatDividerModule,
+    MatSnackBarModule,
+    MatTabsModule
   ],
 })
 export class FrontofficeModule {}
