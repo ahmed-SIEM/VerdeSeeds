@@ -38,13 +38,10 @@
 
       <!-- Prix Total -->
       <div class="mb-3">
-        <label class="form-label">Prix total</label>
+        <label for="totalPrice" class="form-label">Prix total</label>
         <div class="input-group">
-          <div class="form-control readonly-field">
-            {{ getTotalPrice() }}
-          </div>
-          <span class="input-group-text">€</span>
-          <small class="text-muted ms-2">Calculé automatiquement</small>
+          <input type="number" class="form-control" id="totalPrice" formControlName="totalPrice" readonly>
+          <span class="input-group-text">TND</span>
         </div>
       </div>
 

@@ -20,6 +20,7 @@ import { PlatformeModule } from './pages/platform-management/platforme.module';
 import { ComponentManagementModule } from './pages/component-management/component-management.module';
 import { PreviewComponent } from './pages/platform-management/preview/preview.component';
 import { SponsorsComponent } from "../frontoffice/components/plateformeComps/others/sponsors/sponsors.component";
+import { HttpClientModule } from '@angular/common/http';
 import { NgChartsModule } from 'ng2-charts';
 
 @NgModule({
@@ -47,6 +48,7 @@ import { NgChartsModule } from 'ng2-charts';
     PlatformeModule,
     ComponentManagementModule,
     SponsorsComponent,
+    HttpClientModule,
     NgChartsModule
 ]
 })

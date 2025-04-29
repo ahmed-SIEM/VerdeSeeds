@@ -42,9 +42,9 @@
                  formControlName="startPrice" 
                  step="0.01"
                  [class.is-invalid]="auctionForm.get('startPrice')?.invalid && auctionForm.get('startPrice')?.touched">
-          <span class="input-group-text">€</span>
+          <span class="input-group-text">TND</span>
           <div class="invalid-feedback" *ngIf="auctionForm.get('startPrice')?.errors?.['belowArticlePrice']">
-            Le prix de départ ne peut pas être inférieur au prix de l'article ({{minimumPrice}} €)
+            Le prix de départ ne peut pas être inférieur au prix de l'article ({{minimumPrice}} TND)
           </div>
         </div>
       </div>

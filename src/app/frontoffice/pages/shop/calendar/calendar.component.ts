@@ -4,7 +4,7 @@ import { CalendarOptions } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import { ReservationService } from '../../../../backoffice/pages/article/services/reservation.service';
+import { ReservationService, Reservation } from '../../../../backoffice/pages/article/services/reservation.service';
 import { ArticleService } from '../../../../backoffice/pages/article/services/article.service';
 
 @Component({
@@ -17,23 +17,28 @@ export class CalendarComponent implements OnInit {
   articleTitle: string = '';
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
-    initialView: 'dayGridMonth', // Changé de 'timeGridWeek' à 'dayGridMonth'
+    initialView: 'dayGridMonth',
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',
       right: 'dayGridMonth,timeGridWeek,timeGridDay'
     },
+    timeZone: 'local',
     slotMinTime: '00:00:00',
-    slotMaxTime: '23:59:00',
+    slotMaxTime: '23:59:59',
     events: [],
     editable: false,
     selectable: true,
     selectMirror: true,
     dayMaxEvents: true,
+    selectConstraint: {
+      start: '00:00',
+      end: '24:00',
+    },
     select: this.handleDateSelect.bind(this),
     locale: 'fr',
     validRange: {
-      start: new Date().toISOString().split('T')[0] // Désactive les dates antérieures à aujourd'hui
+      start: new Date().toISOString().split('T')[0]
     }
   };
 
@@ -64,13 +69,14 @@ export class CalendarComponent implements OnInit {
     this.reservationService.getReservationsByArticle(this.articleId).subscribe({
       next: (reservations) => {
         const events = reservations.map(res => ({
-          title: 'Réservé',
+          title: res.user?.idUser ? `Réservé par User ${res.user.idUser}` : 'Réservé',
           start: new Date(res.startDatetime),
           end: new Date(res.endDatetime),
           backgroundColor: this.getStatusColor(res.status),
           borderColor: this.getStatusColor(res.status),
           extendedProps: {
-            status: res.status
+            status: res.status,
+            userId: res.user?.idUser
           }
         }));
         this.calendarOptions.events = events;
@@ -88,48 +94,104 @@ export class CalendarComponent implements OnInit {
     }
   }
 
-  handleDateSelect(selectInfo: any) {
-    const startDate = new Date(selectInfo.start.getTime() + (60 * 60 * 1000));
+  checkOverlap(start: Date, end: Date): { overlaps: boolean; existingUserId?: number } {
+    const events = this.calendarOptions.events as any[];
+    for (const event of events) {
+      const eventStart = new Date(event.start);
+      const eventEnd = new Date(event.end);
+      if (start < eventEnd && end > eventStart) {
+        return { overlaps: true, existingUserId: event.extendedProps.userId };
+      }
+    }
+    return { overlaps: false };
+  }
 
-    const endDate = selectInfo.end;
+  private normalizeDate(date: Date): Date {
+    const normalized = new Date(date);
+    // Ajuster pour le fuseau horaire local
+    normalized.setMinutes(normalized.getMinutes() + normalized.getTimezoneOffset());
+    normalized.setSeconds(0, 0);
+    return normalized;
+  }
+
+  private formatToLocalISOString(date: Date): string {
+    const offset = date.getTimezoneOffset();
+    const adjustedDate = new Date(date.getTime() - (offset * 60 * 1000));
+    return adjustedDate.toISOString();
+  }
+
+  handleDateSelect(selectInfo: any) {
+    const startDate = new Date(selectInfo.start);
+    const endDate = new Date(selectInfo.end);
     const now = new Date();
     
-    // Vérification si la date sélectionnée est dans le passé
-    if (startDate < now) {
+    console.log('Debug dates:', {
+      originalStart: startDate.toISOString(),
+      originalEnd: endDate.toISOString(),
+      localStart: startDate.toLocaleString(),
+      localEnd: endDate.toLocaleString(),
+      timezoneOffset: startDate.getTimezoneOffset()
+    });
+
+    if (startDate.getTime() < now.getTime()) {
       alert('Impossible de réserver une date dans le passé');
       return;
     }
-    
-    if (this.checkOverlap(startDate, endDate)) {
-      alert('Cette plage horaire est déjà réservée');
-      return;
+
+    const overlapCheck = this.checkOverlap(startDate, endDate);
+    if (overlapCheck.overlaps) {
+      const currentUser = this.getCurrentUser();
+      if (!currentUser || currentUser.idUser !== overlapCheck.existingUserId) {
+        alert('Cette plage horaire est déjà réservée par un autre utilisateur');
+        return;
+      }
     }
 
-    if (confirm('Voulez-vous réserver cette plage horaire?')) {
-      console.log( startDate.toISOString(),
-             endDate.toISOString(),);
-      this.reservationService.createReservation(this.articleId, {
-        startDatetime: startDate.toISOString(),
-        endDatetime: endDate.toISOString(),
-        status: 'PENDING'
-      }).subscribe({
-        next: () => 
-          { 
-            this.loadReservations()},
+    if (confirm(`Voulez-vous réserver du ${startDate.toLocaleString()} au ${endDate.toLocaleString()} ?`)) {
+      const currentUser = this.getCurrentUser();
+      if (!currentUser) {
+        alert('Vous devez être connecté pour effectuer une réservation');
+        return;
+      }
+
+      const reservationData: Partial<Reservation> = {
+        startDatetime: this.formatToLocalISOString(startDate),
+        endDatetime: this.formatToLocalISOString(endDate),
+        status: 'PENDING' as const,
+        user: { idUser: currentUser.idUser }
+      };
+
+      console.log('Sending reservation request with adjusted times:', {
+        original: {
+          start: startDate.toLocaleString(),
+          end: endDate.toLocaleString()
+        },
+        adjusted: reservationData
+      });
+
+      this.reservationService.createReservation(this.articleId, reservationData).subscribe({
+        next: () => {
+          this.loadReservations();
+          alert('Réservation créée avec succès');
+        },
         error: (error) => {
-          console.error('Error creating reservation:', error);
+          console.error('Erreur de réservation:', {
+            error,
+            sentData: reservationData
+          });
           alert('Erreur lors de la création de la réservation');
         }
       });
     }
   }
 
-  checkOverlap(start: Date, end: Date): boolean {
-    const events = this.calendarOptions.events as any[];
-    return events.some(event => {
-      const eventStart = new Date(event.start);
-      const eventEnd = new Date(event.end);
-      return start < eventEnd && end > eventStart;
-    });
-  } 
+  private getCurrentUser() {
+    const userStr = localStorage.getItem('currentUser');
+    if (!userStr) return null;
+    try {
+      return JSON.parse(userStr);
+    } catch {
+      return null;
+    }
+  }
 }

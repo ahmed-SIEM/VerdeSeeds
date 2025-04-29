@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Article, ArticleService } from '../services/article.service';
+import { AIService } from '../services/ai.service';
 
 @Component({
   selector: 'app-article-form',
@@ -21,11 +22,13 @@ export class ArticleFormComponent implements OnInit {
     auction: undefined // Ajouter cette ligne
   };
   isEdit = false;
+  isGenerating = false;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private articleService: ArticleService
+    private articleService: ArticleService,
+    private aiService: AIService
   ) {}
 
   ngOnInit(): void {
@@ -49,29 +52,60 @@ export class ArticleFormComponent implements OnInit {
     });
   }
 
-  
-
   onSubmit(): void {
+    this.submitArticle();
+  }
+
+  private submitArticle(): void {
     if (this.isEdit) {
       this.articleService.updateArticle(this.article).subscribe({
         next: () => {
           this.router.navigate(['/backoffice/articles']);
         },
-        error: (error) => {
+        error: (error: Error) => {
           console.error('Erreur lors de la modification de l\'article', error);
           alert(`Erreur: ${error.message || 'Une erreur est survenue.'}`);
-        },
+        }
       });
     } else {
       this.articleService.addArticle(this.article).subscribe({
         next: () => {
           this.router.navigate(['/backoffice/articles']);
         },
-        error: (error) => {
+        error: (error: Error) => {
           console.error('Erreur lors de l\'ajout de l\'article', error);
           alert(`Erreur: ${error.message || 'Une erreur est survenue.'}`);
-        },
+        }
       });
     }
+  }
+
+  generateAIDescription(): void {
+    if (!this.article.title) {
+      alert('Veuillez remplir le titre avant de générer une description');
+      return;
+    }
+
+    this.isGenerating = true;
+    this.aiService.generateDescription(this.article.title).subscribe({
+      next: (response: any) => {
+        const generatedText = response.choices[0].message.content.trim();
+        if (generatedText.startsWith('ERREUR:')) {
+          alert('Le titre doit correspondre à un produit agricole.');
+          this.isGenerating = false;
+          return;
+        }
+        this.article.description = generatedText
+          .replace(/^["']|["']$/g, '')
+          .trim()
+          .substring(0, 2000);
+        this.isGenerating = false;
+      },
+      error: (error: Error) => {
+        console.error('Erreur de génération:', error);
+        alert(typeof error === 'string' ? error : 'Erreur lors de la génération de la description.');
+        this.isGenerating = false;
+      }
+    });
   }
 }

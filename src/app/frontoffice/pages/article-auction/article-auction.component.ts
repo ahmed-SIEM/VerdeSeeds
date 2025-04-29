@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Article, ArticleService } from '../../../backoffice/pages/article/services/article.service';
 import { AuctionService } from '../../../backoffice/pages/article/services/auction.service';
+import { interval } from 'rxjs';
 
 @Component({
   selector: 'app-article-auction',
@@ -21,12 +22,15 @@ export class ArticleAuctionComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Update current time every minute
-    setInterval(() => {
+    // Update current time and check auctions every 30 seconds
+    interval(30000).subscribe(() => {
       this.currentDate = new Date();
-    }, 60000);
+      this.checkAndFinalizeAuctions();
+    });
     
+    // Initial setup
     this.loadAuctionArticles();
+    this.checkAndFinalizeAuctions();
   }
 
   loadAuctionArticles() {
@@ -142,5 +146,35 @@ export class ArticleAuctionComponent implements OnInit {
 
     // Compare timestamps to avoid timezone issues
     return now.getTime() >= start.getTime() && now.getTime() < end.getTime();
+  }
+
+  private checkAndFinalizeAuctions() {
+    const now = new Date();
+    this.articles.forEach(article => {
+      if (article.auction && 
+          article.auction.active && 
+          new Date(article.auction.endTime) <= now) {
+        console.log(`Attempting to finalize auction ${article.auction.id}`);
+        this.auctionService.finalizeAuction(article.auction.id).subscribe({
+          next: () => {
+            console.log(`Auction ${article.auction.id} finalized successfully`);
+            // Update the article status locally
+            article.auction.active = false;
+            // Mark the article as unavailable since it's been assigned to the winner
+            article.available = false;
+            // Refresh all articles to get the latest state
+            this.loadAuctionArticles();
+          },
+          error: (error) => {
+            console.error(`Error finalizing auction ${article.auction.id}:`, error);
+            if (error.status === 404) {
+              console.log('Auction may have already been finalized');
+              // Refresh to get the current state
+              this.loadAuctionArticles();
+            }
+          }
+        });
+      }
+    });
   }
 }
