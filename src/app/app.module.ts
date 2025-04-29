@@ -15,6 +15,7 @@ import { NgxCaptchaModule } from 'ngx-captcha';
 
 
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { NgChartsModule } from 'ng2-charts';
 
 
 // Initialize Firebase
@@ -35,6 +36,7 @@ initializeApp(firebase);
     NgxCaptchaModule,
   
     MatSnackBarModule,
+    NgChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -21,6 +21,8 @@ import { ComponentManagementModule } from './pages/component-management/componen
 import { PreviewComponent } from './pages/platform-management/preview/preview.component';
 import { SponsorsComponent } from "../frontoffice/components/plateformeComps/others/sponsors/sponsors.component";
 import { HttpClientModule } from '@angular/common/http';
+import { NgChartsModule } from 'ng2-charts';
+
 @NgModule({
   declarations: [
     LayoutsComponent,
@@ -46,7 +48,8 @@ import { HttpClientModule } from '@angular/common/http';
     PlatformeModule,
     ComponentManagementModule,
     SponsorsComponent,
-    HttpClientModule
+    HttpClientModule,
+    NgChartsModule
 ]
 })
 export class BackofficeModule { }

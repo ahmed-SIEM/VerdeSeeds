@@ -282,7 +282,7 @@ Souhaitez-vous continuer ?
   confirmCancel(): void {
     if (!this.participationToCancel) return;
     this.isLoading = true;
-
+  
     this.participationService.annulerParticipation(this.participationToCancel).subscribe({
       next: () => {
         this.closeCancelModal();
@@ -290,10 +290,22 @@ Souhaitez-vous continuer ?
         this.isLoading = false;
       },
       error: (err) => {
+        console.log('ERREUR SPRING:', err);
         this.isLoading = false;
-
-        const messageErreur = typeof err.error === 'string' ? err.error : '';
-        
+  
+        let messageErreur = '';
+  
+        if (typeof err.error === 'string') {
+          try {
+            const parsed = JSON.parse(err.error);
+            messageErreur = parsed.message || '';
+          } catch (_) {
+            messageErreur = err.error;
+          }
+        } else if (err.error?.message) {
+          messageErreur = err.error.message;
+        }
+  
         if (messageErreur.includes('24h')) {
           this.snackBar.open('⏳ Impossible d\'annuler : moins de 24h avant la formation.', '', {
             duration: 6000,
@@ -309,11 +321,13 @@ Souhaitez-vous continuer ?
             verticalPosition: 'bottom',
           });
         }
-
+  
         this.closeCancelModal();
       }
     });
   }
+  
+
 
   getImagePath(photoPath: string): string {
     return `http://localhost:8081/${photoPath}`;
