@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormationService } from '../../services/farmingpractices.service';
 import { ParticipationService } from '../../services/ParticipationService.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { forkJoin } from 'rxjs';
 
 @Component({
@@ -12,6 +13,8 @@ export class FarmingPracticeComponent implements OnInit {
   formations: any[] = [];
   filteredFormations: any[] = [];
   mesParticipations: any[] = [];
+  blockTimes: { [idFormation: number]: number } = {}; // NEW
+blockIntervals: { [idFormation: number]: any } = {}; // NEW
 
   types: string[] = ['THEORIQUE', 'PRATIQUE', 'MIXTE'];
   selectedType: string = 'ALL';
@@ -34,7 +37,8 @@ export class FarmingPracticeComponent implements OnInit {
 
   constructor(
     private formationService: FormationService,
-    private participationService: ParticipationService
+    private participationService: ParticipationService,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -71,24 +75,84 @@ export class FarmingPracticeComponent implements OnInit {
     this.updateStatuses();
   }
 
+  startBlockTimer(formationId: number): void {
+    if (this.blockIntervals[formationId]) {
+      clearInterval(this.blockIntervals[formationId]);
+    }
+  
+    this.participationService.getRemainingBlockTime(formationId).subscribe({
+      next: (timeLeftSeconds: number) => {  // déjà en secondes
+        if (timeLeftSeconds > 0) {
+          this.blockTimes[formationId] = timeLeftSeconds;
+  
+          // 🌟 METTRE formation._status à "BLOQUE" pendant le décompte
+          const formation = this.filteredFormations.find(f => f.idFormation === formationId);
+          if (formation) {
+            formation._status = 'BLOQUE';
+          }
+  
+          this.blockIntervals[formationId] = setInterval(() => {
+            this.blockTimes[formationId]--;
+  
+            if (this.blockTimes[formationId] <= 0) {
+              clearInterval(this.blockIntervals[formationId]);
+              delete this.blockIntervals[formationId];
+              delete this.blockTimes[formationId];
+  
+              // 🌟 Quand le timer arrive à 0 ➔ mettre formation._status à null pour débloquer
+              const formation = this.filteredFormations.find(f => f.idFormation === formationId);
+              if (formation) {
+                formation._status = null;
+              }
+            }
+          }, 1000);
+        }
+      },
+      error: (err: any) => {
+        console.error('Erreur récupération temps blocage', err);
+      }
+    });
+  }
+  
+  
+  
   updateStatuses(): void {
     for (let formation of this.filteredFormations) {
       const participation = this.mesParticipations.find(p =>
         p.formation?.idFormation === formation.idFormation
       );
-
+  
       if (participation) {
-        formation._status = participation.enAttente ? 'WAITING' : 'INSCRIT';
+        if (participation.bloque) {
+          formation._status = 'BLOQUE';
+          this.startBlockTimer(formation.idFormation);
+        } else {
+          formation._status = participation.enAttente ? 'WAITING' : 'INSCRIT';
+        }
         formation._participationId = participation.idParticipation;
-        formation._waitingPosition = participation.waitingPosition || null; // 🌟 Important pour la file d'attente
+        formation._waitingPosition = participation.waitingPosition || null;
       } else {
-        formation._status = null;
+        this.participationService.checkUserBlocked(formation.idFormation).subscribe({
+          next: (isBlocked) => {
+            if (isBlocked) {
+              formation._status = 'BLOQUE';
+              this.startBlockTimer(formation.idFormation); // 🌟 NEW
+            } else {
+              formation._status = null;
+            }
+          },
+          error: (err) => {
+            console.error('Erreur lors de la vérification du blocage', err);
+            formation._status = null;
+          }
+        });
+  
         formation._participationId = null;
         formation._waitingPosition = null;
       }
     }
   }
-
+  
   loadParticipantsCounts(): void {
     this.formations.forEach(f => {
       this.participationService.getConfirmedParticipants(f.idFormation).subscribe(count => {
@@ -107,7 +171,43 @@ export class FarmingPracticeComponent implements OnInit {
 
   openParticipationModal(formation: any): void {
     this.selectedFormation = formation;
-    this.modalVisible = true;
+    this.isLoading = true;
+
+    this.participationService.checkConflict(formation.idFormation).subscribe({
+      next: (conflictingFormation) => {
+        this.isLoading = false;
+        if (conflictingFormation) {
+          const message = `
+⚠️ Vous êtes déjà inscrit à une formation sur la même période :
+
+📚 Formation : ${conflictingFormation.nom}
+📍 Lieu : ${conflictingFormation.lieu}
+📅 Du ${conflictingFormation.dateDebut} au ${conflictingFormation.dateFin}
+
+Souhaitez-vous continuer ?
+          `;
+          let snack = this.snackBar.open(message, 'Continuer', {
+            duration: 8000,
+            panelClass: ['conflict-snackbar'],
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+          });
+
+          snack.onAction().subscribe(() => {
+            this.modalVisible = true;
+          });
+        } else {
+          this.modalVisible = true;
+        }
+      },
+      error: () => {
+        this.isLoading = false;
+        this.snackBar.open('Erreur de vérification.', '', {
+          duration: 3000,
+          panelClass: ['error-snackbar']
+        });
+      }
+    });
   }
 
   closeParticipationModal(): void {
@@ -124,10 +224,12 @@ export class FarmingPracticeComponent implements OnInit {
         this.waitingModalVisible = true;
         this.isLoading = false;
       },
-      error: (err) => {
-        console.error('Erreur récupération position attente', err);
-        alert("Erreur de récupération de votre position en liste d'attente.");
+      error: () => {
         this.isLoading = false;
+        this.snackBar.open('Erreur liste d\'attente.', '', {
+          duration: 3000,
+          panelClass: ['error-snackbar']
+        });
       }
     });
   }
@@ -140,21 +242,27 @@ export class FarmingPracticeComponent implements OnInit {
 
   confirmParticipation(): void {
     if (!this.selectedFormation) return;
-
     this.isLoading = true;
+
     this.participationService.participer(this.selectedFormation.idFormation).subscribe({
       next: () => {
-        this.loadAllData(); // 🔥 Recharge tout correctement
+        this.loadAllData();
         this.closeParticipationModal();
         this.closeWaitingListModal();
         this.isLoading = false;
+        this.snackBar.open('🎉 Inscription réussie !', '', {
+          duration: 3000,
+          panelClass: ['success-snackbar']
+        });
       },
-      error: (err) => {
-        console.error('Erreur participation', err);
-        alert('Erreur d\'inscription.');
+      error: () => {
+        this.isLoading = false;
+        this.snackBar.open('Erreur d\'inscription.', '', {
+          duration: 3000,
+          panelClass: ['error-snackbar']
+        });
         this.closeParticipationModal();
         this.closeWaitingListModal();
-        this.isLoading = false;
       }
     });
   }
@@ -173,18 +281,36 @@ export class FarmingPracticeComponent implements OnInit {
 
   confirmCancel(): void {
     if (!this.participationToCancel) return;
-
     this.isLoading = true;
+
     this.participationService.annulerParticipation(this.participationToCancel).subscribe({
       next: () => {
         this.closeCancelModal();
         setTimeout(() => this.loadAllData(), 400);
+        this.isLoading = false;
       },
       error: (err) => {
-        console.error('Erreur annulation', err);
-        alert('Erreur lors de l\'annulation.');
-        this.closeCancelModal();
         this.isLoading = false;
+
+        const messageErreur = typeof err.error === 'string' ? err.error : '';
+        
+        if (messageErreur.includes('24h')) {
+          this.snackBar.open('⏳ Impossible d\'annuler : moins de 24h avant la formation.', '', {
+            duration: 6000,
+            panelClass: ['warning-snackbar'],
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+          });
+        } else {
+          this.snackBar.open('Erreur lors de l\'annulation.', '', {
+            duration: 3000,
+            panelClass: ['error-snackbar'],
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+          });
+        }
+
+        this.closeCancelModal();
       }
     });
   }
@@ -194,9 +320,17 @@ export class FarmingPracticeComponent implements OnInit {
   }
 
   showCalendarPopup(): void {
-    this.formationService.getFormationsForCalendar().subscribe(events => {
-      this.calendarEvents = events;
+    this.formationService.getFormationsForCalendar().subscribe(formations => {
+      this.calendarEvents = formations.map(f => ({
+        title: f.title, // ✅ pas f.nom
+        start: f.start, // ✅ pas f.dateDebut
+        end: f.end,     // ✅ pas f.dateFin
+        extendedProps: {
+          idFormation: f.id // ✅ pas f.idFormation
+        }
+      }));
       this.showCalendar = true;
     });
   }
+  
 }

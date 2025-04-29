@@ -1,74 +1,133 @@
-<div class="blank-layout-container justify-content-center align-items-center bg-light">
-    <div class="position-relative row w-100 h-100 bg-gredient justify-content-center">
-      <div class="col-lg-4 d-flex align-items-center">
-        <mat-card class="cardWithShadow boxed-auth">
-          <mat-card-content class="p-32">
-            <div class="text-center">
-              <a [routerLink]="['/backoffice']">
-                <img src="" class="align-middle m-2" alt="logo" />
-              </a>
-            </div>
-  
-            <div class="row m-t-24 custom-row">
-              <div class="col-12 col-sm-6">
-                <button mat-stroked-button class="w-100">
-                  <div class="d-flex align-items-center">
-                    <mat-icon class="m-r-8">google</mat-icon>
-                    <span>Sign in with Google</span>
-                  </div>
-                </button>
-              </div>
-              <div class="col-12 col-sm-6">
-                <button mat-stroked-button class="w-100 d-flex align-items-center">
-                  <div class="d-flex align-items-center">
-                    <mat-icon class="m-r-4">facebook</mat-icon>
-                    Sign in with FB
-                  </div>
-                </button>
-              </div>
-            </div>
-  
-            <div class="or-border m-t-30">or sign in with</div>
-  
-            <form class="m-t-30" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-              <mat-label class="f-s-14 f-w-600 m-b-12 d-block">Email</mat-label>
-              <mat-form-field appearance="outline" class="w-100" color="primary">
-                <input matInput formControlName="username" type="email" placeholder="Enter your email" />
-              </mat-form-field>
-  
-              <mat-label class="f-s-14 f-w-600 m-b-12 d-block">Password</mat-label>
-              <mat-form-field appearance="outline" class="w-100" color="primary">
-                <input matInput type="password" formControlName="password" placeholder="Enter your password" />
-              </mat-form-field>
-  
-              <div class="d-flex align-items-center m-b-12">
-                <mat-checkbox color="primary">Remember this Device</mat-checkbox>
-              </div>
-              <div class="d-flex align-items-center m-b-12">
-                <a [routerLink]="['/authentication/forgot-password']" class="text-primary f-w-600 text-decoration-none m-l-auto f-s-14">Forgot Password?</a>
-              </div>
-  
-              <button
-                mat-flat-button
-                color="primary"
-                class="w-100"
-                type="submit"
-                [disabled]="loginForm.invalid || isLoading"
-              >
-                Sign In
-              </button>
-  
-              <div *ngIf="errorMessage" class="text-danger text-center mt-2">
-                {{ errorMessage }}
-              </div>
-            </form>
-  
-            <span class="d-block f-w-500 text-center m-t-24">New to El Vitrina?
-              <a [routerLink]="['/frontoffice/signup']" class="text-decoration-none text-primary f-w-500 f-s-14">
-                Create an account</a>
-            </span>
-          </mat-card-content>
-        </mat-card>
+<div class="minimal-auth-container">
+  <!-- Animated gradient background -->
+  <div class="dynamic-gradient">
+    <div class="gradient-layer"></div>
+    <div class="particle-effect"></div>
+  </div>
+
+  <!-- Centered auth panel -->
+  <div class="auth-panel">
+    <!-- Brand header with subtle animation -->
+    <div class="brand-header">
+      <a [routerLink]="['/backoffice']" class="brand-logo">
+        <div class="logo-circle">
+          <svg viewBox="0 0 40 40" fill="none">
+            <path d="M20 0a20 20 0 100 40 20 20 0 000-40zm0 36a16 16 0 110-32 16 16 0 010 32z" fill="currentColor"/>
+            <path d="M20 8a12 12 0 100 24 12 12 0 000-24z" fill="currentColor"/>
+          </svg>
+        </div>
+      </a>
+      <h1 class="brand-title">Welcome Back</h1>
+      <p class="brand-subtitle">Sign in to continue</p>
+    </div>
+
+    <!-- Social auth buttons - minimalist version -->
+    <div class="social-auth-buttons">
+      <button class="social-btn google" (click)="signInWithGoogle()">
+        <span class="social-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/>
+          </svg>
+        </span>
+        <span class="social-text">Google</span>
+      </button>
+      <button class="social-btn facebook" (click)="signInWithFacebook()">
+        <span class="social-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/>
+          </svg>
+        </span>
+        <span class="social-text">Facebook</span>
+      </button>
+    </div>
+
+    <!-- Minimal divider -->
+    <div class="divider">
+      <span>or</span>
+    </div>
+
+    <!-- Clean form with floating effect -->
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="auth-form">
+      <div class="input-group">
+        <label>Email</label>
+        <input type="email" formControlName="username" placeholder="Enter your email" title="Email Address" class="modern-input">
+        <span class="input-highlight"></span>
+        <span class="error-text" *ngIf="loginForm.get('username')?.errors?.['required'] && loginForm.get('username')?.touched">
+          Email is required
+        </span>
+        <span class="error-text" *ngIf="loginForm.get('username')?.errors?.['email'] && loginForm.get('username')?.touched">
+          Please enter a valid email
+        </span>
       </div>
+
+      <div class="input-group">
+        <label>Password</label>
+        <input type="password" formControlName="password" placeholder="Enter your password" title="Password" class="modern-input">
+        <span class="input-highlight"></span>
+        <span class="error-text" *ngIf="loginForm.get('password')?.errors?.['required'] && loginForm.get('password')?.touched">
+          Password is required
+        </span>
+      </div>
+
+      <div class="recaptcha-container">
+        <re-captcha
+          formControlName="recaptcha"
+          siteKey="6Leu4CcrAAAAAObNNJsL5TiziGY5XiVRp6MGoisz">
+        </re-captcha>
+      </div>
+
+      <div class="form-options">
+        <label class="remember-me">
+          <input type="checkbox" [(ngModel)]="rememberDevice" [ngModelOptions]="{standalone: true}">
+          <span class="checkmark"></span>
+          Remember this device
+        </label>
+        <a [routerLink]="['/authentication/forgot-password']" class="forgot-password">Forgot password?</a>
+      </div>
+
+      <button type="submit" [disabled]="loginForm.invalid || isLoading" class="submit-btn">
+        <span class="btn-text">{{ isLoading ? 'Signing in...' : 'Sign In' }}</span>
+        <span class="btn-loader" *ngIf="isLoading">
+          <span class="loader-dot"></span>
+          <span class="loader-dot"></span>
+          <span class="loader-dot"></span>
+        </span>
+      </button>
+
+      <div *ngIf="errorMessage" class="error-message">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+        </svg>
+        <span>{{ errorMessage }}</span>
+      </div>
+    </form>
+
+    <!-- Footer link -->
+    <div class="auth-footer">
+      <p>New to El Vitrina? <a [routerLink]="['/frontoffice/signup']" class="signup-link">Create an account</a></p>
     </div>
   </div>
+</div>
+<style>
+.submit-btn {
+  background-color: #4caf50;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.submit-btn:hover {
+  background-color: #43a047;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.submit-btn:active {
+  transform: translateY(0);
+}
+
+.recaptcha-container {
+  margin: 15px 0;
+  display: flex;
+  justify-content: center;
+}
+</style>

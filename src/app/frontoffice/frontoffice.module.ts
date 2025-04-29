@@ -27,6 +27,8 @@ import { LoginComponent } from './pages/auth/login/login.component';
 import { RegisterComponent } from './pages/auth/register/register.component';
 import { ForgotPasswordComponent } from './pages/auth/forgot-password/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './pages/auth/reset-password/reset-password.component';
+import { UserProfileComponent } from './pages/auth/user-profile/user-profile.component';
+
 
 // ✅ Mat & Calendar modules
 import { MatIconModule } from '@angular/material/icon';
@@ -39,6 +41,10 @@ import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTabsModule } from '@angular/material/tabs';
+import { NgxCaptchaModule } from 'ngx-captcha';
 
 // ✅ Composants plateforme
 import { CenteredheroComponent } from './components/plateformeComps/heros/centeredhero/centeredhero.component';
@@ -55,6 +61,10 @@ import { SponsorsComponent } from './components/plateformeComps/others/sponsors/
 import { plateformeaboutComponent } from './components/plateformeComps/others/about/about.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DetailsformationComponent } from './pages/detailsformation/detailsformation.component';
+import { OauthSuccessComponent } from './pages/auth/oauth-success/oauth-success.component';
+
+
+import { RecaptchaModule, RecaptchaFormsModule } from 'ng-recaptcha';
 import { CalendarComponent } from './pages/shop/calendar/calendar.component';
 import { ArticleAuctionComponent } from './pages/article-auction/article-auction.component';
 import { BidslistComponent } from './pages/auctionbids/bidslist/bidslist.component';
@@ -80,10 +90,12 @@ import { ParticipationModalComponent } from './pages/participation-modal/partici
     PlatformeComponent,
     CalendarPopupComponent,
     DetailsformationComponent,
-    LoginComponent,
+   LoginComponent,
     RegisterComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
+    UserProfileComponent,
+    OauthSuccessComponent,
     CalendarComponent,
     ArticleAuctionComponent,
     BidslistComponent,
@@ -121,7 +133,16 @@ import { ParticipationModalComponent } from './pages/participation-modal/partici
     MatInputModule,
     MatButtonModule,
     MatIconModule,
- 
+    MatDividerModule,
+    MatSnackBarModule,
+    MatTabsModule,
+    NgxCaptchaModule,
+
+    RecaptchaModule,
+    RecaptchaFormsModule,
   ],
 })
-export class FrontofficeModule { }
+export class FrontofficeModule {}
+
+
+   

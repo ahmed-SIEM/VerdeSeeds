@@ -48,4 +48,28 @@ export class ParticipationService {
   getConfirmedParticipants(formationId: number): Observable<number> {
     return this.http.get<number>(`http://localhost:8081/participations/count-confirmed/${formationId}`);
   }
+
+  checkConflict(formationId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/check-conflict/${formationId}`, {
+      headers: this.getHeaders()
+    });
+  }
+
+  checkUserBlocked(formationId: number): Observable<boolean> {
+    return this.http.get<boolean>(`${this.apiUrl}/check-blocked/${formationId}`, {
+      headers: this.getHeaders()
+    });
+  }
+  
+  getRemainingBlockTime(formationId: number): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/remaining-block-time/${formationId}`, {
+      headers: this.getHeaders()
+    });
+  }
+
+  isAlreadyParticipating(formationId: number): Observable<boolean> {
+    return this.http.get<boolean>(`${this.apiUrl}/is-participating/${formationId}`, {
+      headers: this.getHeaders()
+    });
+  }
 }

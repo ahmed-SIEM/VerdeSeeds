@@ -1,134 +1,158 @@
-<div class="auth-container">
-  <!-- Animated background -->
-  <div class="auth-bg">
-    <div class="bg-bubble bubble-1"></div>
-    <div class="bg-bubble bubble-2"></div>
-    <div class="bg-bubble bubble-3"></div>
-    <div class="bg-bubble bubble-4"></div>
+<div class="nature-auth-container">
+  <!-- Nature-themed background with leaves and natural elements -->
+  <div class="nature-bg">
+    <div class="leaf leaf-1"></div>
+    <div class="leaf leaf-2"></div>
+    <div class="leaf leaf-3"></div>
+    <div class="nature-light-beam"></div>
   </div>
 
-  <!-- Flash message -->
-  <div *ngIf="flashMessage" class="modern-flash-toast">
-    <div class="flash-content">
-      <div class="flash-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+  <!-- Flash message with leaf icon -->
+  <div *ngIf="flashMessage" class="nature-flash-toast">
+    <div class="nature-flash-content">
+      <div class="nature-flash-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#4CAF50" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
       </div>
-      <div class="flash-text">
-        <p class="flash-title">Check your inbox</p>
-        <p class="flash-subtitle">An email has been sent to verify your account.</p>
+      <div class="nature-flash-text">
+        <p class="nature-flash-title">Check your inbox</p>
+        <p class="nature-flash-subtitle">We've sent a verification email with a leaf inside!</p>
       </div>
-      <button class="flash-close" (click)="flashMessage = ''" title="Close">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <button class="nature-flash-close" (click)="flashMessage = ''" title="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#4CAF50" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
     </div>
   </div>
 
-  <div class="auth-card-container">
-    <div class="auth-card">
-      <!-- Logo and header -->
-      <div class="auth-header">
-        <a [routerLink]="['/dashboard']" class="auth-logo">
-          <img src="/assets/images/logo.svg" alt="Logo">
+  <div class="nature-card-container">
+    <div class="nature-auth-card">
+      <!-- Logo and header with nature theme -->
+      <div class="nature-auth-header">
+        <a [routerLink]="['/dashboard']" class="nature-auth-logo">
+          <img src="/assets/images/logo-leaf.svg" alt="Nature Logo">
+          <span class="logo-text">EcoCommunity</span>
         </a>
-        <h2>Create your account</h2>
-        <p>Join our community today</p>
+        <h2>Join Our Green Community</h2>
+        <p class="nature-subtitle">Grow with us on this sustainable journey</p>
       </div>
 
-      <!-- Social login buttons -->
-      <div class="social-login">
-        <button mat-stroked-button class="social-btn google-btn">
-          <img src="/assets/images/svgs/google-icon.svg" alt="Google">
+      <!-- Social login buttons with nature colors -->
+      <div class="nature-social-login">
+        <button mat-stroked-button class="nature-social-btn nature-google-btn" (click)="signInWithGoogle()">
+          <img src="/assets/images/svgs/google-icon-green.svg" alt="Google">
           <span>Continue with Google</span>
         </button>
-        <button mat-stroked-button class="social-btn facebook-btn">
-          <img src="/assets/images/svgs/facebook-icon.svg" alt="Facebook">
+        <button mat-stroked-button class="nature-social-btn nature-facebook-btn" (click)="signInWithFacebook()">
+          <img src="/assets/images/svgs/facebook-icon-green.svg" alt="Facebook">
           <span>Continue with Facebook</span>
         </button>
       </div>
 
-      <!-- Divider -->
-      <div class="divider">
-        <span>OR</span>
+      <!-- Nature-themed divider -->
+      <div class="nature-divider">
+        <div class="divider-line"></div>
+        <span class="divider-text">or plant your roots with</span>
+        <div class="divider-line"></div>
       </div>
 
-      <!-- Registration form -->
-      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="auth-form">
+      <!-- Registration form with light inputs -->
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="nature-auth-form">
         <!-- Name fields in a row -->
-        <div class="form-row">
-          <mat-form-field appearance="fill" class="form-field">
+        <div class="nature-form-row">
+          <mat-form-field appearance="outline" class="nature-form-field">
             <mat-label>First Name</mat-label>
             <input matInput formControlName="prenom" placeholder="John">
-            <mat-icon matPrefix>person_outline</mat-icon>
+            <mat-icon matPrefix class="nature-icon">spa</mat-icon>
+            <mat-hint>Your green name</mat-hint>
           </mat-form-field>
 
-          <mat-form-field appearance="fill" class="form-field">
+          <mat-form-field appearance="outline" class="nature-form-field">
             <mat-label>Last Name</mat-label>
             <input matInput formControlName="nom" placeholder="Doe">
+            <mat-icon matPrefix class="nature-icon">nature_people</mat-icon>
           </mat-form-field>
         </div>
 
         <!-- Email field -->
-        <mat-form-field appearance="fill" class="form-field">
+        <mat-form-field appearance="outline" class="nature-form-field">
           <mat-label>Email Address</mat-label>
           <input matInput type="email" formControlName="email" placeholder="your@email.com">
-          <mat-icon matPrefix>mail_outline</mat-icon>
+          <mat-icon matPrefix class="nature-icon">alternate_email</mat-icon>
+          <mat-hint>We'll send a leaf to your inbox</mat-hint>
         </mat-form-field>
 
-        <!-- Password field with strength meter -->
-        <mat-form-field appearance="fill" class="form-field">
+        <!-- Password field with nature-themed strength meter -->
+        <mat-form-field appearance="outline" class="nature-form-field">
           <mat-label>Password</mat-label>
           <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" placeholder="••••••••">
-          <mat-icon matPrefix>lock_outline</mat-icon>
-          <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
-            <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          <mat-icon matPrefix class="nature-icon">lock_open</mat-icon>
+          <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword" class="nature-password-toggle">
+            <mat-icon class="nature-icon">{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
           </button>
         </mat-form-field>
 
-        <!-- Password strength indicator -->
-        <div *ngIf="registerForm.get('password')?.value" class="password-strength">
-          <div class="strength-meter">
-            <div class="strength-bar" [ngClass]="'strength-' + passwordStrength"></div>
+        <!-- Nature-inspired password strength indicator -->
+        <div *ngIf="registerForm.get('password')?.value" class="nature-password-strength">
+          <div class="nature-strength-meter">
+            <div class="nature-strength-bar" [style.width]="passwordStrengthWidth" [style.backgroundColor]="passwordStrengthColor"></div>
           </div>
-          <div class="strength-label">
-            Password strength: <span [class]="'text-' + passwordStrength">{{ passwordStrength | titlecase }}</span>
+          <div class="nature-strength-label">
+            <mat-icon class="nature-strength-icon" [style.color]="passwordStrengthColor">eco</mat-icon>
+            <span [style.color]="passwordStrengthColor">{{ passwordStrength }}</span>
           </div>
         </div>
 
         <!-- Phone and address -->
-        <div class="form-row">
-          <mat-form-field appearance="fill" class="form-field">
+        <div class="nature-form-row">
+          <mat-form-field appearance="outline" class="nature-form-field">
             <mat-label>Phone Number</mat-label>
-            <input matInput formControlName="telephone" placeholder="+1 (___) ___-____">
-            <mat-icon matPrefix>phone</mat-icon>
+            <input matInput formControlName="telephone" placeholder="+(216) __-___-___">
+            <mat-icon matPrefix class="nature-icon">call</mat-icon>
           </mat-form-field>
 
-          <mat-form-field appearance="fill" class="form-field">
+          <mat-form-field appearance="outline" class="nature-form-field">
             <mat-label>Address</mat-label>
             <input matInput formControlName="adresse" placeholder="Your address">
-            <mat-icon matPrefix>home</mat-icon>
+            <mat-icon matPrefix class="nature-icon">home_work</mat-icon>
           </mat-form-field>
         </div>
 
-        <!-- Submit button -->
-        <button mat-raised-button color="primary" class="submit-btn" type="submit" [disabled]="registerForm.invalid || isLoading">
-          <span *ngIf="!isLoading">Create Account</span>
-          <mat-spinner *ngIf="isLoading" diameter="24"></mat-spinner>
+        <!-- Terms checkbox with leaf icon -->
+        <mat-checkbox class="nature-terms-checkbox" formControlName="terms">
+          I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+          <mat-icon class="nature-check-icon">check_circle_outline</mat-icon>
+        </mat-checkbox>
+        <!-- <re-captcha 
+    (resolved)="onCaptchaResolved($event)" 
+    siteKey="6Leu4CcrAAAAAObNNJsL5TiziGY5XiVRp6MGoisz
+">
+  </re-captcha> -->
+
+        <!-- Submit button with leaf icon -->
+        <button mat-raised-button class="nature-submit-btn" type="submit" [disabled]="registerForm.invalid || isLoading">
+          <span *ngIf="!isLoading">
+            <mat-icon class="nature-btn-icon">grass</mat-icon>
+            Grow With Us
+          </span>
+          <mat-spinner *ngIf="isLoading" diameter="24" color="accent"></mat-spinner>
         </button>
 
-        <!-- Error message -->
-        <div *ngIf="errorMessage" class="error-message">
-          <mat-icon>error_outline</mat-icon>
+        <!-- Error message with leaf icon -->
+        <div *ngIf="errorMessage" class="nature-error-message">
+          <mat-icon class="nature-error-icon">warning_amber</mat-icon>
           <span>{{ errorMessage }}</span>
         </div>
       </form>
 
-      <!-- Login link -->
-      <div class="auth-footer">
-        Already have an account? <a [routerLink]="['/frontoffice/login']" class="auth-link">Sign in</a>
+      <!-- Login link with nature theme -->
+      <div class="nature-auth-footer">
+        Already rooted with us? <a [routerLink]="['/frontoffice/login']" class="nature-auth-link">
+          <mat-icon class="nature-link-icon">login</mat-icon>
+          Sign in
+        </a>
       </div>
     </div>
   </div>

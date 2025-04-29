@@ -36,11 +36,19 @@ export class ForgotPasswordComponent {
     this.authService.forgotPassword(email).subscribe({
       next: (res) => {
         this.isLoading = false;
-        this.message = res.message;
+        this.message = res.message || '✅ Reset link sent successfully!';
+        this.errorMessage = '';
       },
       error: (err:HttpErrorResponse) => {
-        this.errorMessage = err.error?.message || '❌ Unable to send reset link.';
         this.isLoading = false;
+        this.message = '';
+        if(err.status === 404) {
+          this.errorMessage = '❌ No account found with this email address';
+        } else if (err.status === 429) {
+          this.errorMessage = '❌ Too many requests. Please try again later';
+        } else {
+        this.errorMessage = err.error?.message || '❌ Failed to send reset link. Please try again';
+        }
     }
     });
  }
