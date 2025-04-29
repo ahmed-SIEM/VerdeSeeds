@@ -9,6 +9,7 @@ import { EditComponent } from './edit/edit.component';
 import { EditDetailsComponent } from './edit-details/edit-details.component';
 import { DetailsComponent } from './details/details.component';
 import { StatistiquesComponent } from './statistiques/statistiques.component';
+import { NgChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { StatistiquesComponent } from './statistiques/statistiques.component';
     CommonModule,
     FormsModule,
     RouterModule,
-    FormationManagementRoutingModule
+    FormationManagementRoutingModule,
+    NgChartsModule
   ]
 })
 export class FormationManagementModule {}
