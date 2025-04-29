@@ -113,4 +113,10 @@ export class AuctionService {
       catchError(this.handleError)
     );
   }
+
+  finalizeAuction(id: number): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/finalize/${id}`, {}).pipe(
+      catchError(this.handleError)
+    );
+  }
 }
