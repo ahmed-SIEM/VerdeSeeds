@@ -40,8 +40,8 @@ export class PlateformeService {
   }
 
 
-  updateUserPlan(id: number, plan: string): Observable<void> {
-    return this.http.put<void>(`${this.apiUrl}/user/${id}/${plan}` , {});
+  updateUserPlan( plan: string): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/user/${plan}` , {});
   }
 
 
