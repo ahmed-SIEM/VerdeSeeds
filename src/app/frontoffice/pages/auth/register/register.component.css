@@ -255,27 +255,68 @@
 .nature-auth-form .nature-form-field {
   width: 100%;
   margin-bottom: 1.25rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.nature-auth-form .nature-form-field .mat-form-field-wrapper {
+  padding-bottom: 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(76, 175, 80, 0.2);
+  border-radius: 122px;
+}
+
+.nature-auth-form .nature-form-field.mat-focused .mat-form-field-wrapper {
+  border-color: rgba(76, 175, 80, 0.4);
+}
+
+.nature-auth-form .nature-form-field:hover .mat-form-field-wrapper {
+  border-color: rgba(76, 175, 80, 0.3);
 }
 
 .nature-auth-form .nature-form-field .mat-form-field-outline {
-  color: rgba(76, 175, 80, 0.3);
+  color: rgba(76, 175, 80, 0.2);
+  box-shadow: 0 4px 12px rgba(46, 125, 50, 0.05);
+  transition: all 0.3s ease;
 }
 
 .nature-auth-form .nature-form-field .mat-form-field-outline-thick {
   color: #4CAF50;
 }
 
+.nature-auth-form .nature-form-field:hover .mat-form-field-outline {
+  box-shadow: 0 6px 16px rgba(46, 125, 50, 0.08);
+}
+
+.nature-auth-form .nature-form-field:focus-within .mat-form-field-outline {
+  box-shadow: 0 8px 20px rgba(76, 175, 80, 0.12);
+}
+
+.nature-auth-form .nature-form-field .mat-form-field-outline-start,
+.nature-auth-form .nature-form-field .mat-form-field-outline-end {
+  border-width: 2px;
+  border-radius: 12px;
+}
+
 .nature-auth-form .nature-form-field .mat-input-element {
   color: #795548;
   caret-color: #4CAF50;
+  padding: 4px;
 }
 
 .nature-auth-form .nature-form-field .mat-form-field-label {
   color: rgba(46, 125, 50, 0.6);
+  font-weight: 500;
+  letter-spacing: 0.3px;
 }
 
 .nature-auth-form .nature-form-field .nature-icon {
   color: #689F38;
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
+}
+
+.nature-auth-form .nature-form-field:focus-within .nature-icon {
+  opacity: 1;
 }
 
 .nature-auth-form .nature-form-field .mat-form-field-wrapper {
@@ -288,6 +329,38 @@
 
 .nature-auth-form .nature-password-toggle {
   color: #689F38;
+}
+
+.nature-auth-form .nature-form-field .mat-form-field-flex {
+  background: rgba(255, 255, 255, 0.8);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  border-radius: 12px;
+}
+
+.nature-auth-form .nature-form-field.mat-focused .mat-form-field-flex {
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 8px 24px rgba(76, 175, 80, 0.15),
+              0 0 0 2px rgba(76, 175, 80, 0.1);
+}
+
+.nature-auth-form .mat-form-field-appearance-outline .mat-form-field-outline-thick {
+  opacity: 0.8;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+              box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+  color: #4CAF50;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline-start,
+.mat-form-field-appearance-outline .mat-form-field-outline-end {
+  border-radius: 8px;
+  min-width: 5px;
 }
 
 .nature-terms-checkbox {

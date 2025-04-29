@@ -1,0 +1,130 @@
+<div class="profile-container">
+  <mat-card class="modern-profile-card">
+    <!-- Header Section -->
+    <div class="profile-header">
+      <div class="header-content">
+        <div class="avatar-container">
+          <div class="avatar-circle">
+            <span class="avatar-initials">{{ getUserInitials() }}</span>
+            <div class="status-indicator"></div>
+          </div>
+        </div>
+        <div class="header-text">
+          <h1 class="profile-title">{{ user.nom }} {{ user.prenom }}</h1>
+          <div class="profile-meta">
+            <span class="role-badge">{{ user.role.replace('ROLE_', '') }}</span>
+            <span class="member-since">Member since {{ user.dateInscription | date }}</span>
+          </div>
+        </div>
+        <button mat-icon-button class="home-btn" routerLink="/">
+          <mat-icon>home</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="loading-overlay">
+      <mat-spinner diameter="50" color="accent"></mat-spinner>
+    </div>
+
+    <!-- Tab Group -->
+    <mat-tab-group class="modern-tabs" [(selectedIndex)]="selectedTabIndex">
+      <!-- Profile Tab -->
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">person</mat-icon>
+          Profile
+        </ng-template>
+        <div class="tab-content">
+          <div class="form-section">
+            <h2 class="section-title">
+              <mat-icon class="section-icon">manage_accounts</mat-icon>
+              Personal Details
+            </h2>
+            
+            <div class="form-grid">
+              <mat-form-field appearance="outline" class="modern-field">
+                <mat-label>First Name</mat-label>
+                <input matInput [(ngModel)]="user.nom" name="nom" required>
+                <mat-icon matPrefix>badge</mat-icon>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="modern-field">
+                <mat-label>Last Name</mat-label>
+                <input matInput [(ngModel)]="user.prenom" name="prenom" required>
+                <mat-icon matPrefix>assignment_ind</mat-icon>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="modern-field">
+                <mat-label>Email</mat-label>
+                <input matInput type="email" [(ngModel)]="user.email" name="email" required>
+                <mat-icon matPrefix>alternate_email</mat-icon>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="modern-field">
+                <mat-label>Phone</mat-label>
+                <input matInput [(ngModel)]="user.telephone" name="telephone">
+                <mat-icon matPrefix>call</mat-icon>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="modern-field full-width">
+                <mat-label>Address</mat-label>
+                <textarea matInput [(ngModel)]="user.adresse" name="adresse" rows="2"></textarea>
+                <mat-icon matPrefix>location_on</mat-icon>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+
+      <!-- Other Tabs -->
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">apps</mat-icon>
+          Plateformes
+        </ng-template>
+        <div class="tab-content">
+          <!-- <app-user-plateformes></app-user-plateformes> -->
+        </div>
+      </mat-tab>
+
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">widgets</mat-icon>
+          Components
+        </ng-template>
+        <div class="tab-content">
+          <!-- <app-user-components></app-user-components> -->
+        </div>
+      </mat-tab>
+
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">school</mat-icon>
+          Formations
+        </ng-template>
+        <div class="tab-content">
+          <!-- <app-user-formations></app-user-formations> -->
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+
+    <!-- Action Buttons -->
+    <div class="action-bar">
+      <button mat-stroked-button color="primary" routerLink="/change-password" class="action-btn">
+        <mat-icon>password</mat-icon>
+        Change Password
+      </button>
+      <div class="action-group">
+        <button mat-stroked-button routerLink="/" class="action-btn cancel">
+          <mat-icon>close</mat-icon>
+          Cancel
+        </button>
+        <button mat-flat-button color="primary" (click)="saveChanges()" [disabled]="isLoading" class="action-btn save">
+          <mat-icon>save</mat-icon>
+          Save Changes
+        </button>
+      </div>
+    </div>
+  </mat-card>
+</div>

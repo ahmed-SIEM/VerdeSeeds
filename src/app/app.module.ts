@@ -10,6 +10,10 @@ import { ErrorComponent } from './error/error.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { initializeApp } from 'firebase/app';
 import {firebase}  from '../environments/fireBaseEnv';
+import { NgxCaptchaModule } from 'ngx-captcha';
+
+
+
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NgChartsModule } from 'ng2-charts';
 
@@ -18,24 +22,23 @@ import { NgChartsModule } from 'ng2-charts';
 initializeApp(firebase);
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    ErrorComponent,
-    
-  ],
+  declarations: [AppComponent, ErrorComponent],
 
   imports: [
     CommonModule,
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    ReactiveFormsModule, 
-    HttpClientModule, BrowserAnimationsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
     DragDropModule,
+    NgxCaptchaModule,
+  
     MatSnackBarModule,
     NgChartsModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
