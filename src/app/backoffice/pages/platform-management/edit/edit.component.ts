@@ -57,7 +57,6 @@ export class EditPlateformeComponent implements OnInit {
   isColorPickerEnabled = false;
   maxSelections = this.MAX_BASIC_SELECTIONS;
 
-  userid = 1;
   selectPacktype = "";
 
   currentStep = 1;
@@ -187,7 +186,10 @@ export class EditPlateformeComponent implements OnInit {
   }
 
   private loadConstantUser(): void {
-    this.commonService.getUserById(this.userid).subscribe({
+    // get the CurrentUser from the local storage
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    console.log('Current user:', currentUser);
+    this.commonService.getUserById(currentUser?.idUser).subscribe({
       next: (user) => {
         this.users = [user];
         this.selectPacktype = user.typePack;
