@@ -34,7 +34,6 @@ initializeApp(firebase);
     BrowserAnimationsModule,
     DragDropModule,
     NgxCaptchaModule,
-  
     MatSnackBarModule,
     NgChartsModule
   ],

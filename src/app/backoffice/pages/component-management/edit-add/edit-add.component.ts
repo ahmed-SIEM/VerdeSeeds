@@ -30,8 +30,6 @@ export class EditAddComponent implements OnInit {
   isLoading = false;
   selectedComponent: any;
   contentJson: ContentJson = {};
-  userid = 1;
-  user: any[] = [];
   componentId: number | null = null;
   currentStep = 1;
   showModal = false;
@@ -138,17 +136,6 @@ export class EditAddComponent implements OnInit {
     this.contentForm = this.fb.group({});
   }
 
-  loaduser() {
-    this.commonservice.getUserById(this.userid).subscribe({
-      next: (user) => {
-        console.log('User loaded:', user);
-        this.user = user;
-      },
-      error: (error) => {
-        console.error('Error loading users:', error);
-      }
-    });
-  }
 
 
 
@@ -210,7 +197,6 @@ export class EditAddComponent implements OnInit {
       this.componentId = +id;
       this.loadcomponent(this.componentId);
     }
-    this.loaduser();
     this.loadmetrics();
   }
 
@@ -399,13 +385,11 @@ export class EditAddComponent implements OnInit {
           type: this.selectedComponentType,
           content: JSON.stringify(contentValue),
           name: this.componentForm.get('name')?.value,
-          user: this.user,
         };
 
         if (this.isEditMode && this.componentId) {
           payload.id = this.componentId;
         }
-
         const request = this.isEditMode && this.componentId
           ? this.componentService.updateComponent(payload)
           : this.componentService.createComponent(payload);
