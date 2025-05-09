@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class AIService {
   private apiUrl = 'https://openrouter.ai/api/v1/chat/completions';
-  private apiKey = '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';
+  private apiKey = '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';
   private readonly AGRICULTURAL_KEYWORDS = [
     'tracteur', 'moissonneuse', 'semoir', 'charrue', 'cultivateur',
     'irrigation', 'engrais', 'pesticide', 'serre', 'récolte',
