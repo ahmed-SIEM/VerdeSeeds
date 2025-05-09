@@ -79,21 +79,26 @@ export class LoginComponent implements OnInit {
   onSubmit(): void {
     if (this.loginForm.invalid) return;
     this.isLoading = true;
-    const loginData: AuthRequest = this.loginForm.value;
+  
+    const loginFormValue = this.loginForm.value;
+  
+    const loginData: AuthRequest = {
+      username: loginFormValue.username,
+      password: loginFormValue.password,
+      recaptchaToken: loginFormValue.recaptcha  // 💥 important ici
+    };
+  
     this.authService.login(loginData).subscribe({
       next: () => {
         const role = this.authService.getUserRole();
-        if (role === 'admin') {
-          this.router.navigate(['/backoffice']);
-        } else {
-          this.router.navigate(['/frontoffice/home']);
-        }
+        this.router.navigate(role === 'admin' ? ['/backoffice'] : ['/frontoffice/home']);
       },
       error: (err) => {
         this.errorMessage = err.error?.message || 'Login failed';
         this.isLoading = false;
-      },
+      }
     });
-}
+  }
+  
 
 }

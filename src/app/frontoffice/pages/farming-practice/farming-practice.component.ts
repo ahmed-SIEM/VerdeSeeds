@@ -13,8 +13,8 @@ export class FarmingPracticeComponent implements OnInit {
   formations: any[] = [];
   filteredFormations: any[] = [];
   mesParticipations: any[] = [];
-  blockTimes: { [idFormation: number]: number } = {}; // NEW
-blockIntervals: { [idFormation: number]: any } = {}; // NEW
+  blockTimes: { [idFormation: number]: number } = {}; 
+blockIntervals: { [idFormation: number]: any } = {}; 
 
   types: string[] = ['THEORIQUE', 'PRATIQUE', 'MIXTE'];
   selectedType: string = 'ALL';
