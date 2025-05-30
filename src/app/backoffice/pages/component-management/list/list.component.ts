@@ -33,7 +33,7 @@ export class ListComponent implements OnInit {
   selectedPreviewImage: string = '';
   selectedType: ComponentType | '' = ''; // Added type filter property
   currentPage: number = 1;
-  itemsPerPage: number = 6;
+  itemsPerPage: number = 5;
   stats: any = {
     headerwithicons: 0,
     centeredhero: 0,
