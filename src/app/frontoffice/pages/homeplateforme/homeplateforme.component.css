@@ -1,7 +1,7 @@
 .chat-fab {
   position: fixed;
   bottom: 2rem;
-  right: 2rem;
+  left: 2rem;
   width: 60px;
   height: 60px;
   border-radius: 50%;
@@ -12,10 +12,12 @@
   transition: all 0.3s;
   color: white;
   font-size: 24px;
+      z-index: 100000000000000000000000000;
+
 }
 
 .chat-drawer {
-    z-index: 1000;
+    z-index: 100000000000000000000000000;
   position: fixed;
   right: -70vw;
   top: 0;
