@@ -17,12 +17,13 @@ load_dotenv()
 app = Flask(__name__)
 # Update CORS configuration to be more specific
 CORS(app)
-
+groqapikey = os.getenv("GROQ_API_KEY")
+openrouterapikey = os.getenv("OPENROUTER_API_KEY")
 # Client initializations
-client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+client = Groq(api_key=groqapikey)
 openrouter_client = OpenAI(
     base_url="https://openrouter.ai/api/v1",
-    api_key=os.getenv("OPENROUTER_API_KEY"),
+    api_key=openrouterapikey
 )
 
 # Prompts

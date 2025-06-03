@@ -165,23 +165,23 @@ export class EditPlateformeComponent implements OnInit {
   getErrorMessage(controlName: string): string {
     const control = this.platformForm.get(controlName);
     if (!control) return '';
-    
+
     if (control.hasError('required')) {
       return `${controlName} cannot be blank`;
     }
-    
+
     if (control.hasError('minlength')) {
       return `${controlName} must be at least 5 characters`;
     }
-    
+
     if (control.hasError('maxlength')) {
       return `${controlName} cannot exceed 100 characters`;
     }
-    
+
     if (control.hasError('pattern')) {
       return `${controlName} must start with a letter and can only contain letters, numbers, and spaces`;
     }
-    
+
     return '';
   }
 
@@ -340,7 +340,7 @@ export class EditPlateformeComponent implements OnInit {
     if (input.files && input.files.length > 0) {
       this.selectedLogoFile = input.files[0];
       this.showColorGenerator = true;
-      
+
       // Create a temporary URL for preview
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -356,21 +356,14 @@ export class EditPlateformeComponent implements OnInit {
 
   private prepareAndSubmitData(): void {
     if (this.selectedLogoFile) {
-      // Upload the logo first, then submit form data
-      this.firebaseStorage.uploadFile(this.selectedLogoFile).subscribe({
-        next: (response) => {
-          const formData = { ...this.platformForm.value };
-          formData.logo = response.fileName;
-          const user = this.users[0];
-          this.submitPlatformData(formData, user);
-        },
-        error: (error) => {
-          console.error('Error uploading logo:', error);
-        }
-      });
+      const formData = { ...this.platformForm.value };
+      formData.logo = '';
+      const user = this.users[0];
+      this.submitPlatformData(formData, user);
     } else {
       // If no new logo was selected, proceed with existing logo
       const formData = { ...this.platformForm.value };
+      formData.logo = '';
       const user = this.users[0];
       this.submitPlatformData(formData, user);
     }
@@ -402,7 +395,7 @@ export class EditPlateformeComponent implements OnInit {
     delete formData.field3;
     delete formData.field4;
 
-    if(this.selectPacktype === TypePack.BASIC) {
+    if (this.selectPacktype === TypePack.BASIC) {
       formData.nomPlateforme = 'verdeseeds.' + formData.nomPlateforme;
     }
 
@@ -422,7 +415,7 @@ export class EditPlateformeComponent implements OnInit {
   private validateStep1(): boolean {
     const requiredFields = ['nomPlateforme', 'couleur', 'description', 'logo'];
     let isValid = true;
-    
+
     requiredFields.forEach(field => {
       const control = this.platformForm.get(field);
       if (control) {

@@ -1,0 +1,44 @@
+.nav-icon {
+    color: #77b122;
+    font-size: 24px; /* Fixed size instead of relative unit */
+    transition: transform 0.3s ease, color 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px; /* Fixed width */
+    height: 32px; /* Fixed height */
+}
+
+.nav-icon:hover {
+    color: #5a8a1a;
+    transform: scale(1.1); /* Slight scale instead of size change */
+}
+
+.nav-icon i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+#user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 100%;
+}
+
+.signout-btn {
+    background: none;
+    border: none;
+    color: #77b122;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px; /* Fixed size */
+    padding: 6px 12px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    height: 32px; /* Match icon height */
+}

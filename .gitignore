@@ -29,6 +29,14 @@ src/environments
 !.vscode/extensions.json
 .history/*
 
+# Docker
+.docker
+docker-compose.override.yml
+
+# Environment files
+.env
+**/fireBaseEnv.ts
+
 # Miscellaneous
 /.angular/cache
 .sass-cache/
