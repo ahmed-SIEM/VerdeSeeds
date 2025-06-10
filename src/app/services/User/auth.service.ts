@@ -177,4 +177,10 @@ export class AuthService {
   verifyEmail(token: string): Observable<boolean> {
     return this.http.get<boolean>(`${environment.apiUrl}/auth/verify?token=${token}`);
   }
+
+  signOut(): void {
+    localStorage.removeItem('token');
+    this.currentUserSubject.next(null);
+    this.router.navigate(['/frontoffice/login']);
+  }
 }

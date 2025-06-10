@@ -22,7 +22,7 @@ import { PreviewComponent } from './pages/platform-management/preview/preview.co
 import { SponsorsComponent } from "../frontoffice/components/plateformeComps/others/sponsors/sponsors.component";
 import { HttpClientModule } from '@angular/common/http';
 import { NgChartsModule } from 'ng2-charts';
-
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 @NgModule({
   declarations: [
     LayoutsComponent,
@@ -50,6 +50,7 @@ import { NgChartsModule } from 'ng2-charts';
     SponsorsComponent,
     HttpClientModule,
     NgChartsModule
-]
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class BackofficeModule { }
