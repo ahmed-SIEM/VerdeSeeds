@@ -40,6 +40,9 @@ export class ListComponent implements OnInit {
     }
   }
 
+
+
+  
   getImagePath(photoPath: string): string {
     return `http://localhost:8081/${photoPath}`;
   }
