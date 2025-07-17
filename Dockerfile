@@ -1,27 +1,28 @@
-FROM node:16 AS build
+# Stage 1: Build the Angular app
+FROM node:18 AS build
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
+# Copy package.json and package-lock.json to leverage Docker cache
 COPY package*.json ./
-RUN npm install
 
-# Copy environment files first
-COPY .env . 
-COPY src/environments/fireBaseEnv.ts src/environments/
+# Clean npm cache and install dependencies, using legacy-peer-deps for compatibility
+RUN npm cache clean --force && npm install --legacy-peer-deps --verbose
 
+# Copy the rest of the application files
 COPY . .
-RUN npm run build --configuration=production
 
+# Build the Angular app for production
+RUN npm run build --prod
+
+# Stage 2: Serve the app with Nginx
 FROM nginx:alpine
 
-# Remove default nginx static assets
-RUN rm -rf /usr/share/nginx/html/*
+# Copy the built Angular app from the previous stage
+COPY --from=build /app/dist/fuse /usr/share/nginx/html
 
-# Copy built assets from builder
-COPY --from=build /usr/src/app/dist/portal /usr/share/nginx/html
-
-# Copy nginx configuration if you have custom config
-# COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Optional: Replace default Nginx config (if needed)
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 
